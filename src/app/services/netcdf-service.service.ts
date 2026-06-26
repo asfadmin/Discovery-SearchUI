@@ -1,28 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService, NotificationService } from '@services';
-import {
-  Observable,
-  Subject,
-  catchError,
-  delay,
-  map,
-  of,
-  retryWhen,
-  scan,
-} from 'rxjs';
-// import WebGLTileLayer from 'ol/layer/WebGLTile';
-import ImageLayer from 'ol/layer/Image';
-// import Static from 'ol/source/ImageStatic';
-// import { TimeSeriesResult } from '@models';
-import ImageSource from 'ol/source/Image';
-import Feature from 'ol/Feature';
-import Geometry from 'ol/geom/Geometry';
+import { Observable, Subject, catchError, map, of, retry, timer } from 'rxjs';
 import { FlightDirection, TimeseriesSubframe } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { setTimeseriesValid } from '@store/charts';
-// import { timeseriesChartItemState } from '@models';
 
 @Injectable({
   providedIn: 'root',
@@ -35,10 +18,6 @@ export class NetcdfService {
   private bucket = 'asf-cumulus-prod-opera-products';
   private timeSeriesEndpoint = '/timeseries';
   private frameIntersectionEndpoint = '/frame_intersection';
-  public layers: {
-    feature: Feature<Geometry>;
-    browse: ImageLayer<ImageSource>;
-  }[] = [];
 
   private ascendingCache = {};
   private descendingCache = {};
@@ -72,20 +51,10 @@ export class NetcdfService {
 
   private handleRetry<T>(source: Observable<T>): Observable<T> {
     return source.pipe(
-      retryWhen((e) =>
-        e.pipe(
-          scan((errorCount, error) => {
-            if (error.status !== 0) {
-              throw error;
-            }
-            if (errorCount >= 3) {
-              throw error;
-            }
-            return errorCount + 1;
-          }, 0),
-          delay(1000),
-        ),
-      ),
+      retry({
+        count: 3,
+        delay: () => timer(1000),
+      }),
     );
   }
 
