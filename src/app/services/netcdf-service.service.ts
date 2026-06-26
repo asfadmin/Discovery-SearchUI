@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
   BrowseOverlayService,
+  EnvironmentService,
   NotificationService,
   WktService,
 } from '@services';
@@ -34,14 +35,12 @@ import { setTimeseriesValid } from '@store/charts';
   providedIn: 'root',
 })
 export class NetcdfService {
+  private env = inject(EnvironmentService);
   private http = inject(HttpClient);
   private browseOverlayService = inject(BrowseOverlayService);
   private notificationService = inject(NotificationService);
   private store$ = inject<Store<AppState>>(Store);
   private wktService = inject(WktService);
-
-  private url = 'https://d2qmcvu7qty7vn.cloudfront.net/';
-  //   private url: string = 'http://127.0.0.1:8080/'
   private bucket = 'asf-cumulus-prod-opera-products';
   private itemsEndpoint = 'items/';
   private timeSeriesEndpoint = 'timeseries';
@@ -60,6 +59,10 @@ export class NetcdfService {
     'name, geometry, date (mm/dd/yr), short wavelength displacement, source file';
 
   public cacheUpdated = new Subject<string>();
+
+  private get apiUrl() {
+    return this.env.currentEnv.displacement_api;
+  }
   private getTargetCache(flightDir: FlightDirection) {
     return flightDir === FlightDirection.ASCENDING
       ? this.ascendingCache
@@ -176,7 +179,7 @@ export class NetcdfService {
     } else {
       return this.http
         .post(
-          `${this.url}${this.timeSeriesEndpoint}`,
+          `${this.apiUrl}${this.timeSeriesEndpoint}`,
           {
             wkt: frame.wkt,
             bucket: this.bucket,
@@ -231,7 +234,7 @@ export class NetcdfService {
 
   public getFrames(wkt: string, flightDir: FlightDirection) {
     return this.http
-      .post(`${this.url}frame_intersection`, {
+      .post(`${this.apiUrl}frame_intersection`, {
         wkt: wkt,
         flightDirection: flightDir.toLowerCase(),
       })
