@@ -23,13 +23,7 @@ import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
 import { Observable } from 'rxjs';
-import {
-  NgStyle,
-  NgClass,
-  AsyncPipe,
-  UpperCasePipe,
-  TitleCasePipe,
-} from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import {
   MatCardHeader,
   MatCardTitle,
@@ -40,10 +34,9 @@ import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/c
 import { MatTooltip } from '@angular/material/tooltip';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
+import { SceneSearchToolbarComponent } from '@components/results-menu/scene-search-toolbar/scene-search-toolbar.component';
 import { MatIcon } from '@angular/material/icon';
-import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
-import { IsRelevantPipe } from '@pipes/relevant.pipe';
 
 @Component({
   selector: 'app-scene-detail',
@@ -60,14 +53,10 @@ import { IsRelevantPipe } from '@pipes/relevant.pipe';
     DocsModalComponent,
     SceneMetadataComponent,
     MatIcon,
-    NgStyle,
-    NgClass,
-    MatButton,
     AsyncPipe,
-    UpperCasePipe,
     TitleCasePipe,
     TranslateModule,
-    IsRelevantPipe,
+    SceneSearchToolbarComponent,
   ],
 })
 export class SceneDetailComponent implements OnInit, OnDestroy {
@@ -371,6 +360,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.SetEndDate(sensorDate));
     this.store$.dispatch(new searchStore.MakeSearch());
   }
+
   public makeBaselineSearch(): void {
     const sceneName = this.baselineSceneName();
     const frame = this.scene.metadata.frame;

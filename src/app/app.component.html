@@ -1,9 +1,16 @@
-<mat-sidenav-container class="container" [class.tophat-offset]="!hyp3PlusMode()"
-  [class.no-tophat-offset]="hyp3PlusMode()" (backdropClick)="onCloseSidebar()">
-  <mat-sidenav [ngClass]="{
+<mat-sidenav-container
+  class="container"
+  [class.tophat-offset]="!hyp3PlusMode()"
+  [class.no-tophat-offset]="hyp3PlusMode()"
+  (backdropClick)="onCloseSidebar()"
+>
+  <mat-sidenav
+    [ngClass]="{
       'app-sidenav-mobile': breakpoint <= breakpoints.SMALL,
       'app-sidenav': breakpoint > breakpoints.SMALL,
-    }" #sidenav>
+    }"
+    #sidenav
+  >
     <app-sidebar></app-sidebar>
   </mat-sidenav>
 
