@@ -1,9 +1,10 @@
 @let breakpoint = breakpoint$ | async;
+
 <div
   class="tool-menu"
   [ngStyle]="{
     bottom:
-      searchType === searchTypes.BASELINE && breakpoint <= breakpoints.MEDIUM
+      searchType() === searchTypes.BASELINE && breakpoint <= breakpoints.MEDIUM
         ? '0px'
         : breakpoint < breakpoints.SMALL
           ? '0px'
@@ -11,7 +12,7 @@
   }"
   [ngClass]="{
     'menu-override':
-      searchType === searchTypes.BASELINE && breakpoint === breakpoints.FULL,
+      searchType() === searchTypes.BASELINE && breakpoint === breakpoints.FULL,
   }"
 >
   <div class="search-button-label">{{ 'SEARCH' | translate | uppercase }}:</div>

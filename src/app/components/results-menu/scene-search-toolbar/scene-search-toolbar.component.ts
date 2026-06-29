@@ -44,7 +44,7 @@ export class SceneSearchToolbarComponent implements OnInit, OnDestroy {
   public p = models.Props;
   public scene: models.CMRProduct;
   public selectedProducts: models.CMRProduct[];
-  public searchType: models.SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;
   public hasBaseline: boolean;
 
@@ -60,12 +60,6 @@ export class SceneSearchToolbarComponent implements OnInit, OnDestroy {
   private dateRange: { start: Date | null; end: Date | null };
 
   ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
-    );
-
     this.subs.add(
       this.store$
         .select(userStore.getUserProfile)
@@ -217,7 +211,7 @@ export class SceneSearchToolbarComponent implements OnInit, OnDestroy {
   public moreLikeThis(): void {
     const scene = this.scene;
     const shouldClear =
-      this.searchType !== models.SearchType.DATASET ||
+      this.searchType() !== models.SearchType.DATASET ||
       this.dataset.id === 'OPERA-S1';
     const dateRange = this.dateRange;
 
