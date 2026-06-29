@@ -1,0 +1,168 @@
+@use "asf-theme" as *;
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+.invalid-input-animation {
+  animation: shake 0.82s;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.primary-text {
+  // USED IN image-dialog
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
+}
+
+.faint-text {
+  @include themify_non_host($themes) {
+    color: themed('dark-secondary-text');
+  }
+}
+
+.v-mid {
+  // USED IN mission-selector, scene-metadata, event-metadata
+  vertical-align: middle;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clipboard-icon {
+  margin: 0 3px;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.h100 {
+  // merge with w100?
+  height: 100%;
+}
+
+.mp0 {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.bold {
+  // USED IN project-name-dialog, scene, sarviews-event
+  font-weight: bold !important;
+}
+
+.hidden {
+  // USED BY VARIOUS JS LOGIC
+  display: none;
+}
+
+.fx-row {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.fx-col {
+  flex-direction: column;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.fx-empty {
+  flex: 1 1 0%;
+  box-sizing: border-box;
+}
+
+.fx-auto {
+  flex: 1 1 auto;
+  box-sizing: border-box;
+}
+
+.fx-nogrow {
+  flex: 0 1 auto;
+  box-sizing: border-box;
+}
+
+.fx-80 {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 80%;
+}
+
+.fx-20 {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 20%;
+}
+
+.fx-row-center {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch center;
+
+  // align-items: stretch;
+}
+
+.noselect {
+  // USED BY scenes-list/pair baseline-results-menu scenes-list-header baseline-scene-controls sarviews-results-menu
+  -webkit-touch-callout: none;
+
+  /* iOS Safari */
+
+  /* Safari */
+
+  /* Konqueror HTML */
+
+  /* Firefox */
+
+  /* Internet Explorer/Edge */
+  user-select: none;
+
+  /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.no-drag {
+  // USED IN browse-list
+
+  /* https://stackoverflow.com/questions/12906789/preventing-an-image-from-being-draggable-or-selectable-without-using-js */
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.blue-link {
+  // USED IN search-type-selector dataset
+  @include themify_non_host($themes) {
+    color: themed('blue-link') !important;
+  }
+}
+
+.selected {
+  background-color: rgb(0 0 0 / 8%) !important;
+}

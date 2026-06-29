@@ -12,6 +12,7 @@ $bottom-offset: 10px;
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
   display: block;
   height: 350px;
   overflow-y: auto;
@@ -28,6 +29,7 @@ $bottom-offset: 10px;
 
 a {
   text-decoration: underline;
+
   @include themify($themes) {
     color: themed('blue-link');
   }

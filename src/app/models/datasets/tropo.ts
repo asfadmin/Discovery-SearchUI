@@ -40,8 +40,10 @@ export const tropo = {
   description: 'TROPO_DESC',
   icon: '/assets/icons/satellite_alt_black_48dp.svg',
   productTypeDisplays: {
-    nc: 'Netcdf File',
-    xml: 'Metadata XML',
-    png: 'Browse Image PNG',
+    displays: {
+      nc: 'Netcdf File',
+      xml: 'Metadata XML',
+      png: 'Browse Image PNG',
+    },
   },
 };

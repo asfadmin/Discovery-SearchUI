@@ -32,11 +32,18 @@
             }
           </a>
           •
-          <span matTooltip="{{ 'FREQUENCY' | translate }}">{{
-            dataset.frequency
-          }}</span>
           @if (dataset.id === 'NISAR') {
-            <em class="uncalibrated"
+            <app-docs-modal
+              class="info-text nisar-product-type"
+              text="{{ scene.metadata.productType }}"
+              [url]="productTypeDocsUrl"
+            ></app-docs-modal>
+          }
+          <span matTooltip="{{ 'FREQUENCY' | translate }}">
+            {{ dataset.frequency }}
+          </span>
+          @if (dataset.id === 'NISAR') {
+            <em
               ><app-docs-modal
                 class="info-text"
                 [text]="'(' + ('UNCALIBRATED' | translate) + ')'"
@@ -93,16 +100,13 @@
               >
               </app-docs-modal>
             } @else {
-              <details open (open)="onSetDetailsOpen($event)">
-                <summary class="clickable"></summary>
-                <app-scene-metadata
-                  [scene]="scene"
-                  [dataset]="dataset"
-                  [searchType]="searchType"
-                  [offsets]="masterOffsets$ | async"
-                >
-                </app-scene-metadata>
-              </details>
+              <app-scene-metadata
+                [scene]="scene"
+                [dataset]="dataset"
+                [searchType]="searchType"
+                [offsets]="masterOffsets$ | async"
+              >
+              </app-scene-metadata>
             }
             @if (searchType === searchTypes.CUSTOM_PRODUCTS) {
               <div>
@@ -128,25 +132,6 @@
                     </app-scene-metadata>
                   </div>
                 }
-                <!-- <div *ngIf="scene.metadata.job.scenes.length > 1">
-                    <hr />
-                    <span class="detail-card-header">
-                      <b>{{ scene.metadata.job.scenes[1].name }}</b>
-                      (<i>{{ 'SECONDARY_SCENE' | translate }}</i>)
-                    </span>
-                    <app-copy-to-clipboard
-                      [value]="scene.metadata.job.scenes[1].name"
-                      prompt="{{'COPY_SECONDARY_SCENE_NAME' | translate}}"
-                      class="clipboard-icon"
-                    ></app-copy-to-clipboard>
-                    <app-scene-metadata
-                      [scene]="scene.metadata.job.scenes[1]"
-                      [dataset]="dataset"
-                      [searchType]="searchType"
-                      [offsets]="masterOffsets$ | async"
-                      >
-                    </app-scene-metadata>
-                  </div> -->
               </div>
             }
           </div>
@@ -283,8 +268,8 @@
             ? ('GEOGRAPHIC_SEARCH_BASED_ON_BURST' | translate)
             : !(
                   !(
-                    prop.isRelevant(p.PATH, dataset) &&
-                    prop.isRelevant(p.FRAME, dataset)
+                    (dataset | isRelevant: p.PATH) &&
+                    (dataset | isRelevant: p.FRAME)
                   ) || dataset?.id === 'UAVSAR'
                 )
               ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME'
@@ -298,8 +283,8 @@
         color="primary"
         [disabled]="
           !(
-            (prop.isRelevant(p.PATH, dataset) &&
-              prop.isRelevant(p.FRAME, dataset)) ||
+            ((dataset | isRelevant: p.PATH) &&
+              (dataset | isRelevant: p.FRAME)) ||
             dataset?.id === 'UAVSAR' ||
             dataset?.id === 'SENTINEL-1 BURSTS' ||
             dataset?.id === 'OPERA-S1'

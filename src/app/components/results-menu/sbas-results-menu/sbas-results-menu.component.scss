@@ -4,6 +4,42 @@
 
 $config: mat.m2-define-legacy-typography-config();
 
+.list-header-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.metadata-header-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.pair-detail-pane {
+  max-width: 100%;
+}
+
+.pair-metadata {
+  margin: 5px;
+  padding-bottom: 36px;
+}
+
+.product-name-spacing {
+  margin-bottom: 4px;
+}
+
+.dataset-link-spacing {
+  margin-bottom: 12px;
+}
+
+.no-pair-message {
+  text-align: center;
+  padding-top: 10px;
+}
+
 .sbas-chart-row {
   display: flex;
   flex-direction: row;

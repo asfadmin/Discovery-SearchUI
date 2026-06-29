@@ -2,6 +2,15 @@
   margin-left: 10px;
 }
 
+.icon-disabled {
+  opacity: 0.5;
+}
+
+.metrics-row {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .action-buttons--container {
   display: flex;
 }

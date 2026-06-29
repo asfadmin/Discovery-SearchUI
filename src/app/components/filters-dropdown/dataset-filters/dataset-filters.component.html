@@ -5,7 +5,7 @@
         [expanded]="defaultPanelOpenState"
         [disabled]="panelIsDisabled"
         (click)="selectPanel(panels.SEARCH)"
-        [class.raised-section]="isSelected(panels.SEARCH)"
+        [class.raised-section]="selectedPanel() === panels.SEARCH"
       >
         <mat-expansion-panel-header
           [collapsedHeight]="customCollapsedHeight"
@@ -15,9 +15,8 @@
             {{ 'SEARCH_OPTIONS' | translate }}
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div style="display: flex; margin-top: 25px">
-          <app-search-type-selector style="margin-right: 10px">
-          </app-search-type-selector>
+        <div class="search-options-row">
+          <app-search-type-selector> </app-search-type-selector>
           <app-dataset-selector
             [(selected)]="selectedDataset"
             (selectedChange)="onDatasetChange($event)"
@@ -31,7 +30,7 @@
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
       (click)="selectPanel(panels.AOI)"
-      [class.raised-section]="isSelected(panels.AOI)"
+      [class.raised-section]="selectedPanel() === panels.AOI"
     >
       <mat-expansion-panel-header
         [collapsedHeight]="customCollapsedHeight"
@@ -47,7 +46,7 @@
           </app-docs-modal>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div style="margin-top: 15px">
+      <div class="panel-section-spacing">
         <app-aoi-options [showHeader]="false"></app-aoi-options>
       </div>
     </mat-expansion-panel>
@@ -56,7 +55,7 @@
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
       (click)="selectPanel(panels.DATE)"
-      [class.raised-section]="isSelected(panels.DATE)"
+      [class.raised-section]="selectedPanel() === panels.DATE"
     >
       <mat-expansion-panel-header
         [collapsedHeight]="customCollapsedHeight"
@@ -72,7 +71,7 @@
           </app-docs-modal>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div style="margin-top: 20px">
+      <div class="selector-card-spacing">
         <app-date-selector></app-date-selector>
       </div>
       <div>
@@ -84,7 +83,7 @@
         [expanded]="defaultPanelOpenState"
         [disabled]="panelIsDisabled"
         (click)="selectPanel(panels.PRODUCT)"
-        [class.raised-section]="isSelected(panels.PRODUCT)"
+        [class.raised-section]="selectedPanel() === panels.PRODUCT"
       >
         <mat-expansion-panel-header
           [collapsedHeight]="customCollapsedHeight"
@@ -100,7 +99,7 @@
             </app-docs-modal>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div style="margin-top: 15px">
+        <div class="panel-section-spacing">
           <app-product-science-selector></app-product-science-selector>
           <app-production-config-selector></app-production-config-selector>
         </div>
@@ -130,7 +129,7 @@
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
       (click)="selectPanel(panels.ADDITIONAL)"
-      [class.raised-section]="isSelected(panels.ADDITIONAL)"
+      [class.raised-section]="selectedPanel() === panels.ADDITIONAL"
     >
       <mat-expansion-panel-header
         [collapsedHeight]="customCollapsedHeight"
@@ -164,12 +163,15 @@
         }
       </div>
     </mat-expansion-panel>
-    @if (prop.isRelevant(p.PATH) || prop.isRelevant(p.FRAME)) {
+    @if (
+      (actualDataset() | isRelevant: p.PATH) ||
+      (actualDataset() | isRelevant: p.FRAME)
+    ) {
       <mat-expansion-panel
         [expanded]="defaultPanelOpenState"
         [disabled]="panelIsDisabled"
         (click)="selectPanel(panels.PATH)"
-        [class.raised-section]="isSelected(panels.PATH)"
+        [class.raised-section]="selectedPanel() === panels.PATH"
       >
         <mat-expansion-panel-header
           [collapsedHeight]="customCollapsedHeight"
@@ -196,13 +198,13 @@
         </div>
       </mat-expansion-panel>
     }
-    @if (prop.isRelevant(p.MISSION_NAME)) {
+    @if (actualDataset() | isRelevant: p.MISSION_NAME) {
       <mat-expansion-panel
         [expanded]="defaultPanelOpenState"
         [disabled]="panelIsDisabled"
         class="raised-section"
         (click)="selectPanel(panels.CAMPAIGN)"
-        [class.raised-section]="isSelected(panels.CAMPAIGN)"
+        [class.raised-section]="selectedPanel() === panels.CAMPAIGN"
       >
         <mat-expansion-panel-header
           [collapsedHeight]="customCollapsedHeight"
@@ -221,7 +223,7 @@
         [disabled]="panelIsDisabled"
         class="raised-section"
         (click)="selectPanel(panels.CAMPAIGN)"
-        [class.raised-section]="isSelected(panels.CAMPAIGN)"
+        [class.raised-section]="selectedPanel() === panels.CAMPAIGN"
       >
         <mat-expansion-panel-header
           [collapsedHeight]="customCollapsedHeight"
@@ -242,7 +244,7 @@
         [disabled]="panelIsDisabled"
         class="raised-section"
         (click)="selectPanel(panels.CAMPAIGN)"
-        [class.raised-section]="isSelected(panels.CAMPAIGN)"
+        [class.raised-section]="selectedPanel() === panels.CAMPAIGN"
       >
         <mat-expansion-panel-header
           [collapsedHeight]="customCollapsedHeight"
