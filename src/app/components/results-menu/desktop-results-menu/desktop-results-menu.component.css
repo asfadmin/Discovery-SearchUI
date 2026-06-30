@@ -46,3 +46,8 @@
 .mat-mdc-card {
   box-shadow: none;
 }
+
+.scene-detail--layout {
+  display: flex;
+  flex-direction: column;
+}

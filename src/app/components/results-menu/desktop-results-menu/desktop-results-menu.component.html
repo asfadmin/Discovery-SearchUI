@@ -23,6 +23,7 @@
     </mat-card-subtitle>
     @if (scenesLength !== 0) {
       <app-scene-detail></app-scene-detail>
+      <app-scene-search-toolbar />
     }
   </mat-card>
   <!-- FILE LIST -->
@@ -76,6 +77,7 @@
       @if (scenesLength !== 0) {
         <app-scene-files></app-scene-files>
       }
+      <app-scene-search-toolbar />
     </div>
   </mat-card>
 }
