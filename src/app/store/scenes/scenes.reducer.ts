@@ -400,16 +400,13 @@ export const getSelectedOnDemandProductSceneBrowses = createSelector(
   },
 );
 
-const productsForScene = (selected, state) => {
+const productsForScene = (
+  selected: CMRProduct,
+  state: ScenesState,
+): CMRProduct[] => {
   if (!selected) {
     return;
   }
-
-  // const productTypes = Object.values(state.products).reduce((total, product: CMRProduct) => {
-  //   total[product.metadata.productType] = product;
-
-  //   return total;
-  // }, {});
 
   let products = [];
 
@@ -418,8 +415,7 @@ const productsForScene = (selected, state) => {
     { apiValue: 'BURST' },
     { apiValue: 'BURST_XML' },
   ].map((m) => m.apiValue);
-  // if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
-  //   products = state.scenes[selected.name] || [];
+
   if (
     ungrouped_product_types.includes(selected.metadata.productType) ||
     selected.dataset === 'NISAR'
@@ -437,7 +433,7 @@ const productsForScene = (selected, state) => {
     .reverse();
 };
 
-const isAlreadyLoaded = (product, oldProduct) => {
+const isAlreadyLoaded = (product: CMRProduct, oldProduct: CMRProduct) => {
   return !!oldProduct && !oldProduct.isDummyProduct && product.isDummyProduct;
 };
 

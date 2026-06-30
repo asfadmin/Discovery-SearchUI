@@ -3,12 +3,7 @@
 <div
   class="tool-menu"
   [ngStyle]="{
-    bottom:
-      searchType() === searchTypes.BASELINE && breakpoint <= breakpoints.MEDIUM
-        ? '0px'
-        : breakpoint < breakpoints.SMALL
-          ? '0px'
-          : '0',
+    bottom: 0
   }"
   [ngClass]="{
     'menu-override':
@@ -18,7 +13,7 @@
   <div class="search-button-label">{{ 'SEARCH' | translate | uppercase }}:</div>
   <div
     [matTooltip]="
-      hasBaseline
+      hasBaseline()
         ? ('USE_THIS_SCENE_IN_THE_BASELINE_TOOL_FOR_INTERFEROMETRY' | translate)
         : ('NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL' | translate)
     "
@@ -26,7 +21,7 @@
     <button
       mat-stroked-button
       color="primary"
-      [disabled]="!hasBaseline"
+      [disabled]="!hasBaseline()"
       (click)="makeBaselineSearch()"
       class="mini-toggle-button search-button"
       target="_blank"
@@ -37,7 +32,7 @@
 
   <div
     [matTooltip]="
-      hasBaseline
+      hasBaseline()
         ? ('USE_THIS_SCENE_IN_THE_SBAS_TOOL_TO_MAKE_PRODUCT_PAIRS_FOR_INTERFEROMETRY'
           | translate)
         : ('NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL' | translate)
@@ -46,7 +41,7 @@
     <button
       mat-stroked-button
       color="primary"
-      [disabled]="!hasBaseline"
+      [disabled]="!hasBaseline()"
       (click)="makeSBASSearch()"
       class="mini-toggle-button search-button"
       target="_blank"
@@ -55,45 +50,18 @@
     </button>
   </div>
 
-  <div
-    [matTooltip]="
-      dataset?.id === 'OPERA-S1'
-        ? ('OPERA_S1_SOURCE_DATA' | translate)
-        : dataset?.id === 'SENTINEL-1 BURSTS'
-          ? ('GEOGRAPHIC_SEARCH_BASED_ON_BURST' | translate)
-          : !(
-                !(
-                  (dataset | isRelevant: p.PATH) &&
-                  (dataset | isRelevant: p.FRAME)
-                ) || dataset?.id === 'UAVSAR'
-              )
-            ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME' | translate)
-            : ('NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE' | translate)
-    "
-  >
+  <div [matTooltip]="moreLikeThisTooltipKey() | translate">
     <button
       mat-stroked-button
       color="primary"
-      [disabled]="
-        !(
-          ((dataset | isRelevant: p.PATH) && (dataset | isRelevant: p.FRAME)) ||
-          dataset?.id === 'UAVSAR' ||
-          dataset?.id === 'SENTINEL-1 BURSTS' ||
-          dataset?.id === 'OPERA-S1'
-        )
-      "
+      [disabled]="moreLikeThisDisabled()"
       (click)="moreLikeThis()"
       class="mini-toggle-button search-button"
     >
       @if (breakpoint === breakpoints.MOBILE) {
         <span>{{ 'MORE' | translate }}</span>
-      }
-      @if (breakpoint !== breakpoints.MOBILE) {
-        <span>{{
-          dataset?.id === 'OPERA-S1'
-            ? ('SOURCE_DATA' | translate)
-            : ('MORE_LIKE_THIS' | translate)
-        }}</span>
+      } @else {
+        <span>{{ moreLikeThisLabelKey() | translate }}</span>
       }
     </button>
   </div>

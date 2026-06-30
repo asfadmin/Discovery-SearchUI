@@ -1,4 +1,5 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import * as models from '@models';
 import { ScreenSizeService, PropertyService } from '@services';
@@ -9,16 +10,14 @@ import * as userStore from '@store/user';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { map, filter, tap, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { DatasetForProductService } from '@services';
 
 import { NgStyle, NgClass, UpperCasePipe, AsyncPipe } from '@angular/common';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButton } from '@angular/material/button';
-import { IsRelevantPipe } from '@pipes/relevant.pipe';
 import { MatTooltip } from '@angular/material/tooltip';
-import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-scene-search-toolbar',
@@ -28,192 +27,212 @@ import { SubSink } from 'subsink';
     MatButton,
     AsyncPipe,
     UpperCasePipe,
-    IsRelevantPipe,
     MatTooltip,
     TranslateModule,
   ],
   templateUrl: './scene-search-toolbar.component.html',
   styleUrl: './scene-search-toolbar.component.scss',
 })
-export class SceneSearchToolbarComponent implements OnInit, OnDestroy {
+export class SceneSearchToolbarComponent {
   private screenSize = inject(ScreenSizeService);
   private store$ = inject<Store<AppState>>(Store);
   private datasetForProduct = inject(DatasetForProductService);
+  public prop = inject(PropertyService);
 
-  prop = inject(PropertyService);
   public p = models.Props;
-  public scene: models.CMRProduct;
-  public selectedProducts: models.CMRProduct[];
   public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;
-  public hasBaseline: boolean;
-
-  private defaultBaselineFiltersID = '';
-  private defaultSBASFiltersID = '';
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
+  private dateRange = this.store$.selectSignal(filtersStore.getDateRange);
 
-  public dataset: models.Dataset;
-  private subs = new SubSink();
-
-  private dateRange: { start: Date | null; end: Date | null };
-
-  ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(userStore.getUserProfile)
-        .pipe(
-          filter((profile) => !!profile),
-          map((profile) => profile.defaultFilterPresets),
-          filter((defaultFilterPresets) => !!defaultFilterPresets),
-        )
-        .subscribe((profile) => {
-          this.defaultBaselineFiltersID = profile['Baseline Search'];
-          this.defaultSBASFiltersID = profile['SBAS Search'];
-        }),
-    );
-
-    const scene$ = this.store$
+  readonly scene = toSignal(
+    this.store$
       .select(scenesStore.getSelectedScene)
-      .pipe(distinctUntilChanged());
+      .pipe(distinctUntilChanged()),
+  );
 
-    this.subs.add(
-      this.store$
-        .select(filtersStore.getDateRange)
-        .subscribe((r) => (this.dateRange = r)),
+  readonly selectedProducts = this.store$.selectSignal(
+    scenesStore.getSelectedSceneProducts,
+  );
+
+  readonly dataset = computed(() => {
+    const scene = this.scene();
+    return scene ? this.datasetForProduct.match(scene) : undefined;
+  });
+
+  readonly sceneCanInSAR = computed(() => {
+    const dataset = this.dataset();
+    const selectedProducts = this.selectedProducts();
+
+    return (
+      dataset?.id === models.sentinel_1.id ||
+      selectedProducts.some((product) => !!product.metadata.canInSAR)
     );
+  });
 
-    this.subs.add(
-      scene$
-        .pipe(
-          tap((scene) => (this.scene = scene)),
-          filter((scene) => !!scene),
-          map((scene) => this.datasetForProduct.match(scene)),
-          tap((dataset) => (this.dataset = dataset)),
-        )
-        .subscribe((_) => this.updateHasBaseline()),
-    );
-  }
+  readonly hasBaselineProductType = computed(() => {
+    const dataset = this.dataset();
+    const selectedProducts = this.selectedProducts();
 
-  public updateHasBaseline(): void {
-    this.hasBaseline =
-      this.prop.isRelevant(this.p.BASELINE_TOOL, this.dataset) &&
-      !!this.selectedProducts &&
-      this.sceneCanInSAR() &&
-      this.hasBaselineProductType();
-  }
-
-  public hasBaselineProductType(): boolean {
-    if (this.dataset.id === 'ALOS') {
+    if (dataset?.id === 'ALOS') {
       return false;
     }
-    if (!this.selectedProducts || this.dataset.id !== models.sentinel_1.id) {
+    if (!selectedProducts || dataset?.id !== models.sentinel_1.id) {
       return true;
-    } else if (this.dataset.id == models.beta.id) {
-      return true;
-    } else {
-      return (
-        this.selectedProducts
-          .map((product) => product.metadata.productType)
-          .filter(
-            (productType) => productType === 'SLC' || productType === 'BURST',
-          ).length > 0
-      );
     }
-  }
+    if (dataset?.id === models.beta.id) {
+      return true;
+    }
+    return selectedProducts.some(
+      (product) =>
+        product.metadata.productType === 'SLC' ||
+        product.metadata.productType === 'BURST',
+    );
+  });
+
+  readonly hasBaseline = computed(() => {
+    const dataset = this.dataset();
+
+    return (
+      this.prop.isRelevant(this.p.BASELINE_TOOL, dataset) &&
+      this.sceneCanInSAR() &&
+      this.hasBaselineProductType()
+    );
+  });
+
+  private readonly hasPathFrame = computed(() => {
+    const dataset = this.dataset();
+
+    return (
+      this.prop.isRelevant(this.p.PATH, dataset) &&
+      this.prop.isRelevant(this.p.FRAME, dataset)
+    );
+  });
+
+  private readonly isUavsar = computed(() => this.dataset()?.id === 'UAVSAR');
+  private readonly isOperaS1 = computed(
+    () => this.dataset()?.id === 'OPERA-S1',
+  );
+  private readonly isBurst = computed(
+    () => this.dataset()?.id === 'SENTINEL-1 BURSTS',
+  );
+
+  readonly moreLikeThisDisabled = computed(
+    () =>
+      !(
+        this.hasPathFrame() ||
+        this.isUavsar() ||
+        this.isBurst() ||
+        this.isOperaS1()
+      ),
+  );
+
+  readonly moreLikeThisTooltipKey = computed(() => {
+    if (this.isOperaS1()) {
+      return 'OPERA_S1_SOURCE_DATA';
+    }
+    if (this.isBurst()) {
+      return 'GEOGRAPHIC_SEARCH_BASED_ON_BURST';
+    }
+    if (this.hasPathFrame() && !this.isUavsar()) {
+      return 'GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME';
+    }
+    return 'NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE';
+  });
+
+  readonly moreLikeThisLabelKey = computed(() =>
+    this.isOperaS1() ? 'SOURCE_DATA' : 'MORE_LIKE_THIS',
+  );
+
+  public userProfile = this.store$.selectSignal(userStore.getUserProfile);
+
+  readonly defaultBaselineFiltersID = computed(
+    () => this.userProfile()?.defaultFilterPresets?.['Baseline Search'],
+  );
+
+  readonly defaultSBASFiltersID = computed(
+    () => this.userProfile()?.defaultFilterPresets?.['SBAS Search'],
+  );
 
   public makeBaselineSearch(): void {
+    const scene = this.scene();
+    if (!scene) {
+      return;
+    }
+
     const sceneName = this.baselineSceneName();
-    const frame = this.scene.metadata.frame;
-    const dateRange = this.dateRange;
+    const frame = scene.metadata.frame;
 
     [
       new searchStore.SetSearchType(models.SearchType.BASELINE),
       new searchStore.ClearSearch(),
-      new userStore.LoadFiltersPreset(this.defaultBaselineFiltersID),
+      new userStore.LoadFiltersPreset(this.defaultBaselineFiltersID()),
     ].forEach((action) => this.store$.dispatch(action));
 
     if (sceneName?.startsWith('S1-GUNW')) {
       this.store$.dispatch(new scenesStore.SetFilterMaster(frame.toString()));
       this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(true));
       this.store$.dispatch(new filtersStore.SetSelectedDataset(models.beta.id));
-      // this.store$.dispatch(new scenesStore.setdata)
     } else {
       this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(false));
       this.store$.dispatch(new scenesStore.SetFilterMaster(sceneName));
       this.store$.dispatch(new filtersStore.SetSelectedDataset(null));
     }
-    if (dateRange.start) {
-      this.store$.dispatch(
-        new filtersStore.SetStartDate(new Date(dateRange.start)),
-      );
-    }
-    if (dateRange.end) {
-      this.store$.dispatch(
-        new filtersStore.SetEndDate(new Date(dateRange.end)),
-      );
-    }
+    this.updateDateRange();
 
     this.store$.dispatch(new searchStore.MakeSearch());
   }
 
   public baselineSceneName(): string {
-    if (!this.scene) {
+    const scene = this.scene();
+    if (!scene) {
       return '';
     }
 
-    if (this.dataset.id === models.sentinel_1.id) {
-      return this.selectedProducts.filter(
+    const dataset = this.dataset();
+    if (dataset?.id === models.sentinel_1.id) {
+      return this.selectedProducts().filter(
         (product) =>
           product.metadata.productType === 'SLC' ||
           product.metadata.productType === 'BURST',
-      )[0].name;
-    } else {
-      return this.scene.name;
+      )[0]?.name;
     }
+
+    return scene.name;
   }
 
   public makeSBASSearch(): void {
+    const scene = this.scene();
+    if (!scene) {
+      return;
+    }
+
     const sceneName = this.baselineSceneName();
-    const dateRange = this.dateRange;
 
     [
       new searchStore.SetSearchType(models.SearchType.SBAS),
       new searchStore.ClearSearch(),
-      new userStore.LoadFiltersPreset(this.defaultSBASFiltersID),
+      new userStore.LoadFiltersPreset(this.defaultSBASFiltersID()),
       new scenesStore.SetFilterMaster(sceneName),
     ].forEach((action) => this.store$.dispatch(action));
-
-    if (dateRange.start) {
-      this.store$.dispatch(
-        new filtersStore.SetStartDate(new Date(dateRange.start)),
-      );
-    }
-    if (dateRange.end) {
-      this.store$.dispatch(
-        new filtersStore.SetEndDate(new Date(dateRange.end)),
-      );
-    }
+    this.updateDateRange();
 
     this.store$.dispatch(new searchStore.MakeSearch());
   }
 
-  public sceneCanInSAR(): boolean {
-    return (
-      this.dataset.id === models.sentinel_1.id ||
-      this.selectedProducts
-        .map((product) => product.metadata.canInSAR)
-        .some((canInSAR) => !!canInSAR)
-    );
-  }
-
   public moreLikeThis(): void {
-    const scene = this.scene;
+    const scene = this.scene();
+    if (!scene) {
+      return;
+    }
+
+    const dataset = this.dataset();
+
     const shouldClear =
       this.searchType() !== models.SearchType.DATASET ||
-      this.dataset.id === 'OPERA-S1';
-    const dateRange = this.dateRange;
+      dataset?.id === 'OPERA-S1';
 
     this.store$.dispatch(
       new searchStore.SetSearchType(models.SearchType.DATASET),
@@ -226,9 +245,16 @@ export class SceneSearchToolbarComponent implements OnInit, OnDestroy {
     this.store$.dispatch(
       new filtersStore.SetFiltersSimilarTo({
         product: scene,
-        dataset: this.datasetForProduct.match(scene),
+        dataset,
       }),
     );
+    this.updateDateRange();
+
+    this.store$.dispatch(new searchStore.MakeSearch());
+  }
+
+  private updateDateRange() {
+    const dateRange = this.dateRange();
 
     if (dateRange.start) {
       this.store$.dispatch(
@@ -240,11 +266,5 @@ export class SceneSearchToolbarComponent implements OnInit, OnDestroy {
         new filtersStore.SetEndDate(new Date(dateRange.end)),
       );
     }
-
-    this.store$.dispatch(new searchStore.MakeSearch());
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 }
