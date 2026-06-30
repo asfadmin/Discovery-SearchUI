@@ -115,10 +115,6 @@ a {
   margin: 0 16px 16px;
 }
 
-.detail-item-margin {
-  margin-top: 5px;
-}
-
 .w40 {
   width: 40%;
 }
@@ -144,92 +140,6 @@ a {
   font-size: 16px;
 }
 
-.mini-toggle-button {
-  font-size: 12px;
-  line-height: 24px !important;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
-.mini-toggle-button .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-  line-height: 24px !important;
-  padding: 0 12px;
-}
-
-.menu-override {
-  justify-content: space-around !important;
-
-  .search-button {
-    margin-left: 0 !important;
-  }
-}
-
-.tool-menu {
-  z-index: 2;
-  position: sticky;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: nowrap; // Prevent wrapping
-
-  @include themify($themes) {
-    background: lighten(themed("primary-light"), 8%);
-
-    button[disabled="true"] {
-      background-color: themed("primary-light");
-      color: themed("dark-secondary-text");
-    }
-  }
-
-  align-items: center;
-  height: 48px;
-  min-height: 48px;
-  bottom: 0;
-
-  button {
-    flex: 0 0 auto !important; // Prevent buttons from growing
-  }
-
-  button:enabled {
-    cursor: pointer;
-  }
-
-  button[disabled="true"] {
-    cursor: default;
-  }
-}
-
-.sarivews-radius-display {
-  display: flex;
-  width: 75%;
-  margin-top: 15px;
-  margin-left: 15px;
-  // margin-left: 15px;
-}
-
-.search-button-label {
-  margin-left: 20px;
-  font-size: 14px;
-  font-weight: 500;
-
-  @include themify($themes) {
-    color: lighten(themed("dark-primary-text"), 10%);
-  }
-}
-
-.search-button {
-  margin-left: 20px;
-  width: auto !important; // Prevent expansion
-  min-width: 80px; // Set minimum width
-  max-width: fit-content; // Don't exceed content width
-
-  @include themify($themes) {
-    background-color: themed("primary");
-    color: themed("light-primary-text");
-  }
-
-  border: 1px groove rgb(0 0 0 / 25%) !important;
-  border-radius: 4px !important;
-}
-
 .scene-detail--wrapper {
   flex-direction: row;
   box-sizing: border-box;
@@ -251,4 +161,3 @@ a {
   padding-left: 0;
   padding-right: 0;
 }
-
