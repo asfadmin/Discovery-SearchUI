@@ -33,9 +33,16 @@
           }
         </a>
         •
-        <span matTooltip="{{ 'FREQUENCY' | translate }}">{{
-          dataset.frequency
-        }}</span>
+        @if (dataset.id === 'NISAR') {
+          <app-docs-modal
+            class="info-text nisar-product-type"
+            text="{{ scene.metadata.productType }}"
+            [url]="productTypeDocsUrl"
+          ></app-docs-modal>
+        }
+        <span matTooltip="{{ 'FREQUENCY' | translate }}">
+          {{ dataset.frequency }}
+        </span>
         @if (dataset.id === 'NISAR') {
           <em class="uncalibrated"
             ><app-docs-modal
@@ -93,16 +100,13 @@
             >
             </app-docs-modal>
           } @else {
-            <details open (open)="onSetDetailsOpen($event)">
-              <summary class="clickable"></summary>
-              <app-scene-metadata
-                [scene]="scene"
-                [dataset]="dataset"
-                [searchType]="searchType"
-                [offsets]="masterOffsets$ | async"
-              >
-              </app-scene-metadata>
-            </details>
+            <app-scene-metadata
+              [scene]="scene"
+              [dataset]="dataset"
+              [searchType]="searchType"
+              [offsets]="masterOffsets$ | async"
+            >
+            </app-scene-metadata>
           }
           @if (searchType === searchTypes.CUSTOM_PRODUCTS) {
             <div>

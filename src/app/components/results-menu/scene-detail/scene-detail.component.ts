@@ -81,9 +81,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public breakpoints = models.Breakpoints;
   public isImageLoading = false;
   public browseIndex = 0;
-  public detailsOpen = true;
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
   public asfWebsite = models.asfWebsite;
+  public productTypeDocsUrl: string | null = null;
 
   public isBrowseOverlayEnabled$: Observable<boolean> =
     this.browseOverlayService.isBrowseOverlayEnabled$;
@@ -121,6 +121,12 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
         this.scene = scene;
         if (this.scene) {
           this.dataset = this.datasetForProduct.match(scene);
+
+          if (this.dataset.id == 'NISAR') {
+            this.productTypeDocsUrl = `https://nisar-docs.asf.alaska.edu/${this.scene.metadata.productType.toLowerCase()}/`;
+          } else {
+            this.productTypeDocsUrl = null;
+          }
         }
       }),
     );
@@ -209,10 +215,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     ];
 
     this.mapService.setSelectedBrowse(url, wkt, this.scene);
-  }
-
-  public onSetDetailsOpen(event: Event) {
-    this.detailsOpen = (event.target as HTMLDetailsElement).open;
   }
 
   public isRestrictedDataset(): boolean {
