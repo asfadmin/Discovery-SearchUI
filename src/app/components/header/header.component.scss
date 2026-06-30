@@ -1,7 +1,7 @@
-@use "@angular/material" as mat;
+@use '@angular/material' as mat;
 
-@use "asf-theme-variables" as *;
-@use "flex-layout-sass/mixin" as *;
+@use 'asf-theme-variables' as *;
+@use 'flex-layout-sass/mixin' as *;
 
 .bounds {
   padding: 0 0 0 0 !important;
@@ -12,9 +12,8 @@
 
 $config: mat.m2-define-legacy-typography-config();
 .breadcrumb-list {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
+  color-scheme: light dark;
+  background-color: light-dark($asf-background-white, darken($asf-dark-primary, 5%));
 }
 
 .header-buttons-input {
@@ -66,7 +65,6 @@ $config: mat.m2-define-legacy-typography-config();
   line-height: $asf-line-height;
 }
 
-
 .max-results {
   text-align: left;
   font-size: 14px;
@@ -76,7 +74,7 @@ $config: mat.m2-define-legacy-typography-config();
 
 .additional-filters {
   @include themify($themes) {
-    color: themed('primary')
+    color: themed('primary');
   }
 
   .mat-icon {
@@ -164,7 +162,7 @@ $config: mat.m2-define-legacy-typography-config();
 
 .langSelect-div {
   display: inline-block;
-  position:absolute;
+  position: absolute;
   top: -3px;
   right: 25px;
 }
