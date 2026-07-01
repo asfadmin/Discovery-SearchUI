@@ -13,22 +13,45 @@
 
 <div>
   <mat-list class="products-list">
-    @for (product of products; track product.id) {
-      <app-scene-file
-        (toggle)="onToggleQueueProduct(product)"
-        (queueHyp3Job)="onQueueHyp3Job($event)"
-        (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-        [loadingHyp3JobName]="loadingHyp3JobName"
-        [isUserLoggedIn]="isUserLoggedIn"
-        [product]="product"
-        [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
-        [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-        [isQueued]="(queuedProductIds$ | async).has(product.id)"
-        [isOpen]="false"
-      >
-      </app-scene-file>
+    @if (products[0].dataset === 'NISAR') {
+      @for (group of groups(); track group) {
+        {{ group }}
+        @let productsForGroup = selectedSceneGroups();
+        @if (productsForGroup !== null) {
+          @for (product of productsForGroup[group]; track product.id) {
+            <app-scene-file
+              (toggle)="onToggleQueueProduct(product)"
+              (queueHyp3Job)="onQueueHyp3Job($event)"
+              (renameJobProjectName)="onRenameJobProjectName(product, $event)"
+              [loadingHyp3JobName]="loadingHyp3JobName"
+              [isUserLoggedIn]="isUserLoggedIn"
+              [product]="product"
+              [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
+              [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+              [isQueued]="(queuedProductIds$ | async).has(product.id)"
+              [isOpen]="false"
+            >
+            </app-scene-file>
+          }
+        }
+      }
+    } @else {
+      @for (product of products; track product.id) {
+        <app-scene-file
+          (toggle)="onToggleQueueProduct(product)"
+          (queueHyp3Job)="onQueueHyp3Job($event)"
+          (renameJobProjectName)="onRenameJobProjectName(product, $event)"
+          [loadingHyp3JobName]="loadingHyp3JobName"
+          [isUserLoggedIn]="isUserLoggedIn"
+          [product]="product"
+          [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
+          [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+          [isQueued]="(queuedProductIds$ | async).has(product.id)"
+          [isOpen]="false"
+        >
+        </app-scene-file>
+      }
     }
-
     @if (hasSubquery$ | async) {
       @let subqueryProducts = dynamicallySearchedProduct$ | async;
 

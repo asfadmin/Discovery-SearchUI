@@ -6,6 +6,7 @@ import {
   ViewChild,
   inject,
   signal,
+  computed,
 } from '@angular/core';
 import { SubSink } from 'subsink';
 
@@ -40,6 +41,7 @@ import { SceneFileComponent } from './scene-file/scene-file.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslateModule } from '@ngx-translate/core';
 import { getStaticQueryParams } from '@models/datasets/opera_s1';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-scene-files',
@@ -91,6 +93,39 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   public showDemWarning: boolean;
 
   public dynamicQueryLoaded = signal(false);
+  public productGrouping = signal({});
+
+  private scene = toSignal(this.store$.select(scenesStore.getSelectedScene));
+  readonly groups = computed(() => {
+    const scene = this.scene() as models.CMRProduct;
+    let groups = null;
+    if (scene.metadata.subproducts.length > 0 && scene.dataset === 'NISAR') {
+      groups = models.nisar.productTypeDisplays.groups.map((g) => g.name);
+      groups.push('default');
+    }
+
+    return groups;
+  });
+  readonly selectedSceneGroups = computed(() => {
+    const groups = this.groups();
+
+    if (groups !== null) {
+      const productsByGroups = groups.reduce(
+        (prev, curr) => {
+          prev[curr] = [];
+          return prev;
+        },
+        { default: [] },
+      );
+      for (const product of this.products) {
+        const groupName = product.productTypeGroup ?? 'default';
+        productsByGroups[groupName].push(product);
+      }
+      return productsByGroups;
+    }
+
+    return null;
+  });
   private subs = new SubSink();
 
   ngOnInit() {
