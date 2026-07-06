@@ -424,12 +424,7 @@ export class Hyp3ApiService {
           (product) =>
             types.has(product.metadata.productType) &&
             pols.has(product.metadata.polarization) &&
-            beamModes.has(product.metadata.beamMode) &&
-            !(
-              product.dataset === 'SENTINEL-1D' &&
-              product.metadata?.productType === 'BURST' &&
-              jobType.id === models.hyp3JobTypes.INSAR_ISCE_BURST.id
-            ),
+            beamModes.has(product.metadata.beamMode),
         );
       })
     );
