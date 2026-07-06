@@ -13,6 +13,11 @@
 
 $theme-map: null;
 
+body {
+  overflow: hidden;
+  position: fixed;
+}
+
 * {
   font-family: Inter, sans-serif;
   letter-spacing: normal;

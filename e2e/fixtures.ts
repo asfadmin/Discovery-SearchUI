@@ -1,7 +1,7 @@
 import { test as base, expect } from '@playwright/test';
 
 const THIRD_PARTY_PATTERN =
-  /(googletagmanager|crazyegg|earthdata\.nasa\.gov|feedback\.js)/;
+  /(googletagmanager|crazyegg|earthdata\.gov|feedback\.js)/;
 const EXTERNAL_ASSET_PATTERN = /\.(png|jpg|jpeg|pbf|webp|gif)(\?.*)?$/;
 
 export const test = base.extend({
@@ -29,6 +29,11 @@ export const test = base.extend({
     );
 
     await page.route(
+      'https://cdn.earthdata.nasa.gov/tophat2/tophat2.js',
+      (route) => route.fulfill({ path: './e2e/tophat.js' }),
+    );
+
+    await page.route(
       (url) => THIRD_PARTY_PATTERN.test(url.href),
       (route) => route.abort(),
     );
@@ -42,6 +47,7 @@ export const test = base.extend({
       (url) => url.hostname === 'localhost',
       (route) => route.continue(),
     );
+
     await use(page);
   },
 });
