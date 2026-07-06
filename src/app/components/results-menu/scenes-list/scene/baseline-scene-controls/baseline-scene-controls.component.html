@@ -32,15 +32,9 @@
         </mat-icon>
       }
       @if (hyp3ableByJobType.total < 1) {
-        @let isS1DBurst =
-          scene.dataset === 'SENTINEL-1D' &&
-          scene.metadata.productType === 'BURST';
         <mat-icon
           class="noselect list-icon icon-margin icon-disabled"
-          matTooltip="{{
-            (isS1DBurst ? 'S1D_ISCE_DISABLED' : 'ONLY_CO-POLARIZED_BURSTS')
-              | translate
-          }}"
+          matTooltip="{{ 'ONLY_CO_POLARIZED_BURSTS' | translate }}"
           svgIcon="hyp3"
           matListItemMeta
         >

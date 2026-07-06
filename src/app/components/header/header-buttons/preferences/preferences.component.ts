@@ -125,7 +125,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     'SBAS Search': '',
     Displacement: '',
   };
-  public currentTheme = 'light';
+  public currentTheme = 'System Preferences';
   public currentFilterDisplayNames = {};
 
   private subs = new SubSink();
