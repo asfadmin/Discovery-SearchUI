@@ -61,13 +61,6 @@ export class PairComponent {
     }
   });
 
-  readonly isS1DPair = computed(
-    () =>
-      (this.pair()[0].dataset === 'SENTINEL-1D' ||
-        this.pair()[1].dataset === 'SENTINEL-1D') &&
-      this.pair()[0].metadata.productType === 'BURST',
-  );
-
   readonly pairPerpBaseline = computed(() =>
     Math.abs(
       this.pair()[0].metadata.perpendicular -
