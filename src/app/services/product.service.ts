@@ -589,7 +589,17 @@ export class ProductService {
     if (thumbnail_index !== -1) {
       product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
     }
-    product.browses = product.browses.filter((url) => !url.includes('low-res'));
+    product.browses = product.browses
+      .filter((url) => !url.includes('low-res'))
+      .sort((a, b) => {
+        if (a.endsWith('NATIVE.png')) {
+          return -1;
+        } else if (b.endsWith('NATIVE.png')) {
+          return 1;
+        }
+
+        return 0;
+      });
 
     const s3UrlsByProductID = product.metadata.nisar.s3Urls.reduce(
       (prev, curr) => {
@@ -604,7 +614,7 @@ export class ProductService {
 
     product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
 
-    const browses = [];
+    const browses: string[] = [];
     for (const p of [
       ...product.metadata.nisar.additionalUrls.filter(
         (url) => url !== product.downloadUrl,
@@ -632,10 +642,14 @@ export class ProductService {
         }
       }
       const polarizationMatch = /.*_([AB])_([VH]{4}|[VH]{2})\.(png|kml)/;
+      const nativeBrowseMatch = /.*NATIVE.(png|kml)/;
       const matched = p.match(polarizationMatch) ?? [];
+      const nativeBrowseMatched = p.match(nativeBrowseMatch) ?? [];
       if (matched.length > 0) {
         const [frequency, polarization] = [matched[1], matched[2]];
         productTypeDisplay = `Frequency ${frequency} ${polarization} ${productTypeDisplay}`;
+      } else if (nativeBrowseMatched.length > 0) {
+        productTypeDisplay = `Native ${productTypeDisplay}`;
       }
 
       if (p.endsWith('.h5') && p.includes('QA_')) {

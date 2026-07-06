@@ -1,4 +1,12 @@
-import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  inject,
+  signal,
+  effect,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { map, filter, tap, distinctUntilChanged } from 'rxjs/operators';
@@ -100,7 +108,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public isImageLoading = false;
   public selectedProducts: models.CMRProduct[];
   public hasBaseline: boolean;
-  public browseIndex = 0;
+  browseIndex = signal(0);
+
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
   public asfWebsite = models.asfWebsite;
   public productTypeDocsUrl: string | null = null;
@@ -116,6 +125,23 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
+  browseIndexEffect = effect(() => {
+    const newIndex = this.browseIndex();
+    if (newIndex < 0) {
+      this.browseIndex.set(0);
+      return;
+    } else if (newIndex >= this.scene.browses.length) {
+      this.browseIndex.set(this.scene.browses.length - 1);
+    }
+    if (!this.isBrowseOverlayEnabled) {
+      return;
+    }
+    const [url, wkt] = [
+      this.scene.browses[newIndex],
+      this.scene.metadata.polygon,
+    ];
+    this.mapService.setSelectedBrowse(url, wkt, this.scene);
+  });
   ngOnInit() {
     this.subs.add(
       this.isBrowseOverlayEnabled$.subscribe(
@@ -170,7 +196,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
         .pipe(tap((products) => (this.selectedProducts = products)))
         .subscribe((_) => {
           this.updateHasBaseline();
-          this.browseIndex = 0;
+          this.browseIndex.set(0);
         }),
     );
 
@@ -286,41 +312,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
           this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false)),
         ),
     );
-  }
-
-  public onIncrementBrowseIndex() {
-    if (this.browseIndex === this.scene.browses.length - 1) {
-      return;
-    }
-    const newIndex = this.browseIndex + 1;
-    this.onUpdateBrowseIndex(newIndex);
-  }
-
-  public onDecrementBrowseIndex() {
-    if (this.browseIndex === 0) {
-      return;
-    }
-    const newIndex = this.browseIndex - 1;
-    this.onUpdateBrowseIndex(newIndex);
-  }
-
-  public onUpdateBrowseIndex(newIndex: number) {
-    if (!this.isBrowseOverlayEnabled) {
-      return;
-    }
-
-    this.browseIndex = newIndex;
-    const [url, wkt] = [
-      this.scene.browses[this.browseIndex],
-      this.scene.metadata.polygon,
-    ];
-
-    // for OPERA-S1 geotiffs
-    // if(this.scene?.id.startsWith('OPERA')) {
-    //   url = this.scene.downloadUrl;
-    // }
-
-    this.mapService.setSelectedBrowse(url, wkt, this.scene);
   }
 
   public onSetSelectedAsMaster() {
