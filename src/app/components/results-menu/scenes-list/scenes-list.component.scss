@@ -2,7 +2,7 @@
 
 .list-viewport {
   overflow-y: auto;
-  height: 99%;
+  height: 100%;
   overflow-x: hidden;
   .cdk-virtual-scroll-content-wrapper {
     // position: relative;
@@ -74,15 +74,15 @@
 }
 
 .list-view {
-  height: calc(100% - 20px) !important;
+  height: 100%;
 }
 
 .baseline-list-view-medium {
-  height: calc(100% - 30px) !important;
+  height: 100%;
 }
 
 .baseline-list-view-small {
-  height: calc(100% - 5px) !important;
+  height: 100%;
 }
 
 .center-button {

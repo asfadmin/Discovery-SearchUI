@@ -1,0 +1,77 @@
+@use "asf-theme-variables" as *;
+
+.mini-toggle-button {
+  font-size: 12px;
+  line-height: 24px !important;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+.mini-toggle-button .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  line-height: 24px !important;
+  padding: 0 12px;
+}
+
+.menu-override {
+  justify-content: space-around !important;
+
+  .search-button {
+    margin-left: 0 !important;
+  }
+}
+
+.tool-menu {
+  z-index: 2;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap; // Prevent wrapping
+
+  @include themify($themes) {
+    background: lighten(themed("primary-light"), 8%);
+
+    button[disabled="true"] {
+      background-color: themed("primary-light");
+      color: themed("dark-secondary-text");
+    }
+  }
+
+  align-items: center;
+  height: 48px;
+  min-height: 48px;
+
+  button {
+    flex: 0 0 auto !important; // Prevent buttons from growing
+  }
+
+  button:enabled {
+    cursor: pointer;
+  }
+
+  button[disabled="true"] {
+    cursor: default;
+  }
+}
+
+.search-button-label {
+  margin-left: 20px;
+  font-size: 14px;
+  font-weight: 500;
+
+  @include themify($themes) {
+    color: lighten(themed("dark-primary-text"), 10%);
+  }
+}
+
+.search-button {
+  margin-left: 20px;
+  width: auto !important; // Prevent expansion
+  min-width: 80px; // Set minimum width
+  max-width: fit-content; // Don't exceed content width
+
+  @include themify($themes) {
+    background-color: themed("primary");
+    color: themed("light-primary-text");
+  }
+
+  border: 1px groove rgb(0 0 0 / 25%) !important;
+  border-radius: 4px !important;
+}

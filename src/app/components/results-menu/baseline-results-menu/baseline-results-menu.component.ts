@@ -26,6 +26,7 @@ import { MatCard, MatCardSubtitle } from '@angular/material/card';
 import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 import { ScenesListComponent } from '../scenes-list/scenes-list.component';
 import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
+import { SceneSearchToolbarComponent } from '@components/results-menu/scene-search-toolbar/scene-search-toolbar.component';
 import {
   MatButtonToggleGroup,
   MatButtonToggle,
@@ -69,6 +70,7 @@ enum CardViews {
     BaselineChartComponent,
     AsyncPipe,
     TranslateModule,
+    SceneSearchToolbarComponent,
   ],
 })
 export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
