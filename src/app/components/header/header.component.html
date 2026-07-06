@@ -11,25 +11,28 @@
       </div>
       @if (searchType$ | async; as searchType) {
         <div class="header-buttons-input fx-col header-inner--layout">
-          @if (searchType === searchTypes.DATASET) {
-            <app-dataset-header> </app-dataset-header>
+          @switch (searchType) {
+            @case (searchTypes.DATASET) {
+              <app-dataset-header> </app-dataset-header>
+            }
+            @case (searchTypes.DISPLACEMENT) {
+              <app-timeseries-header> </app-timeseries-header>
+            }
+            @case (searchTypes.LIST) {
+              <app-list-header> </app-list-header>
+            }
+            @case (searchTypes.BASELINE) {
+              <app-baseline-header> </app-baseline-header>
+            }
+            @case (searchTypes.SBAS) {
+              <app-baseline-header> </app-baseline-header>
+            }
+            @case (searchTypes.CUSTOM_PRODUCTS) {
+              <app-hyp3-header> </app-hyp3-header>
+            }
           }
-          @if (searchType === searchTypes.DISPLACEMENT) {
-            <app-timeseries-header> </app-timeseries-header>
-          }
-          @if (searchType === searchTypes.LIST) {
-            <app-list-header> </app-list-header>
-          }
-          @if (searchType === searchTypes.BASELINE) {
-            <app-baseline-header> </app-baseline-header>
-          }
-          @if (searchType === searchTypes.SBAS) {
-            <app-baseline-header> </app-baseline-header>
-          }
-          @if (searchType === searchTypes.CUSTOM_PRODUCTS) {
-            <app-hyp3-header> </app-hyp3-header>
-          }
-          @if (breakpoint !== breakpoints.MOBILE) {
+
+          @if (breakpoints.MOBILE) {
             <app-info-bar></app-info-bar>
           }
         </div>

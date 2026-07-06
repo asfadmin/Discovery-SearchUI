@@ -65,6 +65,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenu) searchMenu: MatMenu;
   @ViewChild('firstItem') firstItem: ElementRef;
   @Input() selected: string;
+
   param = { value: ' world' };
 
   public searchType: models.SearchType = models.SearchType.DATASET;
@@ -110,6 +111,18 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       {
         searchType: models.SearchType.SBAS,
         nameKey: 'SBAS',
+        descriptionKeys: [
+          'SBAS_SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN',
+          'REFERENCE_SCENE',
+        ],
+        helpUrl:
+          'https://docs.asf.alaska.edu/vertex/manual/#sbas-search-options',
+        icon: 'assets/icons/sbas-chart.jpg',
+        iconType: models.IconType.IMAGE,
+      },
+      {
+        searchType: models.SearchType.SBAS_BASELINE,
+        nameKey: 'SBAS_BASELINE',
         descriptionKeys: [
           'SBAS_SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN',
           'REFERENCE_SCENE',
@@ -168,6 +181,18 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       {
         searchType: models.SearchType.SBAS,
         nameKey: 'SBAS',
+        descriptionKeys: [
+          'SBAS_SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN',
+          'REFERENCE_SCENE',
+        ],
+        helpUrl:
+          'https://docs.asf.alaska.edu/vertex/manual/#sbas-search-options',
+        icon: 'assets/icons/sbas-chart.jpg',
+        iconType: models.IconType.IMAGE,
+      },
+      {
+        searchType: models.SearchType.SBAS_BASELINE,
+        nameKey: 'SBAS_BASELINE',
         descriptionKeys: [
           'SBAS_SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN',
           'REFERENCE_SCENE',
