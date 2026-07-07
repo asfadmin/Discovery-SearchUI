@@ -25,6 +25,7 @@ import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-resu
 import { TimeseriesResultsMenuComponent } from './timeseries-results-menu/timeseries-results-menu.component';
 import { BaselineResultsMenuComponent } from './baseline-results-menu/baseline-results-menu.component';
 import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.component';
+import { SbasBaselineResultsMenuComponent } from './sbas-baseline-results-menu/sbas-baseline-results-menu.component';
 import { MobileResultsMenuComponent } from './mobile-results-menu/mobile-results-menu.component';
 import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
@@ -45,6 +46,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatButton,
     AsyncPipe,
     TranslateModule,
+    SbasBaselineResultsMenuComponent,
   ],
 })
 export class ResultsMenuComponent implements OnInit, OnDestroy {

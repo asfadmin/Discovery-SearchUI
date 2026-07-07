@@ -47,11 +47,11 @@
           >
             @if (products.length !== 0) {
               <div class="results-menu--background h100 w100 mp0 fx-row">
-                @if (breakpoint > breakpoints.MOBILE) {
+                @if (breakpoint !== breakpoints.MOBILE) {
                   @if (
-                    searchType !== SearchTypes.BASELINE &&
-                    searchType !== SearchTypes.SBAS &&
-                    searchType !== SearchTypes.DISPLACEMENT
+                    searchType === SearchTypes.DATASET ||
+                    searchType === SearchTypes.LIST ||
+                    searchType === SearchTypes.CUSTOM_PRODUCTS
                   ) {
                     <app-desktop-results-menu
                       class="w100 h100 results-menu--layout"
@@ -59,38 +59,38 @@
                       [resize$]="resize$"
                     >
                     </app-desktop-results-menu>
-                  }
-                  @if (searchType === SearchTypes.DISPLACEMENT) {
+                  } @else if (searchType === SearchTypes.DISPLACEMENT) {
                     <app-timeseries-results-menu
                       class="w100 h100 results-menu--layout"
                       [resize$]="resize$"
                     >
                     </app-timeseries-results-menu>
-                  }
-                  @if (searchType === SearchTypes.BASELINE) {
+                  } @else if (searchType === SearchTypes.BASELINE) {
                     <app-baseline-results-menu
                       class="w100 h100 results-menu--layout"
                       [class.small-size]="breakpoint === breakpoints.SMALL"
                       [resize$]="resize$"
                     >
                     </app-baseline-results-menu>
-                  }
-                  @if (searchType === SearchTypes.SBAS) {
+                  } @else if (searchType === SearchTypes.SBAS) {
                     <app-sbas-results-menu
                       class="w100 h100 results-menu--layout"
                       [class.small-size]="breakpoint === breakpoints.SMALL"
                       [resize$]="resize$"
                     >
                     </app-sbas-results-menu>
+                  } @else if (searchType === SearchTypes.SBAS_BASELINE) {
+                    <app-sbas-baseline-results-menu
+                      class="w100 h100 results-menu--layout"
+                      [resize$]="resize$"
+                    />
                   }
-                }
-                @if (breakpoint === breakpoints.MOBILE) {
+                } @else {
                   @if (searchType === SearchTypes.DISPLACEMENT) {
                     <div class="mobile-displacement-search">
                       {{ 'NO_MOBILE_DISPLACEMENT_SEARCH' | translate }}
                     </div>
-                  }
-                  @if (searchType !== SearchTypes.DISPLACEMENT) {
+                  } @else {
                     <app-mobile-results-menu
                       class="w100 h100 mobile-size"
                       [resize$]="resize$"
