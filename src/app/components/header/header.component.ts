@@ -11,6 +11,7 @@ import { DatasetHeaderComponent } from './dataset-header/dataset-header.componen
 import { TimeseriesHeaderComponent } from './timeseries-header/timeseries-header.component';
 import { ListHeaderComponent } from './list-header/list-header.component';
 import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
+import { SbasBaselineHeaderComponent } from './sbas-baseline-header/sbas-baseline-header.component';
 import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 import { InfoBarComponent } from './info-bar/info-bar.component';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -25,6 +26,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
     TimeseriesHeaderComponent,
     ListHeaderComponent,
     BaselineHeaderComponent,
+    SbasBaselineHeaderComponent,
     Hyp3HeaderComponent,
     InfoBarComponent,
     MatProgressBar,
