@@ -6,7 +6,7 @@
 
 .rectangle-wrapper {
   @include themify($themes) {
-    background: themed('background-white');
+    background-color: themed('background-white');
   }
 
   display: flex;
@@ -15,9 +15,6 @@
 
 #result-div {
   z-index: 0;
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
 
   display: flex;
   flex-direction: column;
@@ -66,7 +63,6 @@
   font-size: 16px;
   text-align: center;
   @include themify($themes) {
-    background-color: themed('primary-light');
     color: themed('dark-primary-text');
   }
 
@@ -123,13 +119,7 @@
   width: 56px;
   height: 25px;
   z-index: 9;
-  // background-image: url("/assets/div-handles/hgrip.svg");
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
 
-  background-position: center;
-  background-repeat: no-repeat;
   cursor: ns-resize;
   display: grid;
   place-content: center;

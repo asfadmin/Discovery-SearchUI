@@ -25,9 +25,9 @@
   justify-content: flex-start;
   flex-wrap: nowrap; // Prevent wrapping
 
-  @include themify($themes) {
-    background: lighten(themed("primary-light"), 8%);
+  box-shadow: 0px -8px 10px -10px rgba(0, 0, 0, 0.2);
 
+  @include themify($themes) {
     button[disabled="true"] {
       background-color: themed("primary-light");
       color: themed("dark-secondary-text");
