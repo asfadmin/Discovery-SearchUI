@@ -29,6 +29,5 @@ export class ThemingService {
     // removes all classes from body, probably not best for later on
     body.removeAttribute('class');
     body.classList.add(themeName);
-    this.theme$.next(themeName === 'theme-dark' ? 'dark' : 'light');
   }
 }

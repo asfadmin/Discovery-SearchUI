@@ -28,6 +28,7 @@ import { BaselineChartComponent } from '../../baseline-chart/baseline-chart.comp
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { SBASChartComponent } from '../../sbas-chart/sbas-chart.component';
 import { SbasSlidersTwoComponent } from '../sbas-results-menu/sbas-sliders-two/sbas-sliders-two.component';
+import { SceneSearchToolbarComponent } from '@components/results-menu/scene-search-toolbar/scene-search-toolbar.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 enum MobileViews {
@@ -52,6 +53,7 @@ enum MobileViews {
     ScenesListHeaderComponent,
     ScenesListComponent,
     SceneDetailComponent,
+    SceneSearchToolbarComponent,
 
     MatTooltip,
     SceneMetadataComponent,

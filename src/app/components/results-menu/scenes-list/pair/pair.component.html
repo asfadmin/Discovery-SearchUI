@@ -30,10 +30,7 @@
   @if (hyp3able().total < 1) {
     <mat-icon
       class="noselect list-icon icon-margin icon-disabled"
-      matTooltip="{{
-        (isS1DPair ? 'S1D_ISCE_DISABLED' : 'ONLY_CO-POLARIZED_BURSTS')
-          | translate
-      }}"
+      matTooltip="{{ 'ONLY_CO_POLARIZED_BURSTS' | translate }}"
       svgIcon="hyp3"
       matListItemMeta
     >
