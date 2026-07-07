@@ -131,45 +131,6 @@
                   >
                   </app-scene-metadata>
                 </div>
-                @if (browses$ | async; as browses) {
-                  <div class="browse-pager">
-                    <span
-                      class="navigation-icon"
-                      [class.clickable]="browseIndex() > 0"
-                      (click)="browseIndex.set(browseIndex() - 1)"
-                    >
-                      <mat-icon [class.not-clickable]="browseIndex() < 1"
-                        >navigate_before</mat-icon
-                      >
-                    </span>
-                    {{ browseIndex() + 1 }} / {{ browses.length }}
-                    <span
-                      class="navigation-icon"
-                      [class.clickable]="browseIndex() + 1 < browses.length"
-                      (click)="browseIndex.set(browseIndex() + 1)"
-                    >
-                      <mat-icon
-                        [class.not-clickable]="
-                          browseIndex() + 1 >= browses.length
-                        "
-                        >navigate_next</mat-icon
-                      >
-                    </span>
-                  </div>
-                }
-              </div>
-              <div class="img-container">
-                <img
-                  class="browse-img fit-to-container"
-                  [hidden]="isImageLoading"
-                  [src]="(browses$ | async)[browseIndex()]"
-                  (click)="onOpenImage()"
-                  (load)="isImageLoading = false"
-                  onerror="this.src='assets/no-browse.png'"
-                  [class.clickable]="sceneHasBrowse()"
-                  alt="Sentinel1 scene browse image"
-                />
-              </div>
               }
             </div>
           }
@@ -198,21 +159,23 @@
                 <div class="browse-pager">
                   <span
                     class="navigation-icon"
-                    [class.clickable]="browseIndex > 0"
-                    (click)="onDecrementBrowseIndex()"
+                    [class.clickable]="browseIndex() > 0"
+                    (click)="browseIndex.set(browseIndex() - 1)"
                   >
-                    <mat-icon [class.not-clickable]="browseIndex < 1"
+                    <mat-icon [class.not-clickable]="browseIndex() < 1"
                       >navigate_before</mat-icon
                     >
                   </span>
-                  {{ browseIndex + 1 }} / {{ browses.length }}
+                  {{ browseIndex() + 1 }} / {{ browses.length }}
                   <span
                     class="navigation-icon"
-                    [class.clickable]="browseIndex + 1 < browses.length"
-                    (click)="onIncrementBrowseIndex()"
+                    [class.clickable]="browseIndex() + 1 < browses.length"
+                    (click)="browseIndex.set(browseIndex() + 1)"
                   >
                     <mat-icon
-                      [class.not-clickable]="browseIndex + 1 >= browses.length"
+                      [class.not-clickable]="
+                        browseIndex() + 1 >= browses.length
+                      "
                       >navigate_next</mat-icon
                     >
                   </span>
@@ -223,7 +186,7 @@
               <img
                 class="browse-img fit-to-container"
                 [hidden]="isImageLoading"
-                [src]="(browses$ | async)[browseIndex]"
+                [src]="(browses$ | async)[browseIndex()]"
                 (click)="onOpenImage()"
                 (load)="isImageLoading = false"
                 onerror="this.src='assets/no-browse.png'"
