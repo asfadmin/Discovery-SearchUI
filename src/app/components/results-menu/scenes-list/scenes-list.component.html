@@ -15,14 +15,16 @@
     class="list-viewport h100"
     [itemSize]="searchType === SearchTypes.SBAS ? 48 : 58"
   >
-    @if (
-      searchType === SearchTypes.DATASET ||
-      searchType === SearchTypes.BASELINE ||
-      searchType === SearchTypes.LIST ||
-      searchType === SearchTypes.CUSTOM_PRODUCTS ||
-      searchType === SearchTypes.DISPLACEMENT ||
-      searchType === SearchTypes.SBAS_BASELINE
-    ) {
+    @if (searchType === SearchTypes.SBAS) {
+      <ng-container *cdkVirtualFor="let pair of pairs">
+        <app-pair
+          (togglePair)="onPairSelected($event)"
+          [pair]="pair.pair"
+          [hyp3able]="pair.hyp3able"
+        >
+        </app-pair>
+      </ng-container>
+    } @else {
       <div
         *cdkVirtualFor="let scene of scenes | slice: 0 : numberProductsInList"
       >
@@ -56,15 +58,6 @@
           </button>
         </button>
       }
-    } @else if (searchType === SearchTypes.SBAS) {
-      <ng-container *cdkVirtualFor="let pair of pairs">
-        <app-pair
-          (togglePair)="onPairSelected($event)"
-          [pair]="pair.pair"
-          [hyp3able]="pair.hyp3able"
-        >
-        </app-pair>
-      </ng-container>
     }
   </cdk-virtual-scroll-viewport>
 </mat-action-list>
