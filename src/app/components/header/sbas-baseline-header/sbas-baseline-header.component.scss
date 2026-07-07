@@ -15,15 +15,25 @@
   box-sizing: border-box;
 }
 
-.dataset-selector {
+.fixed-width-selector {
   flex: 0 0 auto;
-}
-
-.dataset-selector mat-form-field {
-  width: 160px;
-}
-
-.dataset-selector .mat-mdc-form-field-flex,
-.dataset-selector mat-form-field {
   min-width: 0; /* prevents MDC internals from fighting the fixed width */
+}
+
+@mixin fixed-width-selector($width: 160px) {
+  flex: 0 0 auto;
+  min-width: 0;
+
+  mat-form-field {
+    width: $width;
+    min-width: 0;
+  }
+}
+
+.dataset-selector {
+  @include fixed-width-selector(150px);
+}
+
+.flight-dir-selector {
+  @include fixed-width-selector(160px);
 }
