@@ -1,47 +1,29 @@
-.baseline-header-layout {
+.layout {
   flex-direction: row;
   box-sizing: border-box;
   display: flex;
 }
 
-.reference-toggle-wrapper {
-  display: flex;
-  align-items: center;
-  width: 90px;
-}
-
-.mobile-filters-button {
-  margin-left: 2px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.baseline-header-wrapper {
+.header-wrapper {
   flex-direction: row;
   box-sizing: border-box;
   display: flex;
 }
 
-.search-button-layout {
+.search-button {
   flex: 0 1 auto;
   box-sizing: border-box;
 }
 
-.dataset-selector--layout {
-  flex: 1 1 130px !important;
-  box-sizing: border-box !important;
-  max-width: 130px !important;
-  min-width: 130px !important;
+.dataset-selector {
+  flex: 0 0 auto;
 }
 
-.scene-selector {
-  width: 670px;
+.dataset-selector mat-form-field {
+  width: 160px;
 }
 
-.medium-scene-selector {
-  width: 405px;
-}
-
-.small-scene-selector {
-  width: 200px;
+.dataset-selector .mat-mdc-form-field-flex,
+.dataset-selector mat-form-field {
+  min-width: 0; /* prevents MDC internals from fighting the fixed width */
 }

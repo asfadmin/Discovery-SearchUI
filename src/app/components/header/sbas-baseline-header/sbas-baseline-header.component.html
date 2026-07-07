@@ -1,8 +1,19 @@
-<div class="breadcrumb-row baseline-header-layout">
-  <div class="baseline-header-wrapper">
+<div class="breadcrumb-row layout">
+  <div class="header-wrapper">
     <app-search-type-selector class="breadcrumb"> </app-search-type-selector>
 
-    <div class="breadcrumb search-button-layout">
+    <div class="breadcrumb dataset-selector">
+      <mat-form-field>
+        <mat-label class="button-label">{{ 'DATASET' | translate }}</mat-label>
+        <mat-select panelWidth="100px">
+          @for (dataset of datasets; track dataset.id) {
+            <mat-option [value]="dataset.id">{{ dataset.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="breadcrumb search-button">
       <app-search-button></app-search-button>
     </div>
 
