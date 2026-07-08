@@ -1,6 +1,9 @@
-import { Component, signal, computed } from '@angular/core';
-import { form, FormField } from '@angular/forms/signals';
+import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
 import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
@@ -12,11 +15,6 @@ import { MatSelectModule } from '@angular/material/select';
 
 import * as models from '@models';
 
-interface SearchParams {
-  datasetId: string;
-  flightDirection: models.FlightDirection | null;
-}
-
 @Component({
   selector: 'app-sbas-baseline-header',
   imports: [
@@ -25,7 +23,6 @@ interface SearchParams {
     HeaderButtonsComponent,
     MatSelectModule,
     TranslateModule,
-    FormField,
     MatIconModule,
     AoiFilterComponent,
   ],
@@ -36,10 +33,11 @@ interface SearchParams {
   ],
 })
 export class SbasBaselineHeaderComponent {
+  private store$ = inject<Store<AppState>>(Store);
+
   readonly datasetIds = {
     sentinel1: models.sentinel_1.id,
     sentinel1Bursts: models.sentinel_1_bursts.id,
-    multiburst: 'S1-MULTIBURST',
     aria: models.beta.id,
   } as const;
 
@@ -53,23 +51,35 @@ export class SbasBaselineHeaderComponent {
       id: models.sentinel_1_bursts.id,
     },
     {
-      name: 'S1 Multiburst',
-      id: 'S1-MULTIBURST',
-    },
-    {
       name: models.beta.name,
       id: models.beta.id,
     },
   ] as const;
 
-  public flightDirections = models.FlightDirection;
+  public directions = models.FlightDirection;
+  public flightDirections = this.store$.selectSignal(
+    filtersStore.getFlightDirections,
+  );
 
-  selectedDataset = computed(() => this.searchModel().datasetId);
-  selectedFlightDirection = computed(() => this.searchModel().flightDirection);
+  public dataset = this.store$.selectSignal(filtersStore.getSelectedDataset);
 
-  searchModel = signal<SearchParams>({
-    datasetId: models.sentinel_1.id,
-    flightDirection: null,
-  });
-  searchForm = form(this.searchModel);
+  onFlightDirectionChange(direction: models.FlightDirection) {
+    this.store$.dispatch(
+      new filtersStore.SetFlightDirections(
+        direction === null ? [] : [direction],
+      ),
+    );
+  }
+
+  public onDatasetChange(dataset: string): void {
+    this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
+
+    if (this.dataset().id === models.sentinel_1.id) {
+      this.store$.dispatch(
+        new filtersStore.SetProductTypes(
+          models.sentinel_1.productTypes.filter((pt) => pt.apiValue === 'SLC'),
+        ),
+      );
+    }
+  }
 }

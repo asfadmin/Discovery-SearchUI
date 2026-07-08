@@ -136,6 +136,7 @@ export class SavedSearchService {
           [models.SearchType.LIST]: this.currentListSearch$,
           [models.SearchType.BASELINE]: this.currentBaselineSearch$,
           [models.SearchType.SBAS]: this.currentSbasSearch$,
+          [models.SearchType.SBAS_BASELINE]: this.currentGeographicSearch$,
           [models.SearchType.CUSTOM_PRODUCTS]: this.currentCustomProductSearch$,
           [models.SearchType.DERIVED_DATASETS]: this.currentGeographicSearch$,
           [models.SearchType.DISPLACEMENT]: this.currentDisplacementSearch$,

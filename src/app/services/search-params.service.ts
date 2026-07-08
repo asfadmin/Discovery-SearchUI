@@ -380,6 +380,7 @@ export class SearchParamsService {
         ],
         onDemandParams,
       ]) => {
+        console.log(filterParams);
         switch (searchType) {
           case models.SearchType.LIST: {
             return { cmr_token, ...listParam };
@@ -392,6 +393,9 @@ export class SearchParamsService {
           }
           case models.SearchType.SBAS: {
             return { cmr_token, ...baselineParams };
+          }
+          case models.SearchType.SBAS_BASELINE: {
+            return { cmr_token, ...filterParams };
           }
           case models.SearchType.CUSTOM_PRODUCTS: {
             return onDemandParams;

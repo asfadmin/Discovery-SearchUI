@@ -4,8 +4,10 @@
 
     <div class="breadcrumb dataset-selector">
       <mat-form-field>
-        <mat-label>{{ 'DATASET' | translate }}</mat-label>
-        <mat-select [formField]="searchForm.datasetId">
+        <mat-select
+          [value]="dataset().id"
+          (selectionChange)="onDatasetChange($event.value)"
+        >
           @for (dataset of datasets; track dataset.id) {
             <mat-option [value]="dataset.id">{{ dataset.name }}</mat-option>
           }
@@ -13,7 +15,7 @@
       </mat-form-field>
     </div>
 
-    @switch (selectedDataset()) {
+    @switch (dataset().id) {
       @case (datasetIds.sentinel1) {
         <app-aoi-filter class="breadcrumb" />
 
@@ -23,15 +25,21 @@
               {{ 'FLIGHT_DIRECTION' | translate }}
             </mat-label>
 
-            <mat-select [formField]="searchForm.flightDirection">
-              <mat-option [value]="flightDirections.ASCENDING">
-                {{ flightDirections.ASCENDING | translate }}
+            <mat-select
+              [value]="flightDirections()?.[0]"
+              (selectionChange)="onFlightDirectionChange($event.value)"
+            >
+              <mat-option [value]="directions.ASCENDING">
+                {{ directions.ASCENDING | translate }}
                 <mat-icon>north_west</mat-icon>
               </mat-option>
-              <mat-option [value]="flightDirections.DESCENDING">
-                {{ flightDirections.DESCENDING | translate }}
+
+              <mat-option [value]="directions.DESCENDING">
+                {{ directions.DESCENDING | translate }}
                 <mat-icon>south_west</mat-icon>
               </mat-option>
+
+              <mat-option [value]="null"> All Directions </mat-option>
             </mat-select>
           </mat-form-field>
         </div>

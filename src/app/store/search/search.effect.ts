@@ -181,6 +181,9 @@ export class SearchEffects {
           searchRequest$ = this.customProductsQuery$();
         } else if (searchType === SearchType.DISPLACEMENT) {
           searchRequest$ = this.timeseriesQuery$();
+        } else if (searchType === SearchType.SBAS_BASELINE) {
+          console.log('SBAS BASELINE');
+          searchRequest$ = this.asfSbasBaselineFrameSearchQuery$;
         } else {
           this.logCountries();
           searchRequest$ = this.asfApiQuery$;
@@ -577,6 +580,33 @@ export class SearchEffects {
         ),
       ),
     ),
+  );
+
+  private asfSbasBaselineFrameSearchQuery$ = this.searchParams.getParams.pipe(
+    debounceTime(100),
+    map((params) => [params]),
+    switchMap(([params]) => {
+      console.log('params from search', params);
+
+      const updated = { ...params, processinglevel: 'SLC' };
+
+      return forkJoin(this.asfApiService.query<any[]>(updated)).pipe(
+        withLatestFrom(
+          combineLatest([
+            this.store$.select(getSearchType),
+            this.store$.select(getIsCanceled),
+          ]),
+        ),
+        map(([[response], [searchType, isCanceled]]) =>
+          !isCanceled
+            ? new SearchResponse({
+                files: this.productService.fromResponse(response),
+                searchType,
+              })
+            : new SearchCanceled(),
+        ),
+      );
+    }),
   );
 
   public asfApiBaselineQuery$(): Observable<Action> {
