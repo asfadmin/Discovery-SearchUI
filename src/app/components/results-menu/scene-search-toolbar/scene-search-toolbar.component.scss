@@ -22,7 +22,7 @@
 .tool-menu {
   z-index: 2;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: nowrap; // Prevent wrapping
 
   box-shadow: 0px -8px 10px -10px rgba(0, 0, 0, 0.2);
@@ -66,12 +66,13 @@
   width: auto !important; // Prevent expansion
   min-width: 80px; // Set minimum width
   max-width: fit-content; // Don't exceed content width
+  font-weight: 700;
 
   @include themify($themes) {
-    background-color: themed("primary");
+    background-color: themed("light-black");
     color: themed("light-primary-text");
   }
 
   border: none !important;
-  border-radius: 4px !important;
+  border-radius: 10px !important;
 }

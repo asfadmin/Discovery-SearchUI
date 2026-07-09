@@ -5,7 +5,7 @@
 .arrow-button-toggle {
   padding-top: 6px;
   @include themify($themes) {
-    background-color: themed('primary') !important;
+    background-color: themed('light-black') !important;
   }
 
   // Fix arrow color on hover
@@ -17,8 +17,23 @@
     color: #ddd !important;
   }
 }
+
+.mat-mdc-unelevated-button[disabled], .mat-mdc-unelevated-button.mat-mdc-button-disabled {
+  @include themify($themes) {
+    color: themed('light-secondary-text') !important;
+  }
+}
+
+.mat-mdc-button-base {
+  width: 150px;
+
+  @include themify($themes) {
+    background-color: themed('light-black') !important;
+  }
+}
+
 .search-button {
-  height: 36px !important;
+  height: 50px !important;
   border-radius: 0 !important;
 }
 
