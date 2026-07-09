@@ -57,7 +57,7 @@ $themes: (
     inverted-image: invert(0%),
     err: red,
     blue-link: #236192,
-    primary-light: lighten(mat.m2-get-color-from-palette($asf-app-primary), 40%),
+    primary-light: lighten(mat.m2-get-color-from-palette($asf-app-primary), 55%),
     primary-dark: darken(mat.m2-get-color-from-palette($asf-app-primary), 15%),
   ),
   dark: (

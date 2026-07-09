@@ -8,6 +8,11 @@
   flex-direction: column;
   box-sizing: border-box;
   display: flex;
+   @include themify($themes) {
+    background-color: themed('background-white');
+  }
+  padding: 8px 8px 8px 0px;
+  border-radius: 0px 8px 8px 0px;
 }
 
 .map-view-button--layout {
@@ -28,15 +33,9 @@
 }
 
 .icon-bar {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
-
   padding: 0;
   padding-bottom: 4px;
   pointer-events: auto;
-  height: 45px !important;
-  max-height: 45px !important;
   width: fit-content;
 }
 
@@ -52,11 +51,6 @@ label {
 }
 
 .lat-lon {
-  @include themify($themes) {
-    background-color: themed('primary');
-    color: themed('light-secondary-text');
-  }
-
   font-size: 12px;
   margin-top: 0;
   padding-left: 10px;

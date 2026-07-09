@@ -12,6 +12,14 @@
   margin-left: 5px;
 }
 
+.breadcrumb-row {
+  display: flex;
+}
+
+.icon-cluster {
+  align-self: flex-end;
+}
+
 ::ng-deep .on-demand-toggle {
 display: flex;
 justify-content: center;
@@ -43,6 +51,7 @@ $width: 330px;
   max-width: $width;
   min-width: $width;
 }
+
 .more-horiz {
   margin-left: 0 !important;
 }
@@ -66,4 +75,8 @@ $width: 330px;
   top: 1px;
   left: 137px;
   z-index: 10;
+}
+
+.icon-cluster {
+  min-height: 100%;
 }

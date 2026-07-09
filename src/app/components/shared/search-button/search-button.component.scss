@@ -1,5 +1,6 @@
 @use "asf-theme-variables" as *;
 @use "../../header/header-buttons/header-buttons.component.scss" as *;
+@use '@angular/material' as mat;
 
 .arrow-button-toggle {
   padding-top: 6px;
@@ -26,4 +27,15 @@
   font-size: 14px !important;
 }
 
+mat-button-toggle-group {
+  border: 0 !important;
+  border-radius: 8px;
+}
 
+mat-button-toggle {
+  border: 0 !important;
+}
+
+@include mat.button-toggle-overrides((
+  height: 90px,
+));

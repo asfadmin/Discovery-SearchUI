@@ -10,6 +10,7 @@ $drawer-tab-top-offset: -6px; // Vertically centers tab on panel
 $login-container-left-offset: 20px; // Matches collapsed panel visible width
 $panel-shadow-padding: 6px; // Accommodates drawer-tab box-shadow
 
+
 .menu-item {
   display: flex;
   @include themify($themes) {
@@ -161,4 +162,5 @@ $panel-shadow-padding: 6px; // Accommodates drawer-tab box-shadow
 
 .header-buttons-container {
   overflow-x: clip;
+  height: 100%;
 }
