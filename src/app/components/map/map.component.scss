@@ -11,7 +11,7 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.2);
     padding: 15px;
     border-radius: 10px;
-    border: 1px solid #cccccc;
+    border: 1px solid #ccc;
     bottom: 12px;
     left: -50px;
     min-width: 200px;
@@ -70,7 +70,6 @@ button {
 .ol-popup {
   position: absolute;
   filter: drop-shadow(0 1px 4px rgb(0 0 0 / 20%));
-  filter: drop-shadow(0 1px 4px rgb(0 0 0 / 20%));
   bottom: 12px;
   left: -50px;
 }
@@ -97,6 +96,10 @@ button {
   &:hover {
     opacity: 1;
   }
+}
+
+.map-controls {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 }
 
 .mobile-map-controls {

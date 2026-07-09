@@ -2,19 +2,20 @@
 @use 'asf-theme-variables' as *;
 @use 'flex-layout-sass/mixin' as *;
 
-:root {
+:host {
   @include mat.form-field-overrides((
     filled-active-indicator-height: 0,
     filled-focus-active-indicator-height: 0,
   ));
 }
 
-
 .bounds {
   padding: 0 0 0 0 !important;
   margin: 0;
   overflow-x: hidden;
   overflow-y: hidden;
+  box-shadow: 0 8px 10px -10px rgba(255, 0, 0, 0.3) !important;
+
 }
 
 $config: mat.m2-define-legacy-typography-config();
@@ -25,6 +26,7 @@ $config: mat.m2-define-legacy-typography-config();
   }
 
   align-items: center;
+
 }
 
 .header-buttons-input {
