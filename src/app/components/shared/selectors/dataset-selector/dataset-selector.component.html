@@ -27,7 +27,7 @@
           (click)="$event.stopPropagation()"
           (keydown)="$event.stopPropagation()"
         >
-          <mat-form-field class="search-field" appearance="outline">
+          <mat-form-field class="search-field" appearance="fill">
             <mat-icon matPrefix class="filter-icon">search</mat-icon>
             <input
               matInput
@@ -60,9 +60,6 @@
                 (selected)="onSelectionChange($event)"
               />
             </button>
-            @if (!$last) {
-              <hr class="dataset-hr" />
-            }
           } @empty {
             <p class="datasets-empty">
               {{ 'NO_MATCHING_DATASETS' | translate }}
