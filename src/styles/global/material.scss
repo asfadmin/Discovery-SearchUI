@@ -55,8 +55,10 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .mat-expansion-panel-header-title {
+  padding-top: 1em;
   color: white;
-  font-size: mat.m2-font-size($config, subheading-2);
+  font-size: mat.m2-font-size($config, headline);
+  font-weight: 800;
   @include themify_non_host($themes) {
     color: themed('dark-primary-text') !important;
   }
@@ -71,7 +73,6 @@ button,
 .mat-panel,
 .mat-mdc-card {
   border-radius: 8px !important;
-  box-shadow: none !important;
 }
 
 // Angular Material 20 MDC slide-toggle styles

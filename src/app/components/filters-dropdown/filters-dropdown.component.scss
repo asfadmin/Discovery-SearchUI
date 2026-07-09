@@ -1,4 +1,5 @@
 @use "asf-theme-variables" as *;
+@use "asf-theme" as *;
 
 .hidden {
   display: none;
@@ -65,7 +66,7 @@
     z-index: 1020;
   }
 
-  .header-title {
+  .header-titile {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -134,4 +135,15 @@ h3 {
   padding-left: 5px;
   flex-shrink: 0;
   margin-top: 6px;
+}
+
+.dataset-filters-card .header {
+  font-weight: 800;
+  font-size: 24pt;
+  text-align: center;
+}
+
+.header-title {
+  width: 100%;
+  text-align: center;
 }
