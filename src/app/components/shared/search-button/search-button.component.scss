@@ -5,7 +5,7 @@
 .arrow-button-toggle {
   padding-top: 6px;
   @include themify($themes) {
-    background-color: themed('light-black') !important;
+    background-color: themed('primary-dark') !important;
   }
 
   // Fix arrow color on hover
@@ -28,7 +28,7 @@
   width: 150px;
 
   @include themify($themes) {
-    background-color: themed('light-black') !important;
+    background-color: themed('primary-dark') !important;
   }
 }
 

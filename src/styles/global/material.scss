@@ -60,7 +60,7 @@ $config: mat.m2-define-legacy-typography-config();
   font-size: mat.m2-font-size($config, headline);
   font-weight: 800;
   @include themify_non_host($themes) {
-    color: themed('dark-primary-text') !important;
+    color: themed('dark-secondary-text') !important;
   }
 }
 
@@ -302,7 +302,7 @@ button,
   opacity: 0 !important;
 }
 
-.mat-mdc-dialog-surface, .mat-mdc-dialog-container, .cdk-overlay-pane {
+.mat-mdc-dialog-surface, .mat-mdc-dialog-container, .cdk-overlay-popover .cdk-overlay-pane {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3) !important;
 }
 

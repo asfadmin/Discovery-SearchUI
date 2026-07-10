@@ -69,7 +69,7 @@
   font-weight: 700;
 
   @include themify($themes) {
-    background-color: themed("light-black");
+    background-color: themed("primary-dark");
     color: themed("light-primary-text");
   }
 
