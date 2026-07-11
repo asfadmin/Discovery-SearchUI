@@ -1,20 +1,32 @@
 @use '@angular/material' as mat;
-
 @use 'asf-theme-variables' as *;
 @use 'flex-layout-sass/mixin' as *;
+
+:host {
+  @include mat.form-field-overrides((
+    filled-active-indicator-height: 0,
+    filled-focus-active-indicator-height: 0,
+  ));
+}
 
 .bounds {
   padding: 0 0 0 0 !important;
   margin: 0;
   overflow-x: hidden;
   overflow-y: hidden;
+  box-shadow: 0 8px 10px -10px rgba(255, 0, 0, 0.3) !important;
+
 }
 
 $config: mat.m2-define-legacy-typography-config();
+
 .breadcrumb-list {
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
+  align-items: center;
+
 }
 
 .header-buttons-input {
@@ -25,7 +37,6 @@ $config: mat.m2-define-legacy-typography-config();
 .header--layout {
   height: 100%;
   min-height: 100%;
-  min-width: 100%;
   width: 100%;
 }
 
@@ -37,8 +48,7 @@ $config: mat.m2-define-legacy-typography-config();
 .header-inner--layout {
   height: 100%;
   min-height: 100%;
-  min-width: 100%;
-  width: 100%;
+  flex-grow: 1;
 }
 
 .breadcrumb-filter {
@@ -46,7 +56,6 @@ $config: mat.m2-define-legacy-typography-config();
   max-width: 100%;
   min-width: 300px;
   height: auto;
-  position: fixed;
   top: 100px;
   z-index: 2;
   margin: 0;
@@ -87,6 +96,7 @@ $config: mat.m2-define-legacy-typography-config();
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+
   margin-left: 0;
   line-height: 12px;
   margin-top: 18px;
@@ -130,6 +140,7 @@ $config: mat.m2-define-legacy-typography-config();
   @include themify($themes) {
     color: themed('primary-dark');
   }
+
   @include md-icon-size(22px);
 
   vertical-align: middle;
@@ -140,7 +151,6 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .icon-cluster {
-  position: absolute;
   top: 25px;
   right: 10px;
 }
@@ -149,6 +159,7 @@ $config: mat.m2-define-legacy-typography-config();
   @include themify($themes) {
     color: themed('primary-light');
   }
+
   height: 50px;
   display: flex;
   align-items: center;
@@ -172,8 +183,10 @@ $config: mat.m2-define-legacy-typography-config();
   border: none;
   width: auto;
   font-size: 11px;
+
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+
   background-color: inherit;
 }

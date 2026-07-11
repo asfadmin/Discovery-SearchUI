@@ -1,10 +1,11 @@
 @use "asf-theme-variables" as *;
 @use "../../header/header-buttons/header-buttons.component.scss" as *;
+@use '@angular/material' as mat;
 
 .arrow-button-toggle {
   padding-top: 6px;
   @include themify($themes) {
-    background-color: themed('primary') !important;
+    background-color: themed('primary-dark') !important;
   }
 
   // Fix arrow color on hover
@@ -16,8 +17,23 @@
     color: #ddd !important;
   }
 }
+
+.mat-mdc-unelevated-button[disabled], .mat-mdc-unelevated-button.mat-mdc-button-disabled {
+  @include themify($themes) {
+    color: themed('light-secondary-text') !important;
+  }
+}
+
+.mat-mdc-button-base {
+  width: 150px;
+
+  @include themify($themes) {
+    background-color: themed('primary-dark') !important;
+  }
+}
+
 .search-button {
-  height: 36px !important;
+  height: 50px !important;
   border-radius: 0 !important;
 }
 
@@ -26,4 +42,15 @@
   font-size: 14px !important;
 }
 
+mat-button-toggle-group {
+  border: 0 !important;
+  border-radius: 8px;
+}
 
+mat-button-toggle {
+  border: 0 !important;
+}
+
+@include mat.button-toggle-overrides((
+  height: 90px,
+));

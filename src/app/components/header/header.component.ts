@@ -14,6 +14,7 @@ import { BaselineHeaderComponent } from './baseline-header/baseline-header.compo
 import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 import { InfoBarComponent } from './info-bar/info-bar.component';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { HeaderButtonsComponent } from './header-buttons/header-buttons.component';
 
 @Component({
   selector: 'app-header',
@@ -28,6 +29,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
     Hyp3HeaderComponent,
     InfoBarComponent,
     MatProgressBar,
+    HeaderButtonsComponent,
     AsyncPipe,
   ],
 })

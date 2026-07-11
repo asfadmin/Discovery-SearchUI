@@ -22,7 +22,9 @@ test(
     ).toContainText('10 Files');
 
     await loggedInPage
-      .locator('app-list-header app-search-button .arrow-button-toggle')
+      .locator(
+        'app-filters-dropdown app-search-button #dataset-button-toggle-group .arrow-button-toggle',
+      )
       .click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
@@ -65,7 +67,9 @@ test(
       loggedInPage.locator('app-max-results-selector'),
     ).toContainText('2 Files');
     await loggedInPage
-      .locator('app-list-header app-search-button .arrow-button-toggle')
+      .locator(
+        'app-filters-dropdown app-search-button #dataset-button-toggle-group .arrow-button-toggle',
+      )
       .click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })

@@ -25,4 +25,13 @@
     background: themed('background-white');
     color: themed('dark-primary-text');
   }
+
+  border-radius: 4px;
+}
+
+.mat-button-toggle-checked {
+  @include themify($themes) {
+    background: themed('primary-light') !important;
+    color: themed('dark-primary-text');
+  }
 }

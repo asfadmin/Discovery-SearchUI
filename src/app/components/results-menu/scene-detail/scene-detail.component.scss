@@ -19,10 +19,6 @@ a {
   display: flex;
   flex-direction: column;
 
-  @include themify($themes) {
-    border-left: themed("primary-light") 1px solid;
-  }
-
   overflow-x: hidden !important;
 }
 .detail-card-info-mobile {

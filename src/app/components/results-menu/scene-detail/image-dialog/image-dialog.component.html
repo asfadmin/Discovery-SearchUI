@@ -105,7 +105,6 @@
                 </app-scene-metadata>
               </div>
             }
-            <hr />
             @if ((searchType$ | async) === searchTypes.CUSTOM_PRODUCTS) {
               <div class="detail-header">
                 {{ 'PRODUCT_DETAILS' | translate }}
@@ -123,7 +122,6 @@
                   </li>
                 }
               </ul>
-              <hr />
             }
             <div class="detail-header">
               {{ products?.length }} {{ 'FILES' | translate }}

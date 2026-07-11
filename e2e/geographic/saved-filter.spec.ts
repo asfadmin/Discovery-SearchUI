@@ -19,7 +19,7 @@ test(
     await loggedInPage.locator('.cdk-overlay-backdrop').click();
     await loggedInPage
       .locator(
-        '.dataset-filters-card .footer app-search-button .arrow-button-toggle',
+        'app-filters-dropdown app-search-button #dataset-button-toggle-group .arrow-button-toggle',
       )
       .click();
     await loggedInPage.getByRole('menuitem', { name: 'Saved Filters' }).click();

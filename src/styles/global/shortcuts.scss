@@ -164,5 +164,7 @@
 }
 
 .selected {
-  background-color: rgb(0 0 0 / 8%) !important;
+  @include themify_non_host($themes) {
+    background-color: lighten(themed('primary-light'), 2%);
+  }
 }
