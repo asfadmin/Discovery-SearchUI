@@ -138,7 +138,8 @@ $thumb-size: 50px;
       color: themed('dark-primary-text');
     }
 
-    font-size: 14px;
+    // Match the 16px font size of the file items in the list
+    font-size: 16px;
     font-weight: 600;
   }
 
