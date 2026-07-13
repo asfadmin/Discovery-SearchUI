@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SceneFilesComponent } from './scene-files.component';
 import { ToastrModule } from 'ngx-toastr';
 import { MockStore } from '@ngrx/store/testing';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { productFactory } from '@testing/product-factory';
 import testProviders from '@testing/providers';
 import { nisar, sentinel_1 } from '@models/datasets';
@@ -95,6 +95,10 @@ describe('SceneFilesComponent file grouping', () => {
     });
 
     store = TestBed.inject(MockStore);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   const buildNisarProduct = (
