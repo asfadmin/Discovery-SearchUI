@@ -125,12 +125,16 @@ describe('SceneFilesComponent file grouping', () => {
     store.overrideSelector(scenesStore.getSelectedScene, scene);
     store.overrideSelector(scenesStore.getSelectedSceneProducts, products);
 
+    vi.useFakeTimers();
     fixture = TestBed.createComponent(SceneFilesComponent);
     component = fixture.componentInstance;
     fixture.autoDetectChanges();
-    // flush the debounceTime(0) on the scene products selector and the
-    // debounceTime(100) inside hasSubquery$ before asserting on the DOM
-    await new Promise((resolve) => setTimeout(resolve, 120));
+    // Deterministically flush the debounceTime(0) on the scene products
+    // selector and the debounceTime(100) inside hasSubquery$ before asserting
+    // on the DOM. Advancing fake timers avoids a wall-clock wait, which would
+    // be flaky on loaded CI runners.
+    await vi.advanceTimersByTimeAsync(120);
+    vi.useRealTimers();
     await fixture.whenStable();
     fixture.detectChanges();
   };
