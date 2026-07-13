@@ -33,7 +33,10 @@
         @for (group of groups(); track group) {
           @if (group !== 'default' && productsByGroup[group].length > 0) {
             <mat-expansion-panel class="file-group-panel">
-              <mat-expansion-panel-header>
+              <mat-expansion-panel-header
+                [collapsedHeight]="customCollapsedHeight"
+                [expandedHeight]="customExpandedHeight"
+              >
                 <mat-panel-title>
                   {{ 'FILE_GROUP_' + group.toUpperCase() | translate }}
                   ({{ productsByGroup[group].length }}

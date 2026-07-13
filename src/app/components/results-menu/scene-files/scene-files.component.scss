@@ -116,11 +116,35 @@ $thumb-size: 50px;
 }
 
 // File group panels blend into the surrounding list so the files keep
-// their existing look; headers use the globally themed expansion panel
-// styles (see src/styles/filter-list.scss) in both light and dark modes.
+// their existing look in both light and dark modes: transparent panel
+// and header, no body padding so grouped files align with ungrouped
+// ones, and a fixed header height so it doesn't grow when expanded.
 .file-group-panel {
   background: transparent !important;
   box-shadow: none !important;
+
+  // Material adds vertical margin to expanded panels; keep groups compact
+  &.mat-expansion-panel-spacing {
+    margin: 0;
+  }
+
+  mat-expansion-panel-header {
+    background: transparent !important;
+    border: none;
+  }
+
+  mat-panel-title {
+    @include themify($themes) {
+      color: themed('dark-primary-text');
+    }
+
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  ::ng-deep .mat-expansion-panel-body {
+    padding: 0;
+  }
 }
 
 .loading-spinner {
