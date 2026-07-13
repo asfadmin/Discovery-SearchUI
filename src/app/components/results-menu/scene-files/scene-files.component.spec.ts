@@ -1,8 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SceneFilesComponent } from './scene-files.component';
 import { ToastrModule } from 'ngx-toastr';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { MockStore } from '@ngrx/store/testing';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { productFactory } from '@testing/product-factory';
 import testProviders from '@testing/providers';
+import { nisar, sentinel_1 } from '@models/datasets';
+import * as models from '@models';
+import * as scenesStore from '@store/scenes';
+import { ProductService } from '@services';
+import { SAVER } from '@services/saver.provider';
 
 describe('SceneFilesComponent', () => {
   let component: SceneFilesComponent;
@@ -69,4 +76,165 @@ describe('SceneFilesComponent', () => {
       granule_list:
         'NISAR_L2_UR_GOFF_039_002_D_121_040_7700_SH_20240403T084849_20240403T084905_20240415T084849_20240415T084905_T00408_F_P_J_001',
     }));
+});
+
+describe('SceneFilesComponent file grouping', () => {
+  let component: SceneFilesComponent;
+  let fixture: ComponentFixture<SceneFilesComponent>;
+  let store: MockStore;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        SceneFilesComponent,
+        ToastrModule.forRoot({
+          positionClass: 'toast-bottom-right',
+        }),
+      ],
+      providers: [...testProviders, { provide: SAVER, useValue: vi.fn() }],
+    });
+
+    store = TestBed.inject(MockStore);
+  });
+
+  const buildNisarProduct = (
+    id: string,
+    productTypeDisplay: string,
+  ): models.CMRProduct => {
+    const productService = TestBed.inject(ProductService);
+    const product = productFactory
+      .withBasicInfo(id)
+      .withDatasetFull(nisar)
+      .build();
+
+    return {
+      ...product,
+      id,
+      productTypeDisplay,
+      productTypeGroup: productService.productTypeToGroup(
+        product,
+        productTypeDisplay,
+      ),
+    };
+  };
+
+  const setup = async (
+    scene: models.CMRProduct | null,
+    products: models.CMRProduct[],
+  ) => {
+    store.overrideSelector(scenesStore.getSelectedScene, scene);
+    store.overrideSelector(scenesStore.getSelectedSceneProducts, products);
+
+    fixture = TestBed.createComponent(SceneFilesComponent);
+    component = fixture.componentInstance;
+    fixture.autoDetectChanges();
+    // flush the debounceTime(0) on the scene products selector and the
+    // debounceTime(100) inside hasSubquery$ before asserting on the DOM
+    await new Promise((resolve) => setTimeout(resolve, 120));
+    await fixture.whenStable();
+    fixture.detectChanges();
+  };
+
+  const buildNisarSceneWithFiles = () => {
+    const base = buildNisarProduct('test-nisar-scene', 'L2 GSLC HDF5');
+    const subproducts = [
+      'Runconfig YAML',
+      'ISO Metadata XML',
+      'Browse Image PNG',
+      'QA Summary CSV',
+      'QA Report PDF',
+      'QA Statistics HDF5',
+      'Log File',
+      'Bin File',
+    ].map((display, i) => buildNisarProduct(`subproduct-${i}`, display));
+    const scene = {
+      ...base,
+      metadata: { ...base.metadata, subproducts },
+    };
+
+    return { scene, products: [scene, ...subproducts] };
+  };
+
+  it('buckets NISAR files into groups, ungrouped files in default', async () => {
+    const { scene, products } = buildNisarSceneWithFiles();
+    await setup(scene, products);
+
+    expect(component.groups()).toEqual([
+      'default',
+      'Metadata',
+      'Visualizations',
+      'Documentation',
+    ]);
+
+    const displaysIn = (group: string) =>
+      component.selectedSceneGroups()[group].map((p) => p.productTypeDisplay);
+
+    expect(displaysIn('default')).toEqual(['L2 GSLC HDF5', 'Bin File']);
+    expect(displaysIn('Metadata')).toEqual([
+      'Runconfig YAML',
+      'ISO Metadata XML',
+    ]);
+    expect(displaysIn('Visualizations')).toEqual(['Browse Image PNG']);
+    expect(displaysIn('Documentation')).toEqual([
+      'QA Summary CSV',
+      'QA Report PDF',
+      'QA Statistics HDF5',
+      'Log File',
+    ]);
+  });
+
+  it('renders ungrouped files at the top and a panel per non-empty group', async () => {
+    const { scene, products } = buildNisarSceneWithFiles();
+    await setup(scene, products);
+
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelectorAll('app-scene-file')).toHaveLength(
+      products.length,
+    );
+    expect(element.querySelectorAll('mat-expansion-panel')).toHaveLength(3);
+
+    // ungrouped files render above the accordion, outside of any panel
+    const ungrouped = element.querySelectorAll('mat-list > app-scene-file');
+    expect(ungrouped).toHaveLength(2);
+
+    // panel headers show the group name and file count
+    const headerText = element.querySelector('mat-panel-title').textContent;
+    expect(headerText).toContain('Metadata');
+    expect(headerText).toContain('(2');
+  });
+
+  it('does not render panels for empty groups', async () => {
+    const base = buildNisarProduct('test-nisar-scene', 'L2 GSLC HDF5');
+    const subproduct = buildNisarProduct('subproduct-0', 'Runconfig YAML');
+    const scene = {
+      ...base,
+      metadata: { ...base.metadata, subproducts: [subproduct] },
+    };
+    await setup(scene, [scene, subproduct]);
+
+    expect(
+      fixture.nativeElement.querySelectorAll('mat-expansion-panel'),
+    ).toHaveLength(1);
+  });
+
+  it('keeps the flat file list for non-NISAR scenes', async () => {
+    const scene = productFactory
+      .withBasicInfo('test-s1-scene')
+      .withDatasetFull(sentinel_1)
+      .build();
+    await setup(scene, [scene]);
+
+    expect(component.groups()).toBe(null);
+    expect(fixture.nativeElement.querySelector('mat-accordion')).toBe(null);
+    expect(
+      fixture.nativeElement.querySelectorAll('app-scene-file'),
+    ).toHaveLength(1);
+  });
+
+  it('does not crash when no scene is selected', async () => {
+    await setup(null, []);
+
+    expect(component.groups()).toBe(null);
+    expect(fixture.nativeElement.querySelector('mat-accordion')).toBe(null);
+  });
 });

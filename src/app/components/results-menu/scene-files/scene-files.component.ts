@@ -31,6 +31,12 @@ import { AsfApiService, Hyp3ApiService } from '@services';
 import * as models from '@models';
 
 import { MatList, MatListItem } from '@angular/material/list';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
 import { MatDialog } from '@angular/material/dialog';
 import { ScreenSizeService } from '@services';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -54,6 +60,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
     AsyncPipe,
     TranslateModule,
     MatListItem,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
   ],
 })
 export class SceneFilesComponent implements OnInit, OnDestroy {
@@ -85,7 +95,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       }),
     ),
   );
-  public loadingHyp3JobName: string | null;
+  public loadingHyp3JobName: string | null = null;
   public validJobTypesByProduct: Record<string, models.Hyp3JobType[]> = {};
 
   public isUserLoggedIn: boolean;
@@ -93,38 +103,48 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   public showDemWarning: boolean;
 
   public dynamicQueryLoaded = signal(false);
-  public productGrouping = signal({});
 
   private scene = toSignal(this.store$.select(scenesStore.getSelectedScene));
+  private sceneProducts = toSignal(
+    this.store$
+      .select(scenesStore.getSelectedSceneProducts)
+      .pipe(debounceTime(0)),
+    { initialValue: [] as models.CMRProduct[] },
+  );
+  // 'default' holds ungrouped products (e.g. the main science HDF5) and is
+  // rendered first, at the top of the file list.
   readonly groups = computed(() => {
-    const scene = this.scene() as models.CMRProduct;
-    let groups = null;
-    if (scene.metadata.subproducts.length > 0 && scene.dataset === 'NISAR') {
-      groups = models.nisar.productTypeDisplays.groups.map((g) => g.name);
-      groups.push('default');
+    const scene = this.scene();
+    if (scene?.dataset === 'NISAR' && scene.metadata?.subproducts?.length > 0) {
+      return [
+        'default',
+        ...models.nisar.productTypeDisplays.groups.map((g) => g.name),
+      ];
     }
 
-    return groups;
+    return null;
   });
   readonly selectedSceneGroups = computed(() => {
     const groups = this.groups();
 
-    if (groups !== null) {
-      const productsByGroups = groups.reduce(
-        (prev, curr) => {
-          prev[curr] = [];
-          return prev;
-        },
-        { default: [] },
-      );
-      for (const product of this.products) {
-        const groupName = product.productTypeGroup ?? 'default';
-        productsByGroups[groupName].push(product);
-      }
-      return productsByGroups;
+    if (groups === null) {
+      return null;
     }
 
-    return null;
+    const productsByGroups = groups.reduce(
+      (prev, curr) => {
+        prev[curr] = [];
+        return prev;
+      },
+      {} as Record<string, models.CMRProduct[]>,
+    );
+    for (const product of this.sceneProducts() ?? []) {
+      const groupName = product.productTypeGroup ?? 'default';
+      (productsByGroups[groupName] ?? productsByGroups['default']).push(
+        product,
+      );
+    }
+    return productsByGroups;
   });
   private subs = new SubSink();
 
@@ -255,7 +275,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   }
   private nisarSubqueryCriteria(scene: models.CMRProduct) {
     const isNisar = !!scene && scene.id?.startsWith('NISAR');
-    const processingLevel = scene.metadata.productType ?? '';
+    const processingLevel = scene?.metadata?.productType ?? '';
 
     return (
       isNisar &&
