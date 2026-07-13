@@ -128,9 +128,17 @@ $thumb-size: 50px;
     margin: 0;
   }
 
+  // Headers stay transparent while collapsed and pick up a themed tint
+  // when the group is expanded, so open groups keep their title visible
   mat-expansion-panel-header {
     background: transparent !important;
     border: none;
+
+    &.mat-expanded {
+      @include themify($themes) {
+        background-color: themed('primary-light') !important;
+      }
+    }
   }
 
   mat-panel-title {
