@@ -53,7 +53,7 @@
         >
         </app-copy-to-clipboard>
         <app-copy-to-clipboard
-          prompt="{{ 'COPY_URLS' | translate }}"
+          [prompt]="'COPY_URLS' | translate"
           class="clipboard-icon"
           [submenu]="[
             ['Download URL', product.downloadUrl],
