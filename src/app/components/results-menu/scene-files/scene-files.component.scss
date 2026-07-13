@@ -115,23 +115,12 @@ $thumb-size: 50px;
   overflow: visible !important;
 }
 
-mat-expansion-panel-header {
-  @extend .mat-header-base;
-
-  &:hover,
-  &:visited,
-  &:link,
-  &:active,
-  &:focus,
-  &[aria-disabled='true'] {
-    @extend .mat-header-base;
-  }
-}
-
-.mat-header-base {
-  background-color: $asf-background-white !important;
-  border-color: $asf-background-white !important;
-  border-style: none;
+// File group panels blend into the surrounding list so the files keep
+// their existing look; headers use the globally themed expansion panel
+// styles (see src/styles/filter-list.scss) in both light and dark modes.
+.file-group-panel {
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .loading-spinner {

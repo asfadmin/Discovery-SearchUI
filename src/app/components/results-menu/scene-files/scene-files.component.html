@@ -37,7 +37,10 @@
                 <mat-panel-title>
                   {{ 'FILE_GROUP_' + group.toUpperCase() | translate }}
                   ({{ productsByGroup[group].length }}
-                  {{ 'FILES' | translate }})
+                  {{
+                    (productsByGroup[group].length === 1 ? 'FILE' : 'FILES')
+                      | translate
+                  }})
                 </mat-panel-title>
               </mat-expansion-panel-header>
               @for (product of productsByGroup[group]; track product.id) {
