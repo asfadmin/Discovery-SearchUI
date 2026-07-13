@@ -170,11 +170,23 @@ export const nisar = {
       qa: 'QA Statistics HDF5',
       bin: 'Bin File',
     },
+    // Main science HDF5 products (e.g. 'L2 GSLC HDF5') intentionally match no
+    // group so they fall through to the ungrouped list at the top.
     groups: [
-      { name: 'Data', files: [/HDF5/] },
-      { name: 'Metadata', files: [/Runconfig YAML/, /Footprint KML/] },
+      {
+        name: 'Metadata',
+        files: [/Runconfig YAML/, /Footprint KML/, /ISO Metadata XML/],
+      },
       { name: 'Visualizations', files: [/Browse Image PNG/, /.*PNG/] },
-      { name: 'Documentation', files: [/Log File/, /QA Statistics HDF5/] },
+      {
+        name: 'Documentation',
+        files: [
+          /Log File/,
+          /QA Summary CSV/,
+          /QA Report PDF/,
+          /QA Statistics HDF5/,
+        ],
+      },
     ],
   },
 };
