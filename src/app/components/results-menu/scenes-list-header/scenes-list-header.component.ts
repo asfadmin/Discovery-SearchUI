@@ -123,10 +123,16 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.store$.select(scenesStore.getAllProducts).pipe(
       map((scenes: []) =>
         scenes.reduce((prev, curr: models.CMRProduct) => {
-          if (!prev[curr.productTypeDisplay]) {
-            prev[curr.productTypeDisplay] = [];
+          // Bucket by the dataset's file type group when one is defined, so the
+          // bulk add menu offers a few meaningful groups instead of one entry per
+          // file type. Products with no group (and datasets that define none) keep
+          // falling back to their individual product type.
+          const key = curr.productTypeGroup ?? curr.productTypeDisplay;
+
+          if (!prev[key]) {
+            prev[key] = [];
           }
-          prev[curr.productTypeDisplay].push(curr);
+          prev[key].push(curr);
 
           return prev;
         }, {}),
