@@ -118,8 +118,8 @@ export interface NISARMetadata {
   s3Urls: string[];
   frameCoverage: string;
   jointObservation: string;
-  sideBandPolarization: string;
-  mainBandPolarization: string;
+  sideBandPolarization: string[];
+  mainBandPolarization: string[];
   crid: string | null;
   rangeBandwidth: string;
   sizeMB?: Record<string, { bytes: number; format: string }>;
