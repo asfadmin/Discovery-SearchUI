@@ -16,7 +16,8 @@
         }}</span>
         <app-copy-to-clipboard
           [value]="scene.name"
-          prompt="{{ 'COPY_SCENE_NAME' | translate }}"
+          [prompt]="'COPY_SCENE_NAME' | translate"
+          [message]="'COPIED_SCENE_NAME' | translate"
           class="clipboard-icon"
         ></app-copy-to-clipboard>
       </mat-card-title>
