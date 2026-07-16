@@ -28,8 +28,9 @@ export class CopyToClipboardComponent implements OnDestroy {
   private notificationService = inject(NotificationService);
 
   value = input<string>('');
-  submenu = input<[string, string][]>([]);
+  submenu = input<{ prompt: string; message: string; value: string }[]>([]);
   prompt = input<string>('Copy to clipboard');
+  message = input<string>();
   notification = input<string>('Copied');
   toast = input<boolean>(true);
   copyIcon = input<string>('file_copy');
@@ -47,10 +48,7 @@ export class CopyToClipboardComponent implements OnDestroy {
   public onCopyIconClicked(e: Event): void {
     this.clipboardService.copyFromContent(this.value());
     if (this.toast) {
-      this.notificationService.clipboardCopyIcon(
-        this.prompt(),
-        this.value().split(',').length,
-      );
+      this.notificationService.info(this.message());
     }
 
     this.subs.add(
@@ -65,10 +63,10 @@ export class CopyToClipboardComponent implements OnDestroy {
     e.stopPropagation();
   }
 
-  public onCopyFromMenu(prompt: string, value: string) {
+  public onCopyFromMenu(prompt: string, message: string, value: string) {
     this.clipboardService.copyFromContent(value);
     if (this.toast) {
-      this.notificationService.linkCopyIcon(prompt, value.split(',').length);
+      this.notificationService.info(message);
     }
 
     this.subs.add(
