@@ -34,7 +34,7 @@ export const initState: UserState = {
     },
     hyp3BackendUrl: '',
     hyp3SavedUrls: [],
-    theme: 'System Preferences',
+    theme: 'light',
     language: '',
   },
   savedSearches: {
