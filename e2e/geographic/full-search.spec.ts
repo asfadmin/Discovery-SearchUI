@@ -2,7 +2,7 @@ import { test, expect } from 'e2e/fixtures';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
 [
-  { menuSelector: 'NISAR (Uncalibrated) NISAR', expected: 'NISAR' },
+  { menuSelector: 'NISAR NISAR', expected: 'NISAR' },
   { menuSelector: 'S1 Burst', expected: 'S1 Burst' },
   { menuSelector: 'OPERA-S1 Sentinel-1 RTC', expected: 'OPERA-S1' },
   { menuSelector: 'TROPO The Troposphere Zenith', expected: 'TROPO' },

@@ -11,6 +11,11 @@ import * as uiStore from '@store/ui';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
+import {
+  calibratedCrid,
+  knownIssuesUrl,
+  preCalibrationKnownIssuesUrl,
+} from '@models/datasets/nisar';
 
 import {
   AuthService,
@@ -84,6 +89,22 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
   public asfWebsite = models.asfWebsite;
   public productTypeDocsUrl: string | null = null;
+
+  // NISAR products processed with CRID 5023+ are provisional calibrated data;
+  // earlier CRIDs remain labelled uncalibrated with the pre-calibration docs
+  public nisarCalibration(): { label: string; url: string } | null {
+    if (this.dataset?.id !== 'NISAR') {
+      return null;
+    }
+
+    const crid = Number(
+      this.scene?.metadata?.nisar?.crid?.replace(/\D/g, '') ?? '',
+    );
+
+    return crid >= calibratedCrid
+      ? { label: 'PROVISIONAL', url: knownIssuesUrl }
+      : { label: 'UNCALIBRATED', url: preCalibrationKnownIssuesUrl };
+  }
 
   public isBrowseOverlayEnabled$: Observable<boolean> =
     this.browseOverlayService.isBrowseOverlayEnabled$;

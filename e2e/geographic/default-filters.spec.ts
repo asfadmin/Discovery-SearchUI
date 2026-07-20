@@ -4,7 +4,7 @@ test('NISAR default filter sticks around', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
-    .getByRole('menuitem', { name: 'NISAR (Uncalibrated) NISAR' })
+    .getByRole('menuitem', { name: 'NISAR NISAR' })
     .click();
   await expect(page.locator('app-info-bar')).toContainText(
     'Production Configuration: PR',
