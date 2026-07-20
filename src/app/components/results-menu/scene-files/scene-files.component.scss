@@ -5,7 +5,7 @@ $prod-row-height: 58px;
 $thumb-size: 50px;
 
 .products-list {
-  padding-top: 8px;
+  padding-top: 0;
   padding-bottom: 15px;
   overflow-y: auto;
 }
@@ -139,13 +139,16 @@ $thumb-size: 50px;
   // overrides pin header colours and typography directly, so the direct
   // rules here are needed to win over them. Migrate to expansion-overrides
   // tokens once the styling rework retires those globals.
+  // Headers stay white; the soft grey shade only marks hover and the
+  // section that is currently expanded
   mat-expansion-panel-header {
     background: transparent !important;
     border: none;
 
+    &:hover:not([aria-disabled='true']),
     &.mat-expanded {
       @include themify($themes) {
-        background-color: themed('primary-light') !important;
+        background-color: themed('dark-focused') !important;
       }
     }
   }
@@ -162,6 +165,11 @@ $thumb-size: 50px;
 
   ::ng-deep .mat-expansion-panel-body {
     padding: 0;
+  }
+
+  // Single line rows read compact inside the panels, like the mock
+  ::ng-deep app-scene-file .mat-mdc-list-item {
+    height: 44px;
   }
 }
 
