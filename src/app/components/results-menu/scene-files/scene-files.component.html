@@ -13,12 +13,33 @@
 
 <div>
   <mat-list class="products-list">
-    @if (selectedSceneGroups(); as productsByGroup) {
+    @let productsByGroup = selectedSceneGroups();
+    @let showRelatedData = hasSubquery$ | async;
+
+    @if (!productsByGroup) {
+      @for (product of products; track product.id) {
+        <app-scene-file
+          (toggle)="onToggleQueueProduct(product)"
+          (queueHyp3Job)="onQueueHyp3Job($event)"
+          (renameJobProjectName)="onRenameJobProjectName(product, $event)"
+          [loadingHyp3JobName]="loadingHyp3JobName"
+          [isUserLoggedIn]="isUserLoggedIn"
+          [product]="product"
+          [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
+          [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+          [isQueued]="(queuedProductIds$ | async).has(product.id)"
+          [isOpen]="false"
+        >
+        </app-scene-file>
+      }
+    }
+
+    <!-- One accordion holds every section, so the whole list collapses and
+         reads consistently: Data (ungrouped science files, expanded by
+         default), one panel per file type group, and Related Data -->
+    @if (productsByGroup || showRelatedData) {
       <mat-accordion multi>
-        <!-- Ungrouped products (main science files) live in a Data panel that
-             is expanded by default, so every section reads consistently while
-             the primary files stay visible on load -->
-        @if (productsByGroup['default'].length > 0) {
+        @if (productsByGroup && productsByGroup['default'].length > 0) {
           <mat-expansion-panel class="file-group-panel" [expanded]="true">
             <mat-expansion-panel-header
               [collapsedHeight]="customCollapsedHeight"
@@ -50,7 +71,7 @@
             }
           </mat-expansion-panel>
         }
-        @for (group of groups(); track group) {
+        @for (group of groups() ?? []; track group) {
           @if (group !== 'default' && productsByGroup[group].length > 0) {
             <mat-expansion-panel class="file-group-panel">
               <mat-expansion-panel-header
@@ -86,75 +107,61 @@
             </mat-expansion-panel>
           }
         }
-      </mat-accordion>
-    } @else {
-      @for (product of products; track product.id) {
-        <app-scene-file
-          (toggle)="onToggleQueueProduct(product)"
-          (queueHyp3Job)="onQueueHyp3Job($event)"
-          (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-          [loadingHyp3JobName]="loadingHyp3JobName"
-          [isUserLoggedIn]="isUserLoggedIn"
-          [product]="product"
-          [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
-          [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-          [isQueued]="(queuedProductIds$ | async).has(product.id)"
-          [isOpen]="false"
-        >
-        </app-scene-file>
-      }
-    }
-    @if (hasSubquery$ | async) {
-      @let subqueryProducts = dynamicallySearchedProduct$ | async;
+        @if (showRelatedData) {
+          @let subqueryProducts = dynamicallySearchedProduct$ | async;
 
-      <!-- Collapsible like the file group panels above, but expanded by
-           default so the related products stay visible on load -->
-      <mat-expansion-panel class="file-group-panel" [expanded]="true">
-        <mat-expansion-panel-header
-          [collapsedHeight]="customCollapsedHeight"
-          [expandedHeight]="customExpandedHeight"
-        >
-          <mat-panel-title>
-            {{ 'RELATED_DATA' | translate }}
-            @if (dynamicQueryLoaded() && subqueryProducts) {
-              ({{ subqueryProducts.length }}
-              {{
-                (subqueryProducts.length === 1 ? 'FILE' : 'FILES') | translate
-              }})
-            }
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        @if (!dynamicQueryLoaded()) {
-          <mat-list-item>
-            <mat-spinner diameter="20" class="loading-spinner"> </mat-spinner>
-          </mat-list-item>
-        }
-
-        @for (product of subqueryProducts; track product.id) {
-          @if (dynamicQueryLoaded()) {
-            <app-scene-file
-              (toggle)="onToggleQueueProduct(product)"
-              (queueHyp3Job)="onQueueHyp3Job($event)"
-              (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-              [loadingHyp3JobName]="loadingHyp3JobName"
-              [isUserLoggedIn]="isUserLoggedIn"
-              [product]="product"
-              [validHyp3JobTypes]="[]"
-              [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-              [isQueued]="(queuedProductIds$ | async).has(product.id)"
-              [isOpen]="false"
-              [isSearchableProduct]="true"
+          <mat-expansion-panel class="file-group-panel" [expanded]="true">
+            <mat-expansion-panel-header
+              [collapsedHeight]="customCollapsedHeight"
+              [expandedHeight]="customExpandedHeight"
             >
-            </app-scene-file>
-          }
-        } @empty {
-          @if (dynamicQueryLoaded()) {
-            <mat-list-item class="no-related">
-              {{ 'NO_RELATED_DATA' | translate }}
-            </mat-list-item>
-          }
+              <mat-panel-title>
+                {{ 'RELATED_DATA' | translate }}
+                @if (dynamicQueryLoaded() && subqueryProducts) {
+                  ({{ subqueryProducts.length }}
+                  {{
+                    (subqueryProducts.length === 1 ? 'FILE' : 'FILES')
+                      | translate
+                  }})
+                }
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            @if (!dynamicQueryLoaded()) {
+              <mat-list-item>
+                <mat-spinner diameter="20" class="loading-spinner">
+                </mat-spinner>
+              </mat-list-item>
+            }
+
+            @for (product of subqueryProducts; track product.id) {
+              @if (dynamicQueryLoaded()) {
+                <app-scene-file
+                  (toggle)="onToggleQueueProduct(product)"
+                  (queueHyp3Job)="onQueueHyp3Job($event)"
+                  (renameJobProjectName)="
+                    onRenameJobProjectName(product, $event)
+                  "
+                  [loadingHyp3JobName]="loadingHyp3JobName"
+                  [isUserLoggedIn]="isUserLoggedIn"
+                  [product]="product"
+                  [validHyp3JobTypes]="[]"
+                  [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+                  [isQueued]="(queuedProductIds$ | async).has(product.id)"
+                  [isOpen]="false"
+                  [isSearchableProduct]="true"
+                >
+                </app-scene-file>
+              }
+            } @empty {
+              @if (dynamicQueryLoaded()) {
+                <mat-list-item class="no-related">
+                  {{ 'NO_RELATED_DATA' | translate }}
+                </mat-list-item>
+              }
+            }
+          </mat-expansion-panel>
         }
-      </mat-expansion-panel>
+      </mat-accordion>
     }
   </mat-list>
 </div>
