@@ -45,7 +45,7 @@
   <!-- Copy and link actions live in the meta corner with the download and
        cart buttons, so every file action is grouped in one place -->
   @if (!product.metadata.job) {
-    <span class="file-action-icons icon" matListItemMeta>
+    <span class="file-action-icons" matListItemMeta>
       <app-copy-to-clipboard
         [value]="
           product.metadata.productType === 'BURST_XML'

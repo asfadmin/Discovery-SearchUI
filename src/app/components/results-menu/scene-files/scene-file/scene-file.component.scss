@@ -1,13 +1,23 @@
 @use 'asf-theme-variables' as *;
 
-// Copy and link icons sit in the meta corner, aligned with the download
-// and cart buttons that follow them
+// Copy and link icons sit in the meta corner, matching the size and themed
+// colour of the download and cart buttons that follow them
 .file-action-icons {
   display: inline-flex;
   align-items: center;
 
   app-copy-to-clipboard + app-copy-to-clipboard {
-    margin-left: 6px;
+    margin-left: 10px;
+  }
+
+  ::ng-deep mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+
+    @include themify($themes) {
+      color: themed('light-black');
+    }
   }
 }
 
