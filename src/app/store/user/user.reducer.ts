@@ -22,7 +22,6 @@ export const initState: UserState = {
     exp: null,
   },
   profile: {
-    defaultDataset: 'NISAR',
     mapLayer: models.MapLayerTypes.SATELLITE,
     maxResults: 250,
     defaultMaxConcurrentDownloads: 3,
