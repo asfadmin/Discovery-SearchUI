@@ -1,11 +1,10 @@
 @use 'asf-theme-variables' as *;
 
-.icon-margin {
-  margin-left: 5px;
-
-  span {
-    margin: 0 5px;
-  }
+// Copy and link icons sit in the meta corner, aligned with the download
+// and cart buttons that follow them
+.file-action-icons {
+  display: inline-flex;
+  align-items: center;
 
   app-copy-to-clipboard + app-copy-to-clipboard {
     margin-left: 6px;
