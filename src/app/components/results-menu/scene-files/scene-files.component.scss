@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @use 'asf-theme-variables' as *;
 
 $prod-row-height: 58px;
@@ -116,20 +117,28 @@ $thumb-size: 50px;
 }
 
 // File group panels blend into the surrounding list so the files keep
-// their existing look in both light and dark modes: transparent panel
-// and header, no body padding so grouped files align with ungrouped
-// ones, and a fixed header height so it doesn't grow when expanded.
+// their existing look in both light and dark modes: transparent panel,
+// no body padding so grouped files align, and a fixed header height so
+// panels don't grow when expanded.
 .file-group-panel {
-  background: transparent !important;
-  box-shadow: none !important;
+  @include mat.expansion-overrides(
+    (
+      container-background-color: transparent,
+      container-elevation-shadow: none,
+      header-collapsed-state-height: 48px,
+      header-expanded-state-height: 48px,
+    )
+  );
 
   // Material adds vertical margin to expanded panels; keep groups compact
   &.mat-expansion-panel-spacing {
     margin: 0;
   }
 
-  // Headers stay transparent while collapsed and pick up a themed tint
-  // when the group is expanded, so open groups keep their title visible
+  // The rules below can't use style tokens yet: the global material.scss
+  // overrides pin header colours and typography directly, so the direct
+  // rules here are needed to win over them. Migrate to expansion-overrides
+  // tokens once the styling rework retires those globals.
   mat-expansion-panel-header {
     background: transparent !important;
     border: none;

@@ -103,8 +103,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   public showDemWarning: boolean;
 
   public dynamicQueryLoaded = signal(false);
-  public customCollapsedHeight = '48px';
-  public customExpandedHeight = '48px';
 
   private scene = toSignal(this.store$.select(scenesStore.getSelectedScene));
   private sceneProducts = toSignal(

@@ -41,10 +41,7 @@
       <mat-accordion multi>
         @if (productsByGroup && productsByGroup['default'].length > 0) {
           <mat-expansion-panel class="file-group-panel" [expanded]="true">
-            <mat-expansion-panel-header
-              [collapsedHeight]="customCollapsedHeight"
-              [expandedHeight]="customExpandedHeight"
-            >
+            <mat-expansion-panel-header>
               <mat-panel-title>
                 {{ 'DATA' | translate }}
                 ({{ productsByGroup['default'].length }}
@@ -74,10 +71,7 @@
         @for (group of groups() ?? []; track group) {
           @if (group !== 'default' && productsByGroup[group].length > 0) {
             <mat-expansion-panel class="file-group-panel">
-              <mat-expansion-panel-header
-                [collapsedHeight]="customCollapsedHeight"
-                [expandedHeight]="customExpandedHeight"
-              >
+              <mat-expansion-panel-header>
                 <mat-panel-title>
                   {{ 'FILE_GROUP_' + group.toUpperCase() | translate }}
                   ({{ productsByGroup[group].length }}
@@ -111,10 +105,7 @@
           @let subqueryProducts = dynamicallySearchedProduct$ | async;
 
           <mat-expansion-panel class="file-group-panel" [expanded]="true">
-            <mat-expansion-panel-header
-              [collapsedHeight]="customCollapsedHeight"
-              [expandedHeight]="customExpandedHeight"
-            >
+            <mat-expansion-panel-header>
               <mat-panel-title>
                 {{ 'RELATED_DATA' | translate }}
                 @if (dynamicQueryLoaded() && subqueryProducts) {
