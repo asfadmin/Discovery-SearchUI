@@ -171,6 +171,22 @@ $thumb-size: 50px;
   ::ng-deep app-scene-file .mat-mdc-list-item {
     height: 44px;
   }
+
+  // Rows read as results under the group title: indented and lighter than
+  // the section header
+  ::ng-deep app-scene-file {
+    .mat-mdc-list-item {
+      padding-left: 24px;
+    }
+
+    .mdc-list-item__primary-text {
+      font-size: 14px;
+
+      b {
+        font-weight: 400;
+      }
+    }
+  }
 }
 
 .loading-spinner {
