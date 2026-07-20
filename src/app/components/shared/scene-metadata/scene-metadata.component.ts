@@ -130,13 +130,13 @@ export class SceneMetadataComponent {
   }
   public addMainPolarization(): void {
     const action = new filtersStore.AddPolarization(
-      this.scene().metadata.nisar?.mainBandPolarization,
+      this.scene().metadata.nisar?.mainBandPolarization.join(','),
     );
     this.store$.dispatch(action);
   }
   public addSidePolarization(): void {
     const action = new filtersStore.AddSidePolarization(
-      this.scene().metadata.nisar?.sideBandPolarization,
+      this.scene().metadata.nisar?.sideBandPolarization.join(','),
     );
     this.store$.dispatch(action);
   }
