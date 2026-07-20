@@ -404,6 +404,31 @@ export class Hyp3ApiService {
     return { byJobType, total };
   }
 
+  public getUpdatedHyp3able(
+    hyp3able: models.Hyp3ableProducts,
+    datasetId: string,
+  ): models.Hyp3ableProducts {
+    const filteredByJobType = hyp3able.byJobType.filter((hyp3ableJobType) => {
+      if (datasetId === models.beta.id) {
+        return hyp3ableJobType.jobType.id === models.AriaS1GunwJobType.id;
+      } else {
+        return hyp3ableJobType.jobType.id !== models.AriaS1GunwJobType.id;
+      }
+    });
+
+    const total = filteredByJobType.reduce(
+      (sum, jobType) => sum + jobType.total,
+      0,
+    );
+
+    const filtered = {
+      byJobType: filteredByJobType,
+      total: total,
+    };
+
+    return filtered;
+  }
+
   public getValidJobTypes(product: models.CMRProduct[]): models.Hyp3JobType[] {
     return models.hyp3JobTypesList.filter((jobType) =>
       this.isHyp3able(product, jobType),

@@ -3,6 +3,7 @@ import { Component, output, inject, input, computed } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 import {
@@ -17,6 +18,7 @@ import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/
 import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Hyp3ApiService } from '@services';
 
 @Component({
   selector: 'app-pair',
@@ -37,6 +39,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class PairComponent {
   private store$ = inject<Store<AppState>>(Store);
+  private hyp3 = inject(Hyp3ApiService);
 
   readonly pair = input<models.CMRProductPair>();
   readonly hyp3able = input<models.Hyp3ableProducts>();
@@ -48,6 +51,17 @@ export class PairComponent {
   readonly selectedPair = toSignal(
     this.store$.select(scenesStore.getSelectedPairIds),
   );
+
+  readonly datasetId = toSignal(
+    this.store$.select(filtersStore.getSelectedDatasetId),
+  );
+
+  readonly hyp3ableFiltered = computed(() => {
+    const hyp3able = this.hyp3able();
+    const datasetId = this.datasetId();
+
+    return this.hyp3.getUpdatedHyp3able(hyp3able, datasetId);
+  });
 
   readonly isSelected = computed(() => {
     const selected = this.selectedPair();

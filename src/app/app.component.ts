@@ -44,7 +44,6 @@ import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as chartsStore from '@store/charts';
-import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import * as mapStore from '@store/map';
@@ -127,7 +126,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private customProductsQueueStateKey = 'asf-custom-products-queue-state-v2';
 
   public shouldOmitSearchPolygon$ = this.store$.select(
-    filterStore.getShouldOmitSearchPolygon,
+    filtersStore.getShouldOmitSearchPolygon,
   );
   public isLoading$ = this.store$.select(searchStore.getIsLoading);
   public isAutoTheme = false;
@@ -357,7 +356,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         )
         .subscribe((defaultFilters) =>
           this.store$.dispatch(
-            new filterStore.SetDefaultFilters(defaultFilters),
+            new filtersStore.SetDefaultFilters(defaultFilters),
           ),
         ),
     );
@@ -408,7 +407,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             action.payload === models.SearchType.DERIVED_DATASETS
           ) {
             this.store$.dispatch(
-              new filterStore.SetDefaultFilters(profile?.defaultFilterPresets),
+              new filtersStore.SetDefaultFilters(profile?.defaultFilterPresets),
             );
             return;
           }
@@ -417,7 +416,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
           if (this.isEmptySearch(searchState)) {
             this.store$.dispatch(
-              new filterStore.SetDefaultFilters(profile?.defaultFilterPresets),
+              new filtersStore.SetDefaultFilters(profile?.defaultFilterPresets),
             );
             return;
           }
@@ -582,7 +581,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.subs.add(
       this.store$
-        .select(filterStore.getSelectedDatasetId)
+        .select(filtersStore.getSelectedDatasetId)
         .pipe(
           filter((dataset) => models.opera_s1.id === dataset),
           first(),
@@ -731,7 +730,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private loadMissions(): void {
     this.subs.add(
       this.asfSearchApi.loadMissions$.subscribe((missionsByDataset) =>
-        this.store$.dispatch(new filterStore.SetMissions(missionsByDataset)),
+        this.store$.dispatch(new filtersStore.SetMissions(missionsByDataset)),
       ),
     );
   }
