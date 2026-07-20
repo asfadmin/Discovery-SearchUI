@@ -191,7 +191,7 @@ describe('SceneFilesComponent file grouping', () => {
     ]);
   });
 
-  it('renders ungrouped files at the top and a panel per non-empty group', async () => {
+  it('renders ungrouped files in an expanded Data panel and a panel per non-empty group', async () => {
     const { scene, products } = buildNisarSceneWithFiles();
     await setup(scene, products);
 
@@ -199,16 +199,26 @@ describe('SceneFilesComponent file grouping', () => {
     expect(element.querySelectorAll('app-scene-file')).toHaveLength(
       products.length,
     );
-    expect(element.querySelectorAll('mat-expansion-panel')).toHaveLength(3);
+    expect(element.querySelectorAll('mat-expansion-panel')).toHaveLength(4);
 
-    // ungrouped files render above the accordion, outside of any panel
-    const ungrouped = element.querySelectorAll('mat-list > app-scene-file');
-    expect(ungrouped).toHaveLength(2);
+    // ungrouped files render first, inside a Data panel that is open by default
+    const dataPanel = element.querySelector('mat-expansion-panel');
+    const dataHeader = dataPanel.querySelector('mat-panel-title').textContent;
+    expect(dataHeader).toContain('Data');
+    expect(dataHeader).toContain('(2');
+    expect(
+      dataPanel
+        .querySelector('mat-expansion-panel-header')
+        .classList.contains('mat-expanded'),
+    ).toBe(true);
+    expect(dataPanel.querySelectorAll('app-scene-file')).toHaveLength(2);
 
-    // panel headers show the group name and file count
-    const headerText = element.querySelector('mat-panel-title').textContent;
-    expect(headerText).toContain('Metadata');
-    expect(headerText).toContain('(2');
+    // group panel headers show the group name and file count
+    const headers = [...element.querySelectorAll('mat-panel-title')].map(
+      (title) => title.textContent,
+    );
+    expect(headers[1]).toContain('Metadata');
+    expect(headers[1]).toContain('(2');
   });
 
   it('does not render panels for empty groups', async () => {
@@ -220,9 +230,10 @@ describe('SceneFilesComponent file grouping', () => {
     };
     await setup(scene, [scene, subproduct]);
 
+    // one Data panel for the ungrouped scene file plus one Metadata panel
     expect(
       fixture.nativeElement.querySelectorAll('mat-expansion-panel'),
-    ).toHaveLength(1);
+    ).toHaveLength(2);
   });
 
   it('keeps the flat file list for non-NISAR scenes', async () => {

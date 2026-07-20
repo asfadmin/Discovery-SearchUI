@@ -14,22 +14,42 @@
 <div>
   <mat-list class="products-list">
     @if (selectedSceneGroups(); as productsByGroup) {
-      @for (product of productsByGroup['default']; track product.id) {
-        <app-scene-file
-          (toggle)="onToggleQueueProduct(product)"
-          (queueHyp3Job)="onQueueHyp3Job($event)"
-          (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-          [loadingHyp3JobName]="loadingHyp3JobName"
-          [isUserLoggedIn]="isUserLoggedIn"
-          [product]="product"
-          [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
-          [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-          [isQueued]="(queuedProductIds$ | async).has(product.id)"
-          [isOpen]="false"
-        >
-        </app-scene-file>
-      }
       <mat-accordion multi>
+        <!-- Ungrouped products (main science files) live in a Data panel that
+             is expanded by default, so every section reads consistently while
+             the primary files stay visible on load -->
+        @if (productsByGroup['default'].length > 0) {
+          <mat-expansion-panel class="file-group-panel" [expanded]="true">
+            <mat-expansion-panel-header
+              [collapsedHeight]="customCollapsedHeight"
+              [expandedHeight]="customExpandedHeight"
+            >
+              <mat-panel-title>
+                {{ 'DATA' | translate }}
+                ({{ productsByGroup['default'].length }}
+                {{
+                  (productsByGroup['default'].length === 1 ? 'FILE' : 'FILES')
+                    | translate
+                }})
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            @for (product of productsByGroup['default']; track product.id) {
+              <app-scene-file
+                (toggle)="onToggleQueueProduct(product)"
+                (queueHyp3Job)="onQueueHyp3Job($event)"
+                (renameJobProjectName)="onRenameJobProjectName(product, $event)"
+                [loadingHyp3JobName]="loadingHyp3JobName"
+                [isUserLoggedIn]="isUserLoggedIn"
+                [product]="product"
+                [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
+                [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+                [isQueued]="(queuedProductIds$ | async).has(product.id)"
+                [isOpen]="false"
+              >
+              </app-scene-file>
+            }
+          </mat-expansion-panel>
+        }
         @for (group of groups(); track group) {
           @if (group !== 'default' && productsByGroup[group].length > 0) {
             <mat-expansion-panel class="file-group-panel">
