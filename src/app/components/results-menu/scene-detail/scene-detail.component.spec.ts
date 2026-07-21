@@ -79,4 +79,54 @@ describe('SceneDetailComponent', () => {
 
     expect(component.productTypeDocsUrl).toBeNull();
   });
+
+  describe('nisar calibration label', () => {
+    const selectNisarScene = (crid: string | null) => {
+      const scene = productFactory
+        .withBasicInfo('test-nisar-scene')
+        .withDatasetFull(nisar)
+        .withMetadata({
+          nisar: {
+            additionalUrls: [],
+            s3Urls: [],
+            frameCoverage: '',
+            jointObservation: '',
+            sideBandPolarization: [],
+            mainBandPolarization: [],
+            rangeBandwidth: '',
+            crid,
+          },
+        })
+        .build();
+
+      store.overrideSelector(scenesStore.getSelectedScene, scene);
+      store.refreshState();
+      fixture.detectChanges();
+    };
+
+    it.each([
+      ['X05010', 'UNCALIBRATED'],
+      ['X05022', 'UNCALIBRATED'],
+      ['X05023', 'PROVISIONAL'],
+      ['X06001', 'PROVISIONAL'],
+      [null, 'UNCALIBRATED'],
+    ])('labels NISAR scenes with crid %s as %s', (crid, label) => {
+      selectNisarScene(crid as string | null);
+
+      expect(component.nisarCalibration()?.label).toBe(label);
+    });
+
+    it('returns no label for non-NISAR scenes', () => {
+      const sentinelScene = productFactory
+        .withBasicInfo('test-sentinel-scene')
+        .withDatasetFull(sentinel_1)
+        .build();
+
+      store.overrideSelector(scenesStore.getSelectedScene, sentinelScene);
+      store.refreshState();
+      fixture.detectChanges();
+
+      expect(component.nisarCalibration()).toBeNull();
+    });
+  });
 });
