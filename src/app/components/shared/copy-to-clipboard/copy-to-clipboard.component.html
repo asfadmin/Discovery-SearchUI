@@ -1,4 +1,4 @@
-@if (submenu.length === 0) {
+@if (submenu().length === 0) {
   <mat-icon
     (click)="onCopyIconClicked($event)"
     class="clickable icon"
@@ -10,9 +10,8 @@
   </mat-icon>
 }
 
-@if (submenu.length > 0) {
+@if (submenu().length > 0) {
   <mat-icon
-    (click)="$event.stopPropagation()"
     [matMenuTriggerFor]="promptMenu"
     class="clickable icon"
     [matTooltip]="display"
@@ -21,12 +20,15 @@
   >
     {{ copyIcon() }}
   </mat-icon>
-}
 
-<mat-menu #promptMenu>
-  @for (item of submenu(); track item) {
-    <button mat-menu-item (click)="onCopyFromMenu(item[0], item[1])">
-      {{ item[0] }}
-    </button>
-  }
-</mat-menu>
+  <mat-menu #promptMenu>
+    @for (item of submenu(); track item) {
+      <button
+        mat-menu-item
+        (click)="onCopyFromMenu(item.prompt, item.message, item.value)"
+      >
+        {{ item.prompt }}
+      </button>
+    }
+  </mat-menu>
+}

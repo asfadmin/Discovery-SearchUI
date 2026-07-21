@@ -49,18 +49,37 @@
               ? product.id?.split('-XML')[0]
               : product.metadata.parentID || product.id
           "
+          [message]="'COPIED_FILE_ID' | translate"
           prompt="{{ 'COPY_FILE_ID' | translate }}"
         >
         </app-copy-to-clipboard>
-        <app-copy-to-clipboard
-          prompt="{{ 'COPY_URLS' | translate }}"
-          class="clipboard-icon"
-          [submenu]="[
-            ['Download URL', product.downloadUrl],
-            ['S3 URL', product.metadata?.s3URI],
-          ]"
-          copyIcon="link_2"
-        ></app-copy-to-clipboard>
+        @if (product.metadata?.s3URI !== null) {
+          <app-copy-to-clipboard
+            [prompt]="'COPY_URLS' | translate"
+            class="clipboard-icon"
+            [submenu]="[
+              {
+                prompt: 'COPY_URL' | translate,
+                message: 'COPIED_SCENE_DOWNLOAD_URL' | translate,
+                value: product.downloadUrl,
+              },
+              {
+                prompt: 'COPY_S3_URL' | translate,
+                message: 'COPIED_S3_URL' | translate,
+                value: product.metadata?.s3URI,
+              },
+            ]"
+            copyIcon="link_2"
+          ></app-copy-to-clipboard>
+        } @else {
+          <app-copy-to-clipboard
+            [prompt]="'COPY_DOWNLOAD_URL' | translate"
+            [message]="'COPIED_SCENE_DOWNLOAD_URL' | translate"
+            class="clipboard-icon"
+            [value]="product.downloadUrl"
+            copyIcon="link_2"
+          ></app-copy-to-clipboard>
+        }
       </a>
     }
   </div>

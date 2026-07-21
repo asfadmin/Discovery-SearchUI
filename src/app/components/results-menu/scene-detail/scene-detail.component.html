@@ -16,7 +16,8 @@
         }}</span>
         <app-copy-to-clipboard
           [value]="scene.name"
-          prompt="{{ 'COPY_SCENE_NAME' | translate }}"
+          [prompt]="'COPY_SCENE_NAME' | translate"
+          [message]="'COPIED_SCENE_NAME' | translate"
           class="clipboard-icon"
         ></app-copy-to-clipboard>
       </mat-card-title>
@@ -43,12 +44,12 @@
         <span matTooltip="{{ 'FREQUENCY' | translate }}">
           {{ dataset.frequency }}
         </span>
-        @if (dataset.id === 'NISAR') {
+        @if (nisarCalibration(); as calibration) {
           <em class="uncalibrated"
             ><app-docs-modal
               class="info-text"
-              [text]="'(' + ('UNCALIBRATED' | translate) + ')'"
-              url="https://nisar-docs.asf.alaska.edu/product-known-issues/"
+              [text]="'(' + (calibration.label | translate) + ')'"
+              [url]="calibration.url"
             >
             </app-docs-modal>
           </em>

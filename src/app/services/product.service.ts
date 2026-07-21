@@ -71,6 +71,9 @@ export class ProductService {
         product,
         product?.productTypeDisplay,
       );
+      if (product.dataset === models.nisar.id) {
+        product.browses = this.sortNativeBrowseFirst([...product.browses]);
+      }
 
       if (product.metadata?.opera) {
         product.bytes =
@@ -663,6 +666,9 @@ export class ProductService {
       const fileID = p.split('/').slice(-1)[0];
       const s3Url = s3UrlsByProductID[fileID] ?? null;
       const fileSize = product.metadata.nisar?.sizeMB?.[fileID]?.bytes ?? 0;
+
+      const browsesWithNativeFirst = this.sortNativeBrowseFirst(browses);
+
       const subproduct = this.createSubproductForScene(
         product,
         p,
@@ -670,7 +676,7 @@ export class ProductService {
         file_extension,
         productTypeDisplay,
         fileSize,
-        browses,
+        browsesWithNativeFirst,
       );
 
       products.push(subproduct);
@@ -690,6 +696,15 @@ export class ProductService {
       }
 
       return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
+    });
+  }
+
+  public sortNativeBrowseFirst(browses: string[]): string[] {
+    return [...browses].sort((a, b) => {
+      const aIsNative = a.endsWith('_NATIVE.png') ? 0 : 1;
+      const bIsNative = b.endsWith('_NATIVE.png') ? 0 : 1;
+
+      return aIsNative - bIsNative;
     });
   }
 }
