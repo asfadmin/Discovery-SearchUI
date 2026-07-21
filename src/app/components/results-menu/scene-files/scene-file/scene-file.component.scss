@@ -1,7 +1,5 @@
 @use 'asf-theme-variables' as *;
 
-// Copy and link icons sit in the meta corner, matching the size and themed
-// colour of the download and cart buttons that follow them
 .file-action-icons {
   display: inline-flex;
   align-items: center;

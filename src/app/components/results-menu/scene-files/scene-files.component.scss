@@ -116,34 +116,25 @@ $thumb-size: 50px;
   overflow: visible !important;
 }
 
-// File group panels blend into the surrounding list so the files keep
-// their existing look in both light and dark modes: transparent panel,
-// no body padding so grouped files align, and a fixed header height so
-// panels don't grow when expanded.
 .file-group-panel {
   @include mat.expansion-overrides(
     (
       container-background-color: transparent,
       container-elevation-shadow: none,
-      header-collapsed-state-height: 48px,
-      header-expanded-state-height: 48px,
+      header-collapsed-state-height: 32px,
+      header-expanded-state-height: 32px,
     )
   );
 
-  // Material adds vertical margin to expanded panels; keep groups compact
   &.mat-expansion-panel-spacing {
     margin: 0;
   }
 
-  // The rules below can't use style tokens yet: the global material.scss
-  // overrides pin header colours and typography directly, so the direct
-  // rules here are needed to win over them. Migrate to expansion-overrides
-  // tokens once the styling rework retires those globals.
-  // Headers stay white; the soft grey shade only marks hover and the
-  // section that is currently expanded
+  // Direct rules until the global material.scss header overrides move to tokens
   mat-expansion-panel-header {
     background: transparent !important;
     border: none;
+    padding-left: 12px;
 
     &:hover:not([aria-disabled='true']),
     &.mat-expanded {
@@ -158,7 +149,6 @@ $thumb-size: 50px;
       color: themed('dark-primary-text');
     }
 
-    // Match the 16px font size of the file items in the list
     font-size: 16px;
     font-weight: 600;
   }
@@ -167,16 +157,13 @@ $thumb-size: 50px;
     padding: 0;
   }
 
-  // Single line rows read compact inside the panels, like the mock
   ::ng-deep app-scene-file .mat-mdc-list-item {
     height: 44px;
   }
 
-  // Rows read as results under the group title: indented and lighter than
-  // the section header
   ::ng-deep app-scene-file {
     .mat-mdc-list-item {
-      padding-left: 24px;
+      padding-left: 0;
     }
 
     .mdc-list-item__primary-text {

@@ -170,8 +170,7 @@ export const nisar = {
       qa: 'QA Statistics HDF5',
       bin: 'Bin File',
     },
-    // Main science HDF5 products (e.g. 'L2 GSLC HDF5') intentionally match no
-    // group so they fall through to the ungrouped list at the top.
+    // Main science HDF5 intentionally matches no group so it stays at the top
     groups: [
       {
         name: 'Metadata',

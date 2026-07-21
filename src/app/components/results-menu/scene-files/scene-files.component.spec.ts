@@ -133,10 +133,7 @@ describe('SceneFilesComponent file grouping', () => {
     fixture = TestBed.createComponent(SceneFilesComponent);
     component = fixture.componentInstance;
     fixture.autoDetectChanges();
-    // Deterministically flush the debounceTime(0) on the scene products
-    // selector and the debounceTime(100) inside hasSubquery$ before asserting
-    // on the DOM. Advancing fake timers avoids a wall-clock wait, which would
-    // be flaky on loaded CI runners.
+    // Advance fake timers so the debounced streams flush deterministically
     await vi.advanceTimersByTimeAsync(120);
     vi.useRealTimers();
     await fixture.whenStable();
@@ -201,7 +198,6 @@ describe('SceneFilesComponent file grouping', () => {
     );
     expect(element.querySelectorAll('mat-expansion-panel')).toHaveLength(4);
 
-    // ungrouped files render first, inside a Data panel that is open by default
     const dataPanel = element.querySelector('mat-expansion-panel');
     const dataHeader = dataPanel.querySelector('mat-panel-title').textContent;
     expect(dataHeader).toContain('Data');
@@ -213,7 +209,6 @@ describe('SceneFilesComponent file grouping', () => {
     ).toBe(true);
     expect(dataPanel.querySelectorAll('app-scene-file')).toHaveLength(2);
 
-    // group panel headers show the group name and file count
     const headers = [...element.querySelectorAll('mat-panel-title')].map(
       (title) => title.textContent,
     );
@@ -230,7 +225,6 @@ describe('SceneFilesComponent file grouping', () => {
     };
     await setup(scene, [scene, subproduct]);
 
-    // one Data panel for the ungrouped scene file plus one Metadata panel
     expect(
       fixture.nativeElement.querySelectorAll('mat-expansion-panel'),
     ).toHaveLength(2);

@@ -111,8 +111,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       .pipe(debounceTime(0)),
     { initialValue: [] as models.CMRProduct[] },
   );
-  // 'default' holds ungrouped products (e.g. the main science HDF5) and is
-  // rendered first, in a Data panel that is expanded by default.
   readonly groups = computed(() => {
     const scene = this.scene();
     if (scene?.dataset === 'NISAR' && scene.metadata?.subproducts?.length > 0) {

@@ -34,9 +34,6 @@
       }
     }
 
-    <!-- One accordion holds every section, so the whole list collapses and
-         reads consistently: Data (ungrouped science files, expanded by
-         default), one panel per file type group, and Related Data -->
     @if (productsByGroup || showRelatedData) {
       <mat-accordion multi>
         @if (productsByGroup && productsByGroup['default'].length > 0) {
