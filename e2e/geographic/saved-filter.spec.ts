@@ -29,6 +29,9 @@ test(
     await expect(
       loggedInPage.locator('app-geographic-search-filters'),
     ).toContainText('File Types: GRD_HD');
+
+    await loggedInPage.evaluate(() => window.scrollTo(0, 0)); // Reset viewport position to prevent overflow
+    await loggedInPage.mouse.move(0, 0);
     await expect(loggedInPage).toHaveScreenshot();
   },
 );
