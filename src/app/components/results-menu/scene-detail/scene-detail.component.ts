@@ -13,8 +13,8 @@ import * as userStore from '@store/user';
 import * as models from '@models';
 import {
   calibratedCrid,
-  knownIssuesUrl,
-  preCalibrationKnownIssuesUrl,
+  provisionalIssuesUrl,
+  betaIssuesUrl,
 } from '@models/datasets/nisar';
 
 import {
@@ -102,8 +102,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
 
     return crid >= calibratedCrid
-      ? { label: 'PROVISIONAL', url: knownIssuesUrl }
-      : { label: 'UNCALIBRATED', url: preCalibrationKnownIssuesUrl };
+      ? { label: 'PROVISIONAL', url: provisionalIssuesUrl }
+      : { label: 'UNCALIBRATED', url: betaIssuesUrl };
   }
 
   public isBrowseOverlayEnabled$: Observable<boolean> =

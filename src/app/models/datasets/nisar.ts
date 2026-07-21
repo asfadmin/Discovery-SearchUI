@@ -187,9 +187,9 @@ export const L1L2BrowseCollectionMapping = {
 // Products processed with CRID 5023 or later are provisional calibrated data;
 // earlier CRIDs are pre-calibration ("uncalibrated") products.
 export const calibratedCrid = 5023;
-export const knownIssuesUrl =
-  'https://nisar-docs.asf.alaska.edu/product-known-issues/';
+export const provisionalIssuesUrl =
+  'https://nisar-docs.asf.alaska.edu/provisional-known-issues/';
 // Update once the provisional known issues page is published alongside the
 // July data release; the pre-calibration page currently covers both.
-export const preCalibrationKnownIssuesUrl =
+export const betaIssuesUrl =
   'https://nisar-docs.asf.alaska.edu/product-known-issues/';
