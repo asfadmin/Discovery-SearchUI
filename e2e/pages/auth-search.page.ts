@@ -1,17 +1,10 @@
 import { Page } from '@playwright/test';
-import { test as base } from 'e2e/pages/auth.page';
-import { sanitize } from 'e2e/helpers';
+import { extend_test as base } from 'e2e/pages/auth.page';
 
 export const test = base.extend<{ capturedSearchPage: Page }>({
-  loggedInPage: async ({ loggedInPage }, use, testInfo) => {
-    await loggedInPage.routeFromHAR(
-      `./e2e/hars/${testInfo.titlePath.slice(0, -1).join('/')}/${sanitize(testInfo.title)}.har`,
-      {
-        url: '**/*/services/search/**',
-        update: false,
-        notFound: 'fallback',
-      },
-    );
+  loggedInPage: async ({ loggedInPage }, use) => {
+    await loggedInPage.goto('/#/?dataset=SENTINEL-1');
+    await loggedInPage.waitForLoadState('networkidle');
 
     await use(loggedInPage);
   },

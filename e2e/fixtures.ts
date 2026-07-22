@@ -1,11 +1,15 @@
 import { test as base, expect } from '@playwright/test';
+import { sanitize } from 'e2e/helpers';
+import * as fs from 'fs';
 
 const THIRD_PARTY_PATTERN =
   /(googletagmanager|crazyegg|earthdata\.gov|feedback\.js)/;
 const EXTERNAL_ASSET_PATTERN = /\.(png|jpg|jpeg|pbf|webp|gif)(\?.*)?$/;
 
-export const test = base.extend({
-  page: async ({ page }, use) => {
+const UPDATE = false;
+
+export const extend_test = base.extend({
+  page: async ({ page }, use, testInfo) => {
     await page.route('**/*/tiles**', (route) => {
       route.fulfill({
         status: 200,
@@ -28,6 +32,15 @@ export const test = base.extend({
       }),
     );
 
+    await page.routeFromHAR(
+      `./e2e/hars/${testInfo.titlePath.slice(0, -1).join('/')}/${sanitize(testInfo.title)}.har`,
+      {
+        url: '**/*/services/search/**',
+        update: UPDATE,
+        notFound: 'fallback',
+      },
+    );
+
     await page.route(
       'https://cdn.earthdata.nasa.gov/tophat2/tophat2.js',
       (route) => route.fulfill({ path: './e2e/tophat.js' }),
@@ -48,6 +61,18 @@ export const test = base.extend({
       (route) => route.continue(),
     );
 
+    await use(page);
+
+    if (testInfo.status !== testInfo.expectedStatus && UPDATE) {
+      fs.unlinkSync(
+        `./e2e/hars/${testInfo.titlePath.slice(0, -1).join('/')}/${sanitize(testInfo.title)}.har`,
+      );
+    }
+  },
+});
+
+export const test = extend_test.extend({
+  page: async ({ page }, use) => {
     await page.goto('/#/?dataset=SENTINEL-1');
     await page.waitForLoadState('networkidle');
 

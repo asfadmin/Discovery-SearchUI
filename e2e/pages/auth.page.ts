@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { test as base } from 'e2e/fixtures';
+import { extend_test as base } from 'e2e/fixtures';
 const userServiceMock = async (
   page: Page,
   route: string,
@@ -15,13 +15,12 @@ const userServiceMock = async (
   });
 };
 
-export const test = base.extend<{ loggedInPage: Page }>({
+export const extend_test = base.extend<{ loggedInPage: Page }>({
   loggedInPage: async ({ page }, use) => {
     await userServiceMock(page, '**appdata**/**/vertex/**/History');
     await userServiceMock(page, '**appdata**/**/vertex/**/SavedSearches');
     await userServiceMock(page, '**appdata**/**/vertex/**/SavedFilters');
     await userServiceMock(page, '**appdata**/**/Profile', {
-      defaultDataset: 'SENTINEL-1',
       defaultFilterPresets: {
         'Baseline Search': '',
         'Geographic Search': '',
@@ -168,4 +167,14 @@ export const test = base.extend<{ loggedInPage: Page }>({
     await use(page);
   },
 });
+
+export const test = extend_test.extend<{ loggedInPage: Page }>({
+  loggedInPage: async ({ loggedInPage }, use) => {
+    await loggedInPage.goto('/#/?dataset=SENTINEL-1');
+    await loggedInPage.waitForLoadState('networkidle');
+
+    await use(loggedInPage);
+  },
+});
+
 export { expect } from '@playwright/test';
