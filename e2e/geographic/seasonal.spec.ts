@@ -1,7 +1,6 @@
 import { test, expect } from 'e2e/fixtures';
 
 test('test', { tag: '@visual' }, async ({ page }) => {
-  await page.goto('/');
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page.getByRole('switch', { name: 'Seasonal Search' }).click();
   const seasonStart = page.locator('.dates > div').filter({

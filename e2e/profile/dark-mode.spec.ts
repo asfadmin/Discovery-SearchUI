@@ -4,8 +4,6 @@ test(
   'Profile: Set dark mode',
   { tag: ['@auth', '@visual'] },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
-
     await loggedInPage
       .getByRole('button', { name: 'automatedtesting_fullaccess' })
       .click();

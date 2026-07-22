@@ -17,8 +17,6 @@ test('Profile: login state is synced across instances', async ({
     }
   });
 
-  await loggedInPage.goto('/');
-
   await expect(
     loggedInPage.getByRole('button', { name: 'Sign In' }),
   ).toBeVisible();

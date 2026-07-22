@@ -6,7 +6,6 @@ test(
   'SBAS Download Pair CSV',
   { tag: '@visual' },
   async ({ capturedSearchPage }) => {
-    await capturedSearchPage.goto('/');
     await capturedSearchPage
       .getByRole('button', { name: 'Geographic Search' })
       .click();

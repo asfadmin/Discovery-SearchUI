@@ -1,7 +1,6 @@
 import { test, expect } from 'e2e/pages/search.page';
 
 test('SBAS Manually Add Point', async ({ page: capturedSearchPage }) => {
-  await capturedSearchPage.goto('/');
   await capturedSearchPage
     .getByRole('button', { name: 'Geographic Search' })
     .click();

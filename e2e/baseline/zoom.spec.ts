@@ -6,7 +6,6 @@ test('Baseline zoom to results', async ({ capturedSearchPage }) => {
       .replace(/\s+/g, ' ')
       .trim();
 
-  await capturedSearchPage.goto('/');
   await capturedSearchPage
     .getByRole('button', { name: 'Geographic Search' })
     .click();

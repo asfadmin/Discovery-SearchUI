@@ -5,8 +5,6 @@ test(
   'List Search: searching by file IDs returns scenes',
   { tag: '@visual' },
   async ({ capturedSearchPage }) => {
-    await capturedSearchPage.goto('/?maxResults=10');
-
     await capturedSearchPage
       .locator('app-search-type-selector')
       .locator('button.button-menu-trigger')

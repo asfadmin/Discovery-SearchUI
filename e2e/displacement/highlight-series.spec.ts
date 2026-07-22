@@ -3,8 +3,6 @@ import { test, expect } from 'e2e/fixtures';
 test('Displacement: selecting a series highlights it in the AOI list', async ({
   page,
 }) => {
-  await page.goto('/');
-
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'Displacement Displacement' })
@@ -23,7 +21,9 @@ test('Displacement: selecting a series highlights it in the AOI list', async ({
     initialSeriesCount + 1,
   );
 
-  const newSeriesItem = displacementResults.locator('li.point-list-item').last();
+  const newSeriesItem = displacementResults
+    .locator('li.point-list-item')
+    .last();
 
   await newSeriesItem.click();
 

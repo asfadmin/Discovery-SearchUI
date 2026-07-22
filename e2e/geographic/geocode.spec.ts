@@ -3,7 +3,6 @@ import { waitForASFAPIResponse } from 'e2e/helpers';
 import { mockGeocoding } from 'e2e/helpers';
 test('Place name is geocoded to WKT AOI', async ({ page }) => {
   await mockGeocoding(page);
-  await page.goto('/');
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page.getByRole('menuitem', { name: 'S1 Burst' }).click();
 
@@ -28,7 +27,6 @@ test('Place name geocode pans the map to the entered location', async ({
   page,
 }) => {
   await mockGeocoding(page);
-  await page.goto('/');
 
   const aoiFilter = page.locator('app-aoi-filter');
   await aoiFilter.locator('.additional-aoi-toggle').click();
@@ -57,7 +55,6 @@ test('Geocoded place name is cleared when AOI is manually updated', async ({
   page,
 }) => {
   await mockGeocoding(page);
-  await page.goto('/');
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page.getByRole('menuitem', { name: 'S1 Burst' }).click();
 

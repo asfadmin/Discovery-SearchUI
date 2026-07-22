@@ -4,7 +4,6 @@ test(
   'On Demand: Geographic submit job with name',
   { tag: ['@auth', '@visual'] },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
       .click();
@@ -71,7 +70,6 @@ test(
   'On Demand: SBAS submit job',
   { tag: '@auth' },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
       .click();
@@ -100,9 +98,7 @@ test(
       ),
       sbasSearchButton.click(),
     ]);
-    await loggedInPage
-      .getByLabel('Add all results to On Demand queue')
-      .click();
+    await loggedInPage.getByLabel('Add all results to On Demand queue').click();
     await loggedInPage.getByRole('menuitem', { name: 'RTC GAMMA' }).click();
 
     await loggedInPage.getByRole('menuitem', { name: 'SLC jobs' }).click();
@@ -121,7 +117,6 @@ test(
   'On Demand: Baseline submit job',
   { tag: '@auth' },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
       .click();

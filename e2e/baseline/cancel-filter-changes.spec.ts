@@ -4,8 +4,6 @@ import { waitForASFAPIResponse } from 'e2e/helpers';
 test('Baseline: Cancel restores filter changes after editing start date', async ({
   page,
 }) => {
-  await page.goto('/');
-
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'Baseline Baseline search' })

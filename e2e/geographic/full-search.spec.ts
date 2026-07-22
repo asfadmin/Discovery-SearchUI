@@ -20,7 +20,6 @@ import { waitForASFAPIResponse } from 'e2e/helpers';
   { menuSelector: 'SEASAT', expected: 'SEASAT' },
 ].forEach(({ menuSelector, expected }) => {
   test(`Validate available dataset: ${expected}`, async ({ page }) => {
-    await page.goto('/?maxResults=1');
     await page.getByRole('button', { name: 'Sentinel-' }).click();
     await page.getByRole('menuitem', { name: menuSelector }).click();
     await page

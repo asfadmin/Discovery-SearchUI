@@ -3,7 +3,6 @@ import { test, expect } from 'e2e/pages/search.page';
 test('SBAS overlap threshold filter changes the selected value', async ({
   page: capturedSearchPage,
 }) => {
-  await capturedSearchPage.goto('/');
   await capturedSearchPage
     .getByRole('button', { name: 'Geographic Search' })
     .click();

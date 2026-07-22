@@ -1,7 +1,6 @@
 import { test, expect } from 'e2e/pages/search.page';
 
 test('Baseline Start & End Date Filters', async ({ page }) => {
-  await page.goto('/');
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'Baseline Baseline search' })
@@ -33,8 +32,6 @@ test('Baseline Start & End Date Filters', async ({ page }) => {
 });
 
 test('Select a different reference scene', async ({ capturedSearchPage }) => {
-  await capturedSearchPage.goto('/');
-
   await capturedSearchPage
     .getByRole('button', { name: 'Geographic Search' })
     .click();

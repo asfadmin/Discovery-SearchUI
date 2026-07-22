@@ -16,7 +16,6 @@ test('SBAS: Search after geo search', async ({ page: capturedSearchPage }) => {
     },
   );
 
-  await capturedSearchPage.goto('/');
   await capturedSearchPage
     .getByRole('button', { name: 'SEARCH', exact: true })
     .click();

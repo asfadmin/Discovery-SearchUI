@@ -3,8 +3,6 @@ import { test, expect } from 'e2e/fixtures';
 test('Displacement: velocity layer is enabled by default and shows legend and opacity slider', async ({
   page,
 }) => {
-  await page.goto('/');
-
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'Displacement Displacement' })

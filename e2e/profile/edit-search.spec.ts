@@ -4,7 +4,6 @@ test(
   'Profile: Edit saved search',
   { tag: ['@auth', '@visual'] },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     const searchActionsButton = loggedInPage
       .locator('.dataset-filters-card .footer')
       .locator('app-search-button')
@@ -42,7 +41,6 @@ test(
   'Profile: Delete saved search',
   { tag: '@auth' },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     const searchActionsButton = loggedInPage
       .locator('.dataset-filters-card .footer')
       .locator('app-search-button')
@@ -71,7 +69,6 @@ test(
   'Profile: Update saved search',
   { tag: '@auth' },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     const searchActionsButton = loggedInPage
       .locator('.dataset-filters-card .footer')
       .locator('app-search-button')

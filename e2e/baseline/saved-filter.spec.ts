@@ -4,7 +4,6 @@ test(
   'Baseline: Saved filters',
   { tag: ['@auth', '@visual'] },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
       .click();

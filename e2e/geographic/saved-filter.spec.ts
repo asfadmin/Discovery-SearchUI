@@ -4,7 +4,6 @@ test(
   'Geo: Saved Filters',
   { tag: ['@auth', '@visual'] },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     await loggedInPage
       .getByRole('button', { name: 'Filters', exact: true })
       .click();

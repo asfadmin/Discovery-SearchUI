@@ -6,7 +6,6 @@ test('Campaign Filter', async ({ page }) => {
     return route.continue();
   });
 
-  await page.goto('/');
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
     .getByRole('menuitem', { name: 'UAVSAR Uninhabited Aerial' })
@@ -30,7 +29,6 @@ test('Selecting Multiple Campaigns', { tag: '@visual' }, async ({ page }) => {
   await page.route('**/services/utils/mission_list**', (route) => {
     return route.continue();
   });
-  await page.goto('/');
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
     .getByRole('menuitem', { name: 'UAVSAR Uninhabited Aerial' })

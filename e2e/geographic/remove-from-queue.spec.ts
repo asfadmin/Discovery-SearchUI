@@ -2,8 +2,6 @@ import { test, expect } from 'e2e/fixtures';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('Geographic: remove scene files from download queue', async ({ page }) => {
-  await page.goto('/');
-
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page
     .getByRole('region', { name: 'Area of Interest Options' })
@@ -30,16 +28,14 @@ test('Geographic: remove scene files from download queue', async ({ page }) => {
   await addToDownloadsIcon.click();
 
   await expect(
-    firstScene
-      .locator('mat-icon')
-      .filter({ hasText: /^\s*shopping_cart\s*$/ }),
+    firstScene.locator('mat-icon').filter({ hasText: /^\s*shopping_cart\s*$/ }),
   ).toHaveCount(1);
 
   await page.getByRole('button', { name: 'Downloads' }).click();
   await expect(page.locator('.dl-subtitle')).toContainText(/\d+\s+Files?/i);
-  await expect(page.locator('.dl-mat-dialog-content mat-list-item')).not.toHaveCount(
-    0,
-  );
+  await expect(
+    page.locator('.dl-mat-dialog-content mat-list-item'),
+  ).not.toHaveCount(0);
 
   await page.locator('.dl-close-x').click();
 

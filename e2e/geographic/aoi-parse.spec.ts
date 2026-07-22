@@ -3,7 +3,6 @@ import { test, expect } from 'e2e/fixtures';
 test('Area of interest should parse polygon coordinate strings', async ({
   page,
 }) => {
-  await page.goto('/');
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page
     .getByRole('region', { name: 'Area of Interest Options' })
@@ -33,7 +32,6 @@ test('Area of interest should parse polygon coordinate strings', async ({
 test('Manual Entry Cases, (Self-Intersecting, clear, valid)', async ({
   page,
 }) => {
-  await page.goto('/');
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
 
   await page
@@ -74,7 +72,6 @@ test('Manual Entry Cases, (Self-Intersecting, clear, valid)', async ({
 });
 
 test('Invalid Manual Entry', async ({ page }) => {
-  await page.goto('/');
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page
     .getByRole('region', { name: 'Area of Interest Options' })

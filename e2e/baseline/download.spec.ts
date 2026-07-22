@@ -1,7 +1,6 @@
 import { test, expect } from 'e2e/fixtures';
 
 test('Add files to Download Queue', async ({ page }) => {
-  await page.goto('/');
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'Baseline Baseline search' })

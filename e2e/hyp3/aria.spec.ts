@@ -3,7 +3,6 @@ test(
   'On Demand: Aria On Demand',
   { tag: ['@auth', '@webgl'] },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     await loggedInPage.route('**ARIA_S1_GUNW/**.geojson', async (request) => {
       await request.fulfill({
         path: 'e2e/hyp3/assets/aria_frame_map.geojson',

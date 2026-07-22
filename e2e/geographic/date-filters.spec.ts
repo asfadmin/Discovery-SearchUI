@@ -1,7 +1,6 @@
 import { test, expect } from 'e2e/fixtures';
 
 test('Set Start and End Date', { tag: '@visual' }, async ({ page }) => {
-  await page.goto('/');
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   const filtersDropdown = page.locator('app-filters-dropdown');
   const startDate = filtersDropdown.getByRole('textbox', {
@@ -32,7 +31,6 @@ test('Set Start and End Date', { tag: '@visual' }, async ({ page }) => {
 });
 
 test('Clamp End Date to Start', async ({ page }) => {
-  await page.goto('/');
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   const filtersDropdown = page.locator('app-filters-dropdown');
   const startDate = filtersDropdown.getByRole('textbox', {
@@ -61,7 +59,6 @@ test('Clamp End Date to Start', async ({ page }) => {
 });
 
 test('Invalid Dates', async ({ page }) => {
-  await page.goto('/');
   const filtersDropdown = page.locator('app-filters-dropdown');
   const startDate = filtersDropdown.getByRole('textbox', {
     name: 'Start Date',

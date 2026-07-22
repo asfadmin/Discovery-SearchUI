@@ -48,6 +48,9 @@ export const test = base.extend({
       (route) => route.continue(),
     );
 
+    await page.goto('/#/?dataset=SENTINEL-1');
+    await page.waitForLoadState('networkidle');
+
     await use(page);
   },
 });

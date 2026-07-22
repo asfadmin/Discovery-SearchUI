@@ -1,7 +1,6 @@
 import { test, expect } from 'e2e/pages/auth.page';
 
 test('Profile: Delete filter', { tag: '@auth' }, async ({ loggedInPage }) => {
-  await loggedInPage.goto('/');
   await loggedInPage
     .getByRole('button', { name: 'Filters', exact: true })
     .click();
@@ -31,7 +30,6 @@ test(
   'Profile: Apply filter',
   { tag: ['@auth', '@visual'] },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     await loggedInPage
       .getByRole('button', { name: 'Filters', exact: true })
       .click();

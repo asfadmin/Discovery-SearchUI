@@ -1,7 +1,6 @@
 import { test, expect } from 'e2e/fixtures';
 
 test('Import a geojson point file', async ({ page }) => {
-  await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
 
   await page
@@ -19,7 +18,6 @@ test('Import a geojson point file', async ({ page }) => {
 });
 
 test('Import a KML file', async ({ page }) => {
-  await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
 
   await page
@@ -38,7 +36,6 @@ test('Import a KML file', async ({ page }) => {
 });
 
 test('Import a .shp shape file', async ({ page }) => {
-  await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
 
   await page
@@ -56,7 +53,6 @@ test('Import a .shp shape file', async ({ page }) => {
 });
 
 test('Import a .zip shape file', async ({ page }) => {
-  await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
 
   await page
@@ -74,7 +70,6 @@ test('Import a .zip shape file', async ({ page }) => {
 });
 
 test('Import multiple geojson files sequentially', async ({ page }) => {
-  await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
 
   await page
@@ -106,7 +101,6 @@ test('Import multiple geojson files sequentially', async ({ page }) => {
 });
 
 test('Import rejects invalid file type', async ({ page }) => {
-  await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
 
   await page

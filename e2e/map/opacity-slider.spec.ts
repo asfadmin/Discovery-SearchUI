@@ -5,8 +5,6 @@ test(
   'Map: opacity slider changes browse image opacity',
   { tag: '@visual' },
   async ({ capturedSearchPage }) => {
-    await capturedSearchPage.goto('/');
-
     await capturedSearchPage
       .getByRole('button', { name: 'Filters', exact: true })
       .click();

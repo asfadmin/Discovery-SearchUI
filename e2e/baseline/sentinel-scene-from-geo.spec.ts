@@ -4,8 +4,6 @@ import { waitForASFAPIResponse } from 'e2e/helpers';
 test('Baseline: Search for a Sentinel Scene from Geo Search (SLC File)', async ({
   page,
 }) => {
-  await page.goto('/');
-
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page
     .getByRole('textbox', { name: 'End Date' })

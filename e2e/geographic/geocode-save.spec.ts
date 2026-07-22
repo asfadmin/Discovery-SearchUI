@@ -6,7 +6,7 @@ test(
   { tag: '@auth' },
   async ({ loggedInPage }) => {
     await mockGeocoding(loggedInPage);
-    await loggedInPage.goto('/?maxResults=1');
+    await loggedInPage.goto('/?dataset=SENTINEL-1&maxResults=1');
     await loggedInPage
       .locator('app-aoi-filter')
       .getByText('arrow_drop_down')

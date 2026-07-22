@@ -5,7 +5,6 @@ test(
   'On Demand: Add expired job',
   { tag: '@auth' },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     await setupOnDemand(loggedInPage);
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
@@ -34,7 +33,6 @@ test(
   'On Demand: Add previously submitted job (file panel)',
   { tag: '@auth' },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     await setupOnDemand(loggedInPage);
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })

@@ -3,8 +3,6 @@ import { test, expect } from 'e2e/fixtures';
 test('Displacement: deleting a selected series removes it from the AOI list', async ({
   page,
 }) => {
-  await page.goto('/');
-
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'Displacement Displacement' })

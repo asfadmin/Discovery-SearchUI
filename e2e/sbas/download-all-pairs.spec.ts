@@ -4,7 +4,6 @@ test(
   'SBAS: Download All Pairs',
   { tag: '@visual' },
   async ({ capturedSearchPage }) => {
-    await capturedSearchPage.goto('/');
     await capturedSearchPage
       .getByRole('button', { name: 'Geographic Search' })
       .click();

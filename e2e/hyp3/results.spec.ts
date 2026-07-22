@@ -5,7 +5,6 @@ test(
   'On Demand: Zoom to results',
   { tag: '@auth' },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
     await setupOnDemand(loggedInPage);
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
