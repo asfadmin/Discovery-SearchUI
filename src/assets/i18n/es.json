@@ -845,6 +845,7 @@
   "PROJECT_NAME_PLACEHOLDER": "Marcador de posición del nombre del proyecto",
   "PROJECT_NAME_REQUIRED": "Se requiere el nombre del proyecto",
   "PROJECT_NAME_UNNAMED": "(sin nombre)",
+  "PROVISIONAL": "Provisional",
   "PROJECT_NAME_UPDATE_ALL_TOOLTIP": "Actualizar el nombre del proyecto para todos los trabajos cargados",
   "PROJECT_NAME_UPDATE_FOR_JOBS": " Actualizar nombre del proyecto para {{count}} trabajos ",
   "PROJECT_RENAME_CANCELLED": "El cambio de nombre del proyecto fue cancelado",
