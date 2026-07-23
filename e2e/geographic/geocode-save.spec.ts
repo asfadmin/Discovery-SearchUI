@@ -1,10 +1,12 @@
-import { test, expect } from 'e2e/pages/auth.page';
-import { mockGeocoding } from 'e2e/helpers';
+import { test, expect } from 'e2e/fixtures';
+import { mockGeocoding, login, standardizedPage } from 'e2e/helpers';
 
 test(
   'Geographic: Save with geocoded area',
   { tag: '@auth' },
-  async ({ loggedInPage }) => {
+  async ({ page }) => {
+    const loggedInPage = await standardizedPage(await login(page));
+
     await mockGeocoding(loggedInPage);
     await loggedInPage.goto('/?dataset=SENTINEL-1&maxResults=1');
     await loggedInPage

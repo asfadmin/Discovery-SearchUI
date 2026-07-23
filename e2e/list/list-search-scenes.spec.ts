@@ -1,9 +1,11 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, standardizedPage } from 'e2e/helpers';
 
 test('List Search: searching by scene names returns scenes', async ({
   page,
 }) => {
+  await standardizedPage(page);
+
   await page
     .locator('app-search-type-selector')
     .locator('button.button-menu-trigger')

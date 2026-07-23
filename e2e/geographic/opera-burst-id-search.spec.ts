@@ -1,7 +1,10 @@
 import { test, expect } from 'e2e/fixtures';
 import { waitForASFAPIResponse } from 'e2e/helpers';
+import { standardizedPage } from 'e2e/helpers';
 
 test('Opera Burst ID search returns matching results', async ({ page }) => {
+  await standardizedPage(page);
+
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page.getByRole('menuitem', { name: 'OPERA-S1 Sentinel-1 RTC' }).click();
 

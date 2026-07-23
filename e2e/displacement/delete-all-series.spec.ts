@@ -1,8 +1,11 @@
 import { test, expect } from 'e2e/fixtures';
+import { standardizedPage } from 'e2e/helpers';
 
 test('Displacement: deleting all series clears the AOI list', async ({
   page,
 }) => {
+  await standardizedPage(page);
+
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'Displacement Displacement' })

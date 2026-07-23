@@ -1,6 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
+import { standardizedPage } from 'e2e/helpers';
 
 test('Import a geojson file', async ({ page }) => {
+  await standardizedPage(page);
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
 
   await page

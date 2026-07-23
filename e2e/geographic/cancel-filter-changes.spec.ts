@@ -1,9 +1,11 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, standardizedPage } from 'e2e/helpers';
 
 test('Geographic: Cancel restores filter changes after editing path range', async ({
   page,
 }) => {
+  await standardizedPage(page);
+
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page
     .getByRole('region', { name: 'Area of Interest Options' })

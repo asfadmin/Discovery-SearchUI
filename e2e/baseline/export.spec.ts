@@ -1,57 +1,48 @@
-import { test, expect } from 'e2e/pages/search.page';
+import { test, expect } from 'e2e/fixtures';
 import * as fs from 'fs';
 import { parse } from 'csv-parse/sync';
+import { standardizedPage } from 'e2e/helpers';
 
-test(
-  'Results Menu Export CSV',
-  { tag: '@visual' },
-  async ({ capturedSearchPage }) => {
-    await capturedSearchPage
-      .getByRole('button', { name: 'Geographic Search' })
-      .click();
-    await capturedSearchPage
-      .getByRole('menuitem', { name: 'Baseline Baseline search' })
-      .click();
+test('Results Menu Export CSV', { tag: '@visual' }, async ({ page }) => {
+  await standardizedPage(page);
 
-    await capturedSearchPage
-      .getByRole('region', { name: 'Scene' })
-      .getByLabel('Scene')
-      .click();
-    await capturedSearchPage
-      .getByRole('region', { name: 'Scene' })
-      .getByLabel('Scene')
-      .fill(
-        'S1B_IW_SLC__1SDV_20210128T101605_20210128T101636_025353_030505_9FF1',
-      );
-    await expect(capturedSearchPage).toHaveScreenshot();
+  await page.getByRole('button', { name: 'Geographic Search' }).click();
+  await page
+    .getByRole('menuitem', { name: 'Baseline Baseline search' })
+    .click();
 
-    await capturedSearchPage
-      .locator('app-filters-dropdown')
-      .getByRole('button', { name: 'Filters panel search button' })
-      .click();
-    await capturedSearchPage
-      .getByRole('radiogroup')
-      .filter({ hasText: 'get_app' })
-      .click();
-    const metadataMenuItem = capturedSearchPage.getByRole('menuitem', {
-      name: 'Metadata',
-    });
-    await metadataMenuItem.click();
-    const csvMenuItem = capturedSearchPage.getByRole('menuitem', {
-      name: 'csv',
-    });
-    await csvMenuItem.click();
+  await page.getByRole('region', { name: 'Scene' }).getByLabel('Scene').click();
+  await page
+    .getByRole('region', { name: 'Scene' })
+    .getByLabel('Scene')
+    .fill(
+      'S1B_IW_SLC__1SDV_20210128T101605_20210128T101636_025353_030505_9FF1',
+    );
+  await expect(page).toHaveScreenshot();
 
-    const downloadPromise = capturedSearchPage.waitForEvent('download');
-    const download = await downloadPromise;
-    const path = await download.path();
+  await page
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
+    .click();
+  await page.getByRole('radiogroup').filter({ hasText: 'get_app' }).click();
+  const metadataMenuItem = page.getByRole('menuitem', {
+    name: 'Metadata',
+  });
+  await metadataMenuItem.click();
+  const csvMenuItem = page.getByRole('menuitem', {
+    name: 'csv',
+  });
+  await csvMenuItem.click();
 
-    const records = parse(fs.readFileSync(path), {
-      columns: true,
-      skip_empty_lines: true,
-    });
+  const downloadPromise = page.waitForEvent('download');
+  const download = await downloadPromise;
+  const path = await download.path();
 
-    expect(records[1]).not.toBe('');
-    await expect(capturedSearchPage).toHaveScreenshot();
-  },
-);
+  const records = parse(fs.readFileSync(path), {
+    columns: true,
+    skip_empty_lines: true,
+  });
+
+  expect(records[1]).not.toBe('');
+  await expect(page).toHaveScreenshot();
+});

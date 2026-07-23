@@ -1,6 +1,10 @@
 import { test, expect } from 'e2e/fixtures';
 
+import { standardizedPage } from 'e2e/helpers';
+
 test('test', { tag: '@visual' }, async ({ page }) => {
+  await standardizedPage(page);
+
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page.getByRole('switch', { name: 'Seasonal Search' }).click();
   const seasonStart = page.locator('.dates > div').filter({

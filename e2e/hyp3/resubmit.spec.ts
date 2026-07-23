@@ -1,38 +1,34 @@
-import { setupOnDemand } from 'e2e/helpers';
-import { test, expect } from 'e2e/pages/auth.page';
+import { setupOnDemand, login, standardizedPage } from 'e2e/helpers';
+import { test, expect } from 'e2e/fixtures';
 
-test(
-  'On Demand: Add expired job',
-  { tag: '@auth' },
-  async ({ loggedInPage }) => {
-    await setupOnDemand(loggedInPage);
-    await loggedInPage
-      .getByRole('button', { name: 'Geographic Search' })
-      .click();
-    await loggedInPage
-      .getByRole('menuitem', { name: 'On Demand Products On Demand' })
-      .click();
-    await expect(loggedInPage.locator('mat-list-item')).toContainText(
-      'Type: RTC_GAMMA, GRD_HD',
-    );
-    await loggedInPage
-      .locator('mat-chip.clickable')
-      .filter({ hasText: 'Expired' })
-      .first()
-      .click();
-    await loggedInPage
-      .getByRole('menuitem', { name: 'Resubmit Job...' })
-      .click();
-    await expect(loggedInPage.locator('app-confirmation')).toContainText(
-      'Submit 1 Job (5 credits)',
-    );
-  },
-);
+test('On Demand: Add expired job', { tag: '@auth' }, async ({ page }) => {
+  const loggedInPage = await standardizedPage(await login(page));
+
+  await setupOnDemand(loggedInPage);
+  await loggedInPage.getByRole('button', { name: 'Geographic Search' }).click();
+  await loggedInPage
+    .getByRole('menuitem', { name: 'On Demand Products On Demand' })
+    .click();
+  await expect(loggedInPage.locator('mat-list-item')).toContainText(
+    'Type: RTC_GAMMA, GRD_HD',
+  );
+  await loggedInPage
+    .locator('mat-chip.clickable')
+    .filter({ hasText: 'Expired' })
+    .first()
+    .click();
+  await loggedInPage.getByRole('menuitem', { name: 'Resubmit Job...' }).click();
+  await expect(loggedInPage.locator('app-confirmation')).toContainText(
+    'Submit 1 Job (5 credits)',
+  );
+});
 
 test(
   'On Demand: Add previously submitted job (file panel)',
   { tag: '@auth' },
-  async ({ loggedInPage }) => {
+  async ({ page }) => {
+    const loggedInPage = await standardizedPage(await login(page));
+
     await setupOnDemand(loggedInPage);
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })

@@ -1,10 +1,12 @@
-import { test, expect } from 'e2e/pages/auth.page';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { test, expect } from 'e2e/fixtures';
+import { waitForASFAPIResponse, login, standardizedPage } from 'e2e/helpers';
 
 test(
   'Baseline: Search History',
   { tag: ['@auth', '@visual'] },
-  async ({ loggedInPage }) => {
+  async ({ page }) => {
+    const loggedInPage = await standardizedPage(await login(page));
+
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
       .click();

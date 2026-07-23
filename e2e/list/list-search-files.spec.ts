@@ -1,30 +1,32 @@
-import { test, expect } from 'e2e/pages/search.page';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { test, expect } from 'e2e/fixtures';
+import { waitForASFAPIResponse, standardizedPage } from 'e2e/helpers';
 
 test(
   'List Search: searching by file IDs returns scenes',
   { tag: '@visual' },
-  async ({ capturedSearchPage }) => {
-    await capturedSearchPage
+  async ({ page }) => {
+    await standardizedPage(page);
+
+    await page
       .locator('app-search-type-selector')
       .locator('button.button-menu-trigger')
       .click();
-    await expect(capturedSearchPage).toHaveScreenshot();
+    await expect(page).toHaveScreenshot();
 
-    await capturedSearchPage.getByText('List', { exact: true }).click();
+    await page.getByText('List', { exact: true }).click();
 
-    await capturedSearchPage
+    await page
       .locator('app-list-header')
       .getByRole('button', { name: 'Edit List' })
       .click();
 
-    await capturedSearchPage
+    await page
       .locator('app-list-filters')
       .getByRole('radio', { name: 'File', exact: true })
       .click();
-    await expect(capturedSearchPage).toHaveScreenshot();
+    await expect(page).toHaveScreenshot();
 
-    await capturedSearchPage
+    await page
       .getByPlaceholder('List of File IDs')
       .fill(
         [
@@ -34,8 +36,8 @@ test(
         ].join('\n'),
       );
 
-    const searchResponse = waitForASFAPIResponse(capturedSearchPage);
-    const searchButton = capturedSearchPage
+    const searchResponse = waitForASFAPIResponse(page);
+    const searchButton = page
       .locator('app-filters-dropdown')
       .locator('app-search-button');
 
@@ -43,8 +45,8 @@ test(
     await searchResponse;
 
     await expect(searchButton).not.toContainText('NO RESULTS');
-    await expect(
-      capturedSearchPage.locator('app-max-results-selector'),
-    ).toContainText(/\d+\s+Files?/i);
+    await expect(page.locator('app-max-results-selector')).toContainText(
+      /\d+\s+Files?/i,
+    );
   },
 );

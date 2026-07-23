@@ -1,7 +1,10 @@
-import { test, expect } from 'e2e/pages/auth-search.page';
+import { test, expect } from 'e2e/fixtures';
+import { standardizedPage, login } from 'e2e/helpers';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
-test('SBAS: Search History', { tag: '@auth' }, async ({ loggedInPage }) => {
+test('SBAS: Search History', { tag: '@auth' }, async ({ page }) => {
+  const loggedInPage = await standardizedPage(await login(page));
+
   await loggedInPage.getByRole('button', { name: 'Geographic Search' }).click();
   await loggedInPage
     .getByRole('menuitem', { name: 'SBAS SBAS search provides' })

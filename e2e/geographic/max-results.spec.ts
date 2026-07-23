@@ -1,7 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, standardizedPage } from 'e2e/helpers';
 
 test('Auto Search when max results changes', async ({ page }) => {
+  await standardizedPage(page);
+
   const searchButton = page
     .locator('app-dataset-header')
     .locator('app-search-button')

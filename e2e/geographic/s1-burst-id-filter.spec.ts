@@ -1,7 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, standardizedPage } from 'e2e/helpers';
 
 test('S1 Burst ID filter returns matching results', async ({ page }) => {
+  await standardizedPage(page);
+
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page.getByRole('menuitem', { name: 'S1 Burst' }).click();
 

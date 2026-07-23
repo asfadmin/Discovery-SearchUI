@@ -1,9 +1,12 @@
 import { test, expect } from 'e2e/fixtures';
+import { standardizedPage } from 'e2e/helpers';
 
 test(
   'Ensure browse image styling remains unchanged.',
   { tag: '@visual' },
   async ({ page }) => {
+    await standardizedPage(page);
+
     await page.getByRole('button', { name: 'Geographic Search' }).click();
     await page
       .getByRole('menuitem', { name: 'List List search allows you' })

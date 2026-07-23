@@ -1,9 +1,11 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, standardizedPage } from 'e2e/helpers';
 
 test('Baseline: Search for a Sentinel Scene from Geo Search (SLC File)', async ({
   page,
 }) => {
+  await standardizedPage(page);
+
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page
     .getByRole('textbox', { name: 'End Date' })

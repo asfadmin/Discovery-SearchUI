@@ -8,7 +8,7 @@ const EXTERNAL_ASSET_PATTERN = /\.(png|jpg|jpeg|pbf|webp|gif)(\?.*)?$/;
 
 const UPDATE = false;
 
-export const extend_test = base.extend({
+export const test = base.extend({
   page: async ({ page }, use, testInfo) => {
     await page.route('**/*/tiles**', (route) => {
       route.fulfill({
@@ -70,14 +70,6 @@ export const extend_test = base.extend({
         `./e2e/hars/${testInfo.titlePath.slice(0, -1).join('/')}/${sanitize(testInfo.title)}.har`,
       );
     }
-  },
-});
-
-export const test = extend_test.extend({
-  page: async ({ page }, use) => {
-    await page.goto('/#/?dataset=SENTINEL-1');
-
-    await use(page);
   },
 });
 
