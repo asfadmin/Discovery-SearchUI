@@ -1,24 +1,30 @@
 @use 'asf-theme-variables' as *;
 
+.icon-margin {
+  margin-left: 5px;
+
+  span {
+    margin: 0 5px;
+  }
+
+  app-copy-to-clipboard + app-copy-to-clipboard {
+    margin-left: 6px;
+  }
+}
+
+.file-sub-line {
+  font-size: 14px !important;
+}
+
 .file-action-icons {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 
   app-copy-to-clipboard {
     display: inline-flex;
     align-items: center;
-  }
-
-  ::ng-deep mat-icon {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-
-    @include themify($themes) {
-      color: themed('light-black');
-    }
+    margin: 0;
   }
 }
 
@@ -29,7 +35,6 @@
 .file-size {
   font-size: 14px;
   white-space: nowrap;
-  padding-right: 16px;
 
   @include themify($themes) {
     color: themed('light-black');

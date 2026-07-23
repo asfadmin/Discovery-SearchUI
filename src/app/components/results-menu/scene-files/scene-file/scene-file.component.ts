@@ -33,7 +33,7 @@ import {
   MatListItemMeta,
   MatListItemLine,
 } from '@angular/material/list';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
@@ -75,6 +75,7 @@ import { TranslateModule } from '@ngx-translate/core';
     CartToggleComponent,
     Hyp3JobStatusBadgeComponent,
     AsyncPipe,
+    NgTemplateOutlet,
     TruncateModule,
     ReadableSizeFromBytesPipe,
     FullDatePipe,
@@ -91,6 +92,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   @Input() product: models.CMRProduct;
   @Input() isQueued: boolean;
   @Input() isOpen: boolean;
+  @Input() isGrouped = false;
   @Input() isUserLoggedIn: boolean;
   @Input() validHyp3JobTypes: models.Hyp3JobType[];
   @Input() hasAccessToRestrictedData: boolean;

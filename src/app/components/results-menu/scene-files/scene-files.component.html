@@ -50,6 +50,7 @@
             </mat-expansion-panel-header>
             @for (product of productsByGroup['default']; track product.id) {
               <app-scene-file
+                [isGrouped]="true"
                 (toggle)="onToggleQueueProduct(product)"
                 (queueHyp3Job)="onQueueHyp3Job($event)"
                 (renameJobProjectName)="onRenameJobProjectName(product, $event)"
@@ -80,6 +81,7 @@
               </mat-expansion-panel-header>
               @for (product of productsByGroup[group]; track product.id) {
                 <app-scene-file
+                  [isGrouped]="true"
                   (toggle)="onToggleQueueProduct(product)"
                   (queueHyp3Job)="onQueueHyp3Job($event)"
                   (renameJobProjectName)="
@@ -124,6 +126,7 @@
             @for (product of subqueryProducts; track product.id) {
               @if (dynamicQueryLoaded()) {
                 <app-scene-file
+                  [isGrouped]="true"
                   (toggle)="onToggleQueueProduct(product)"
                   (queueHyp3Job)="onQueueHyp3Job($event)"
                   (renameJobProjectName)="
