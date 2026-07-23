@@ -3,7 +3,7 @@ import { test, expect } from 'e2e/fixtures';
 test('NISAR default filter sticks around', async ({ page }) => {
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
-    .getByRole('menuitem', { name: 'NISAR (Uncalibrated) NISAR' })
+    .getByRole('menuitem', { name: 'NISAR (Provisional) NISAR' })
     .click();
   await expect(page.locator('app-info-bar')).toContainText(
     'Production Configuration: PR',
