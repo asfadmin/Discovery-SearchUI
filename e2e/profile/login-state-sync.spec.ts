@@ -2,8 +2,6 @@ import { test, expect } from 'e2e/fixtures';
 import { login, standardizedPage } from 'e2e/helpers';
 
 test('Profile: login state is synced across instances', async ({ page }) => {
-  const loggedInPage = await standardizedPage(await login(page));
-
   let loggedIn = false;
 
   await loggedInPage.route('**appdata**/info/cookie', async (route) => {
@@ -18,7 +16,7 @@ test('Profile: login state is synced across instances', async ({ page }) => {
     }
   });
 
-  await loggedInPage.goto('/#/?dataset=Sentinel-1');
+  const loggedInPage = await standardizedPage(await login(page));
 
   await expect(
     loggedInPage.getByRole('button', { name: 'Sign In' }),
