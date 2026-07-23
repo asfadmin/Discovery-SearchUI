@@ -171,8 +171,6 @@ export const extend_test = base.extend<{ loggedInPage: Page }>({
 export const test = extend_test.extend<{ loggedInPage: Page }>({
   loggedInPage: async ({ loggedInPage }, use) => {
     await loggedInPage.goto('/#/?dataset=SENTINEL-1');
-    await loggedInPage.waitForLoadState('networkidle');
-
     await use(loggedInPage);
   },
 });

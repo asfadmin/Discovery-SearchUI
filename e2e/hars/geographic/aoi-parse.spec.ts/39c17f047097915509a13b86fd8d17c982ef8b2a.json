@@ -1,0 +1,1 @@
+{"error":{"type":"ERROR","report":"Failed to validate wkt POLYGON((-114.4775 55.628,-95.2734 54.5721,-114.0381 41.1456,-97.251 41.1125,-114.4775 55.628)): WKT string: \"POLYGON ((-114.4775 55.628, -97.251 41.1125, -114.0381 41.1456, -95.2734 54.5721, -114.4775 55.628))\" is a self intersecting polygon"}}

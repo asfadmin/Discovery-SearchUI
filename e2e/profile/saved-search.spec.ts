@@ -4,7 +4,7 @@ test(
   'Profile: Set saved search',
   { tag: '@auth' },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/?dataset=SENTINEL-1&maxResults=1');
+    await loggedInPage.goto('/#/?dataset=SENTINEL-1&maxResults=1');
     const searchActionsButton = loggedInPage
       .locator('.dataset-filters-card .footer')
       .locator('app-search-button')
@@ -59,7 +59,7 @@ test(
   'Profile: Filter saved search',
   { tag: '@auth' },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/?dataset=SENTINEL-1&maxResults=1');
+    await loggedInPage.goto('/#/?dataset=SENTINEL-1&maxResults=1');
     const searchActionsButton = loggedInPage
       .locator('.dataset-filters-card .footer')
       .locator('app-search-button')

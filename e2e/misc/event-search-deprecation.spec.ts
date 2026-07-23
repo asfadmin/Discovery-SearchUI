@@ -1,7 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
 
 test('test', async ({ page }) => {
-  await page.goto('/#/?dataset=SENTINEL-1&searchType=Event%20Search');
+  await page.goto('/#/?searchType=Event%20Search');
+  await page.waitForLoadState('networkidle');
+
   await expect(page.locator('#deprecation-dialog-title')).toContainText(
     'Event Search Deprecation',
   );

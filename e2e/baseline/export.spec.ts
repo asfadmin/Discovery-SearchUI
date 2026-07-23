@@ -40,8 +40,9 @@ test(
     const csvMenuItem = capturedSearchPage.getByRole('menuitem', {
       name: 'csv',
     });
-    const downloadPromise = capturedSearchPage.waitForEvent('download');
     await csvMenuItem.click();
+
+    const downloadPromise = capturedSearchPage.waitForEvent('download');
     const download = await downloadPromise;
     const path = await download.path();
 

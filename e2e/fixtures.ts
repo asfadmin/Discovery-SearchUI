@@ -32,14 +32,16 @@ export const extend_test = base.extend({
       }),
     );
 
-    await page.routeFromHAR(
-      `./e2e/hars/${testInfo.titlePath.slice(0, -1).join('/')}/${sanitize(testInfo.title)}.har`,
-      {
-        url: '**/*/services/search/**',
-        update: UPDATE,
-        notFound: 'fallback',
-      },
-    );
+    if (testInfo.retry === 0) {
+      await page.routeFromHAR(
+        `./e2e/hars/${testInfo.titlePath.slice(0, -1).join('/')}/${sanitize(testInfo.title)}.har`,
+        {
+          url: '**/services/**',
+          update: UPDATE,
+          notFound: 'fallback',
+        },
+      );
+    }
 
     await page.route(
       'https://cdn.earthdata.nasa.gov/tophat2/tophat2.js',
@@ -74,7 +76,6 @@ export const extend_test = base.extend({
 export const test = extend_test.extend({
   page: async ({ page }, use) => {
     await page.goto('/#/?dataset=SENTINEL-1');
-    await page.waitForLoadState('networkidle');
 
     await use(page);
   },

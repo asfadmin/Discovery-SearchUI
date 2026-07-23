@@ -1,35 +1,38 @@
-import { test, expect } from 'e2e/pages/auth.page';
+import { extend_test, expect } from 'e2e/pages/auth.page';
 
-test('Profile: login state is synced across instances', async ({
-  loggedInPage,
-}) => {
-  let loggedIn = false;
+extend_test(
+  'Profile: login state is synced across instances',
+  async ({ loggedInPage }) => {
+    let loggedIn = false;
 
-  await loggedInPage.route('**appdata**/info/cookie', async (route) => {
-    if (!loggedIn) {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(JSON.stringify({})),
-      });
-    } else {
-      route.fallback();
-    }
-  });
+    await loggedInPage.route('**appdata**/info/cookie', async (route) => {
+      if (!loggedIn) {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify(JSON.stringify({})),
+        });
+      } else {
+        route.fallback();
+      }
+    });
 
-  await expect(
-    loggedInPage.getByRole('button', { name: 'Sign In' }),
-  ).toBeVisible();
+    await loggedInPage.goto('/#/?dataset=Sentinel-1');
 
-  loggedIn = true;
+    await expect(
+      loggedInPage.getByRole('button', { name: 'Sign In' }),
+    ).toBeVisible();
 
-  await loggedInPage.evaluate(() => {
-    const bc = new BroadcastChannel('asf-vertex');
-    bc.postMessage({ event: 'login' });
-    bc.close();
-  });
+    loggedIn = true;
 
-  await expect(
-    loggedInPage.getByRole('button', { name: 'automatedtesting_fullaccess' }),
-  ).toBeVisible();
-});
+    await loggedInPage.evaluate(() => {
+      const bc = new BroadcastChannel('asf-vertex');
+      bc.postMessage({ event: 'login' });
+      bc.close();
+    });
+
+    await expect(
+      loggedInPage.getByRole('button', { name: 'automatedtesting_fullaccess' }),
+    ).toBeVisible();
+  },
+);

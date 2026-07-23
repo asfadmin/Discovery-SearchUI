@@ -4,7 +4,7 @@ test(
   'Profile: Geographic Search History',
   { tag: '@auth' },
   async ({ loggedInPage }) => {
-    await loggedInPage.goto('/?dataset=SENTINEL-1&maxResults=1');
+    await loggedInPage.goto('/#/?dataset=SENTINEL-1&maxResults=1');
     await loggedInPage
       .locator('app-dataset-header')
       .locator('app-search-button')
