@@ -2,9 +2,10 @@ import { test, expect } from 'e2e/fixtures';
 import { login, standardizedPage } from 'e2e/helpers';
 
 test('Profile: login state is synced across instances', async ({ page }) => {
+  await standardizedPage(page);
   let loggedIn = false;
 
-  await loggedInPage.route('**appdata**/info/cookie', async (route) => {
+  await page.route('**appdata**/info/cookie', async (route) => {
     if (!loggedIn) {
       await route.fulfill({
         status: 200,
@@ -16,13 +17,11 @@ test('Profile: login state is synced across instances', async ({ page }) => {
     }
   });
 
-  const loggedInPage = await standardizedPage(await login(page));
-
-  await expect(
-    loggedInPage.getByRole('button', { name: 'Sign In' }),
-  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Sign In' })).toBeVisible();
 
   loggedIn = true;
+
+  const loggedInPage = await login(page);
 
   await loggedInPage.evaluate(() => {
     const bc = new BroadcastChannel('asf-vertex');
