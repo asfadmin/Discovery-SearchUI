@@ -100,9 +100,7 @@ test(
       ),
       sbasSearchButton.click(),
     ]);
-    await loggedInPage
-      .getByLabel('Add all results to On Demand queue')
-      .click();
+    await loggedInPage.getByLabel('Add all results to On Demand queue').click();
     await loggedInPage.getByRole('menuitem', { name: 'RTC GAMMA' }).click();
 
     await loggedInPage.getByRole('menuitem', { name: 'SLC jobs' }).click();

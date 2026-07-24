@@ -30,16 +30,14 @@ test('Geographic: remove scene files from download queue', async ({ page }) => {
   await addToDownloadsIcon.click();
 
   await expect(
-    firstScene
-      .locator('mat-icon')
-      .filter({ hasText: /^\s*shopping_cart\s*$/ }),
+    firstScene.locator('mat-icon').filter({ hasText: /^\s*shopping_cart\s*$/ }),
   ).toHaveCount(1);
 
   await page.getByRole('button', { name: 'Downloads' }).click();
   await expect(page.locator('.dl-subtitle')).toContainText(/\d+\s+Files?/i);
-  await expect(page.locator('.dl-mat-dialog-content mat-list-item')).not.toHaveCount(
-    0,
-  );
+  await expect(
+    page.locator('.dl-mat-dialog-content mat-list-item'),
+  ).not.toHaveCount(0);
 
   await page.locator('.dl-close-x').click();
 

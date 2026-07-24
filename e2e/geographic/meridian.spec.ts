@@ -10,7 +10,9 @@ test('Anti-Meridian Granules', async ({ page }) => {
     name: 'Date Filters Documentation',
   });
 
-  await dateFilters.getByRole('textbox', { name: 'Start Date' }).fill('4/30/2010');
+  await dateFilters
+    .getByRole('textbox', { name: 'Start Date' })
+    .fill('4/30/2010');
   await dateFilters.getByRole('textbox', { name: 'End Date' }).fill('7/3/2010');
   await page
     .locator('app-dataset-header')

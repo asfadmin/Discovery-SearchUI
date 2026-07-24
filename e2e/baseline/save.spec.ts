@@ -20,9 +20,7 @@ test('Baseline: Saved Search', { tag: '@auth' }, async ({ loggedInPage }) => {
   await loggedInPage
     .locator('app-baseline-header app-search-button .arrow-button-toggle')
     .click();
-  await loggedInPage
-    .getByRole('menuitem', { name: 'Saved Searches' })
-    .click();
+  await loggedInPage.getByRole('menuitem', { name: 'Saved Searches' }).click();
   await loggedInPage.getByRole('menuitem', { name: 'Save Search' }).click();
 
   await loggedInPage

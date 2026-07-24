@@ -13,8 +13,9 @@ test('Displacement: flight direction toggles between ascending and descending', 
   const flightDirectionToggle = page.locator(
     'app-timeseries-chart-flight-direction-toggle',
   );
-  const flightDirectionButton =
-    flightDirectionToggle.getByRole('button', { name: /Ascending/i });
+  const flightDirectionButton = flightDirectionToggle.getByRole('button', {
+    name: /Ascending/i,
+  });
 
   await flightDirectionButton.click();
 
@@ -35,5 +36,7 @@ test('Displacement: flight direction toggles between ascending and descending', 
     exact: true,
   });
   await ascendingMenuItem.click();
-  await expect(flightDirectionToggle.getByRole('button', { name: /Ascending/i })).toBeVisible();
+  await expect(
+    flightDirectionToggle.getByRole('button', { name: /Ascending/i }),
+  ).toBeVisible();
 });

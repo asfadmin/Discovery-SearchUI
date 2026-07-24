@@ -10,7 +10,9 @@ test('Displacement: shows the empty state when no points are selected', async ({
     .getByRole('menuitem', { name: 'Displacement Displacement' })
     .click();
 
-  await expect(page.getByRole('tooltip', { name: 'Click point' })).toBeVisible();
+  await expect(
+    page.getByRole('tooltip', { name: 'Click point' }),
+  ).toBeVisible();
   await expect(
     page.locator('app-timeseries-results-menu').locator('li.point-list-item'),
   ).toHaveCount(0);

@@ -14,11 +14,15 @@ test('Bounding Boxes Return Results in Mercator Projection', async ({
     name: 'Date Filters Documentation',
   });
 
-  await aoiOptions.getByLabel('Area of Interest • WKT').fill(
-    'POLYGON((150.2848 62.3432,262.0137 62.3432,262.0137 65.8193,150.2848 65.8193,150.2848 62.3432))',
-  );
+  await aoiOptions
+    .getByLabel('Area of Interest • WKT')
+    .fill(
+      'POLYGON((150.2848 62.3432,262.0137 62.3432,262.0137 65.8193,150.2848 65.8193,150.2848 62.3432))',
+    );
   await dateFilters.getByRole('textbox', { name: 'Start Date' }).fill('1/1/22');
-  await dateFilters.getByRole('textbox', { name: 'End Date' }).fill('8/25/2022');
+  await dateFilters
+    .getByRole('textbox', { name: 'End Date' })
+    .fill('8/25/2022');
   await page
     .locator('app-filters-dropdown')
     .getByRole('button', { name: 'Filters panel search button' })

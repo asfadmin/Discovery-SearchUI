@@ -23,7 +23,9 @@ test('NISAR default filter sticks around', async ({ page }) => {
     'Production Configuration: PR',
   );
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  await page.getByRole('combobox', { name: 'Production Configuration' }).click();
+  await page
+    .getByRole('combobox', { name: 'Production Configuration' })
+    .click();
   await page.getByRole('option', { name: 'Production' }).click();
   await page.getByText('Urgent Response').click();
   await page.locator('.cdk-overlay-backdrop').click();
