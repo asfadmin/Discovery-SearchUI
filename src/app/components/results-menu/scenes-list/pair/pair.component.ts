@@ -52,15 +52,15 @@ export class PairComponent {
     this.store$.select(scenesStore.getSelectedPairIds),
   );
 
-  readonly datasetId = toSignal(
-    this.store$.select(filtersStore.getSelectedDatasetId),
+  readonly isFrameMode = toSignal(
+    this.store$.select(filtersStore.getShouldUseFramesForReference),
   );
 
   readonly hyp3ableFiltered = computed(() => {
     const hyp3able = this.hyp3able();
-    const datasetId = this.datasetId();
+    const isFrameMode = this.isFrameMode();
 
-    return this.hyp3.getUpdatedHyp3able(hyp3able, datasetId);
+    return this.hyp3.getUpdatedHyp3able(hyp3able, isFrameMode);
   });
 
   readonly isSelected = computed(() => {

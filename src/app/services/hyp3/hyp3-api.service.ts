@@ -353,6 +353,7 @@ export class Hyp3ApiService {
 
   public getHyp3ableProducts(
     products: models.CMRProduct[][],
+    isAriaFrameModeActive: boolean,
   ): models.Hyp3ableProducts {
     const byJobType = models.hyp3JobTypesList
       .map((jobType) => {
@@ -401,15 +402,15 @@ export class Hyp3ApiService {
 
     const total = byJobType.reduce((sum, jobType) => sum + jobType.total, 0);
 
-    return { byJobType, total };
+    return this.getUpdatedHyp3able({ byJobType, total }, isAriaFrameModeActive);
   }
 
   public getUpdatedHyp3able(
     hyp3able: models.Hyp3ableProducts,
-    datasetId: string,
+    isAriaFrameModeActive: boolean,
   ): models.Hyp3ableProducts {
     const filteredByJobType = hyp3able.byJobType.filter((hyp3ableJobType) => {
-      if (datasetId === models.beta.id) {
+      if (isAriaFrameModeActive) {
         return hyp3ableJobType.jobType.id === models.AriaS1GunwJobType.id;
       } else {
         return hyp3ableJobType.jobType.id !== models.AriaS1GunwJobType.id;
