@@ -171,6 +171,12 @@ export async function sentinel1Page(page: Page) {
   return page;
 }
 
+export async function loggedInSentinel1Page(page: Page) {
+  await login(page);
+  await sentinel1Page(page);
+  return page;
+}
+
 export async function waitForASFAPIResponse(page: Page) {
   return page.waitForResponse((response) =>
     response.url().includes('output=jsonlite2'),

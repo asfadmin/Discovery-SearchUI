@@ -1,9 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
-import { sentinel1Page, login } from 'e2e/helpers';
+import { loggedInSentinel1Page } from 'e2e/helpers';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('SBAS: Search History', { tag: '@auth' }, async ({ page }) => {
-  const loggedInPage = await sentinel1Page(await login(page));
+  const loggedInPage = await loggedInSentinel1Page(page);
 
   await loggedInPage.getByRole('button', { name: 'Geographic Search' }).click();
   await loggedInPage

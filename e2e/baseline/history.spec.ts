@@ -1,11 +1,11 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse, login, sentinel1Page } from 'e2e/helpers';
+import { waitForASFAPIResponse, loggedInSentinel1Page } from 'e2e/helpers';
 
 test(
   'Baseline: Search History',
   { tag: ['@auth', '@visual'] },
   async ({ page }) => {
-    const loggedInPage = await sentinel1Page(await login(page));
+    const loggedInPage = await loggedInSentinel1Page(page);
 
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
