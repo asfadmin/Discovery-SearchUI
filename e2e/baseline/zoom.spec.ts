@@ -1,8 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
-import { standardizedPage } from 'e2e/helpers';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Baseline zoom to results', async ({ page }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   const getMapInfoText = async () =>
     ((await page.locator('app-map-info').textContent()) ?? '')

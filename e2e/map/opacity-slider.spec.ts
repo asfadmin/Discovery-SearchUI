@@ -1,11 +1,11 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse, standardizedPage } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 test(
   'Map: opacity slider changes browse image opacity',
   { tag: '@visual' },
   async ({ page }) => {
-    await standardizedPage(page);
+    await sentinel1Page(page);
 
     await page.getByRole('button', { name: 'Filters', exact: true }).click();
     await page

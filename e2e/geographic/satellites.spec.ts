@@ -1,9 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
 
-import { standardizedPage } from 'e2e/helpers';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Sentinel Satellite Filter', async ({ page }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   const subtypeFilter = page.getByRole('combobox', { name: 'Satellite' });

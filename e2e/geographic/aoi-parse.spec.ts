@@ -1,10 +1,10 @@
 import { test, expect } from 'e2e/fixtures';
-import { standardizedPage } from 'e2e/helpers';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Area of interest should parse polygon coordinate strings', async ({
   page,
 }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page
@@ -35,7 +35,7 @@ test('Area of interest should parse polygon coordinate strings', async ({
 test('Manual Entry Cases, (Self-Intersecting, clear, valid)', async ({
   page,
 }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
 
@@ -77,7 +77,7 @@ test('Manual Entry Cases, (Self-Intersecting, clear, valid)', async ({
 });
 
 test('Invalid Manual Entry', async ({ page }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page

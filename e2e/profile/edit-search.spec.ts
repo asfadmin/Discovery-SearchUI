@@ -1,11 +1,11 @@
 import { test, expect } from 'e2e/fixtures';
-import { login, standardizedPage } from 'e2e/helpers';
+import { login, sentinel1Page } from 'e2e/helpers';
 
 test(
   'Profile: Edit saved search',
   { tag: ['@auth', '@visual'] },
   async ({ page }) => {
-    const loggedInPage = await standardizedPage(await login(page));
+    const loggedInPage = await sentinel1Page(await login(page));
 
     const searchActionsButton = loggedInPage
       .locator('.dataset-filters-card .footer')
@@ -41,7 +41,7 @@ test(
 );
 
 test('Profile: Delete saved search', { tag: '@auth' }, async ({ page }) => {
-  const loggedInPage = await standardizedPage(await login(page));
+  const loggedInPage = await sentinel1Page(await login(page));
 
   const searchActionsButton = loggedInPage
     .locator('.dataset-filters-card .footer')
@@ -65,7 +65,7 @@ test('Profile: Delete saved search', { tag: '@auth' }, async ({ page }) => {
 });
 
 test('Profile: Update saved search', { tag: '@auth' }, async ({ page }) => {
-  const loggedInPage = await standardizedPage(await login(page));
+  const loggedInPage = await sentinel1Page(await login(page));
 
   const searchActionsButton = loggedInPage
     .locator('.dataset-filters-card .footer')

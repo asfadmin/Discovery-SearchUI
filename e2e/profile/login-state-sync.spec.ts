@@ -1,8 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
-import { login, standardizedPage } from 'e2e/helpers';
+import { login, sentinel1Page } from 'e2e/helpers';
 
 test('Profile: login state is synced across instances', async ({ page }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
   let loggedIn = false;
 
   await page.route('**appdata**/info/cookie', async (route) => {

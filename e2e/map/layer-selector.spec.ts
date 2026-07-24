@@ -1,11 +1,11 @@
 import { test, expect } from 'e2e/fixtures';
-import { standardizedPage } from 'e2e/helpers';
+import { sentinel1Page } from 'e2e/helpers';
 
 test(
   'Map: Overview Map toggle shows overview map',
   { tag: '@visual' },
   async ({ page }) => {
-    await standardizedPage(page);
+    await sentinel1Page(page);
 
     await page.getByRole('button', { name: 'layer selector' }).click();
     await expect(page).toHaveScreenshot();
@@ -20,7 +20,7 @@ test(
   'Map: Gridlines Overlay toggle updates checkbox state',
   { tag: '@visual' },
   async ({ page }) => {
-    await standardizedPage(page);
+    await sentinel1Page(page);
 
     const layerButton = page.getByRole('button', { name: 'layer selector' });
     const gridlinesItem = page.getByRole('menuitem', {
@@ -40,7 +40,7 @@ test(
   'Map: Coherence Layer activates when a month range is selected',
   { tag: '@visual' },
   async ({ page }) => {
-    await standardizedPage(page);
+    await sentinel1Page(page);
 
     const layerButton = page.getByRole('button', { name: 'layer selector' });
     const coherenceItem = page.getByRole('menuitem', {
@@ -61,7 +61,7 @@ test(
 test('Map: switch base layer between Satellite and Street', async ({
   page,
 }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   const layerButton = page.getByRole('button', { name: 'layer selector' });
   const layerIcon = layerButton.locator('mat-icon.control-icon');
