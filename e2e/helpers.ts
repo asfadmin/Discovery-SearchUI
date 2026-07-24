@@ -166,7 +166,7 @@ export async function login(page: Page) {
   return page;
 }
 
-export async function sentinel1DatasetPage(page: Page) {
+export async function sentinel1Page(page: Page) {
   await page.goto('/#/?dataset=SENTINEL-1');
   return page;
 }
