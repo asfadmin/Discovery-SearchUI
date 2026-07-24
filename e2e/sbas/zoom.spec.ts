@@ -1,8 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
 
-import { standardizedPage } from 'e2e/helpers';
+import { sentinel1Page } from 'e2e/helpers';
 test('SBAS: Zoom to Results', async ({ page }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'SBAS SBAS search provides' })

@@ -1,8 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
-import { login, standardizedPage } from 'e2e/helpers';
+import { login, sentinel1Page } from 'e2e/helpers';
 
 test('Baseline: Saved Search', { tag: '@auth' }, async ({ page }) => {
-  const loggedInPage = await standardizedPage(await login(page));
+  const loggedInPage = await sentinel1Page(await login(page));
 
   await loggedInPage.getByRole('button', { name: 'Geographic Search' }).click();
   await loggedInPage

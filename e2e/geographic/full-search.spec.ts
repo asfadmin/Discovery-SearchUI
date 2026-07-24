@@ -1,5 +1,5 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse, standardizedPage } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 [
   { menuSelector: 'NISAR (Provisional) NISAR', expected: 'NISAR' },
@@ -20,7 +20,7 @@ import { waitForASFAPIResponse, standardizedPage } from 'e2e/helpers';
   { menuSelector: 'SEASAT', expected: 'SEASAT' },
 ].forEach(({ menuSelector, expected }) => {
   test(`Validate available dataset: ${expected}`, async ({ page }) => {
-    await standardizedPage(page);
+    await sentinel1Page(page);
 
     await page.getByRole('button', { name: 'Sentinel-' }).click();
     await page.getByRole('menuitem', { name: menuSelector }).click();

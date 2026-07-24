@@ -1,8 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse, standardizedPage } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 test('S1 Burst path filter returns matching results', async ({ page }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page.getByRole('menuitem', { name: 'S1 Burst' }).click();

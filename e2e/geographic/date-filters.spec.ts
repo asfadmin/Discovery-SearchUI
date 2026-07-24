@@ -1,8 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
-import { standardizedPage } from 'e2e/helpers';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Set Start and End Date', { tag: '@visual' }, async ({ page }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   const filtersDropdown = page.locator('app-filters-dropdown');
@@ -34,7 +34,7 @@ test('Set Start and End Date', { tag: '@visual' }, async ({ page }) => {
 });
 
 test('Clamp End Date to Start', async ({ page }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   const filtersDropdown = page.locator('app-filters-dropdown');
@@ -64,7 +64,7 @@ test('Clamp End Date to Start', async ({ page }) => {
 });
 
 test('Invalid Dates', async ({ page }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   const filtersDropdown = page.locator('app-filters-dropdown');
   const startDate = filtersDropdown.getByRole('textbox', {

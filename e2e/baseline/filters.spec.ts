@@ -1,8 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
-import { standardizedPage } from 'e2e/helpers';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Baseline Start & End Date Filters', async ({ page }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
@@ -35,7 +35,7 @@ test('Baseline Start & End Date Filters', async ({ page }) => {
 });
 
 test('Select a different reference scene', async ({ page }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page

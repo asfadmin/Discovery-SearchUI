@@ -1,10 +1,10 @@
 import { test, expect } from 'e2e/fixtures';
-import { standardizedPage } from 'e2e/helpers';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Bounding Boxes Return Results in Mercator Projection', async ({
   page,
 }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page.getByRole('menuitem', { name: 'Sentinel-1 Sentinel-1' }).click();

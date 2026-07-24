@@ -1,10 +1,10 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse, standardizedPage } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 test('List Search: searching by scene names returns scenes', async ({
   page,
 }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page
     .locator('app-search-type-selector')

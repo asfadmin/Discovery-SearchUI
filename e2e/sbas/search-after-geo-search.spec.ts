@@ -1,5 +1,5 @@
 import { test, expect } from 'e2e/fixtures';
-import { standardizedPage } from 'e2e/helpers';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('SBAS: Search after geo search', async ({ page }) => {
   await page.route('*/**/services/search/param**', async (route) => {
@@ -13,7 +13,7 @@ test('SBAS: Search after geo search', async ({ page }) => {
       });
     }
   });
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'SEARCH', exact: true }).click();
   await expect(page.getByLabel('Search Error')).toBeVisible();

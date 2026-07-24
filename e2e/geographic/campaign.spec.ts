@@ -1,12 +1,12 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse, standardizedPage } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 test('Campaign Filter', async ({ page }) => {
   await page.route('**/services/utils/mission_list**', (route) => {
     return route.continue();
   });
 
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
@@ -32,7 +32,7 @@ test('Selecting Multiple Campaigns', { tag: '@visual' }, async ({ page }) => {
     return route.continue();
   });
 
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page

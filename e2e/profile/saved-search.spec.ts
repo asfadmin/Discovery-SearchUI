@@ -1,8 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
-import { login, standardizedPage } from 'e2e/helpers';
+import { login, sentinel1Page } from 'e2e/helpers';
 
 test('Profile: Set saved search', { tag: '@auth' }, async ({ page }) => {
-  const loggedInPage = await standardizedPage(await login(page));
+  const loggedInPage = await sentinel1Page(await login(page));
 
   await loggedInPage.goto('/#/?dataset=SENTINEL-1&maxResults=1');
   const searchActionsButton = loggedInPage
@@ -51,7 +51,7 @@ test('Profile: Set saved search', { tag: '@auth' }, async ({ page }) => {
 });
 
 test('Profile: Filter saved search', { tag: '@auth' }, async ({ page }) => {
-  const loggedInPage = await standardizedPage(await login(page));
+  const loggedInPage = await sentinel1Page(await login(page));
 
   await loggedInPage.goto('/#/?dataset=SENTINEL-1&maxResults=1');
   const searchActionsButton = loggedInPage

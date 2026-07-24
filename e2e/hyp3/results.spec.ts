@@ -1,8 +1,8 @@
-import { setupOnDemand, login, standardizedPage } from 'e2e/helpers';
+import { setupOnDemand, login, sentinel1Page } from 'e2e/helpers';
 import { test, expect } from 'e2e/fixtures';
 
 test('On Demand: Zoom to results', { tag: '@auth' }, async ({ page }) => {
-  const loggedInPage = await standardizedPage(await login(page));
+  const loggedInPage = await sentinel1Page(await login(page));
 
   await setupOnDemand(loggedInPage);
   await loggedInPage.getByRole('button', { name: 'Geographic Search' }).click();

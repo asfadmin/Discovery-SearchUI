@@ -1,11 +1,11 @@
 import { test, expect } from 'e2e/fixtures';
-import { login, standardizedPage } from 'e2e/helpers';
+import { login, sentinel1Page } from 'e2e/helpers';
 
 test(
   'On Demand: Aria On Demand',
   { tag: ['@auth', '@webgl'] },
   async ({ page }) => {
-    const loggedInPage = await standardizedPage(await login(page));
+    const loggedInPage = await sentinel1Page(await login(page));
 
     await loggedInPage.route('**ARIA_S1_GUNW/**.geojson', async (request) => {
       await request.fulfill({

@@ -1,10 +1,10 @@
 import { test, expect } from 'e2e/fixtures';
-import { standardizedPage } from 'e2e/helpers';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Displacement: drawing a point adds a series to the AOI list', async ({
   page,
 }) => {
-  await standardizedPage(page);
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
