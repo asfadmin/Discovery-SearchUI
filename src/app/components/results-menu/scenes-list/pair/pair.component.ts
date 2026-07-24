@@ -18,7 +18,6 @@ import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/
 import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Hyp3ApiService } from '@services';
 
 @Component({
   selector: 'app-pair',
@@ -39,7 +38,6 @@ import { Hyp3ApiService } from '@services';
 })
 export class PairComponent {
   private store$ = inject<Store<AppState>>(Store);
-  private hyp3 = inject(Hyp3ApiService);
 
   readonly pair = input<models.CMRProductPair>();
   readonly hyp3able = input<models.Hyp3ableProducts>();
@@ -55,13 +53,6 @@ export class PairComponent {
   readonly isFrameMode = toSignal(
     this.store$.select(filtersStore.getShouldUseFramesForReference),
   );
-
-  readonly hyp3ableFiltered = computed(() => {
-    const hyp3able = this.hyp3able();
-    const isFrameMode = this.isFrameMode();
-
-    return this.hyp3.getUpdatedHyp3able(hyp3able, isFrameMode);
-  });
 
   readonly isSelected = computed(() => {
     const selected = this.selectedPair();

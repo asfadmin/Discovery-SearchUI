@@ -15,19 +15,19 @@
   <div class="date" matListItemMeta>{{ pairPerpBaseline() }}m</div>
   <div class="date" matListItemMeta>{{ pairTempBaseline() }}d</div>
 
-  @if (hyp3ableFiltered().total > 0) {
+  @if (hyp3able().total > 0) {
     <mat-icon
       class="clickable noselect list-icon icon-margin"
       matTooltip="{{ 'ADD_PAIR_TO_ON_DEMAND_QUEUE' | translate }}"
       [matMenuTriggerFor]="pairAdd.addMenu"
-      [matMenuTriggerData]="{ hyp3able: hyp3ableFiltered().byJobType }"
+      [matMenuTriggerData]="{ hyp3able: hyp3able().byJobType }"
       svgIcon="hyp3"
       matListItemMeta
     >
     </mat-icon>
   }
 
-  @if (hyp3ableFiltered().total < 1) {
+  @if (hyp3able().total < 1) {
     <mat-icon
       class="noselect list-icon icon-margin icon-disabled"
       matTooltip="{{ 'ONLY_CO_POLARIZED_BURSTS' | translate }}"
