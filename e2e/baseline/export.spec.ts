@@ -34,8 +34,7 @@ test('Results Menu Export CSV', { tag: '@visual' }, async ({ page }) => {
   });
   await csvMenuItem.click();
 
-  const downloadPromise = page.waitForEvent('download');
-  const download = await downloadPromise;
+  const download = await page.waitForEvent('download');
   const path = await download.path();
 
   const records = parse(fs.readFileSync(path), {
