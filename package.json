@@ -7,7 +7,7 @@
     "start_local_asf": "ng serve --port 4447 --ssl true --host local.asf.alaska.edu",
     "build": "ng build --configuration production",
     "test": "ng test",
-    "lint": "eslint -c eslint.config.js  src",
+    "lint": "eslint -c eslint.config.js src e2e",
     "e2e": "ng e2e",
     "check_keys": "node scripts/check-keys.js"
   },
