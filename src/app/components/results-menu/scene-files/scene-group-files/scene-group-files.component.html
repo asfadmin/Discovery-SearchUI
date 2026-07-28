@@ -1,21 +1,24 @@
+@let byGroup = productsByGroup();
+@let queued = queuedProductIds();
+@let jobTypesByProduct = validJobTypesByProduct();
+
 <mat-accordion multi>
-  @if (productsByGroup && productsByGroup['default'].length > 0) {
+  @if (byGroup && byGroup['default'].length > 0) {
     <mat-expansion-panel class="file-group-panel" [expanded]="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{ 'DATA' | translate }}
-          ({{ productsByGroup['default'].length }}
+          ({{ byGroup['default'].length }}
           {{
-            (productsByGroup['default'].length === 1 ? 'FILE' : 'FILES')
-              | translate
+            (byGroup['default'].length === 1 ? 'FILE' : 'FILES') | translate
           }})
         </mat-panel-title>
       </mat-expansion-panel-header>
-      @for (product of productsByGroup['default']; track product.id) {
+      @for (product of byGroup['default']; track product.id) {
         <app-scene-group-file
           [product]="product"
-          [isQueued]="queuedProductIds?.has(product.id) ?? false"
-          [validHyp3JobTypes]="validJobTypesByProduct[product.id] ?? []"
+          [isQueued]="queued?.has(product.id) ?? false"
+          [validHyp3JobTypes]="jobTypesByProduct[product.id] ?? []"
           (toggle)="toggleProduct.emit(product)"
           (queueHyp3Job)="queueHyp3Job.emit($event)"
         >
@@ -24,24 +27,21 @@
     </mat-expansion-panel>
   }
 
-  @for (group of groups ?? []; track group) {
-    @if (group !== 'default' && productsByGroup[group].length > 0) {
+  @for (group of groups() ?? []; track group) {
+    @if (group !== 'default' && byGroup[group].length > 0) {
       <mat-expansion-panel class="file-group-panel">
         <mat-expansion-panel-header>
           <mat-panel-title>
             {{ 'FILE_GROUP_' + group.toUpperCase() | translate }}
-            ({{ productsByGroup[group].length }}
-            {{
-              (productsByGroup[group].length === 1 ? 'FILE' : 'FILES')
-                | translate
-            }})
+            ({{ byGroup[group].length }}
+            {{ (byGroup[group].length === 1 ? 'FILE' : 'FILES') | translate }})
           </mat-panel-title>
         </mat-expansion-panel-header>
-        @for (product of productsByGroup[group]; track product.id) {
+        @for (product of byGroup[group]; track product.id) {
           <app-scene-group-file
             [product]="product"
-            [isQueued]="queuedProductIds?.has(product.id) ?? false"
-            [validHyp3JobTypes]="validJobTypesByProduct[product.id] ?? []"
+            [isQueued]="queued?.has(product.id) ?? false"
+            [validHyp3JobTypes]="jobTypesByProduct[product.id] ?? []"
             (toggle)="toggleProduct.emit(product)"
             (queueHyp3Job)="queueHyp3Job.emit($event)"
           >
@@ -51,14 +51,15 @@
     }
   }
 
-  @if (showRelatedData) {
-    @let subqueryProducts = subqueryProducts$ | async;
+  @if (showRelatedData()) {
+    @let subqueryProducts = subqueryProducts$() | async;
+    @let loaded = subqueryLoaded();
 
     <mat-expansion-panel class="file-group-panel" [expanded]="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{ 'RELATED_DATA' | translate }}
-          @if (subqueryLoaded && subqueryProducts) {
+          @if (loaded && subqueryProducts) {
             ({{ subqueryProducts.length }}
             {{
               (subqueryProducts.length === 1 ? 'FILE' : 'FILES') | translate
@@ -66,23 +67,23 @@
           }
         </mat-panel-title>
       </mat-expansion-panel-header>
-      @if (!subqueryLoaded) {
+      @if (!loaded) {
         <div class="loading-row">
           <mat-spinner diameter="20"></mat-spinner>
         </div>
       }
 
       @for (product of subqueryProducts; track product.id) {
-        @if (subqueryLoaded) {
+        @if (loaded) {
           <app-scene-group-file
             [product]="product"
-            [isQueued]="queuedProductIds?.has(product.id) ?? false"
+            [isQueued]="queued?.has(product.id) ?? false"
             (toggle)="toggleProduct.emit(product)"
           >
           </app-scene-group-file>
         }
       } @empty {
-        @if (subqueryLoaded) {
+        @if (loaded) {
           <div class="no-related">
             {{ 'NO_RELATED_DATA' | translate }}
           </div>

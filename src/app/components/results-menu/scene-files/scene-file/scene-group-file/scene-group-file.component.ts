@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 import * as models from '@models';
 
@@ -31,16 +31,16 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
 })
 export class SceneGroupFileComponent {
-  @Input() product: models.CMRProduct;
-  @Input() isQueued = false;
-  @Input() validHyp3JobTypes: models.Hyp3JobType[] = [];
+  product = input.required<models.CMRProduct>();
+  isQueued = input(false);
+  validHyp3JobTypes = input<models.Hyp3JobType[]>([]);
 
-  @Output() toggle = new EventEmitter<void>();
-  @Output() queueHyp3Job = new EventEmitter<models.QueuedHyp3Job>();
+  toggle = output<void>();
+  queueHyp3Job = output<models.QueuedHyp3Job>();
 
   public addJobToProcessingQueue(jobType: models.Hyp3JobType): void {
     this.queueHyp3Job.emit({
-      granules: [this.product],
+      granules: [this.product()],
       job_type: jobType,
     });
   }

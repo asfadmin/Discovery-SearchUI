@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import * as models from '@models';
@@ -30,14 +30,14 @@ import { SceneGroupFileComponent } from '../scene-file/scene-group-file/scene-gr
   ],
 })
 export class SceneGroupFilesComponent {
-  @Input() productsByGroup: Record<string, models.CMRProduct[]> | null = null;
-  @Input() groups: string[] | null = null;
-  @Input() queuedProductIds: Set<string> | null = null;
-  @Input() validJobTypesByProduct: Record<string, models.Hyp3JobType[]> = {};
-  @Input() showRelatedData = false;
-  @Input() subqueryProducts$: Observable<models.CMRProduct[]>;
-  @Input() subqueryLoaded = false;
+  productsByGroup = input<Record<string, models.CMRProduct[]> | null>(null);
+  groups = input<string[] | null>(null);
+  queuedProductIds = input<Set<string> | null>(null);
+  validJobTypesByProduct = input<Record<string, models.Hyp3JobType[]>>({});
+  showRelatedData = input(false);
+  subqueryProducts$ = input<Observable<models.CMRProduct[]>>();
+  subqueryLoaded = input(false);
 
-  @Output() toggleProduct = new EventEmitter<models.CMRProduct>();
-  @Output() queueHyp3Job = new EventEmitter<models.QueuedHyp3Job>();
+  toggleProduct = output<models.CMRProduct>();
+  queueHyp3Job = output<models.QueuedHyp3Job>();
 }

@@ -1,38 +1,40 @@
+@let file = product();
+
 <div class="group-file-row">
-  <span class="file-name">{{ product.productTypeDisplay }}</span>
+  <span class="file-name">{{ file.productTypeDisplay }}</span>
 
   <span class="file-size">
-    @if (product.bytes === 0 && !product?.id?.startsWith('OPERA')) {
+    @if (file.bytes === 0 && !file?.id?.startsWith('OPERA')) {
       {{ 'VIRTUAL' | translate }}
-    } @else if (product.bytes !== 0) {
-      {{ product.bytes.toString() | readableSizeFromBytes }}
+    } @else if (file.bytes !== 0) {
+      {{ file.bytes.toString() | readableSizeFromBytes }}
     }
   </span>
 
   <app-copy-to-clipboard
     [value]="
-      product.metadata.productType === 'BURST_XML'
-        ? product.id?.split('-XML')[0]
-        : product.metadata.parentID || product.id
+      file.metadata.productType === 'BURST_XML'
+        ? file.id?.split('-XML')[0]
+        : file.metadata.parentID || file.id
     "
     [message]="'COPIED_FILE_ID' | translate"
     prompt="{{ 'COPY_FILE_ID' | translate }}"
   >
   </app-copy-to-clipboard>
 
-  @if (product.metadata?.s3URI !== null) {
+  @if (file.metadata?.s3URI !== null) {
     <app-copy-to-clipboard
       [prompt]="'COPY_URLS' | translate"
       [submenu]="[
         {
           prompt: 'COPY_URL' | translate,
           message: 'COPIED_SCENE_DOWNLOAD_URL' | translate,
-          value: product.downloadUrl,
+          value: file.downloadUrl,
         },
         {
           prompt: 'COPY_S3_URL' | translate,
           message: 'COPIED_S3_URL' | translate,
-          value: product.metadata?.s3URI,
+          value: file.metadata?.s3URI,
         },
       ]"
       copyIcon="link_2"
@@ -41,12 +43,12 @@
     <app-copy-to-clipboard
       [prompt]="'COPY_DOWNLOAD_URL' | translate"
       [message]="'COPIED_SCENE_DOWNLOAD_URL' | translate"
-      [value]="product.downloadUrl"
+      [value]="file.downloadUrl"
       copyIcon="link_2"
     ></app-copy-to-clipboard>
   }
 
-  @if (validHyp3JobTypes.length > 0) {
+  @if (validHyp3JobTypes().length > 0) {
     <button
       [matMenuTriggerFor]="customJobTypes"
       mat-icon-button
@@ -58,7 +60,7 @@
       >
       </mat-icon>
       <mat-menu #customJobTypes="matMenu">
-        @for (jobType of validHyp3JobTypes; track jobType) {
+        @for (jobType of validHyp3JobTypes(); track jobType) {
           <button (click)="addJobToProcessingQueue(jobType)" mat-menu-item>
             {{ 'ADD' | translate }} {{ jobType.name }} to On Demand
             <mat-icon
@@ -72,12 +74,9 @@
     </button>
   }
 
-  <app-download-file-button
-    [attr.id]="'scene_' + product.id"
-    [product]="product"
-  >
+  <app-download-file-button [attr.id]="'scene_' + file.id" [product]="file">
   </app-download-file-button>
 
-  <app-cart-toggle (toggle)="toggle.emit()" [isQueued]="isQueued">
+  <app-cart-toggle (toggle)="toggle.emit()" [isQueued]="isQueued()">
   </app-cart-toggle>
 </div>
