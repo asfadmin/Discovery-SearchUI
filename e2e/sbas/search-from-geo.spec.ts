@@ -1,8 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 test('SBAS: Search for a Scene from Geo Search', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page
     .getByRole('region', { name: 'Area of Interest Options' })

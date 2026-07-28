@@ -1,4 +1,5 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 [
   {
@@ -13,7 +14,7 @@ import { test, expect } from 'e2e/fixtures';
   },
 ].forEach(({ name, ariaLabel, urlPattern }) => {
   test(`Map: switch view to ${name} projection`, async ({ page }) => {
-    await page.goto('/');
+    await sentinel1Page(page);
 
     const button = page
       .locator('app-view-selector')
@@ -29,7 +30,7 @@ import { test, expect } from 'e2e/fixtures';
 test('Map: switch view back to Equatorial projection from Arctic', async ({
   page,
 }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
 
   const viewSelector = page.locator('app-view-selector');
 

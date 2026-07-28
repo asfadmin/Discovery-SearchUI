@@ -401,12 +401,10 @@ export class UserEffects {
     d instanceof Date && !isNaN(d.valueOf());
 
   private isValidProfile(resp) {
-    const datasetIds = models.datasetIds;
     if (resp === null) {
       return false;
     }
     return (
-      datasetIds.includes(resp.defaultDataset) &&
       Object.values(models.MapLayerTypes).includes(resp.mapLayer) &&
       this.isNumber(resp.maxResults) &&
       resp.maxResults <= 5000

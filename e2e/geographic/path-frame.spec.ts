@@ -1,7 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Button to clear path/frame', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page
     .getByRole('region', { name: 'Area of Interest Options' })
@@ -29,7 +31,8 @@ test('Button to clear path/frame', async ({ page }) => {
 });
 
 test('Button to restore path/frame', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page
     .getByRole('region', { name: 'Area of Interest Options' })
