@@ -28,6 +28,7 @@ import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
+import * as filtersStore from '@store/filters';
 
 import {
   CdkVirtualScrollViewport,
@@ -220,12 +221,15 @@ export class ScenesListComponent
     );
 
     this.subs.add(
-      this.pairs$.subscribe((pairs) => {
+      combineLatest([
+        this.pairs$,
+        this.store$.select(filtersStore.getShouldUseFramesForReference),
+      ]).subscribe(([pairs, isFrameMode]) => {
         this.pairs = [...pairs.pairs, ...pairs.custom].map((pair) => {
-          const hyp3able = this.hyp3.getHyp3ableProducts([
-            pair,
-            ...pair.map((p) => [p]),
-          ]);
+          const hyp3able = this.hyp3.getHyp3ableProducts(
+            [pair, ...pair.map((p) => [p])],
+            isFrameMode,
+          );
 
           return {
             pair,
@@ -255,10 +259,12 @@ export class ScenesListComponent
       }),
     );
 
-    this.store$
-      .select(scenesStore.getAllSceneProducts)
+    combineLatest([
+      this.store$.select(scenesStore.getAllSceneProducts),
+      this.store$.select(filtersStore.getShouldUseFramesForReference),
+    ])
       .pipe(withLatestFrom(baselineReference$))
-      .subscribe(([searchScenes, baselineReference]) => {
+      .subscribe(([[searchScenes, isFrameMode], baselineReference]) => {
         this.hyp3ableByScene = {};
 
         Object.entries(searchScenes).forEach(([groupId, products]) => {
@@ -271,7 +277,10 @@ export class ScenesListComponent
             }
           });
 
-          const hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
+          const hyp3able = this.hyp3.getHyp3ableProducts(
+            possibleJobs,
+            isFrameMode,
+          );
 
           this.hyp3ableByScene[groupId] = hyp3able;
         });

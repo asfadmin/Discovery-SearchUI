@@ -1,47 +1,41 @@
-import { test, expect } from 'e2e/pages/search.page';
+import { test, expect } from 'e2e/fixtures';
 
-test('SBAS: Zoom to Results', async ({ page: capturedSearchPage }) => {
-  await capturedSearchPage.goto('/');
-  await capturedSearchPage
-    .getByRole('button', { name: 'Geographic Search' })
-    .click();
-  await capturedSearchPage
+import { sentinel1Page } from 'e2e/helpers';
+test('SBAS: Zoom to Results', async ({ page }) => {
+  await sentinel1Page(page);
+  await page.getByRole('button', { name: 'Geographic Search' }).click();
+  await page
     .getByRole('menuitem', { name: 'SBAS SBAS search provides' })
     .click();
-  await capturedSearchPage
+  await page
     .getByRole('region', { name: 'Scene' })
     .getByLabel('Scene')
     .fill(
       'S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C',
     );
-  await capturedSearchPage
+  await page
     .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
 
-  const urlBeforeZoom = capturedSearchPage.url();
+  const urlBeforeZoom = page.url();
 
-  await capturedSearchPage
+  await page
     .getByRole('radiogroup')
     .filter({ hasText: 'settings_overscan' })
     .click();
 
-  await expect.poll(() => capturedSearchPage.url()).not.toBe(urlBeforeZoom);
+  await expect.poll(() => page.url()).not.toBe(urlBeforeZoom);
 
-  await capturedSearchPage.mouse.move(400, 300);
-  await expect(capturedSearchPage.locator('app-map-info')).not.toContainText(
-    'lat 00.0°',
-  );
+  await page.mouse.move(400, 300);
+  await expect(page.locator('app-map-info')).not.toContainText('lat 00.0°');
 
-  const coordsAtFirstPosition = await capturedSearchPage
+  const coordsAtFirstPosition = await page
     .locator('app-map-info')
     .textContent();
 
-  await capturedSearchPage.mouse.move(800, 600);
+  await page.mouse.move(800, 600);
   await expect
-    .poll(
-      async () =>
-        await capturedSearchPage.locator('app-map-info').textContent(),
-    )
+    .poll(async () => await page.locator('app-map-info').textContent())
     .not.toBe(coordsAtFirstPosition);
 });

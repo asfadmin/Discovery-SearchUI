@@ -193,14 +193,6 @@ export class UrlStateService {
 
   public setDefaults(profile: models.UserProfile): void {
     if (!this.kioskMode) {
-      if (this.loadLocations['dataset'] !== models.LoadTypes.URL) {
-        if (this.loadLocations['productTypes'] !== models.LoadTypes.URL) {
-          this.store$.dispatch(
-            new filterStore.SetSelectedDataset(profile.defaultDataset),
-          );
-        }
-      }
-
       if (this.loadLocations['maxResults'] !== models.LoadTypes.URL) {
         this.store$.dispatch(new filterStore.SetMaxResults(profile.maxResults));
       }

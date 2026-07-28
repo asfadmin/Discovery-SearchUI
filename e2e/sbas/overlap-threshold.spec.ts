@@ -1,50 +1,46 @@
-import { test, expect } from 'e2e/pages/search.page';
+import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('SBAS overlap threshold filter changes the selected value', async ({
-  page: capturedSearchPage,
+  page,
 }) => {
-  await capturedSearchPage.goto('/');
-  await capturedSearchPage
-    .getByRole('button', { name: 'Geographic Search' })
-    .click();
-  await capturedSearchPage
+  await sentinel1Page(page);
+
+  await page.getByRole('button', { name: 'Geographic Search' }).click();
+  await page
     .getByRole('menuitem', { name: 'SBAS SBAS search provides' })
     .click();
-  await capturedSearchPage
+  await page
     .getByRole('region', { name: 'Scene' })
     .getByLabel('Scene')
     .fill(
       'S1A_IW_SLC__1SDV_20210920T235648_20210920T235715_039772_04B42F_3C60',
     );
-  await capturedSearchPage
+  await page
     .locator('app-filters-dropdown')
     .getByRole('button', { name: 'Filters panel search button' })
     .click();
 
-  await capturedSearchPage
+  await page
     .locator('mat-button-toggle')
     .filter({ hasText: 'SBAS Filters' })
     .click();
 
-  await expect(
-    capturedSearchPage.locator('app-sbas-overlap-selector'),
-  ).toContainText('50% Overlap Threshold');
+  await expect(page.locator('app-sbas-overlap-selector')).toContainText(
+    '50% Overlap Threshold',
+  );
 
-  const headerBefore = await capturedSearchPage
+  const headerBefore = await page
     .locator('app-scenes-list-header')
     .textContent();
 
-  await capturedSearchPage
-    .locator('app-sbas-overlap-selector mat-select')
-    .click();
-  await capturedSearchPage
-    .getByRole('option', { name: 'Any Overlap Threshold' })
-    .click();
+  await page.locator('app-sbas-overlap-selector mat-select').click();
+  await page.getByRole('option', { name: 'Any Overlap Threshold' }).click();
 
-  await expect(
-    capturedSearchPage.locator('app-sbas-overlap-selector'),
-  ).toContainText('Any Overlap Threshold');
-  await expect(
-    capturedSearchPage.locator('app-scenes-list-header'),
-  ).not.toHaveText(headerBefore ?? '');
+  await expect(page.locator('app-sbas-overlap-selector')).toContainText(
+    'Any Overlap Threshold',
+  );
+  await expect(page.locator('app-scenes-list-header')).not.toHaveText(
+    headerBefore ?? '',
+  );
 });

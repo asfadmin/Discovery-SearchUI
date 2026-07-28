@@ -1,10 +1,11 @@
-import { test, expect } from 'e2e/pages/auth.page';
+import { test, expect } from 'e2e/fixtures';
+import { loggedInSentinel1Page } from 'e2e/helpers';
 
 test(
   'Profile: Set dark mode',
   { tag: ['@auth', '@visual'] },
-  async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
+  async ({ page }) => {
+    const loggedInPage = await loggedInSentinel1Page(page);
 
     await loggedInPage
       .getByRole('button', { name: 'automatedtesting_fullaccess' })

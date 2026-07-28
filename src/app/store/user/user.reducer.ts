@@ -22,7 +22,6 @@ export const initState: UserState = {
     exp: null,
   },
   profile: {
-    defaultDataset: 'SENTINEL-1',
     mapLayer: models.MapLayerTypes.SATELLITE,
     maxResults: 250,
     defaultMaxConcurrentDownloads: 3,

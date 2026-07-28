@@ -1,11 +1,11 @@
-import { test, expect } from 'e2e/pages/auth.page';
+import { test, expect } from 'e2e/fixtures';
+import { login, sentinel1Page } from 'e2e/helpers';
 
-test('Profile: login state is synced across instances', async ({
-  loggedInPage,
-}) => {
+test('Profile: login state is synced across instances', async ({ page }) => {
+  await sentinel1Page(page);
   let loggedIn = false;
 
-  await loggedInPage.route('**appdata**/info/cookie', async (route) => {
+  await page.route('**appdata**/info/cookie', async (route) => {
     if (!loggedIn) {
       await route.fulfill({
         status: 200,
@@ -17,13 +17,11 @@ test('Profile: login state is synced across instances', async ({
     }
   });
 
-  await loggedInPage.goto('/');
-
-  await expect(
-    loggedInPage.getByRole('button', { name: 'Sign In' }),
-  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Sign In' })).toBeVisible();
 
   loggedIn = true;
+
+  const loggedInPage = await login(page);
 
   await loggedInPage.evaluate(() => {
     const bc = new BroadcastChannel('asf-vertex');
