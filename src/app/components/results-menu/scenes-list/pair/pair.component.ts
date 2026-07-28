@@ -3,6 +3,7 @@ import { Component, output, inject, input, computed } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 import {
@@ -47,6 +48,10 @@ export class PairComponent {
 
   readonly selectedPair = toSignal(
     this.store$.select(scenesStore.getSelectedPairIds),
+  );
+
+  readonly isFrameMode = toSignal(
+    this.store$.select(filtersStore.getShouldUseFramesForReference),
   );
 
   readonly isSelected = computed(() => {
