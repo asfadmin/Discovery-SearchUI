@@ -1,12 +1,13 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 test('Campaign Filter', async ({ page }) => {
   await page.route('**/services/utils/mission_list**', (route) => {
     return route.continue();
   });
 
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
     .getByRole('menuitem', { name: 'UAVSAR Uninhabited Aerial' })
@@ -30,7 +31,9 @@ test('Selecting Multiple Campaigns', { tag: '@visual' }, async ({ page }) => {
   await page.route('**/services/utils/mission_list**', (route) => {
     return route.continue();
   });
-  await page.goto('/');
+
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
     .getByRole('menuitem', { name: 'UAVSAR Uninhabited Aerial' })

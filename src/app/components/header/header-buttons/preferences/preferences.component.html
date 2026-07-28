@@ -63,15 +63,6 @@
         >
           {{ 'DEFAULT_SEARCH_PRESETS' | translate }}
         </div>
-        <div class="default-dataset">
-          <app-dataset-selector
-            class="mobile-button-wrapper"
-            [(selected)]="defaultDataset"
-            (selectedChange)="onDatasetSelectionChange($event)"
-            [datasets]="datasets"
-          >
-          </app-dataset-selector>
-        </div>
 
         <mat-form-field class="default-max-result">
           <mat-label>{{ 'DEFAULT_MAX_RESULT_AMOUNT' | translate }}</mat-label>

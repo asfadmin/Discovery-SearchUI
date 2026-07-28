@@ -43,7 +43,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { UpperCasePipe, TitleCasePipe } from '@angular/common';
-import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
 import { Hyp3UrlSelectorComponent } from './hyp3-url-selector/hyp3-url-selector.component';
 import { MatButton } from '@angular/material/button';
 
@@ -64,7 +63,6 @@ import { MatButton } from '@angular/material/button';
     MatFormFieldModule,
 
     MatOption,
-    DatasetSelectorComponent,
     Hyp3UrlSelectorComponent,
     MatDialogActions,
     MatButton,
@@ -91,7 +89,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public datasets = datasetList;
   public defaultMaxResults: number;
   public defaultMapLayer: MapLayerTypes;
-  public defaultDataset: string;
   public defaultMaxConcurrentDownloads: number;
   public defaultProductTypes: ProductType[];
   public hyp3BackendUrl: string;
@@ -140,7 +137,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
         this.defaultLanguage = profile.language;
         this.defaultMaxResults = +profile.maxResults;
         this.defaultMapLayer = profile.mapLayer;
-        this.defaultDataset = profile.defaultDataset;
         this.selectedFiltersIDs = profile.defaultFilterPresets;
         this.defaultMaxConcurrentDownloads =
           profile.defaultMaxConcurrentDownloads;
@@ -205,11 +201,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public onClose(): void {
     this.saveProfile();
     this.dialogRef.close();
-  }
-
-  public onDatasetSelectionChange(dataset: string): void {
-    this.defaultDataset = dataset;
-    this.saveProfile();
   }
 
   public onChangeMaxResultsDefault(maxResults: number): void {
@@ -277,7 +268,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     const action = new userStore.SetProfile({
       maxResults: this.defaultMaxResults,
       mapLayer: this.defaultMapLayer,
-      defaultDataset: this.defaultDataset,
       defaultMaxConcurrentDownloads: this.defaultMaxConcurrentDownloads,
       defaultFilterPresets: this.selectedFiltersIDs,
       hyp3BackendUrl: this.hyp3BackendUrl,

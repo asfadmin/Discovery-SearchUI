@@ -1,8 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 test('ERS subtype E2 filter returns matching results', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   const filtersDropdown = page.locator('app-filters-dropdown');
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page

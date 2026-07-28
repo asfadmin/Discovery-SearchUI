@@ -1,7 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Switch back to English works', { tag: '@visual' }, async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'English' }).click();
   await expect(page).toHaveScreenshot();

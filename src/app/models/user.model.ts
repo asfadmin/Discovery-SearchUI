@@ -8,7 +8,6 @@ export interface UserAuth {
 }
 
 export interface UserProfile {
-  defaultDataset: string;
   mapLayer: MapLayerTypes;
   maxResults: number;
   defaultMaxConcurrentDownloads: number;

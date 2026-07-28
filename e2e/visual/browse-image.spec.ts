@@ -1,10 +1,12 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 test(
   'Ensure browse image styling remains unchanged.',
   { tag: '@visual' },
   async ({ page }) => {
-    await page.goto('/');
+    await sentinel1Page(page);
+
     await page.getByRole('button', { name: 'Geographic Search' }).click();
     await page
       .getByRole('menuitem', { name: 'List List search allows you' })

@@ -1,15 +1,17 @@
 import { test, expect } from 'e2e/fixtures';
 import { waitForASFAPIResponse } from 'e2e/helpers';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Opera Burst ID search returns matching results', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Sentinel-' }).click();
-  await page
-    .getByRole('menuitem', { name: 'OPERA-S1 Sentinel-1 RTC' })
-    .click();
+  await page.getByRole('menuitem', { name: 'OPERA-S1 Sentinel-1 RTC' }).click();
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  await page.getByLabel('Opera Burst ID').fill('T137_292392_IW1,T064_135590_IW1');
+  await page
+    .getByLabel('Opera Burst ID')
+    .fill('T137_292392_IW1,T064_135590_IW1');
 
   const responsePromise = waitForASFAPIResponse(page);
   await page
