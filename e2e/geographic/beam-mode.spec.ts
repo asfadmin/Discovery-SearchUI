@@ -1,7 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Multiple beam mode selections available', async ({ page }) => {
-  await page.goto('');
+  await sentinel1Page(page);
+
   await page
     .getByRole('region', { name: 'Area of Interest Options' })
     .getByLabel('Area of Interest • WKT')
@@ -20,7 +22,8 @@ test('Multiple beam mode selections available', async ({ page }) => {
 });
 
 test('Single beam mode selections available', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
     .getByRole('menuitem', { name: 'ARIA S1 GUNW NISAR-format' })

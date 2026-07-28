@@ -1,7 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Import a geojson file', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
 
   await page

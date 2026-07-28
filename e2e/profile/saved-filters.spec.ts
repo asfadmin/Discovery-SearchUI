@@ -1,7 +1,9 @@
-import { test, expect } from 'e2e/pages/auth.page';
+import { test, expect } from 'e2e/fixtures';
+import { loggedInSentinel1Page } from 'e2e/helpers';
 
-test('Profile: Delete filter', { tag: '@auth' }, async ({ loggedInPage }) => {
-  await loggedInPage.goto('/');
+test('Profile: Delete filter', { tag: '@auth' }, async ({ page }) => {
+  const loggedInPage = await loggedInSentinel1Page(page);
+
   await loggedInPage
     .getByRole('button', { name: 'Filters', exact: true })
     .click();
@@ -30,8 +32,9 @@ test('Profile: Delete filter', { tag: '@auth' }, async ({ loggedInPage }) => {
 test(
   'Profile: Apply filter',
   { tag: ['@auth', '@visual'] },
-  async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
+  async ({ page }) => {
+    const loggedInPage = await loggedInSentinel1Page(page);
+
     await loggedInPage
       .getByRole('button', { name: 'Filters', exact: true })
       .click();

@@ -1,47 +1,44 @@
-import { test, expect } from 'e2e/pages/search.page';
+import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
-test('Baseline zoom to results', async ({ capturedSearchPage }) => {
+test('Baseline zoom to results', async ({ page }) => {
+  await sentinel1Page(page);
+
   const getMapInfoText = async () =>
-    ((await capturedSearchPage.locator('app-map-info').textContent()) ?? '')
+    ((await page.locator('app-map-info').textContent()) ?? '')
       .replace(/\s+/g, ' ')
       .trim();
 
-  await capturedSearchPage.goto('/');
-  await capturedSearchPage
-    .getByRole('button', { name: 'Geographic Search' })
-    .click();
-  await capturedSearchPage
+  await page.getByRole('button', { name: 'Geographic Search' }).click();
+  await page
     .getByRole('menuitem', { name: 'Baseline Baseline search' })
     .click();
-  await capturedSearchPage
-    .getByRole('region', { name: 'Scene' })
-    .getByLabel('Scene')
-    .click();
-  await capturedSearchPage
+  await page.getByRole('region', { name: 'Scene' }).getByLabel('Scene').click();
+  await page
     .getByRole('region', { name: 'Scene' })
     .getByLabel('Scene')
     .fill(
       'S1B_IW_SLC__1SDV_20210128T101605_20210128T101636_025353_030505_9FF1',
     );
-  await capturedSearchPage
+  await page
     .locator('app-filters-dropdown')
     .getByRole('button', { name: 'Filters panel search button' })
     .click();
 
-  const urlBeforeZoom = capturedSearchPage.url();
+  const urlBeforeZoom = page.url();
 
-  await capturedSearchPage
+  await page
     .getByRole('radiogroup')
     .filter({ hasText: 'settings_overscan' })
     .click();
 
-  await expect.poll(() => capturedSearchPage.url()).not.toBe(urlBeforeZoom);
+  await expect.poll(() => page.url()).not.toBe(urlBeforeZoom);
 
-  await capturedSearchPage.mouse.move(800, 600);
+  await page.mouse.move(800, 600);
   await expect.poll(async () => await getMapInfoText()).toMatch(/lat.*lon/i);
   const coordsBeforeMove = await getMapInfoText();
 
-  await capturedSearchPage.mouse.move(900, 600);
+  await page.mouse.move(900, 600);
   await expect
     .poll(async () => await getMapInfoText())
     .not.toBe(coordsBeforeMove);

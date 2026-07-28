@@ -1,9 +1,10 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Displacement: velocity layer is enabled by default and shows legend and opacity slider', async ({
   page,
 }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page

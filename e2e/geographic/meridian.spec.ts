@@ -1,7 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Anti-Meridian Granules', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
     .getByRole('menuitem', { name: 'ALOS AVNIR-2 Advanced Visible' })
