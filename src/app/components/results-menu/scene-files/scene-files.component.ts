@@ -30,13 +30,7 @@ import * as hyp3Store from '@store/hyp3';
 import { AsfApiService, Hyp3ApiService } from '@services';
 import * as models from '@models';
 
-import { MatList, MatListItem } from '@angular/material/list';
-import {
-  MatAccordion,
-  MatExpansionPanel,
-  MatExpansionPanelHeader,
-  MatExpansionPanelTitle,
-} from '@angular/material/expansion';
+import { MatList } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';
 import { ScreenSizeService } from '@services';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -44,7 +38,7 @@ import * as filterStore from '@store/filters';
 import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
 import { AsyncPipe } from '@angular/common';
 import { SceneFileComponent } from './scene-file/scene-file.component';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { SceneGroupFilesComponent } from './scene-group-files/scene-group-files.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { getStaticQueryParams } from '@models/datasets/opera_s1';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -55,15 +49,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
   styleUrls: ['./scene-files.component.scss'],
   imports: [
     MatList,
-    MatProgressSpinner,
     SceneFileComponent,
+    SceneGroupFilesComponent,
     AsyncPipe,
     TranslateModule,
-    MatListItem,
-    MatAccordion,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle,
   ],
 })
 export class SceneFilesComponent implements OnInit, OnDestroy {

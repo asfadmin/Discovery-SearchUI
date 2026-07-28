@@ -193,7 +193,7 @@ describe('SceneFilesComponent file grouping', () => {
     await setup(scene, products);
 
     const element = fixture.nativeElement as HTMLElement;
-    expect(element.querySelectorAll('app-scene-file')).toHaveLength(
+    expect(element.querySelectorAll('app-scene-group-file')).toHaveLength(
       products.length,
     );
     expect(element.querySelectorAll('mat-expansion-panel')).toHaveLength(4);
@@ -207,7 +207,7 @@ describe('SceneFilesComponent file grouping', () => {
         .querySelector('mat-expansion-panel-header')
         .classList.contains('mat-expanded'),
     ).toBe(true);
-    expect(dataPanel.querySelectorAll('app-scene-file')).toHaveLength(2);
+    expect(dataPanel.querySelectorAll('app-scene-group-file')).toHaveLength(2);
 
     const headers = [...element.querySelectorAll('mat-panel-title')].map(
       (title) => title.textContent,

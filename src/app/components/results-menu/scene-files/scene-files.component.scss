@@ -1,4 +1,3 @@
-@use '@angular/material' as mat;
 @use 'asf-theme-variables' as *;
 
 $prod-row-height: 58px;
@@ -31,10 +30,6 @@ $thumb-size: 50px;
   @include themify($themes) {
     color: themed('blue-link');
   }
-}
-.no-related {
-  padding-left: 24px;
-  font-weight: 600;
 }
 .map-icon {
   cursor: pointer;
@@ -116,108 +111,4 @@ $thumb-size: 50px;
   overflow: visible !important;
 }
 
-.file-group-panel {
-  @include mat.expansion-overrides(
-    (
-      container-background-color: transparent,
-      container-elevation-shadow: none,
-      header-collapsed-state-height: 40px,
-      header-expanded-state-height: 40px,
-    )
-  );
-  ::ng-deep app-scene-file .mat-mdc-icon-button {
-    @include mat.icon-button-overrides(
-      (
-        state-layer-size: 20px,
-        icon-size: 20px,
-        hover-state-layer-opacity: 0,
-        focus-state-layer-opacity: 0,
-        pressed-state-layer-opacity: 0,
-        ripple-color: transparent,
-      )
-    );
-
-    padding: 0;
-  }
-
-  ::ng-deep app-scene-file .mdc-list-item__end a {
-    display: inline-flex;
-    align-items: center;
-  }
-
-  ::ng-deep app-scene-file .mdc-list-item__end mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-
-    @include themify($themes) {
-      color: themed('light-black');
-    }
-  }
-
-  &.mat-expansion-panel-spacing {
-    margin: 0;
-  }
-
-  // Direct rules until the global material.scss header overrides move to tokens
-  mat-expansion-panel-header {
-    background: transparent !important;
-    border: none;
-    padding-left: 12px;
-    padding-right: 30px;
-
-    &:hover:not([aria-disabled='true']),
-    &.mat-expanded {
-      @include themify($themes) {
-        background-color: themed('dark-focused') !important;
-      }
-    }
-  }
-
-  mat-panel-title {
-    @include themify($themes) {
-      color: themed('dark-primary-text');
-    }
-
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  ::ng-deep .mat-expansion-panel-body {
-    padding: 0;
-  }
-
-  ::ng-deep app-scene-file .mat-mdc-list-item {
-    height: 44px;
-  }
-
-  ::ng-deep app-scene-file .mdc-list-item__end {
-    display: inline-flex;
-    align-items: center;
-
-    + .mdc-list-item__end {
-      margin-left: 10px;
-    }
-  }
-
-  ::ng-deep app-scene-file {
-    .mat-mdc-list-item {
-      padding-left: 0;
-      padding-right: 24px;
-    }
-
-    .mdc-list-item__primary-text {
-      font-size: 14px;
-
-      b {
-        font-weight: 400;
-      }
-    }
-  }
-}
-
-.loading-spinner {
-  margin: 0 auto;
-}
 

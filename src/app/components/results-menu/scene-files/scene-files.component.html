@@ -35,124 +35,18 @@
     }
 
     @if (productsByGroup || showRelatedData) {
-      <mat-accordion multi>
-        @if (productsByGroup && productsByGroup['default'].length > 0) {
-          <mat-expansion-panel class="file-group-panel" [expanded]="true">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                {{ 'DATA' | translate }}
-                ({{ productsByGroup['default'].length }}
-                {{
-                  (productsByGroup['default'].length === 1 ? 'FILE' : 'FILES')
-                    | translate
-                }})
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            @for (product of productsByGroup['default']; track product.id) {
-              <app-scene-file
-                [isGrouped]="true"
-                (toggle)="onToggleQueueProduct(product)"
-                (queueHyp3Job)="onQueueHyp3Job($event)"
-                (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-                [loadingHyp3JobName]="loadingHyp3JobName"
-                [isUserLoggedIn]="isUserLoggedIn"
-                [product]="product"
-                [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
-                [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-                [isQueued]="(queuedProductIds$ | async).has(product.id)"
-                [isOpen]="false"
-              >
-              </app-scene-file>
-            }
-          </mat-expansion-panel>
-        }
-        @for (group of groups() ?? []; track group) {
-          @if (group !== 'default' && productsByGroup[group].length > 0) {
-            <mat-expansion-panel class="file-group-panel">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  {{ 'FILE_GROUP_' + group.toUpperCase() | translate }}
-                  ({{ productsByGroup[group].length }}
-                  {{
-                    (productsByGroup[group].length === 1 ? 'FILE' : 'FILES')
-                      | translate
-                  }})
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              @for (product of productsByGroup[group]; track product.id) {
-                <app-scene-file
-                  [isGrouped]="true"
-                  (toggle)="onToggleQueueProduct(product)"
-                  (queueHyp3Job)="onQueueHyp3Job($event)"
-                  (renameJobProjectName)="
-                    onRenameJobProjectName(product, $event)
-                  "
-                  [loadingHyp3JobName]="loadingHyp3JobName"
-                  [isUserLoggedIn]="isUserLoggedIn"
-                  [product]="product"
-                  [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
-                  [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-                  [isQueued]="(queuedProductIds$ | async).has(product.id)"
-                  [isOpen]="false"
-                >
-                </app-scene-file>
-              }
-            </mat-expansion-panel>
-          }
-        }
-        @if (showRelatedData) {
-          @let subqueryProducts = dynamicallySearchedProduct$ | async;
-
-          <mat-expansion-panel class="file-group-panel" [expanded]="true">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                {{ 'RELATED_DATA' | translate }}
-                @if (dynamicQueryLoaded() && subqueryProducts) {
-                  ({{ subqueryProducts.length }}
-                  {{
-                    (subqueryProducts.length === 1 ? 'FILE' : 'FILES')
-                      | translate
-                  }})
-                }
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            @if (!dynamicQueryLoaded()) {
-              <mat-list-item>
-                <mat-spinner diameter="20" class="loading-spinner">
-                </mat-spinner>
-              </mat-list-item>
-            }
-
-            @for (product of subqueryProducts; track product.id) {
-              @if (dynamicQueryLoaded()) {
-                <app-scene-file
-                  [isGrouped]="true"
-                  (toggle)="onToggleQueueProduct(product)"
-                  (queueHyp3Job)="onQueueHyp3Job($event)"
-                  (renameJobProjectName)="
-                    onRenameJobProjectName(product, $event)
-                  "
-                  [loadingHyp3JobName]="loadingHyp3JobName"
-                  [isUserLoggedIn]="isUserLoggedIn"
-                  [product]="product"
-                  [validHyp3JobTypes]="[]"
-                  [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-                  [isQueued]="(queuedProductIds$ | async).has(product.id)"
-                  [isOpen]="false"
-                  [isSearchableProduct]="true"
-                >
-                </app-scene-file>
-              }
-            } @empty {
-              @if (dynamicQueryLoaded()) {
-                <mat-list-item class="no-related">
-                  {{ 'NO_RELATED_DATA' | translate }}
-                </mat-list-item>
-              }
-            }
-          </mat-expansion-panel>
-        }
-      </mat-accordion>
+      <app-scene-group-files
+        [productsByGroup]="productsByGroup"
+        [groups]="groups()"
+        [queuedProductIds]="queuedProductIds$ | async"
+        [validJobTypesByProduct]="validJobTypesByProduct"
+        [showRelatedData]="showRelatedData"
+        [subqueryProducts$]="dynamicallySearchedProduct$"
+        [subqueryLoaded]="dynamicQueryLoaded()"
+        (toggleProduct)="onToggleQueueProduct($event)"
+        (queueHyp3Job)="onQueueHyp3Job($event)"
+      >
+      </app-scene-group-files>
     }
   </mat-list>
 </div>

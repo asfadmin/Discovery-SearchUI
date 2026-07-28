@@ -1,0 +1,56 @@
+@use '@angular/material' as mat;
+@use 'asf-theme-variables' as *;
+
+.file-group-panel {
+  @include mat.expansion-overrides(
+    (
+      container-background-color: transparent,
+      container-elevation-shadow: none,
+      header-collapsed-state-height: 40px,
+      header-expanded-state-height: 40px,
+    )
+  );
+
+  &.mat-expansion-panel-spacing {
+    margin: 0;
+  }
+
+  // Direct rules until the global material.scss header overrides move to tokens
+  mat-expansion-panel-header {
+    background: transparent !important;
+    border: none;
+    padding-left: 12px;
+    padding-right: 30px;
+
+    &:hover:not([aria-disabled='true']),
+    &.mat-expanded {
+      @include themify($themes) {
+        background-color: themed('dark-focused') !important;
+      }
+    }
+  }
+
+  mat-panel-title {
+    @include themify($themes) {
+      color: themed('dark-primary-text');
+    }
+
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  ::ng-deep .mat-expansion-panel-body {
+    padding: 0;
+  }
+}
+
+.loading-row {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.no-related {
+  padding: 12px 0 12px 24px;
+  font-weight: 600;
+}
