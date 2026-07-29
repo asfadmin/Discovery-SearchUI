@@ -8,6 +8,7 @@ import * as models from '@models';
 import { NotificationService } from '@services';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateService } from '@ngx-translate/core';
 
 import {
@@ -33,6 +34,7 @@ import { SceneGroupFileComponent } from '../scene-file/scene-group-file/scene-gr
     MatProgressSpinner,
     MatIcon,
     MatIconButton,
+    MatTooltip,
     AsyncPipe,
     TranslateModule,
     SceneGroupFileComponent,
