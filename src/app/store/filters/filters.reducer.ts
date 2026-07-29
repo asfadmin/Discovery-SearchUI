@@ -131,7 +131,7 @@ export const initState: FiltersState = {
   rangeBandwidth: [],
   instrument: [],
   scienceProduct: [],
-  productionConfig: [],
+  productionConfig: ['PR'],
 
   groupID: null,
   tileID: null,
