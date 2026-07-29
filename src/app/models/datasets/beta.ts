@@ -55,9 +55,7 @@ export const beta = {
   description: 'SENTINEL_1_INTERFEROGRAM_BETA_DESC',
   icon: '/assets/icons/satellite_alt_black_48dp.svg',
   frameMap: {
-    ascending:
-      'https://d3g9emy65n853h.cloudfront.net/ARIA_S1_GUNW/ascending.geojson',
-    descending:
-      'https://d3g9emy65n853h.cloudfront.net/ARIA_S1_GUNW/descending.geojson',
+    ascending: '/assets/aria-framemaps/ascending.geojson',
+    descending: '/assets/aria-framemaps/descending.geojson',
   },
 };

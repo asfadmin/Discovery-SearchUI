@@ -277,8 +277,14 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.possibleHyp3JobsService.possibleJobs$.subscribe((possibleJobs) => {
-        this.hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
+      combineLatest([
+        this.possibleHyp3JobsService.possibleJobs$,
+        this.store$.select(filtersStore.getShouldUseFramesForReference),
+      ]).subscribe(([possibleJobs, isFrameMode]) => {
+        this.hyp3able = this.hyp3.getHyp3ableProducts(
+          possibleJobs,
+          isFrameMode,
+        );
       }),
     );
 

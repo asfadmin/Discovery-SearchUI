@@ -7,6 +7,7 @@ import { Action, Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
+import * as filtersStore from '@store/filters';
 
 import {
   ScreenSizeService,
@@ -132,8 +133,14 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.possibleHyp3JobsService.possibleJobs$.subscribe((possibleJobs) => {
-        this.hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
+      combineLatest([
+        this.possibleHyp3JobsService.possibleJobs$,
+        this.store$.select(filtersStore.getShouldUseFramesForReference),
+      ]).subscribe(([possibleJobs, isFrameMode]) => {
+        this.hyp3able = this.hyp3.getHyp3ableProducts(
+          possibleJobs,
+          isFrameMode,
+        );
       }),
     );
 

@@ -1,10 +1,13 @@
-import { test, expect } from 'e2e/pages/auth.page';
+import { test, expect } from 'e2e/fixtures';
+import { loggedInSentinel1Page } from 'e2e/helpers';
 
 test(
   'Profile: Geographic Search History',
   { tag: '@auth' },
-  async ({ loggedInPage }) => {
-    await loggedInPage.goto('/?maxResults=1');
+  async ({ page }) => {
+    const loggedInPage = await loggedInSentinel1Page(page);
+
+    await loggedInPage.goto('/#/?dataset=SENTINEL-1&maxResults=1');
     await loggedInPage
       .locator('app-dataset-header')
       .locator('app-search-button')

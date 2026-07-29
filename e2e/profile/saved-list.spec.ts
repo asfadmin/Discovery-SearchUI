@@ -1,10 +1,12 @@
-import { test, expect } from 'e2e/pages/auth.page';
+import { test, expect } from 'e2e/fixtures';
+import { loggedInSentinel1Page } from 'e2e/helpers';
 
 test(
   'Profile: List save scenes',
   { tag: ['@auth', '@visual'] },
-  async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
+  async ({ page }) => {
+    const loggedInPage = await loggedInSentinel1Page(page);
+
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
       .click();
@@ -43,8 +45,9 @@ test(
 test(
   'Profile: List save files',
   { tag: ['@auth', '@visual'] },
-  async ({ loggedInPage }) => {
-    await loggedInPage.goto('/');
+  async ({ page }) => {
+    const loggedInPage = await loggedInSentinel1Page(page);
+
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
       .click();

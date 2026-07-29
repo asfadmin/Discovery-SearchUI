@@ -1,7 +1,9 @@
-import { test, expect } from 'e2e/pages/auth.page';
+import { test, expect } from 'e2e/fixtures';
+import { loggedInSentinel1Page } from 'e2e/helpers';
 
-test('Baseline: Saved Search', { tag: '@auth' }, async ({ loggedInPage }) => {
-  await loggedInPage.goto('/');
+test('Baseline: Saved Search', { tag: '@auth' }, async ({ page }) => {
+  const loggedInPage = await loggedInSentinel1Page(page);
+
   await loggedInPage.getByRole('button', { name: 'Geographic Search' }).click();
   await loggedInPage
     .getByRole('menuitem', { name: 'Baseline Baseline search' })
@@ -20,9 +22,7 @@ test('Baseline: Saved Search', { tag: '@auth' }, async ({ loggedInPage }) => {
   await loggedInPage
     .locator('app-baseline-header app-search-button .arrow-button-toggle')
     .click();
-  await loggedInPage
-    .getByRole('menuitem', { name: 'Saved Searches' })
-    .click();
+  await loggedInPage.getByRole('menuitem', { name: 'Saved Searches' }).click();
   await loggedInPage.getByRole('menuitem', { name: 'Save Search' }).click();
 
   await loggedInPage
