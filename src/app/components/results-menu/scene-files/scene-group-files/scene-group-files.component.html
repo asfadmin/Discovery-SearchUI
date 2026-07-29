@@ -13,6 +13,13 @@
             (byGroup['default'].length === 1 ? 'FILE' : 'FILES') | translate
           }})
         </mat-panel-title>
+        <button
+          mat-icon-button
+          class="group-cart"
+          (click)="onQueueGroup($event, byGroup['default'], 'DATA')"
+        >
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
       </mat-expansion-panel-header>
       @for (product of byGroup['default']; track product.id) {
         <app-scene-group-file
@@ -36,6 +43,19 @@
             ({{ byGroup[group].length }}
             {{ (byGroup[group].length === 1 ? 'FILE' : 'FILES') | translate }})
           </mat-panel-title>
+          <button
+            mat-icon-button
+            class="group-cart"
+            (click)="
+              onQueueGroup(
+                $event,
+                byGroup[group],
+                'FILE_GROUP_' + group.toUpperCase()
+              )
+            "
+          >
+            <mat-icon>add_shopping_cart</mat-icon>
+          </button>
         </mat-expansion-panel-header>
         @for (product of byGroup[group]; track product.id) {
           <app-scene-group-file

@@ -30,6 +30,33 @@
     }
   }
 
+  .group-cart {
+    @include mat.icon-button-overrides(
+      (
+        state-layer-size: 28px,
+        icon-size: 20px,
+      )
+    );
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: 10px;
+    padding: 0;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+
+      @include themify($themes) {
+        color: themed('light-black');
+      }
+    }
+  }
+
   mat-panel-title {
     @include themify($themes) {
       color: themed('dark-primary-text');

@@ -1,7 +1,14 @@
-import { Component, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as queueStore from '@store/queue';
 import * as models from '@models';
+import { NotificationService } from '@services';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { TranslateService } from '@ngx-translate/core';
 
 import {
   MatAccordion,
@@ -24,6 +31,8 @@ import { SceneGroupFileComponent } from '../scene-file/scene-group-file/scene-gr
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
     MatProgressSpinner,
+    MatIcon,
+    MatIconButton,
     AsyncPipe,
     TranslateModule,
     SceneGroupFileComponent,
@@ -40,4 +49,23 @@ export class SceneGroupFilesComponent {
 
   toggleProduct = output<models.CMRProduct>();
   queueHyp3Job = output<models.QueuedHyp3Job>();
+
+  private store$ = inject<Store<AppState>>(Store);
+  private notificationService = inject(NotificationService);
+  private translate = inject(TranslateService);
+
+  public onQueueGroup(
+    event: Event,
+    products: models.CMRProduct[],
+    labelKey: string,
+  ): void {
+    event.stopPropagation();
+    this.store$.dispatch(new queueStore.AddItems(products));
+    this.notificationService.info(
+      this.translate.instant('FILES_ADDED_FROM_GROUP', {
+        count: products.length,
+        group: this.translate.instant(labelKey),
+      }),
+    );
+  }
 }
