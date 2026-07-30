@@ -178,14 +178,12 @@ describe('SceneFilesComponent file grouping', () => {
     expect(displaysIn('Metadata')).toEqual([
       'Runconfig YAML',
       'ISO Metadata XML',
-    ]);
-    expect(displaysIn('Visualizations')).toEqual(['Browse Image PNG']);
-    expect(displaysIn('Documentation')).toEqual([
       'QA Summary CSV',
       'QA Report PDF',
       'QA Statistics HDF5',
-      'Log File',
     ]);
+    expect(displaysIn('Visualizations')).toEqual(['Browse Image PNG']);
+    expect(displaysIn('Documentation')).toEqual(['Log File']);
   });
 
   it('renders ungrouped files in an expanded Data panel and a panel per non-empty group', async () => {
@@ -213,7 +211,7 @@ describe('SceneFilesComponent file grouping', () => {
       (title) => title.textContent,
     );
     expect(headers[1]).toContain('Metadata');
-    expect(headers[1]).toContain('(2');
+    expect(headers[1]).toContain('(5');
   });
 
   it('does not render panels for empty groups', async () => {
