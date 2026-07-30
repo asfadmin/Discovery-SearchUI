@@ -87,6 +87,16 @@
             }})
           }
         </mat-panel-title>
+        @if (loaded && subqueryProducts?.length > 0) {
+          <button
+            mat-icon-button
+            class="group-cart"
+            matTooltip="{{ 'ADD_ALL_GROUP_FILES' | translate }}"
+            (click)="onQueueGroup($event, subqueryProducts, 'RELATED_DATA')"
+          >
+            <mat-icon>add_shopping_cart</mat-icon>
+          </button>
+        }
       </mat-expansion-panel-header>
       @if (!loaded) {
         <div class="loading-row">

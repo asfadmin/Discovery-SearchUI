@@ -2,6 +2,10 @@
 @use 'asf-theme-variables' as *;
 
 .file-group-panel {
+  @include themify($themes) {
+    --mat-expansion-header-indicator-color: #{themed('dark-primary-text')};
+  }
+
   @include mat.expansion-overrides(
     (
       container-background-color: transparent,
@@ -54,10 +58,7 @@
       width: 18px;
       height: 18px;
       line-height: 18px;
-
-      @include themify($themes) {
-        color: themed('light-black');
-      }
+      color: var(--mat-expansion-header-indicator-color);
     }
   }
 
