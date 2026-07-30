@@ -36,7 +36,7 @@
 
   z-index: 1020;
   display: flex;
-  height: -webkit-fill-available;
+  height: 100%;
   overflow: hidden;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -78,12 +78,12 @@
   }
 
   .filters-list {
+    flex-shrink: 1;
     flex-grow: 1;
     overflow: auto;
     min-height: 4em;
     max-height: calc(100vh - 170px);
     padding: 10px;
-
   }
 
   .filters-list-mobile {
