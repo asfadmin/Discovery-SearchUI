@@ -63,7 +63,6 @@
     flex-grow: 1;
     overflow: auto;
     min-height: 4em;
-    /* max-height: calc(100vh - 170px); — removed, flex-grow already handles this */
     padding: 10px;
   }
 
