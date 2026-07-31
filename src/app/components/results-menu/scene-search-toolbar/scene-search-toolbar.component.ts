@@ -168,7 +168,6 @@ export class SceneSearchToolbarComponent {
     [
       new searchStore.SetSearchType(models.SearchType.BASELINE),
       new searchStore.ClearSearch(),
-      new userStore.LoadFiltersPreset(this.defaultBaselineFiltersID()),
     ].forEach((action) => this.store$.dispatch(action));
 
     if (sceneName?.startsWith('S1-GUNW')) {
@@ -214,7 +213,6 @@ export class SceneSearchToolbarComponent {
     [
       new searchStore.SetSearchType(models.SearchType.SBAS),
       new searchStore.ClearSearch(),
-      new userStore.LoadFiltersPreset(this.defaultSBASFiltersID()),
       new scenesStore.SetFilterMaster(sceneName),
     ].forEach((action) => this.store$.dispatch(action));
     this.updateDateRange();

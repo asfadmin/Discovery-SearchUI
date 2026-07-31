@@ -24,8 +24,6 @@ import {
   ProductType,
   datasetList,
   SearchType,
-  SavedFilterPreset,
-  FilterType,
   Breakpoints,
 } from '@models';
 import { Hyp3ApiService, ThemingService } from '@services';
@@ -42,7 +40,7 @@ import { MatFormField, MatLabel } from '@angular/material/input';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelect, MatOption } from '@angular/material/select';
-import { UpperCasePipe, TitleCasePipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { Hyp3UrlSelectorComponent } from './hyp3-url-selector/hyp3-url-selector.component';
 import { MatButton } from '@angular/material/button';
 
@@ -67,7 +65,6 @@ import { MatButton } from '@angular/material/button';
     MatDialogActions,
     MatButton,
     UpperCasePipe,
-    TitleCasePipe,
     TranslateModule,
   ],
 })
@@ -114,8 +111,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     dark: 'DARK',
     'System Preferences': 'SYSTEM_PREFERENCES',
   };
-  public userFiltersBySearchType = {};
-  public userFilters: SavedFilterPreset[];
   public selectedFiltersIDs = {
     'Baseline Search': '',
     'Geographic Search': '',
@@ -161,40 +156,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       this.store$
         .select(userStore.getUserAuth)
         .subscribe((user) => (this.userAuth = user)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(userStore.getSavedFilters)
-        .subscribe((savedFilters) => {
-          this.userFilters = savedFilters;
-
-          for (const searchtype in SearchType) {
-            if (searchtype !== 'LIST' && searchtype !== 'CUSTOM_PRODUCTS') {
-              const defaultPreset: SavedFilterPreset = {
-                filters: {} as FilterType,
-                id: '',
-                name: 'Default',
-                searchType: searchtype[searchtype],
-              };
-              this.userFiltersBySearchType[SearchType[searchtype]] = [
-                defaultPreset,
-              ];
-            }
-          }
-
-          savedFilters.forEach((preset) =>
-            this.userFiltersBySearchType[preset.searchType]?.push(preset),
-          );
-
-          const searchTypeKeys = Object.keys(this.selectedFiltersIDs);
-          searchTypeKeys.forEach(
-            (key) =>
-              (this.currentFilterDisplayNames[key] = this.userFilters.find(
-                (preset) => preset.id === this.selectedFiltersIDs[key],
-              )?.id),
-          );
-        }),
     );
   }
 

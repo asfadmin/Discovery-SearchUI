@@ -362,17 +362,6 @@
   <button (click)="onOpenSearchHistory()" mat-menu-item matSuffix>
     {{ 'SEARCH_HISTORY' | translate }}
   </button>
-  <button
-    [disabled]="
-      (searchType$ | async) === searchTypes.LIST ||
-      (searchType$ | async) === searchTypes.CUSTOM_PRODUCTS
-    "
-    (click)="onOpenSavedFilters()"
-    mat-menu-item
-    matSuffix
-  >
-    {{ 'SAVED_FILTERS' | translate }}
-  </button>
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
     {{ 'PREFERENCES' | translate }}
   </button>

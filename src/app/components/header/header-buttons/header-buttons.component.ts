@@ -315,16 +315,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SAVED_SEARCHES));
   }
 
-  public onOpenSavedFilters(): void {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'open-saved-filters',
-      'open-saved-filters': true,
-    });
-
-    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.USER_FILTERS));
-  }
-
   public onOpenSearchHistory() {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({

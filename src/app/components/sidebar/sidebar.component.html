@@ -1,12 +1,3 @@
 <div (keydown.escape)="onCloseSidebar()">
-  @if (
-    sidebar === SidebarType.SAVED_SEARCHES ||
-    sidebar === SidebarType.SEARCH_HISTORY
-  ) {
-    <app-saved-searches> </app-saved-searches>
-  }
-
-  @if (sidebar === SidebarType.USER_FILTERS) {
-    <app-save-user-filters> </app-save-user-filters>
-  }
+  <app-saved-searches> </app-saved-searches>
 </div>

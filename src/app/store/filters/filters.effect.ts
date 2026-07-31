@@ -13,10 +13,7 @@ import * as models from '@models';
 import { AppState } from '@store/app.reducer';
 import { Store } from '@ngrx/store';
 
-import { getSearchType } from '@store/search';
-import { LoadFiltersPreset } from '@store/user';
 import { ResetMaxHyp3ResultsHit } from '@store/hyp3';
-import { SearchType } from '@models';
 import { getSelectedDataset } from './filters.reducer';
 
 @Injectable()
@@ -47,25 +44,6 @@ export class FiltersEffects {
         map((_) => this.mapService.setDrawStyle(models.DrawPolygonStyle.VALID)),
       ),
     { dispatch: false },
-  );
-
-  public loadLoadUserProfile = createEffect(() =>
-    this.actions$.pipe(
-      ofType<filtersAction.SetDefaultFilters>(
-        filtersAction.FiltersActionType.SET_DEFAULT_FILTERS,
-      ),
-      map((action) => action.payload),
-      filter((defaultFilters) => !!defaultFilters),
-      withLatestFrom(this.store$.select(getSearchType)),
-      filter(
-        ([_, searchtype]) =>
-          searchtype !== SearchType.LIST &&
-          searchtype !== SearchType.CUSTOM_PRODUCTS,
-      ),
-      map(([defaultFilters, searchtype]) => defaultFilters[searchtype]),
-      filter((targetFilterID) => targetFilterID === '' || !!targetFilterID),
-      map((targetFilterID) => new LoadFiltersPreset(targetFilterID)),
-    ),
   );
 
   public resetMoreHyp3JobsToLoad = createEffect(() =>

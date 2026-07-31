@@ -258,25 +258,6 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SAVED_SEARCHES));
   }
 
-  public saveCurrentFilters(): void {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'save-current-filters',
-      'save-current-filters': true,
-    });
-
-    this.dialog.open(SaveSearchDialogComponent, {
-      id: 'ConfirmProcess',
-      width: '550px',
-      height: '500px',
-      maxWidth: '550px',
-      maxHeight: '500px',
-      data: { saveType: SidebarType.USER_FILTERS },
-    });
-
-    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.USER_FILTERS));
-  }
-
   public onOpenSavedSearches(): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -285,16 +266,6 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     });
 
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SAVED_SEARCHES));
-  }
-
-  public onOpenSavedFilters(): void {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'open-saved-filters',
-      'open-saved-filters': true,
-    });
-
-    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.USER_FILTERS));
   }
 
   public onOpenSearchHistory(): void {

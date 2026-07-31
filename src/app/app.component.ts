@@ -304,21 +304,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
     this.subs.add(
-      this.store$
-        .select(userStore.getUserProfile)
-        .pipe(withLatestFrom(this.urlStateService.isDefaultSearch$))
-        .subscribe(([profile, isDefaultSearch]) => {
-          this.urlStateService.setDefaults(profile);
-          this.language.setProfileLanguage(profile.language);
-          this.isAutoTheme = profile.theme === 'System Preferences';
-
-          const presets = Object.entries(profile.defaultFilterPresets)
-            .map(([_, val2]) => val2)
-            .filter((val2) => val2 !== '');
-          if (isDefaultSearch && presets.length > 0) {
-            this.loadDefaultFilters(profile);
-          }
-        }),
+      this.store$.select(userStore.getUserProfile).subscribe((profile) => {
+        this.urlStateService.setDefaults(profile);
+        this.language.setProfileLanguage(profile.language);
+        this.isAutoTheme = profile.theme === 'System Preferences';
+      }),
     );
 
     this.subs.add(
@@ -672,19 +662,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       jobTypeIds.size === optionsIds.length &&
       optionsIds.every((optionId) => jobTypeIds.has(optionId))
     );
-  }
-
-  private loadDefaultFilters(profile: models.UserProfile): void {
-    this.urlStateService.setDefaults(profile);
-    if (
-      this.searchType !== models.SearchType.LIST &&
-      this.searchType !== models.SearchType.CUSTOM_PRODUCTS
-    ) {
-      const defaultFilterID = profile.defaultFilterPresets[this.searchType];
-      if (defaultFilterID) {
-        this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
-      }
-    }
   }
 
   private updateMaxSearchResults(): void {

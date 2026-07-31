@@ -73,35 +73,6 @@
           {{ 'SAVED_SEARCHES' | translate }}
         </button>
       </span>
-      @if (searchType !== searchTypes.DISPLACEMENT) {
-        <span
-          [matTooltipDisabled]="
-            isLoggedIn &&
-            searchType !== searchTypes.LIST &&
-            searchType !== searchTypes.CUSTOM_PRODUCTS
-          "
-          matTooltip="{{
-            isLoggedIn &&
-            (searchType === searchTypes.LIST ||
-              searchType === searchTypes.CUSTOM_PRODUCTS)
-              ? ('SAVED_FILTERS_ARE_NOT_AVAILABLE_FOR_SEARCH_TYPE' | translate)
-              : ('SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' | translate)
-          }}"
-          matTooltipPosition="after"
-        >
-          <button
-            [disabled]="
-              searchType === searchTypes.LIST ||
-              searchType === searchTypes.CUSTOM_PRODUCTS
-            "
-            mat-menu-item
-            [matMenuTriggerFor]="savedFiltersMenu"
-          >
-            {{ 'SAVED_FILTERS' | translate }}
-          </button>
-        </span>
-        <mat-divider></mat-divider>
-      }
       <button mat-menu-item [matMenuTriggerFor]="shareSearchMenu">
         {{ 'SHARE_SEARCH' | translate }}
       </button>
@@ -116,46 +87,6 @@
           {{ 'MATURITY' | translate }}
         </button>
       }
-    </mat-menu>
-    <mat-menu #savedFiltersMenu="matMenu">
-      <span
-        matTooltip="{{ 'SIGN_IN_TO_SAVE_YOUR_FILTERS' | translate }}"
-        [matTooltipDisabled]="isLoggedIn"
-        matTooltipPosition="after"
-      >
-        @if (
-          searchType !== searchTypes.CUSTOM_PRODUCTS &&
-          searchType !== searchTypes.LIST &&
-          searchType !== searchTypes.DISPLACEMENT
-        ) {
-          <button
-            mat-menu-item
-            [disabled]="!isLoggedIn"
-            (click)="saveCurrentFilters()"
-          >
-            {{ 'SAVE_FILTERS' | translate }}
-          </button>
-        }
-      </span>
-      <span
-        [matTooltipDisabled]="isLoggedIn"
-        matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' | translate }}"
-        matTooltipPosition="after"
-      >
-        @if (
-          searchType !== searchTypes.CUSTOM_PRODUCTS &&
-          searchType !== searchTypes.LIST &&
-          searchType !== searchTypes.DISPLACEMENT
-        ) {
-          <button
-            (click)="onOpenSavedFilters()"
-            mat-menu-item
-            [disabled]="!isLoggedIn"
-          >
-            {{ 'VIEW_FILTERS' | translate }}
-          </button>
-        }
-      </span>
     </mat-menu>
     <mat-menu #shareSearchMenu="matMenu">
       <button (click)="onCopy()" mat-menu-item matSuffix>

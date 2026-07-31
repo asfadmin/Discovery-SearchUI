@@ -6,13 +6,9 @@ import {
   MatDialogContent,
   MatDialogActions,
 } from '@angular/material/dialog';
-import { v1 as uuid } from 'uuid';
-
-import { combineLatest } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import * as searchStore from '@store/search';
 import * as filterStore from '@store/filters';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
@@ -60,7 +56,6 @@ export class SaveSearchDialogComponent implements OnInit {
   public search: models.Search;
   public searchTranslation = models.SearchTypeTranslation;
 
-  private currentFiltersBySearchType = {};
   public searchType: models.SearchType;
 
   public saveName: string;
@@ -88,41 +83,6 @@ export class SaveSearchDialogComponent implements OnInit {
           }
         });
     }
-
-    if (this.saveType === models.SidebarType.USER_FILTERS) {
-      this.saveTypeName = 'SAVE_FILTERS';
-
-      combineLatest([
-        this.store$.select(filterStore.getGeographicSearch).pipe(
-          map((preset) => ({
-            ...preset,
-            flightDirections: Array.from(preset.flightDirections),
-          })),
-        ),
-        this.store$.select(filterStore.getListSearch),
-        this.store$.select(filterStore.getBaselineSearch),
-        this.store$.select(filterStore.getSbasSearch),
-        this.store$.select(searchStore.getSearchType),
-      ]).subscribe(([geo, list, baseline, sbas, searchType]) => {
-        this.currentFiltersBySearchType[models.SearchType.DATASET] = geo;
-        this.currentFiltersBySearchType[models.SearchType.LIST] = list;
-        this.currentFiltersBySearchType[models.SearchType.BASELINE] = baseline;
-        this.currentFiltersBySearchType[models.SearchType.SBAS] = sbas;
-        this.searchType = searchType;
-
-        this.search = this.newFilterPreset();
-      });
-    }
-  }
-
-  public newFilterPreset() {
-    const id = uuid() as string;
-    return {
-      name: this.saveName,
-      id,
-      filters: this.currentFiltersBySearchType[this.searchType],
-      searchType: this.searchType,
-    } as models.SavedFilterPreset;
   }
 
   public onSaveNameChange(event: Event): void {
@@ -149,16 +109,6 @@ export class SaveSearchDialogComponent implements OnInit {
         }),
       );
       this.savedSearchService.saveSearches();
-    }
-
-    if (this.saveType === models.SidebarType.USER_FILTERS) {
-      this.store$.dispatch(
-        new userStore.AddNewFiltersPreset({
-          ...this.search,
-          name: this.saveName,
-        }),
-      );
-      this.store$.dispatch(new userStore.SaveFilters());
     }
 
     const addName = ` as '${this.saveName}'`;

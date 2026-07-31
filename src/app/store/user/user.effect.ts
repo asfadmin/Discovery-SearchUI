@@ -10,17 +10,8 @@ import { AppState } from '../app.reducer';
 import * as userActions from './user.action';
 import * as userReducer from './user.reducer';
 import * as hyp3Store from '../hyp3/hyp3.action';
-import * as filterStore from '@store/filters';
-import * as searchStore from '@store/search';
 import { UserDataService } from '@services/user-data.service';
 import * as models from '@models';
-import {
-  BaselineFiltersType,
-  GeographicFiltersType,
-  SbasFiltersType,
-  TimeseriesFiltersType,
-  SearchType,
-} from '@models';
 
 @Injectable()
 export class UserEffects {
@@ -112,29 +103,6 @@ export class UserEffects {
     { dispatch: false },
   );
 
-  public saveSavedFilters = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType<userActions.SaveFilters>(
-          userActions.UserActionType.SAVE_FILTERS,
-        ),
-        withLatestFrom(
-          combineLatest([
-            this.store$.select(userReducer.getUserAuth),
-            this.store$.select(userReducer.getSavedFilters),
-          ]),
-        ),
-        switchMap(([_, [userAuth, filtersPresets]]) =>
-          this.userDataService.setAttribute$(
-            userAuth,
-            'SavedFilters',
-            filtersPresets,
-          ),
-        ),
-      ),
-    { dispatch: false },
-  );
-
   public saveSearchHistory = createEffect(
     () =>
       this.actions$.pipe(
@@ -214,134 +182,12 @@ export class UserEffects {
     ),
   );
 
-  public loadSavedFiltersOnLogin = createEffect(() =>
-    this.actions$.pipe(
-      ofType<userActions.Login>(userActions.UserActionType.LOGIN),
-      switchMap((action) =>
-        this.userDataService.getAttribute$(action.payload, 'SavedFilters'),
-      ),
-      filter((resp) => this.isSuccessfulResponse(resp)),
-      map(
-        (filters) =>
-          this.updateSearchObjects(filters) as models.SavedFilterPreset[],
-      ),
-      map(
-        (Filterpresets) =>
-          new userActions.SetFilters(
-            Filterpresets as models.SavedFilterPreset[],
-          ),
-      ),
-    ),
-  );
-
   public loadHyp3UserOnLogin = createEffect(() =>
     this.actions$.pipe(
       ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOGIN),
       delay(400),
       map((_) => new hyp3Store.LoadUser()),
     ),
-  );
-
-  public loadSavedFiltersPresets = createEffect(() =>
-    this.actions$.pipe(
-      ofType<userActions.LoadSavedFilters>(
-        userActions.UserActionType.LOAD_SAVED_FILTERS,
-      ),
-      withLatestFrom(this.store$.select(userReducer.getUserAuth)),
-      switchMap(([_, userAuth]) =>
-        this.userDataService.getAttribute$(userAuth, 'SavedFilters'),
-      ),
-      filter((resp) => this.isSuccessfulResponse(resp)),
-      map(
-        (filtersPresets) =>
-          this.updateSearchObjects(
-            filtersPresets,
-          ) as models.SavedFilterPreset[],
-      ),
-      map(
-        (filtersPresets) =>
-          new userActions.SetFilters(
-            filtersPresets as models.SavedFilterPreset[],
-          ),
-      ),
-    ),
-  );
-
-  public loadSavedFiltersOfSearchType = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType<userActions.LoadFiltersPreset>(
-          userActions.UserActionType.LOAD_FILTERS_PRESET,
-        ),
-        map((action) => action.payload),
-        filter(
-          (filterPresetID) =>
-            filterPresetID !== '' && filterPresetID !== undefined,
-        ),
-        withLatestFrom(this.store$.select(searchStore.getSearchType)),
-        filter(
-          ([filterPresetID, searchtype]) =>
-            (filterPresetID === '' || !!filterPresetID) &&
-            searchtype !== SearchType.LIST &&
-            searchtype !== SearchType.CUSTOM_PRODUCTS,
-        ),
-        withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
-        map(([[presetId, searchType], userFilters]) => {
-          if (presetId === '') {
-            const defaultPreset: models.SavedFilterPreset = {
-              filters: {} as models.FilterType,
-              id: '',
-              name: 'Default',
-              searchType,
-            };
-
-            return defaultPreset;
-          }
-          return userFilters
-            .filter((preset) => preset.searchType === searchType)
-            .find((preset) => preset.id === presetId);
-        }),
-        filter((targetFilter) => !!targetFilter),
-        map((targetFilter) => {
-          let actions = [];
-
-          if (targetFilter) {
-            this.store$.dispatch(new filterStore.ClearDatasetFilters());
-            this.store$.dispatch(new filterStore.ClearPerpendicularRange());
-            this.store$.dispatch(new filterStore.ClearTemporalRange());
-            if (targetFilter.id === '') {
-              return;
-            }
-            switch (targetFilter.searchType) {
-              case SearchType.DATASET:
-                actions = this.setDatasetFilters(
-                  targetFilter.filters as GeographicFiltersType,
-                );
-                break;
-              case SearchType.BASELINE:
-                actions = this.setBaselineFilters(
-                  targetFilter.filters as BaselineFiltersType,
-                );
-                break;
-              case SearchType.SBAS:
-                actions = this.setSBASFilters(
-                  targetFilter.filters as SbasFiltersType,
-                );
-                break;
-              case SearchType.DISPLACEMENT:
-                actions = this.setTimeseriesFilters(
-                  targetFilter.filters as TimeseriesFiltersType,
-                );
-                break;
-              default:
-                break;
-            }
-
-            actions.forEach((action) => this.store$.dispatch(action));
-          }
-        }),
-      ),
-    { dispatch: false },
   );
 
   private isSuccessfulResponse(resp): boolean {
@@ -352,9 +198,7 @@ export class UserEffects {
     }
   }
 
-  private updateSearchObjects(
-    searches,
-  ): models.Search[] | models.SavedFilterPreset[] {
+  private updateSearchObjects(searches): models.Search[] {
     return searches?.map((search) => {
       const migrated = this.migrateSubtypesToPlatforms(search);
 
@@ -412,66 +256,4 @@ export class UserEffects {
   }
 
   private isNumber = (n) => !isNaN(n) && isFinite(n);
-
-  private setDatasetFilters(datasetFilter: GeographicFiltersType) {
-    const actions = [
-      new filterStore.SetSelectedDataset(datasetFilter.selectedDataset),
-      new filterStore.SetStartDate(datasetFilter.dateRange.start),
-      new filterStore.SetEndDate(datasetFilter.dateRange.end),
-      new filterStore.SetSeasonStart(datasetFilter.season.start),
-      new filterStore.SetSeasonEnd(datasetFilter.season.end),
-      new filterStore.SetPathStart(datasetFilter.pathRange.start),
-      new filterStore.SetPathEnd(datasetFilter.pathRange.end),
-      new filterStore.SetFrameStart(datasetFilter.frameRange.start),
-      new filterStore.SetFrameEnd(datasetFilter.frameRange.end),
-
-      new filterStore.SetProductTypes(datasetFilter.productTypes),
-      new filterStore.SetBeamModes(datasetFilter.beamModes),
-      new filterStore.SetPolarizations(datasetFilter.polarizations),
-      new filterStore.SetPlatforms(datasetFilter.platforms),
-      new filterStore.SetFlightDirections(
-        Array.from(datasetFilter.flightDirections),
-      ),
-      new filterStore.SelectMission(datasetFilter.selectedMission),
-      new filterStore.setFullBursts(datasetFilter.fullBurstIDs),
-      new filterStore.setUseCalibrationData(datasetFilter.useCalibrationData),
-    ];
-
-    return actions;
-  }
-
-  private setBaselineFilters(baselineFilter: BaselineFiltersType) {
-    const actions = [
-      new filterStore.SetStartDate(baselineFilter.dateRange.start),
-      new filterStore.SetEndDate(baselineFilter.dateRange.end),
-      new filterStore.SetSeasonStart(baselineFilter.season.start),
-      new filterStore.SetSeasonEnd(baselineFilter.season.end),
-      new filterStore.SetTemporalRange(baselineFilter.temporalRange),
-      new filterStore.SetPerpendicularRange(baselineFilter.perpendicularRange),
-    ];
-
-    return actions;
-  }
-
-  private setSBASFilters(sbasFilter: SbasFiltersType) {
-    const actions = [
-      new filterStore.SetStartDate(sbasFilter.dateRange.start),
-      new filterStore.SetEndDate(sbasFilter.dateRange.end),
-      new filterStore.SetSeasonStart(sbasFilter.season.start),
-      new filterStore.SetSeasonEnd(sbasFilter.season.end),
-      new filterStore.SetTemporalEnd(sbasFilter.temporalRange.end),
-      new filterStore.SetTemporalStart(sbasFilter.temporalRange.start),
-      new filterStore.SetPerpendicularStart(sbasFilter.perpendicular.start),
-      new filterStore.SetPerpendicularEnd(sbasFilter.perpendicular.end),
-    ];
-
-    return actions;
-  }
-  private setTimeseriesFilters(timeseriesFilter: TimeseriesFiltersType) {
-    const actions = [
-      new filterStore.setFullBursts(timeseriesFilter.fullBurstIDs),
-    ];
-
-    return actions;
-  }
 }

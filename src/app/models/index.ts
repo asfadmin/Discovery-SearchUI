@@ -15,7 +15,6 @@ export * from './user.model';
 export * from './search.model';
 export * from './critical-baseline.model';
 export * from './hyp3';
-export * from './saved-filter-preset.model';
 export * from './sbas-overlap.model';
 export * from './sidebar.model';
 export * from './analytics-event.model';

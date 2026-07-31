@@ -24,21 +24,6 @@
         </div>
 
         <mat-form-field class="default-filters-presets">
-          <mat-label>{{ 'DEFAULT_LANGUAGE' | translate }}</mat-label>
-          <mat-select
-            [(value)]="defaultLanguage"
-            (selectionChange)="onChangeDefaultLanguage($event.value)"
-            name="preset"
-          >
-            @for (lang of translate.getLangs(); track lang) {
-              <mat-option [value]="lang">
-                {{ language.getName(lang) | titlecase }}
-              </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="default-filters-presets">
           <mat-label>{{ 'DEFAULT_THEME' | translate }}</mat-label>
           <mat-select
             [(value)]="currentTheme"
@@ -94,40 +79,6 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
-
-      <hr />
-
-      <div class="preferences-group">
-        <div
-          class="section-heading"
-          [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL"
-        >
-          {{ 'DEFAULT_SEARCH_FILTERS_PRESETS' | translate }}
-        </div>
-        @for (type of searchTypeKeys; track type) {
-          <mat-form-field class="default-filters-presets">
-            <mat-label>{{
-              type === 'DATASET'
-                ? ('GEOGRAPHIC' | translate)
-                : (type | translate)
-            }}</mat-label>
-            <mat-select
-              [(value)]="currentFilterDisplayNames[searchType[type]]"
-              (selectionChange)="onChangeDefaultFilterType($event.value, type)"
-              name="preset"
-            >
-              @for (
-                preset of userFiltersBySearchType[searchType[type]];
-                track preset
-              ) {
-                <mat-option [value]="preset.id">
-                  {{ preset.name | uppercase | translate }}
-                </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        }
       </div>
 
       <hr />
