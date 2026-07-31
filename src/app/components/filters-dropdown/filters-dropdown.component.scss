@@ -1,17 +1,5 @@
 @use "asf-theme-variables" as *;
 
-.hidden {
-  display: none;
-}
-
-.no-pointer {
-  pointer-events: none;
-}
-
-.pointer {
-  pointer-events: auto;
-}
-
 .dataset-filters-div {
   /* autoprefixer: off */
   position: fixed;
@@ -24,7 +12,6 @@
   max-width: 100vw;
   overflow: hidden;
   z-index: 2020;
-  /* height/max-height removed — top:0/bottom:0 already sizes this */
 }
 
 .dataset-filters-card {
@@ -33,7 +20,7 @@
   }
   z-index: 1020;
   display: flex;
-  height: 100%;              /* was: -webkit-fill-available — now just fills .dataset-filters-div */
+  height: 100%;
   overflow: hidden;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -121,4 +108,16 @@ h3 {
   padding-left: 5px;
   flex-shrink: 0;
   margin-top: 6px;
+}
+
+.no-pointer {
+  pointer-events: none;
+}
+
+.pointer {
+  pointer-events: auto;
+}
+
+.hidden {
+  display: none;
 }
