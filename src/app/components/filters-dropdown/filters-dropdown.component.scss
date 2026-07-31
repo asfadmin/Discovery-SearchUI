@@ -2,7 +2,7 @@
 
 .dataset-filters-div {
   /* autoprefixer: off */
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
@@ -21,6 +21,10 @@
   z-index: 1020;
   display: flex;
   height: 100%;
+
+  @media screen and (max-width: 800px) {
+    height: calc(100% - 32px);
+  }
   overflow: hidden;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -81,7 +85,6 @@
     z-index: 1020;
     padding: 10px;
     min-height: 30px;
-
   }
 }
 
