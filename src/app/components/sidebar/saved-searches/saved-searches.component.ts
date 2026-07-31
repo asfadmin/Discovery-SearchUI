@@ -93,7 +93,11 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   ngOnInit() {
-    this.savedSearchService.loadSearches();
+    this.store$.select(userStore.getUserAuth).subscribe((profile) => {
+      if (profile.id) {
+        this.savedSearchService.loadSearches();
+      }
+    });
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
