@@ -24,6 +24,21 @@
         </div>
 
         <mat-form-field class="default-filters-presets">
+          <mat-label>{{ 'DEFAULT_LANGUAGE' | translate }}</mat-label>
+          <mat-select
+            [(value)]="defaultLanguage"
+            (selectionChange)="onChangeDefaultLanguage($event.value)"
+            name="preset"
+          >
+            @for (lang of translate.getLangs(); track lang) {
+              <mat-option [value]="lang">
+                {{ language.getName(lang) | titlecase }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="default-filters-presets">
           <mat-label>{{ 'DEFAULT_THEME' | translate }}</mat-label>
           <mat-select
             [(value)]="currentTheme"

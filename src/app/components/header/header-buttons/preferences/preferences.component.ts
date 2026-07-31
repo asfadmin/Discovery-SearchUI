@@ -40,7 +40,7 @@ import { MatFormField, MatLabel } from '@angular/material/input';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelect, MatOption } from '@angular/material/select';
-import { UpperCasePipe } from '@angular/common';
+import { UpperCasePipe, TitleCasePipe } from '@angular/common';
 import { Hyp3UrlSelectorComponent } from './hyp3-url-selector/hyp3-url-selector.component';
 import { MatButton } from '@angular/material/button';
 
@@ -65,6 +65,7 @@ import { MatButton } from '@angular/material/button';
     MatDialogActions,
     MatButton,
     UpperCasePipe,
+    TitleCasePipe,
     TranslateModule,
   ],
 })
