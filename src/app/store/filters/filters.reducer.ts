@@ -53,6 +53,7 @@ export interface FiltersState {
   instrument: string[];
   scienceProduct: string[];
   productionConfig: string[];
+  productMaturity: string[];
 
   operaBurstIDs: null | string[];
   useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
@@ -132,6 +133,7 @@ export const initState: FiltersState = {
   instrument: [],
   scienceProduct: [],
   productionConfig: ['PR'],
+  productMaturity: ['P'],
 
   groupID: null,
   tileID: null,
@@ -1222,6 +1224,10 @@ export const getScienceProduct = createSelector(
 export const getProductionConfig = createSelector(
   getFiltersState,
   (state: FiltersState) => state.productionConfig,
+);
+export const getProductMaturity = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.productMaturity,
 );
 export const getShouldUseFramesForReference = createSelector(
   getFiltersState,
