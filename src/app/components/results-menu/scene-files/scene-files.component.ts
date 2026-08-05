@@ -102,11 +102,10 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   );
   readonly groups = computed(() => {
     const scene = this.scene();
-    if (scene?.dataset === 'NISAR' && scene.metadata?.subproducts?.length > 0) {
-      return [
-        'default',
-        ...models.nisar.productTypeDisplays.groups.map((g) => g.name),
-      ];
+    const datasetGroups =
+      models.datasets[scene?.dataset]?.productTypeDisplays?.groups;
+    if (datasetGroups?.length > 0 && scene.metadata?.subproducts?.length > 0) {
+      return ['default', ...datasetGroups.map((g) => g.name)];
     }
 
     return null;

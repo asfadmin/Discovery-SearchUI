@@ -170,7 +170,6 @@ export const nisar = {
       qa: 'QA Statistics HDF5',
       bin: 'Bin File',
     },
-    // Main science HDF5 intentionally matches no group so it stays at the top
     groups: [
       {
         name: 'Metadata',
