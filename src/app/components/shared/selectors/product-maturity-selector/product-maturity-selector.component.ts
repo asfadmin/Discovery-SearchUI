@@ -36,8 +36,8 @@ export class ProductMaturitySelectorComponent implements OnInit, OnDestroy {
   public selectedMaturity: string[] = [];
 
   maturities: productMaturity[] = [
-    { value: 'P', viewValue: 'PROVISIONAL' },
-    { value: 'X', viewValue: 'UNCALIBRATED' },
+    { value: 'PROVISIONAL', viewValue: 'PROVISIONAL' },
+    { value: 'BETA', viewValue: 'BETA_DISPLAY' },
   ];
 
   private subs: SubSink = new SubSink();
