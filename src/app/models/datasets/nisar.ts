@@ -174,7 +174,13 @@ export const nisar = {
     groups: [
       {
         name: 'Metadata',
-        files: [/Runconfig YAML/, /ISO Metadata XML/],
+        files: [
+          /Runconfig YAML/,
+          /ISO Metadata XML/,
+          /QA Summary CSV/,
+          /QA Report PDF/,
+          /QA Statistics HDF5/,
+        ],
       },
       {
         name: 'Visualizations',
@@ -182,12 +188,7 @@ export const nisar = {
       },
       {
         name: 'Documentation',
-        files: [
-          /Log File/,
-          /QA Summary CSV/,
-          /QA Report PDF/,
-          /QA Statistics HDF5/,
-        ],
+        files: [/Log File/],
       },
     ],
   },
