@@ -8,6 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { SubSink } from 'subsink';
+import * as moment from 'moment';
 
 import { combineLatest, of } from 'rxjs';
 import {
@@ -293,7 +294,9 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
           map((results) => {
             let output = [...results];
             if (scene.metadata.nisar.orbitType) {
-              output = output.concat(orbitEphemera);
+              output = output.concat(
+                this.orbitFilesValidFor(scene, orbitEphemera),
+              );
             }
             return output;
           }),
@@ -304,6 +307,22 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     }),
     tap((_) => this.dynamicQueryLoaded.set(true)),
   );
+
+  public orbitFilesValidFor(
+    scene: models.CMRProduct,
+    orbitFiles: models.CMRProduct[],
+  ): models.CMRProduct[] {
+    const sceneDate = scene.metadata.date;
+    return orbitFiles.filter((file) => {
+      const match = file.name.match(/(\d{8}T\d{6})_(\d{8}T\d{6})$/);
+      if (!match) {
+        return true;
+      }
+      const validityStart = moment.utc(match[1], 'YYYYMMDDTHHmmss');
+      const validityEnd = moment.utc(match[2], 'YYYYMMDDTHHmmss');
+      return sceneDate.isBetween(validityStart, validityEnd, undefined, '[]');
+    });
+  }
 
   public getNisarL2Params(productID: string, productType: string) {
     return {

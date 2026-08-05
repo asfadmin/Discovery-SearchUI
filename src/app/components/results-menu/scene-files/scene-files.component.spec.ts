@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import * as moment from 'moment';
+import * as models from '@models';
 import { SceneFilesComponent } from './scene-files.component';
 import { ToastrModule } from 'ngx-toastr';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -69,4 +71,20 @@ describe('SceneFilesComponent', () => {
       granule_list:
         'NISAR_L2_UR_GOFF_039_002_D_121_040_7700_SH_20240403T084849_20240403T084905_20240415T084849_20240415T084905_T00408_F_P_J_001',
     }));
+
+  it('filters orbit files to those valid for the scene acquisition time', () => {
+    const scene = {
+      metadata: { date: moment.utc('20260717T063521', 'YYYYMMDDTHHmmss') },
+    } as models.CMRProduct;
+    const orbitFile = (name: string) => ({ name }) as models.CMRProduct;
+    const poe = orbitFile(
+      'NISAR_ANC_J_PR_POE_20260715T185257_20260703T205942_20260705T025942',
+    );
+    const moe = orbitFile(
+      'NISAR_ANC_J_PR_MOE_20260721T132436_20260716T205942_20260721T025942',
+    );
+    expect(
+      component.orbitFilesValidFor(scene, [poe, moe]).map((f) => f.name),
+    ).toEqual([moe.name]);
+  });
 });
