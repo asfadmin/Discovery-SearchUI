@@ -10,6 +10,7 @@
   </span>
 
   <app-copy-to-clipboard
+    class="compact"
     [value]="
       product().metadata.productType === 'BURST_XML'
         ? product().id?.split('-XML')[0]
@@ -22,6 +23,7 @@
 
   @if (product().metadata?.s3URI !== null) {
     <app-copy-to-clipboard
+      class="compact"
       [prompt]="'COPY_URLS' | translate"
       [submenu]="[
         {
@@ -39,6 +41,7 @@
     ></app-copy-to-clipboard>
   } @else {
     <app-copy-to-clipboard
+      class="compact"
       [prompt]="'COPY_DOWNLOAD_URL' | translate"
       [message]="'COPIED_SCENE_DOWNLOAD_URL' | translate"
       [value]="product().downloadUrl"
@@ -73,11 +76,16 @@
   }
 
   <app-download-file-button
+    class="compact"
     [attr.id]="'scene_' + product().id"
     [product]="product()"
   >
   </app-download-file-button>
 
-  <app-cart-toggle (toggle)="toggle.emit()" [isQueued]="isQueued()">
+  <app-cart-toggle
+    class="compact"
+    (toggle)="toggle.emit()"
+    [isQueued]="isQueued()"
+  >
   </app-cart-toggle>
 </div>

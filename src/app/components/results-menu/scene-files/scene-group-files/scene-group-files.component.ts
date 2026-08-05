@@ -1,30 +1,36 @@
-import { Component, input, output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, computed, input, output, signal } from '@angular/core';
+import { Observable, combineLatest, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 import * as models from '@models';
 
 import {
-  MatAccordion,
-  MatExpansionPanel,
-  MatExpansionPanelHeader,
-  MatExpansionPanelTitle,
-} from '@angular/material/expansion';
+  MatTree,
+  MatNestedTreeNode,
+  MatTreeNodeDef,
+} from '@angular/material/tree';
+import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { AsyncPipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { SceneGroupFileComponent } from '../scene-file/scene-group-file/scene-group-file.component';
+
+interface FileGroup {
+  labelKey: string;
+  products: models.CMRProduct[];
+  isRelatedData: boolean;
+}
 
 @Component({
   selector: 'app-scene-group-files',
   templateUrl: './scene-group-files.component.html',
   styleUrls: ['./scene-group-files.component.scss'],
   imports: [
-    MatAccordion,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle,
+    MatTree,
+    MatNestedTreeNode,
+    MatTreeNodeDef,
+    MatIcon,
     MatProgressSpinner,
-    AsyncPipe,
     TranslateModule,
     SceneGroupFileComponent,
   ],
@@ -40,4 +46,73 @@ export class SceneGroupFilesComponent {
 
   toggleProduct = output<models.CMRProduct>();
   queueHyp3Job = output<models.QueuedHyp3Job>();
+
+  private relatedProducts = toSignal(
+    combineLatest([
+      toObservable(this.showRelatedData),
+      toObservable(this.subqueryProducts$),
+    ]).pipe(
+      switchMap(
+        ([show, products$]): Observable<models.CMRProduct[] | null> =>
+          show && products$ ? products$ : of(null),
+      ),
+    ),
+    { initialValue: null },
+  );
+
+  readonly fileGroups = computed<FileGroup[]>(() => {
+    const byGroup = this.productsByGroup();
+    const fileGroups: FileGroup[] = [];
+
+    if (byGroup && byGroup['default'].length > 0) {
+      fileGroups.push({
+        labelKey: 'SCIENCE_DATA',
+        products: byGroup['default'],
+        isRelatedData: false,
+      });
+    }
+
+    for (const group of this.groups() ?? []) {
+      if (group !== 'default' && byGroup[group].length > 0) {
+        fileGroups.push({
+          labelKey: 'FILE_GROUP_' + group.toUpperCase(),
+          products: byGroup[group],
+          isRelatedData: false,
+        });
+      }
+    }
+
+    if (this.showRelatedData()) {
+      fileGroups.push({
+        labelKey: 'RELATED_DATA',
+        products: this.relatedProducts() ?? [],
+        isRelatedData: true,
+      });
+    }
+
+    return fileGroups;
+  });
+
+  readonly childrenOf = () => [];
+  public trackGroup = (_: number, group: FileGroup) => group.labelKey;
+
+  private toggled = signal<Set<string>>(new Set());
+
+  public isExpanded(group: FileGroup): boolean {
+    const expandedByDefault =
+      group.labelKey === 'SCIENCE_DATA' || group.labelKey === 'RELATED_DATA';
+    return this.toggled().has(group.labelKey)
+      ? !expandedByDefault
+      : expandedByDefault;
+  }
+
+  public onToggleGroup(group: FileGroup): void {
+    const next = new Set(this.toggled());
+    if (next.has(group.labelKey)) {
+      next.delete(group.labelKey);
+    } else {
+      next.add(group.labelKey);
+    }
+    this.toggled.set(next);
+  }
 }

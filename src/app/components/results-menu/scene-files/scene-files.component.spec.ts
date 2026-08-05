@@ -191,27 +191,28 @@ describe('SceneFilesComponent file grouping', () => {
     await setup(scene, products);
 
     const element = fixture.nativeElement as HTMLElement;
-    expect(element.querySelectorAll('app-scene-group-file')).toHaveLength(
-      products.length,
-    );
-    expect(element.querySelectorAll('mat-expansion-panel')).toHaveLength(4);
+    expect(element.querySelectorAll('app-scene-group-file')).toHaveLength(2);
+    expect(element.querySelectorAll('mat-nested-tree-node')).toHaveLength(4);
 
-    const dataPanel = element.querySelector('mat-expansion-panel');
-    const dataHeader = dataPanel.querySelector('mat-panel-title').textContent;
+    const dataPanel = element.querySelector('mat-nested-tree-node');
+    const dataHeader = dataPanel.querySelector('.group-title').textContent;
     expect(dataHeader).toContain('Data');
     expect(dataHeader).toContain('(2');
     expect(
-      dataPanel
-        .querySelector('mat-expansion-panel-header')
-        .classList.contains('mat-expanded'),
+      dataPanel.querySelector('.group-header').classList.contains('expanded'),
     ).toBe(true);
     expect(dataPanel.querySelectorAll('app-scene-group-file')).toHaveLength(2);
 
-    const headers = [...element.querySelectorAll('mat-panel-title')].map(
+    const headers = [...element.querySelectorAll('.group-title')].map(
       (title) => title.textContent,
     );
     expect(headers[1]).toContain('Metadata');
     expect(headers[1]).toContain('(5');
+
+    const metadataHeader = element.querySelectorAll('.group-header')[1];
+    (metadataHeader as HTMLElement).click();
+    fixture.detectChanges();
+    expect(element.querySelectorAll('app-scene-group-file')).toHaveLength(7);
   });
 
   it('does not render panels for empty groups', async () => {
@@ -224,7 +225,7 @@ describe('SceneFilesComponent file grouping', () => {
     await setup(scene, [scene, subproduct]);
 
     expect(
-      fixture.nativeElement.querySelectorAll('mat-expansion-panel'),
+      fixture.nativeElement.querySelectorAll('mat-nested-tree-node'),
     ).toHaveLength(2);
   });
 
@@ -236,7 +237,7 @@ describe('SceneFilesComponent file grouping', () => {
     await setup(scene, [scene]);
 
     expect(component.groups()).toBe(null);
-    expect(fixture.nativeElement.querySelector('mat-accordion')).toBe(null);
+    expect(fixture.nativeElement.querySelector('mat-tree')).toBe(null);
     expect(
       fixture.nativeElement.querySelectorAll('app-scene-file'),
     ).toHaveLength(1);
@@ -246,6 +247,6 @@ describe('SceneFilesComponent file grouping', () => {
     await setup(null, []);
 
     expect(component.groups()).toBe(null);
-    expect(fixture.nativeElement.querySelector('mat-accordion')).toBe(null);
+    expect(fixture.nativeElement.querySelector('mat-tree')).toBe(null);
   });
 });
