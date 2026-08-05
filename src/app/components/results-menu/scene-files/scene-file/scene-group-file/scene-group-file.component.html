@@ -1,40 +1,38 @@
-@let file = product();
-
 <div class="group-file-row">
-  <span class="file-name">{{ file.productTypeDisplay }}</span>
+  <span class="file-name">{{ product().productTypeDisplay }}</span>
 
   <span class="file-size">
-    @if (file.bytes === 0 && !file?.id?.startsWith('OPERA')) {
+    @if (product().bytes === 0 && !product()?.id?.startsWith('OPERA')) {
       {{ 'VIRTUAL' | translate }}
-    } @else if (file.bytes !== 0) {
-      {{ file.bytes.toString() | readableSizeFromBytes }}
+    } @else if (product().bytes !== 0) {
+      {{ product().bytes.toString() | readableSizeFromBytes }}
     }
   </span>
 
   <app-copy-to-clipboard
     [value]="
-      file.metadata.productType === 'BURST_XML'
-        ? file.id?.split('-XML')[0]
-        : file.metadata.parentID || file.id
+      product().metadata.productType === 'BURST_XML'
+        ? product().id?.split('-XML')[0]
+        : product().metadata.parentID || product().id
     "
     [message]="'COPIED_FILE_ID' | translate"
     prompt="{{ 'COPY_FILE_ID' | translate }}"
   >
   </app-copy-to-clipboard>
 
-  @if (file.metadata?.s3URI !== null) {
+  @if (product().metadata?.s3URI !== null) {
     <app-copy-to-clipboard
       [prompt]="'COPY_URLS' | translate"
       [submenu]="[
         {
           prompt: 'COPY_URL' | translate,
           message: 'COPIED_SCENE_DOWNLOAD_URL' | translate,
-          value: file.downloadUrl,
+          value: product().downloadUrl,
         },
         {
           prompt: 'COPY_S3_URL' | translate,
           message: 'COPIED_S3_URL' | translate,
-          value: file.metadata?.s3URI,
+          value: product().metadata?.s3URI,
         },
       ]"
       copyIcon="link_2"
@@ -43,7 +41,7 @@
     <app-copy-to-clipboard
       [prompt]="'COPY_DOWNLOAD_URL' | translate"
       [message]="'COPIED_SCENE_DOWNLOAD_URL' | translate"
-      [value]="file.downloadUrl"
+      [value]="product().downloadUrl"
       copyIcon="link_2"
     ></app-copy-to-clipboard>
   }
@@ -77,6 +75,9 @@
   <app-cart-toggle (toggle)="toggle.emit()" [isQueued]="isQueued()">
   </app-cart-toggle>
 
-  <app-download-file-button [attr.id]="'scene_' + file.id" [product]="file">
+  <app-download-file-button
+    [attr.id]="'scene_' + product().id"
+    [product]="product()"
+  >
   </app-download-file-button>
 </div>
