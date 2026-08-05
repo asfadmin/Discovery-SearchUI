@@ -38,7 +38,13 @@ app-cart-toggle {
   margin: 0;
 }
 
-.group-file-row ::ng-deep mat-icon {
+.row-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+}
+
+.group-file-row mat-icon {
   font-size: 20px;
   width: 20px;
   height: 20px;
@@ -49,18 +55,7 @@ app-cart-toggle {
   }
 }
 
-.group-file-row ::ng-deep .mat-mdc-icon-button {
-  @include mat.icon-button-overrides(
-    (
-      state-layer-size: 20px,
-      icon-size: 20px,
-      hover-state-layer-opacity: 0,
-      focus-state-layer-opacity: 0,
-      pressed-state-layer-opacity: 0,
-      ripple-color: transparent,
-    )
-  );
-
+.group-file-row .mat-mdc-icon-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;

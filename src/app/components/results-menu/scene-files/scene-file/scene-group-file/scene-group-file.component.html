@@ -11,72 +11,84 @@
     }
   </span>
 
-  <app-copy-to-clipboard
-    [value]="
-      file.metadata.productType === 'BURST_XML'
-        ? file.id?.split('-XML')[0]
-        : file.metadata.parentID || file.id
-    "
-    [message]="'COPIED_FILE_ID' | translate"
-    prompt="{{ 'COPY_FILE_ID' | translate }}"
-  >
-  </app-copy-to-clipboard>
+  <div class="row-icon">
+    <app-copy-to-clipboard
+      [value]="
+        file.metadata.productType === 'BURST_XML'
+          ? file.id?.split('-XML')[0]
+          : file.metadata.parentID || file.id
+      "
+      [message]="'COPIED_FILE_ID' | translate"
+      prompt="{{ 'COPY_FILE_ID' | translate }}"
+    >
+    </app-copy-to-clipboard>
+  </div>
 
   @if (file.metadata?.s3URI !== null) {
-    <app-copy-to-clipboard
-      [prompt]="'COPY_URLS' | translate"
-      [submenu]="[
-        {
-          prompt: 'COPY_URL' | translate,
-          message: 'COPIED_SCENE_DOWNLOAD_URL' | translate,
-          value: file.downloadUrl,
-        },
-        {
-          prompt: 'COPY_S3_URL' | translate,
-          message: 'COPIED_S3_URL' | translate,
-          value: file.metadata?.s3URI,
-        },
-      ]"
-      copyIcon="link_2"
-    ></app-copy-to-clipboard>
+    <div class="row-icon">
+      <app-copy-to-clipboard
+        [prompt]="'COPY_URLS' | translate"
+        [submenu]="[
+          {
+            prompt: 'COPY_URL' | translate,
+            message: 'COPIED_SCENE_DOWNLOAD_URL' | translate,
+            value: file.downloadUrl,
+          },
+          {
+            prompt: 'COPY_S3_URL' | translate,
+            message: 'COPIED_S3_URL' | translate,
+            value: file.metadata?.s3URI,
+          },
+        ]"
+        copyIcon="link_2"
+      ></app-copy-to-clipboard>
+    </div>
   } @else {
-    <app-copy-to-clipboard
-      [prompt]="'COPY_DOWNLOAD_URL' | translate"
-      [message]="'COPIED_SCENE_DOWNLOAD_URL' | translate"
-      [value]="file.downloadUrl"
-      copyIcon="link_2"
-    ></app-copy-to-clipboard>
+    <div class="row-icon">
+      <app-copy-to-clipboard
+        [prompt]="'COPY_DOWNLOAD_URL' | translate"
+        [message]="'COPIED_SCENE_DOWNLOAD_URL' | translate"
+        [value]="file.downloadUrl"
+        copyIcon="link_2"
+      ></app-copy-to-clipboard>
+    </div>
   }
 
   @if (validHyp3JobTypes().length > 0) {
-    <button
-      [matMenuTriggerFor]="customJobTypes"
-      mat-icon-button
-      class="hyp3-button"
-    >
-      <mat-icon
-        svgIcon="hyp3"
-        matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
+    <div class="row-icon">
+      <button
+        [matMenuTriggerFor]="customJobTypes"
+        mat-icon-button
+        class="hyp3-button"
       >
-      </mat-icon>
-      <mat-menu #customJobTypes="matMenu">
-        @for (jobType of validHyp3JobTypes(); track jobType) {
-          <button (click)="addJobToProcessingQueue(jobType)" mat-menu-item>
-            {{ 'ADD' | translate }} {{ jobType.name }} to On Demand
-            <mat-icon
-              (click)="onOpenHelp($event, jobType.infoUrl)"
-              class="clickable info-icon"
-              >info</mat-icon
-            >
-          </button>
-        }
-      </mat-menu>
-    </button>
+        <mat-icon
+          svgIcon="hyp3"
+          matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
+        >
+        </mat-icon>
+        <mat-menu #customJobTypes="matMenu">
+          @for (jobType of validHyp3JobTypes(); track jobType) {
+            <button (click)="addJobToProcessingQueue(jobType)" mat-menu-item>
+              {{ 'ADD' | translate }} {{ jobType.name }} to On Demand
+              <mat-icon
+                (click)="onOpenHelp($event, jobType.infoUrl)"
+                class="clickable info-icon"
+                >info</mat-icon
+              >
+            </button>
+          }
+        </mat-menu>
+      </button>
+    </div>
   }
 
-  <app-download-file-button [attr.id]="'scene_' + file.id" [product]="file">
-  </app-download-file-button>
+  <div class="row-icon">
+    <app-download-file-button [attr.id]="'scene_' + file.id" [product]="file">
+    </app-download-file-button>
+  </div>
 
-  <app-cart-toggle (toggle)="toggle.emit()" [isQueued]="isQueued()">
-  </app-cart-toggle>
+  <div class="row-icon">
+    <app-cart-toggle (toggle)="toggle.emit()" [isQueued]="isQueued()">
+    </app-cart-toggle>
+  </div>
 </div>

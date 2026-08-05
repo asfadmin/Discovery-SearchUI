@@ -1,3 +1,4 @@
+@use "@angular/material" as mat;
 @use "asf-theme-variables" as *;
 
 .download-file-button {
@@ -5,6 +6,17 @@
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
+
+  @include mat.icon-button-overrides(
+    (
+      state-layer-size: 20px,
+      icon-size: 20px,
+      hover-state-layer-opacity: 0,
+      focus-state-layer-opacity: 0,
+      pressed-state-layer-opacity: 0,
+      ripple-color: transparent,
+    )
+  );
 }
 
 .progress-spinner {
@@ -36,3 +48,5 @@
 .link {
   color: unset;
 }
+
+
