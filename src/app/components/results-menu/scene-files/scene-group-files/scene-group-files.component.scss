@@ -24,7 +24,7 @@
     background: transparent !important;
     border: none;
     padding-left: 12px;
-    padding-right: 30px;
+    padding-right: 32px;
 
     &:hover:not([aria-disabled='true']),
     &.mat-expanded {
@@ -50,7 +50,7 @@
     align-items: center;
     justify-content: center;
     margin-left: auto;
-    margin-right: 22px;
+    margin-right: 18px;
     padding: 0;
 
     mat-icon {

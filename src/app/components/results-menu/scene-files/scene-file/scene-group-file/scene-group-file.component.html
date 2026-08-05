@@ -74,9 +74,9 @@
     </button>
   }
 
-  <app-download-file-button [attr.id]="'scene_' + file.id" [product]="file">
-  </app-download-file-button>
-
   <app-cart-toggle (toggle)="toggle.emit()" [isQueued]="isQueued()">
   </app-cart-toggle>
+
+  <app-download-file-button [attr.id]="'scene_' + file.id" [product]="file">
+  </app-download-file-button>
 </div>
