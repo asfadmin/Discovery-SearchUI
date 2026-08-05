@@ -21,6 +21,16 @@
           {{ (group.products.length === 1 ? 'FILE' : 'FILES') | translate }})
         }
       </span>
+      @if (group.products.length > 0) {
+        <button
+          mat-icon-button
+          class="group-cart"
+          matTooltip="{{ 'ADD_ALL_GROUP_FILES' | translate }}"
+          (click)="onQueueGroup($event, group)"
+        >
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
+      }
       <mat-icon class="chevron">expand_more</mat-icon>
     </div>
 

@@ -75,17 +75,17 @@
     </button>
   }
 
-  <app-download-file-button
-    class="compact"
-    [attr.id]="'scene_' + product().id"
-    [product]="product()"
-  >
-  </app-download-file-button>
-
   <app-cart-toggle
     class="compact"
     (toggle)="toggle.emit()"
     [isQueued]="isQueued()"
   >
   </app-cart-toggle>
+
+  <app-download-file-button
+    class="compact"
+    [attr.id]="'scene_' + product().id"
+    [product]="product()"
+  >
+  </app-download-file-button>
 </div>

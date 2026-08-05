@@ -29,6 +29,7 @@ import {
   Hyp3ApiService,
   Hyp3JobStatusService,
   ExportService,
+  NotificationService,
 } from '@services';
 
 import * as models from '@models';
@@ -58,7 +59,7 @@ import {
   MatMenuContent,
 } from '@angular/material/menu';
 import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -91,6 +92,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private hyp3JobStatus = inject(Hyp3JobStatusService);
   private possibleHyp3JobsService = inject(PossibleHyp3JobsService);
   private exportService = inject(ExportService);
+  private notificationService = inject(NotificationService);
+  private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
 
   public pairs$ = this.pairService.pairs$;
@@ -154,6 +157,41 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       }, {}),
     ),
   );
+
+  private productsByGroup: Record<string, models.CMRProduct[]> = {};
+  public productCountByGroup$: Observable<Record<string, number>> = this.store$
+    .select(scenesStore.getAllProducts)
+    .pipe(
+      map((products: models.CMRProduct[]) =>
+        products.reduce(
+          (prev, curr) => {
+            const key = curr.productTypeGroup
+              ? 'FILE_GROUP_' + curr.productTypeGroup.toUpperCase()
+              : 'DATA';
+            (prev[key] = prev[key] ?? []).push(curr);
+            return prev;
+          },
+          {} as Record<string, models.CMRProduct[]>,
+        ),
+      ),
+      tap((products) => (this.productsByGroup = products)),
+      map((products) =>
+        Object.fromEntries(
+          Object.entries(products).map(([key, value]) => [key, value.length]),
+        ),
+      ),
+    );
+
+  public queueProductsOfGroup(groupKey: string): void {
+    const products = this.productsByGroup[groupKey] ?? [];
+    this.queueAllProducts(products);
+    this.notificationService.info(
+      this.translate.instant('FILES_ADDED_FROM_GROUP', {
+        count: products.length,
+        group: this.translate.instant(groupKey),
+      }),
+    );
+  }
 
   public numBaselineScenes$ = this.scenesService.scenes$.pipe(
     map((scenes) => scenes.length),

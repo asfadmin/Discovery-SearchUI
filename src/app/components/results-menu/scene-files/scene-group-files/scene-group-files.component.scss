@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @use 'asf-theme-variables' as *;
 
 mat-tree {
@@ -32,8 +33,38 @@ mat-tree {
   font-weight: 600;
 }
 
-.chevron {
+.group-cart {
+  @include mat.icon-button-overrides(
+    (
+      state-layer-size: 20px,
+      icon-size: 20px,
+      hover-state-layer-opacity: 0,
+      focus-state-layer-opacity: 0,
+      pressed-state-layer-opacity: 0,
+      ripple-color: transparent,
+    )
+  );
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-left: auto;
+  padding: 0;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+
+    @include themify($themes) {
+      color: themed('dark-primary-text');
+    }
+  }
+}
+
+.chevron {
+  margin-left: 10px;
   font-size: 20px;
   width: 20px;
   height: 20px;

@@ -1,9 +1,20 @@
-import { Component, computed, input, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as queueStore from '@store/queue';
 import * as models from '@models';
+import { NotificationService } from '@services';
 
 import {
   MatTree,
@@ -11,8 +22,10 @@ import {
   MatTreeNodeDef,
 } from '@angular/material/tree';
 import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SceneGroupFileComponent } from '../scene-file/scene-group-file/scene-group-file.component';
 
 interface FileGroup {
@@ -30,6 +43,8 @@ interface FileGroup {
     MatNestedTreeNode,
     MatTreeNodeDef,
     MatIcon,
+    MatIconButton,
+    MatTooltip,
     MatProgressSpinner,
     TranslateModule,
     SceneGroupFileComponent,
@@ -46,6 +61,10 @@ export class SceneGroupFilesComponent {
 
   toggleProduct = output<models.CMRProduct>();
   queueHyp3Job = output<models.QueuedHyp3Job>();
+
+  private store$ = inject<Store<AppState>>(Store);
+  private notificationService = inject(NotificationService);
+  private translate = inject(TranslateService);
 
   private relatedProducts = toSignal(
     combineLatest([
@@ -114,5 +133,16 @@ export class SceneGroupFilesComponent {
       next.add(group.labelKey);
     }
     this.toggled.set(next);
+  }
+
+  public onQueueGroup(event: Event, group: FileGroup): void {
+    event.stopPropagation();
+    this.store$.dispatch(new queueStore.AddItems(group.products));
+    this.notificationService.info(
+      this.translate.instant('FILES_ADDED_FROM_GROUP', {
+        count: group.products.length,
+        group: this.translate.instant(group.labelKey),
+      }),
+    );
   }
 }
