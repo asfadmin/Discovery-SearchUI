@@ -167,7 +167,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
           (prev, curr) => {
             const key = curr.productTypeGroup
               ? 'FILE_GROUP_' + curr.productTypeGroup.toUpperCase()
-              : 'DATA';
+              : 'SCIENCE_DATA';
             (prev[key] = prev[key] ?? []).push(curr);
             return prev;
           },
