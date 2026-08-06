@@ -77,6 +77,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public jointObservation: boolean;
   public scienceProducts: string[];
   public productionConfig: string[];
+  public productMaturity: string[];
   public jobIds: string[];
   public selectedDataset: string;
   public selectedDatasetIsNISARFormat = false;
@@ -250,6 +251,10 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       .subscribe(
         (productionConfig) => (this.productionConfig = productionConfig),
       );
+    const productMaturitySub = this.store$
+      .select(filtersStore.getProductionConfig)
+      .subscribe((productMaturity) => (this.productMaturity = productMaturity));
+
     const ariaVersionSub = this.store$
       .select(filtersStore.getAriaVersion)
       .subscribe((version) => (this.ariaVersion = version));
@@ -283,6 +288,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       groupIDSub,
       userIDSub,
       productionConfigSub,
+      productMaturitySub,
       scienceProductsSub,
       jobIdsSub,
       ariaVersionSub,
