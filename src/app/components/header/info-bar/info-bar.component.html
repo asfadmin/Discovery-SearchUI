@@ -123,10 +123,10 @@
             {{ productionConfig }}
           </span>
         }
-        @if (productMaturity.length) {
+        @if (productMaturity().length) {
           <span>
             <b>{{ 'PRODUCT_MATURITY' | translate }}:</b>
-            {{ productMaturity }}
+            {{ productMaturity() }}
           </span>
         }
       }
