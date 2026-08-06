@@ -827,6 +827,7 @@
   "PRODUCT_TYPES": "Tipos de productos",
   "PRODUCT_VERSION": "Versión del Producto",
   "PRODUCT_MATURITY": "Data Maturity",
+  "PRODUCT_MATURITY_TOOLTIP": "Release status of the product",
   "PRODUCTION": "Producción",
   "PRODUCTION_CONFIGURATION": "Configuración de Producción",
   "PRODUCTION_CONFIGURATION_FILTER": "Filtro de Configuración de Producción",
