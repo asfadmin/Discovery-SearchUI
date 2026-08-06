@@ -461,6 +461,7 @@ export function filtersReducer(
         rangeBandwidth: [],
         scienceProduct: [],
         productionConfig: [],
+        productMaturity: [],
         ariaVersion: null,
       };
     }
@@ -736,6 +737,7 @@ export function filtersReducer(
           shortNames: filters.shortNames || [],
           scienceProduct: filters.scienceProduct || [],
           productionConfig: filters.productionConfig || [],
+          productMaturity: filters.productMaturity || [],
           granuleList: filters.granuleList || null,
           sidePolarizations: filters.sidePolarizations || [],
           frameCoverage: filters.frameCoverage || [],
@@ -1088,6 +1090,7 @@ export const getGeographicSearch = createSelector(
     shortNames: state.shortNames,
     scienceProduct: state.scienceProduct,
     productionConfig: state.productionConfig,
+    productMaturity: state.productMaturity,
     sidePolarizations: state.sidePolarizations,
     frameCoverage: state.frameCoverage,
     jointObservation: state.jointObservation,
