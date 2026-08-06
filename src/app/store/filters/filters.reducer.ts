@@ -133,7 +133,7 @@ export const initState: FiltersState = {
   instrument: [],
   scienceProduct: [],
   productionConfig: ['PR'],
-  productMaturity: ['P'],
+  productMaturity: [],
 
   groupID: null,
   tileID: null,
