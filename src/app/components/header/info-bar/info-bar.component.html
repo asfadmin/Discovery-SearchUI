@@ -123,6 +123,12 @@
             {{ productionConfig }}
           </span>
         }
+        @if (productMaturity.length) {
+          <span>
+            <b>{{ 'PRODUCT_MATURITY' | translate }}:</b>
+            {{ productMaturity }}
+          </span>
+        }
       }
       @if (flightDirections.length) {
         <span>

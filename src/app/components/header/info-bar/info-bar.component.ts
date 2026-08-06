@@ -252,7 +252,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
         (productionConfig) => (this.productionConfig = productionConfig),
       );
     const productMaturitySub = this.store$
-      .select(filtersStore.getProductionConfig)
+      .select(filtersStore.getProductMaturity)
       .subscribe((productMaturity) => (this.productMaturity = productMaturity));
 
     const ariaVersionSub = this.store$
