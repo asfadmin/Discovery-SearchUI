@@ -585,5 +585,6 @@ export type FiltersActions =
   | setAriaVersion
   | setTileID
   | setGranuleList
+  | setProductMaturity
   | SetUseFrameForBaseline
   | ApplyDatasetDefaults;

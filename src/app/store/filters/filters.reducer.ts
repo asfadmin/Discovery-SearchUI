@@ -161,6 +161,7 @@ export function filtersReducer(
         ...state,
         selectedDatasetId: selected,
         productTypes: [],
+        productMaturity: [],
         beamModes: [],
         polarizations: [],
         platforms: [],
@@ -761,6 +762,12 @@ export function filtersReducer(
       return {
         ...state,
         productFilterName: action.payload,
+      };
+    }
+    case FiltersActionType.SET_PRODUCT_MATURITY: {
+      return {
+        ...state,
+        productMaturity: action.payload,
       };
     }
     case FiltersActionType.STORE_CURRENT_FILTERS: {
