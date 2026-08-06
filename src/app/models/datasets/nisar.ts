@@ -171,9 +171,24 @@ export const nisar = {
       bin: 'Bin File',
     },
     groups: [
-      { name: 'Metadata', files: [/Runconfig YAML/, /Footprint KML/] },
-      { name: 'Visualizations', files: [/Browse Image PNG/, /.*PNG/] },
-      { name: 'Documentation', files: [/Log File/] },
+      {
+        name: 'Metadata',
+        files: [
+          /Runconfig YAML/,
+          /ISO Metadata XML/,
+          /QA Summary CSV/,
+          /QA Report PDF/,
+          /QA Statistics HDF5/,
+        ],
+      },
+      {
+        name: 'Visualizations',
+        files: [/Browse Image PNG/, /.*PNG/, /Footprint KML/],
+      },
+      {
+        name: 'Documentation',
+        files: [/Log File/],
+      },
     ],
   },
 };

@@ -6,6 +6,7 @@ import {
   ViewChild,
   inject,
   signal,
+  computed,
 } from '@angular/core';
 import { SubSink } from 'subsink';
 
@@ -29,7 +30,7 @@ import * as hyp3Store from '@store/hyp3';
 import { AsfApiService, Hyp3ApiService } from '@services';
 import * as models from '@models';
 
-import { MatList, MatListItem } from '@angular/material/list';
+import { MatList } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';
 import { ScreenSizeService } from '@services';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -37,9 +38,10 @@ import * as filterStore from '@store/filters';
 import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
 import { AsyncPipe } from '@angular/common';
 import { SceneFileComponent } from './scene-file/scene-file.component';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { SceneGroupFilesComponent } from './scene-group-files/scene-group-files.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { getStaticQueryParams } from '@models/datasets/opera_s1';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-scene-files',
@@ -47,11 +49,10 @@ import { getStaticQueryParams } from '@models/datasets/opera_s1';
   styleUrls: ['./scene-files.component.scss'],
   imports: [
     MatList,
-    MatProgressSpinner,
     SceneFileComponent,
+    SceneGroupFilesComponent,
     AsyncPipe,
     TranslateModule,
-    MatListItem,
   ],
 })
 export class SceneFilesComponent implements OnInit, OnDestroy {
@@ -83,7 +84,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       }),
     ),
   );
-  public loadingHyp3JobName: string | null;
+  public loadingHyp3JobName: string | null = null;
   public validJobTypesByProduct: Record<string, models.Hyp3JobType[]> = {};
 
   public isUserLoggedIn: boolean;
@@ -91,6 +92,46 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   public showDemWarning: boolean;
 
   public dynamicQueryLoaded = signal(false);
+
+  private scene = toSignal(this.store$.select(scenesStore.getSelectedScene));
+  private sceneProducts = toSignal(
+    this.store$
+      .select(scenesStore.getSelectedSceneProducts)
+      .pipe(debounceTime(0)),
+    { initialValue: [] as models.CMRProduct[] },
+  );
+  readonly groups = computed(() => {
+    const scene = this.scene();
+    const datasetGroups =
+      models.datasets[scene?.dataset]?.productTypeDisplays?.groups;
+    if (datasetGroups?.length > 0 && scene.metadata?.subproducts?.length > 0) {
+      return ['default', ...datasetGroups.map((g) => g.name)];
+    }
+
+    return null;
+  });
+  readonly selectedSceneGroups = computed(() => {
+    const groups = this.groups();
+
+    if (groups === null) {
+      return null;
+    }
+
+    const productsByGroups = groups.reduce(
+      (prev, curr) => {
+        prev[curr] = [];
+        return prev;
+      },
+      {} as Record<string, models.CMRProduct[]>,
+    );
+    for (const product of this.sceneProducts() ?? []) {
+      const groupName = product.productTypeGroup ?? 'default';
+      (productsByGroups[groupName] ?? productsByGroups['default']).push(
+        product,
+      );
+    }
+    return productsByGroups;
+  });
   private subs = new SubSink();
 
   ngOnInit() {
@@ -220,7 +261,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   }
   private nisarSubqueryCriteria(scene: models.CMRProduct) {
     const isNisar = !!scene && scene.id?.startsWith('NISAR');
-    const processingLevel = scene.metadata.productType ?? '';
+    const processingLevel = scene?.metadata?.productType ?? '';
 
     return (
       isNisar &&
