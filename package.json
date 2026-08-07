@@ -15,7 +15,7 @@
   "dependencies": {
     "@angular/animations": "^21.2.9",
     "@angular/cdk": "^21.2.7",
-    "@angular/cli": "^21.2.7",
+    "@angular/cli": "^21.0.4",
     "@angular/common": "^21.2.9",
     "@angular/compiler": "^21.2.9",
     "@angular/compiler-cli": "^21.2.9",
@@ -91,7 +91,7 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular/build": "^21.2.7",
+    "@angular/build": "^21.2.19",
     "@angular/language-service": "^21.2.9",
     "@ngrx/schematics": "^21.0.1",
     "@playwright/test": "1.59.1",
