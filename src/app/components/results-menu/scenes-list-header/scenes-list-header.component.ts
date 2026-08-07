@@ -187,11 +187,19 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       {} as Record<string, models.CMRProduct[]>,
     );
 
-    return Object.entries(groupedFiles).map(([name, products]) => ({
-      name,
-      products,
-    }));
+    return Object.entries(groupedFiles)
+      .map(([name, products]) => ({
+        name,
+        products,
+      }))
+      .sort(this.scienceDataFirst);
   });
+
+  private scienceDataFirst(a: ProductGroup, b: ProductGroup): number {
+    if (a.name === 'SCIENCE_DATA') return -1;
+    if (b.name === 'SCIENCE_DATA') return 1;
+    return 0;
+  }
 
   public queueProductsOfGroup(groupKey: string): void {
     const products = this.productsByGroup()[groupKey] ?? [];
