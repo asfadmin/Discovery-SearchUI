@@ -438,6 +438,7 @@
               @if (
                 searchType === SearchTypes.DATASET &&
                 (currentDatasetID === 'OPERA-S1' ||
+                  currentDatasetID === 'NISAR' ||
                   currentDatasetID === 'SEASAT')
               ) {
                 <button
@@ -447,7 +448,11 @@
                     productData: (productCountByType$ | async),
                   }"
                 >
-                  {{ 'ADD_BY_PRODUCT_TYPE' | translate }}
+                  {{
+                    currentDatasetID === 'NISAR'
+                      ? ('ADD_BY_FILE_TYPE' | translate)
+                      : ('ADD_BY_PRODUCT_TYPE' | translate)
+                  }}
                 </button>
               }
               @if (
