@@ -470,10 +470,7 @@
             <mat-menu #addAllProductsOfGroup>
               <ng-template matMenuContent let-productGroups="productGroups">
                 @for (group of productGroups; track group.name) {
-                  <button
-                    mat-menu-item
-                    (click)="queueProductsOfGroup(group.name)"
-                  >
+                  <button mat-menu-item (click)="queueProductsOfGroup(group)">
                     @let numProducts = group.products.length;
 
                     {{ 'ADD' | translate }} {{ numProducts }}

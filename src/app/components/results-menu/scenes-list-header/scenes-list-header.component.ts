@@ -201,13 +201,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     return 0;
   }
 
-  public queueProductsOfGroup(groupKey: string): void {
-    const products = this.productsByGroup()[groupKey] ?? [];
-    this.queueAllProducts(products);
+  public queueProductsOfGroup(group: ProductGroup): void {
+    this.queueAllProducts(group.products);
     this.notificationService.info(
       this.translate.instant('FILES_ADDED_FROM_GROUP', {
-        count: products.length,
-        group: this.translate.instant(groupKey),
+        count: group.products.length,
+        group: this.translate.instant(group.name),
       }),
     );
   }
