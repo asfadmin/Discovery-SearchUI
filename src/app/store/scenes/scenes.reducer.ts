@@ -462,8 +462,20 @@ export const getAllSceneProducts = createSelector(
     const allSceneProducts = {};
 
     Object.entries(state.scenes).forEach(([sceneId, scene]) => {
-      const products = scene.map((name) => state.products[name]);
+      const products = scene
+        .map((name) => state.products[name])
+        .filter((product) => {
+          if (product.dataset === 'NISAR') {
+            return (
+              product.productTypeDisplay.includes('HDF5') &&
+              !product.productTypeDisplay.includes('Statistics')
+            );
+          } else {
+            return true;
+          }
+        });
 
+      console.log(products);
       allSceneProducts[sceneId] = products;
     });
 

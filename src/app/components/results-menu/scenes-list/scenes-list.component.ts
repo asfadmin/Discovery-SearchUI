@@ -298,6 +298,7 @@ export class ScenesListComponent
             const scene = total[groupCriteria] || [];
 
             total[groupCriteria] = [...scene, product.id];
+
             return total;
           }, {});
 
