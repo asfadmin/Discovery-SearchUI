@@ -1,0 +1,22 @@
+@use 'asf-theme-variables' as *;
+
+.icon {
+  font-size: 1.2rem;
+}
+
+:host(.compact) {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+
+    @include themify($themes) {
+      color: themed('light-black');
+    }
+  }
+}
