@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
 import { saveAs } from 'file-saver';
 
 import { combineLatest, switchMap } from 'rxjs';
@@ -61,6 +61,11 @@ import {
 import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
+interface ProductGroup {
+  name: string;
+  products: models.CMRProduct[];
+}
+
 @Component({
   selector: 'app-scenes-list-header',
   templateUrl: './scenes-list-header.component.html',
@@ -111,9 +116,14 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     ),
   );
 
-  public currentDatasetID$ = this.store$
-    .select(filtersStore.getSelectedDataset)
-    .pipe(map((dataset) => dataset.id));
+  private selectedDataset = this.store$.selectSignal(
+    filtersStore.getSelectedDataset,
+  );
+  public currentDatasetID = computed(() => this.selectedDataset().id);
+  public datasetGroups = computed(
+    () => this.selectedDataset()?.productTypeDisplays?.groups,
+  );
+
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(
     scenesStore.getNumberOfProducts,
@@ -158,32 +168,33 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     ),
   );
 
-  private productsByGroup: Record<string, models.CMRProduct[]> = {};
-  public productCountByGroup$: Observable<Record<string, number>> = this.store$
-    .select(scenesStore.getAllProducts)
-    .pipe(
-      map((products: models.CMRProduct[]) =>
-        products.reduce(
-          (prev, curr) => {
-            const key = curr.productTypeGroup
-              ? 'FILE_GROUP_' + curr.productTypeGroup.toUpperCase()
-              : 'SCIENCE_DATA';
-            (prev[key] = prev[key] ?? []).push(curr);
-            return prev;
-          },
-          {} as Record<string, models.CMRProduct[]>,
-        ),
-      ),
-      tap((products) => (this.productsByGroup = products)),
-      map((products) =>
-        Object.fromEntries(
-          Object.entries(products).map(([key, value]) => [key, value.length]),
-        ),
-      ),
+  private allProducts = this.store$.selectSignal(scenesStore.getAllProducts);
+
+  public productsByGroup = computed<ProductGroup[]>(() => {
+    const groupedFiles = this.allProducts().reduce(
+      (groupedFiles, file) => {
+        const groupKey = file.productTypeGroup
+          ? `FILE_GROUP_${file.productTypeGroup.toUpperCase()}`
+          : 'SCIENCE_DATA';
+
+        if (!groupedFiles[groupKey]) {
+          groupedFiles[groupKey] = [];
+        }
+
+        groupedFiles[groupKey].push(file);
+        return groupedFiles;
+      },
+      {} as Record<string, models.CMRProduct[]>,
     );
 
+    return Object.entries(groupedFiles).map(([name, products]) => ({
+      name,
+      products,
+    }));
+  });
+
   public queueProductsOfGroup(groupKey: string): void {
-    const products = this.productsByGroup[groupKey] ?? [];
+    const products = this.productsByGroup()[groupKey] ?? [];
     this.queueAllProducts(products);
     this.notificationService.info(
       this.translate.instant('FILES_ADDED_FROM_GROUP', {
