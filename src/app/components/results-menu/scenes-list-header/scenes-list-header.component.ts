@@ -30,6 +30,7 @@ import {
   Hyp3JobStatusService,
   ExportService,
   NotificationService,
+  DatasetForProductService,
 } from '@services';
 
 import * as models from '@models';
@@ -100,6 +101,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
+  private datasetForProduct = inject(DatasetForProductService);
 
   public pairs$ = this.pairService.pairs$;
   private pairProducts$ = this.pairService.productsFromPairs$;
@@ -114,14 +116,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
         scenes?.filter((scene) => scene.metadata.productType === 'BURST')
           .length,
     ),
-  );
-
-  private selectedDataset = this.store$.selectSignal(
-    filtersStore.getSelectedDataset,
-  );
-  public currentDatasetID = computed(() => this.selectedDataset().id);
-  public datasetGroups = computed(
-    () => this.selectedDataset()?.productTypeDisplays?.groups,
   );
 
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
@@ -169,6 +163,31 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   );
 
   private allProducts = this.store$.selectSignal(scenesStore.getAllProducts);
+
+  private selectedDataset = this.store$.selectSignal(
+    filtersStore.getSelectedDataset,
+  );
+
+  public currentDataset = computed(() => {
+    const loadedDatasets = new Set(
+      this.allProducts().map((prod) => this.datasetForProduct.match(prod)),
+    );
+
+    if (loadedDatasets.size !== 1) {
+      return this.selectedDataset();
+    }
+
+    const [loadedDataset] = loadedDatasets;
+    return loadedDataset;
+  });
+
+  public currentDatasetID = computed(() => {
+    return this.currentDataset().id;
+  });
+
+  public datasetGroups = computed(
+    () => this.currentDataset()?.productTypeDisplays?.groups,
+  );
 
   public productsByGroup = computed<ProductGroup[]>(() => {
     const groupedFiles = this.allProducts().reduce(
