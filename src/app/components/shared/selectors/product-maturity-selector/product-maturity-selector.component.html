@@ -16,5 +16,5 @@
       }}</mat-option>
     }
   </mat-select>
-  <mat-hint>{{ productMaturityControl.value }}</mat-hint>
+  <mat-hint>{{ productMaturityControl.value | join: ', ' }}</mat-hint>
 </mat-form-field>

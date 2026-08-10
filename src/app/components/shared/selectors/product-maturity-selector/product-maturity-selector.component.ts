@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { JoinPipe } from '@pipes/join.pipe';
 
 interface productMaturity {
   value: string;
@@ -27,6 +28,7 @@ interface productMaturity {
     MatInputModule,
     TranslateModule,
     MatTooltip,
+    JoinPipe,
   ],
 })
 export class ProductMaturitySelectorComponent implements OnInit, OnDestroy {

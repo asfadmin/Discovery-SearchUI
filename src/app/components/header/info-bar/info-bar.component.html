@@ -126,7 +126,7 @@
         @if (productMaturity().length) {
           <span>
             <b>{{ 'PRODUCT_MATURITY' | translate }}:</b>
-            {{ productMaturity() }}
+            {{ productMaturity() | join: ', ' }}
           </span>
         }
       }
