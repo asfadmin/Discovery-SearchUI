@@ -12,12 +12,15 @@ test('Data Maturity: Provisional', async ({ page }) => {
   await page.getByText('Provisional').click();
   await page
     .getByRole('textbox', { name: 'Scene Name Patterns' })
-    .fill('NISAR_*X*');
+    .fill('NISAR_*_X?????_*');
   await expect(
     page
       .locator('app-filters-dropdown')
       .getByRole('button', { name: 'Select max results' }),
   ).toContainText('of 0 Files');
+  await expect(page.locator('app-info-bar')).toContainText(
+    'Data Maturity: PROVISIONAL',
+  );
 });
 
 test('Data Maturity: Beta', async ({ page }) => {
@@ -31,10 +34,13 @@ test('Data Maturity: Beta', async ({ page }) => {
   await page.getByText('Beta').click();
   await page
     .getByRole('textbox', { name: 'Scene Name Patterns' })
-    .fill('NISAR_*P*');
+    .fill('NISAR_*_P?????_*');
   await expect(
     page
       .locator('app-filters-dropdown')
       .getByRole('button', { name: 'Select max results' }),
-  ).toContainText('of 0 Files');
+  ).toContainText('of 12 Files');
+  await expect(page.locator('app-info-bar')).toContainText(
+    'Data Maturity: BETA',
+  );
 });

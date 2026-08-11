@@ -6,7 +6,7 @@ const THIRD_PARTY_PATTERN =
   /(googletagmanager|crazyegg|earthdata\.gov|feedback\.js)/;
 const EXTERNAL_ASSET_PATTERN = /\.(png|jpg|jpeg|pbf|webp|gif)(\?.*)?$/;
 
-const UPDATE = true;
+const UPDATE = false;
 
 export const test = base.extend({
   page: async ({ page }, use, testInfo) => {
