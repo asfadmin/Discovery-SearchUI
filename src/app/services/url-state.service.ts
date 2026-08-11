@@ -743,6 +743,14 @@ export class UrlStateService {
         loader: this.loadProduction,
       },
       {
+        name: 'dataMaturity',
+        source: this.store$.select(filterStore.getProductMaturity).pipe(
+          map((configs) => configs.join(',')),
+          map((dataMaturity) => ({ dataMaturity })),
+        ),
+        loader: this.loadDataMaturity,
+      },
+      {
         name: 'ariaVersion',
         source: this.store$
           .select(filterStore.getAriaVersion)
@@ -1214,6 +1222,11 @@ export class UrlStateService {
     const loadProducts = productionStr.split(',');
     return new filterStore.setProductionConfig(loadProducts);
   };
+  private loadDataMaturity = (maturityStr: string): Action => {
+    const loadProducts = maturityStr.split(',');
+    return new filterStore.setProductMaturity(loadProducts);
+  };
+
   private loadJointObservation = (observationStr: string): Action => {
     return new filterStore.setJointObservation(observationStr === 'true');
   };

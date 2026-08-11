@@ -53,6 +53,7 @@ export interface FiltersState {
   instrument: string[];
   scienceProduct: string[];
   productionConfig: string[];
+  productMaturity: string[];
 
   operaBurstIDs: null | string[];
   useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
@@ -132,6 +133,7 @@ export const initState: FiltersState = {
   instrument: [],
   scienceProduct: [],
   productionConfig: ['PR'],
+  productMaturity: [],
 
   groupID: null,
   tileID: null,
@@ -159,6 +161,7 @@ export function filtersReducer(
         ...state,
         selectedDatasetId: selected,
         productTypes: [],
+        productMaturity: [],
         beamModes: [],
         polarizations: [],
         platforms: [],
@@ -459,6 +462,7 @@ export function filtersReducer(
         rangeBandwidth: [],
         scienceProduct: [],
         productionConfig: [],
+        productMaturity: [],
         ariaVersion: null,
       };
     }
@@ -734,6 +738,7 @@ export function filtersReducer(
           shortNames: filters.shortNames || [],
           scienceProduct: filters.scienceProduct || [],
           productionConfig: filters.productionConfig || [],
+          productMaturity: filters.productMaturity || [],
           granuleList: filters.granuleList || null,
           sidePolarizations: filters.sidePolarizations || [],
           frameCoverage: filters.frameCoverage || [],
@@ -757,6 +762,12 @@ export function filtersReducer(
       return {
         ...state,
         productFilterName: action.payload,
+      };
+    }
+    case FiltersActionType.SET_PRODUCT_MATURITY: {
+      return {
+        ...state,
+        productMaturity: action.payload,
       };
     }
     case FiltersActionType.STORE_CURRENT_FILTERS: {
@@ -1086,6 +1097,7 @@ export const getGeographicSearch = createSelector(
     shortNames: state.shortNames,
     scienceProduct: state.scienceProduct,
     productionConfig: state.productionConfig,
+    productMaturity: state.productMaturity,
     sidePolarizations: state.sidePolarizations,
     frameCoverage: state.frameCoverage,
     jointObservation: state.jointObservation,
@@ -1222,6 +1234,10 @@ export const getScienceProduct = createSelector(
 export const getProductionConfig = createSelector(
   getFiltersState,
   (state: FiltersState) => state.productionConfig,
+);
+export const getProductMaturity = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.productMaturity,
 );
 export const getShouldUseFramesForReference = createSelector(
   getFiltersState,

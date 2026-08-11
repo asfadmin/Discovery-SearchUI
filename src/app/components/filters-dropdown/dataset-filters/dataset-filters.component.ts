@@ -30,6 +30,7 @@ import { DateSelectorComponent } from '@components/shared/selectors/date-selecto
 import { SeasonSelectorComponent } from '@components/shared/selectors/season-selector/season-selector.component';
 import { ProductScienceSelectorComponent } from '@components/shared/selectors/product-science-selector/product-science-selector.component';
 import { ProductionConfigSelectorComponent } from '@components/shared/selectors/production-config-selector/production-config-selector.component';
+import { ProductMaturitySelectorComponent } from '@components/shared/selectors/product-maturity-selector/product-maturity-selector.component';
 import { OtherSelectorComponent } from '@components/shared/selectors/other-selector/other-selector.component';
 import { ObservationPanelSelectorComponent } from '@components/shared/selectors/observation-panel-selector/observation-panel-selector.component';
 import { PathSelectorComponent } from '@components/shared/selectors/path-selector/path-selector.component';
@@ -68,6 +69,7 @@ enum FilterPanel {
     SeasonSelectorComponent,
     ProductScienceSelectorComponent,
     ProductionConfigSelectorComponent,
+    ProductMaturitySelectorComponent,
     OtherSelectorComponent,
     ObservationPanelSelectorComponent,
     PathSelectorComponent,

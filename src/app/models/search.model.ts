@@ -91,6 +91,7 @@ export interface GeographicFiltersType {
   shortNames: fromDatasets.DatasetShortName;
   scienceProduct: string[];
   productionConfig: string[];
+  productMaturity: string[];
   sidePolarizations: fromDatasets.DatasetPolarizations;
   frameCoverage: string[];
   jointObservation: boolean;
