@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
 import { saveAs } from 'file-saver';
 
 import { combineLatest, switchMap } from 'rxjs';
@@ -30,6 +30,7 @@ import {
   Hyp3JobStatusService,
   ExportService,
   NotificationService,
+  DatasetForProductService,
 } from '@services';
 
 import * as models from '@models';
@@ -60,6 +61,11 @@ import {
 } from '@angular/material/menu';
 import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
+interface ProductGroup {
+  name: string;
+  products: models.CMRProduct[];
+}
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -95,6 +101,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
+  private datasetForProduct = inject(DatasetForProductService);
 
   public pairs$ = this.pairService.pairs$;
   private pairProducts$ = this.pairService.productsFromPairs$;
@@ -111,9 +118,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     ),
   );
 
-  public currentDatasetID$ = this.store$
-    .select(filtersStore.getSelectedDataset)
-    .pipe(map((dataset) => dataset.id));
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(
     scenesStore.getNumberOfProducts,
@@ -158,37 +162,70 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     ),
   );
 
-  private productsByGroup: Record<string, models.CMRProduct[]> = {};
-  public productCountByGroup$: Observable<Record<string, number>> = this.store$
-    .select(scenesStore.getAllProducts)
-    .pipe(
-      map((products: models.CMRProduct[]) =>
-        products.reduce(
-          (prev, curr) => {
-            const key = curr.productTypeGroup
-              ? 'FILE_GROUP_' + curr.productTypeGroup.toUpperCase()
-              : 'DATA';
-            (prev[key] = prev[key] ?? []).push(curr);
-            return prev;
-          },
-          {} as Record<string, models.CMRProduct[]>,
-        ),
-      ),
-      tap((products) => (this.productsByGroup = products)),
-      map((products) =>
-        Object.fromEntries(
-          Object.entries(products).map(([key, value]) => [key, value.length]),
-        ),
-      ),
+  private allProducts = this.store$.selectSignal(scenesStore.getAllProducts);
+
+  private selectedDataset = this.store$.selectSignal(
+    filtersStore.getSelectedDataset,
+  );
+
+  public currentDataset = computed(() => {
+    const loadedDatasets = new Set(
+      this.allProducts().map((prod) => this.datasetForProduct.match(prod)),
     );
 
-  public queueProductsOfGroup(groupKey: string): void {
-    const products = this.productsByGroup[groupKey] ?? [];
-    this.queueAllProducts(products);
+    if (loadedDatasets.size !== 1) {
+      return this.selectedDataset();
+    }
+
+    const [loadedDataset] = loadedDatasets;
+    return loadedDataset;
+  });
+
+  public currentDatasetID = computed(() => {
+    return this.currentDataset().id;
+  });
+
+  public datasetGroups = computed(
+    () => this.currentDataset()?.productTypeDisplays?.groups,
+  );
+
+  public productsByGroup = computed<ProductGroup[]>(() => {
+    const groupedFiles = this.allProducts().reduce(
+      (groupedFiles, file) => {
+        const groupKey = file.productTypeGroup
+          ? `FILE_GROUP_${file.productTypeGroup.toUpperCase()}`
+          : 'SCIENCE_DATA';
+
+        if (!groupedFiles[groupKey]) {
+          groupedFiles[groupKey] = [];
+        }
+
+        groupedFiles[groupKey].push(file);
+        return groupedFiles;
+      },
+      {} as Record<string, models.CMRProduct[]>,
+    );
+
+    return Object.entries(groupedFiles)
+      .map(([name, products]) => ({
+        name,
+        products,
+      }))
+      .sort(this.scienceDataFirst);
+  });
+
+  private scienceDataFirst(a: ProductGroup, b: ProductGroup): number {
+    if (a.name === 'SCIENCE_DATA') return -1;
+    if (b.name === 'SCIENCE_DATA') return 1;
+    return 0;
+  }
+
+  public queueProductsOfGroup(group: ProductGroup): void {
+    this.queueAllProducts(group.products);
     this.notificationService.info(
       this.translate.instant('FILES_ADDED_FROM_GROUP', {
-        count: products.length,
-        group: this.translate.instant(groupKey),
+        count: group.products.length,
+        group: this.translate.instant(group.name),
       }),
     );
   }

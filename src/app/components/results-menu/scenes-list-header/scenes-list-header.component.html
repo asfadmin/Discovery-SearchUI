@@ -372,7 +372,7 @@
                 searchType !== SearchTypes.SBAS &&
                 !(isBurstStack$ | async) &&
                 !(
-                  (currentDatasetID$ | async) === 'SENTINEL-1 BURSTS' &&
+                  currentDatasetID() === 'SENTINEL-1 BURSTS' &&
                   searchType === SearchTypes.DATASET
                 )
               ) {
@@ -403,7 +403,7 @@
                 </button>
               }
               @if (
-                ((currentDatasetID$ | async) === 'SENTINEL-1 BURSTS' &&
+                (currentDatasetID() === 'SENTINEL-1 BURSTS' &&
                   searchType === SearchTypes.DATASET) ||
                 (isBurstStack$ | async)
               ) {
@@ -434,12 +434,22 @@
                   }}
                 </button>
               }
-              @let currentDatasetID = currentDatasetID$ | async;
+              @if (searchType === SearchTypes.DATASET && datasetGroups()) {
+                <button
+                  mat-menu-item
+                  [matMenuTriggerFor]="addAllProductsOfGroup"
+                  [matMenuTriggerData]="{
+                    productGroups: productsByGroup(),
+                  }"
+                >
+                  {{ 'ADD_BY_GROUP' | translate }}
+                </button>
+              }
               @if (
                 searchType === SearchTypes.DATASET &&
-                (currentDatasetID === 'OPERA-S1' ||
-                  currentDatasetID === 'NISAR' ||
-                  currentDatasetID === 'SEASAT')
+                (currentDatasetID() === 'OPERA-S1' ||
+                  currentDatasetID() === 'NISAR' ||
+                  currentDatasetID() === 'SEASAT')
               ) {
                 <button
                   mat-menu-item
@@ -449,38 +459,24 @@
                   }"
                 >
                   {{
-                    currentDatasetID === 'NISAR'
+                    currentDatasetID() === 'NISAR'
                       ? ('ADD_BY_FILE_TYPE' | translate)
                       : ('ADD_BY_PRODUCT_TYPE' | translate)
                   }}
                 </button>
               }
-              @if (
-                searchType === SearchTypes.DATASET &&
-                currentDatasetID === 'NISAR'
-              ) {
-                <button
-                  mat-menu-item
-                  [matMenuTriggerFor]="addAllProductsOfGroup"
-                  [matMenuTriggerData]="{
-                    productData: (productCountByGroup$ | async),
-                  }"
-                >
-                  {{ 'ADD_BY_GROUP' | translate }}
-                </button>
-              }
             </mat-menu>
+
             <mat-menu #addAllProductsOfGroup>
-              <ng-template matMenuContent let-productData="productData">
-                @for (item of productData | keyvalue; track item) {
-                  <button
-                    mat-menu-item
-                    (click)="queueProductsOfGroup(item.key.toString())"
-                  >
-                    {{ 'ADD' | translate }} {{ item.value }}
-                    {{ item.key.toString() | translate }}
+              <ng-template matMenuContent let-productGroups="productGroups">
+                @for (group of productGroups; track group.name) {
+                  <button mat-menu-item (click)="queueProductsOfGroup(group)">
+                    @let numProducts = group.products.length;
+
+                    {{ 'ADD' | translate }} {{ numProducts }}
+                    {{ group.name | translate }}
                     {{
-                      item.value === 1
+                      numProducts === 1
                         ? ('FILE' | translate)
                         : ('FILES' | translate)
                     }}
@@ -489,6 +485,7 @@
                 }
               </ng-template>
             </mat-menu>
+
             <mat-menu #addAllProductsOfType>
               <ng-template matMenuContent let-productData="productData">
                 @for (item of productData | keyvalue; track item) {
