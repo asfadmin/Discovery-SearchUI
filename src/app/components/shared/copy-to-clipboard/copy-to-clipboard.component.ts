@@ -20,7 +20,7 @@ import { MatIcon } from '@angular/material/icon';
 @Component({
   selector: 'app-copy-to-clipboard',
   templateUrl: './copy-to-clipboard.component.html',
-  styleUrls: ['./copy-to-clipboard.component.css'],
+  styleUrls: ['./copy-to-clipboard.component.scss'],
   imports: [MatIcon, MatTooltip, MatMenuTrigger, MatMenu, MatMenuItem],
 })
 export class CopyToClipboardComponent implements OnDestroy {

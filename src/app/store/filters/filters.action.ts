@@ -99,6 +99,7 @@ export enum FiltersActionType {
   SET_INSTRUMENT = '[Filters] Set Instrument',
   SET_SCIENCE_PRODUCT = '[Filters] Set Science Product',
   SET_PRODUCTION_CONFIG = '[Filters] Set Production Config',
+  SET_PRODUCT_MATURITY = '[Filters] Set Product Maturity',
 
   SET_ARIA_VERSION = '[Filters] Set ARIA Version',
 
@@ -484,6 +485,12 @@ export class setProductionConfig implements Action {
   constructor(public payload: string[]) {}
 }
 
+export class setProductMaturity implements Action {
+  public readonly type = FiltersActionType.SET_PRODUCT_MATURITY;
+
+  constructor(public payload: string[]) {}
+}
+
 export class setAriaVersion implements Action {
   public readonly type = FiltersActionType.SET_ARIA_VERSION;
 
@@ -578,5 +585,6 @@ export type FiltersActions =
   | setAriaVersion
   | setTileID
   | setGranuleList
+  | setProductMaturity
   | SetUseFrameForBaseline
   | ApplyDatasetDefaults;

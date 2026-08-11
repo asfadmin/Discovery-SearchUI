@@ -630,8 +630,11 @@ export class ProductService {
         }
       }
       if (productTypeDisplay === 'Browse Image PNG') {
-        if (p === '/assets/no-browse.png') {
+        if (p === '/assets/no-browse.png' || p.endsWith('_thumbnail.png')) {
           continue;
+        }
+        if (p.includes('_LATLON')) {
+          productTypeDisplay = 'Lat/Lon Browse Image PNG';
         }
       }
       const polarizationMatch = /.*_([AB])_([VH]{4}|[VH]{2})\.(png|kml)/;

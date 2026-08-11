@@ -171,6 +171,11 @@ export async function sentinel1Page(page: Page) {
   return page;
 }
 
+export async function nisarPage(page: Page) {
+  await page.goto('/#/?dataset=NISAR');
+  return page;
+}
+
 export async function loggedInSentinel1Page(page: Page) {
   await login(page);
   await sentinel1Page(page);

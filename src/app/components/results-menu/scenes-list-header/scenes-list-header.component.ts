@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
 import { saveAs } from 'file-saver';
 
 import { combineLatest, switchMap } from 'rxjs';
@@ -29,6 +29,7 @@ import {
   Hyp3ApiService,
   Hyp3JobStatusService,
   ExportService,
+  DatasetForProductService,
 } from '@services';
 
 import * as models from '@models';
@@ -59,6 +60,11 @@ import {
 } from '@angular/material/menu';
 import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
 import { TranslateModule } from '@ngx-translate/core';
+
+interface ProductGroup {
+  name: string;
+  products: models.CMRProduct[];
+}
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -92,6 +98,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private possibleHyp3JobsService = inject(PossibleHyp3JobsService);
   private exportService = inject(ExportService);
   private dialog = inject(MatDialog);
+  private datasetForProduct = inject(DatasetForProductService);
 
   public pairs$ = this.pairService.pairs$;
   private pairProducts$ = this.pairService.productsFromPairs$;
@@ -108,9 +115,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     ),
   );
 
-  public currentDatasetID$ = this.store$
-    .select(filtersStore.getSelectedDataset)
-    .pipe(map((dataset) => dataset.id));
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(
     scenesStore.getNumberOfProducts,
@@ -154,6 +158,68 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       }, {}),
     ),
   );
+
+  private allProducts = this.store$.selectSignal(scenesStore.getAllProducts);
+
+  private selectedDataset = this.store$.selectSignal(
+    filtersStore.getSelectedDataset,
+  );
+
+  public currentDataset = computed(() => {
+    const loadedDatasets = new Set(
+      this.allProducts().map((prod) => this.datasetForProduct.match(prod)),
+    );
+
+    if (loadedDatasets.size !== 1) {
+      return this.selectedDataset();
+    }
+
+    const [loadedDataset] = loadedDatasets;
+    return loadedDataset;
+  });
+
+  public currentDatasetID = computed(() => {
+    return this.currentDataset().id;
+  });
+
+  public datasetGroups = computed(
+    () => this.currentDataset()?.productTypeDisplays?.groups,
+  );
+
+  public productsByGroup = computed<ProductGroup[]>(() => {
+    const groupedFiles = this.allProducts().reduce(
+      (groupedFiles, file) => {
+        const groupKey = file.productTypeGroup
+          ? `FILE_GROUP_${file.productTypeGroup.toUpperCase()}`
+          : 'SCIENCE_DATA';
+
+        if (!groupedFiles[groupKey]) {
+          groupedFiles[groupKey] = [];
+        }
+
+        groupedFiles[groupKey].push(file);
+        return groupedFiles;
+      },
+      {} as Record<string, models.CMRProduct[]>,
+    );
+
+    return Object.entries(groupedFiles)
+      .map(([name, products]) => ({
+        name,
+        products,
+      }))
+      .sort(this.scienceDataFirst);
+  });
+
+  private scienceDataFirst(a: ProductGroup, b: ProductGroup): number {
+    if (a.name === 'SCIENCE_DATA') return -1;
+    if (b.name === 'SCIENCE_DATA') return 1;
+    return 0;
+  }
+
+  public queueProductsOfGroup(group: ProductGroup): void {
+    this.queueAllProducts(group.products);
+  }
 
   public numBaselineScenes$ = this.scenesService.scenes$.pipe(
     map((scenes) => scenes.length),
