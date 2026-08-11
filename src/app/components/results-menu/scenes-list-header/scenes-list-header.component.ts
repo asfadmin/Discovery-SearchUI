@@ -29,7 +29,6 @@ import {
   Hyp3ApiService,
   Hyp3JobStatusService,
   ExportService,
-  NotificationService,
   DatasetForProductService,
 } from '@services';
 
@@ -60,7 +59,7 @@ import {
   MatMenuContent,
 } from '@angular/material/menu';
 import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface ProductGroup {
   name: string;
@@ -98,8 +97,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private hyp3JobStatus = inject(Hyp3JobStatusService);
   private possibleHyp3JobsService = inject(PossibleHyp3JobsService);
   private exportService = inject(ExportService);
-  private notificationService = inject(NotificationService);
-  private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
   private datasetForProduct = inject(DatasetForProductService);
 
@@ -222,12 +219,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public queueProductsOfGroup(group: ProductGroup): void {
     this.queueAllProducts(group.products);
-    this.notificationService.info(
-      this.translate.instant('FILES_ADDED_FROM_GROUP', {
-        count: group.products.length,
-        group: this.translate.instant(group.name),
-      }),
-    );
   }
 
   public numBaselineScenes$ = this.scenesService.scenes$.pipe(
