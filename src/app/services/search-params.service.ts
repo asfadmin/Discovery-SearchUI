@@ -247,6 +247,10 @@ export class SearchParamsService {
     .select(filterStore.getProductionConfig)
     .pipe(map((config) => ({ productionconfiguration: config.join(',') })));
 
+  private productMaturity$ = this.store$
+    .select(filterStore.getProductMaturity)
+    .pipe(map((config) => ({ dataMaturity: config.join(',') })));
+
   private sidePolarizations$ = this.store$
     .select(filterStore.getSidePolarizations)
     .pipe(
@@ -318,6 +322,7 @@ export class SearchParamsService {
     this.polarizations$,
     this.sidePolarizations$,
     this.productionConfig$,
+    this.productMaturity$,
     this.frameCoverage$,
     this.jointObservation$,
     this.rangeBandwidth$,

@@ -1,0 +1,20 @@
+<mat-form-field
+  appearance="fill"
+  matTooltip="{{ 'PRODUCT_MATURITY_TOOLTIP' | translate }}"
+>
+  <mat-label>{{ 'PRODUCT_MATURITY' | translate }}</mat-label>
+  <mat-select
+    [formControl]="productMaturityControl"
+    multiple
+    [(ngModel)]="selectedMaturity"
+    class="sci-prod-select"
+    (selectionChange)="onProductionMaturitySelect($event.value)"
+  >
+    @for (productMaturity of maturities; track productMaturity) {
+      <mat-option [value]="productMaturity.value">{{
+        productMaturity.viewValue | translate
+      }}</mat-option>
+    }
+  </mat-select>
+  <mat-hint>{{ productMaturityControl.value | join: ', ' }}</mat-hint>
+</mat-form-field>
