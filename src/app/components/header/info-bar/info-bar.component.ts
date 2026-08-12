@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
@@ -30,17 +29,18 @@ import { Signal } from '@angular/core';
     TranslateModule,
   ],
 })
-export class InfoBarComponent implements OnInit, OnDestroy {
+export class InfoBarComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(services.ScreenSizeService);
   private hyp3 = inject(services.Hyp3ApiService);
-  public searchType: Signal<models.SearchType> = this.store$.selectSignal(
-    searchStore.getSearchType,
-  );
+
   public searchTypes = models.SearchType;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
+  public searchType: Signal<models.SearchType> = this.store$.selectSignal(
+    searchStore.getSearchType,
+  );
   public startDate: Signal<Date | null> = this.store$.selectSignal(
     filtersStore.getStartDate,
   );
@@ -113,8 +113,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public jobIds: Signal<string[]> = this.store$.selectSignal(
     hyp3Store.getHyp3JobIds,
   );
-  public selectedDataset: string;
-  public selectedDatasetIsNISARFormat = false;
   public ariaVersion: Signal<string> = this.store$.selectSignal(
     filtersStore.getAriaVersion,
   );
@@ -159,42 +157,24 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       .map((platform) => platform.apiValue)
       .join(',');
   });
-
-  private subs = new SubSink();
+  private userProfile: Signal<models.UserProfile> = this.store$.selectSignal(
+    userStore.getUserProfile,
+  );
+  public hyp3BackendUrl: Signal<string> = computed(() => {
+    if (!this.userProfile().hyp3BackendUrl) {
+      return this.hyp3.apiUrl;
+    }
+    return this.userProfile().hyp3BackendUrl;
+  });
+  public useTrack: Signal<boolean> = computed(() => {
+    return this.dataset().properties.includes(models.Props.USE_TRACK);
+  });
 
   public hyp3Default = this.hyp3.isDefaultApi();
   public hyp3Url = this.hyp3.apiUrl;
   public hyp3BaseUrl = this.hyp3.baseUrl;
-  public hyp3BackendUrl: string;
 
   public dataset = this.store$.selectSignal(filtersStore.getSelectedDataset);
 
   public maxStringLength = 30;
-  ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(filtersStore.getSelectedDatasetId)
-        .subscribe((selected) => {
-          this.selectedDataset = selected;
-          if (this.selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
-            this.selectedDatasetIsNISARFormat = true;
-          } else {
-            this.selectedDatasetIsNISARFormat = false;
-          }
-        }),
-    );
-
-    this.subs.add(
-      this.store$.select(userStore.getUserProfile).subscribe((profile) => {
-        this.hyp3BackendUrl = profile.hyp3BackendUrl;
-        if (!this.hyp3BackendUrl) {
-          this.hyp3BackendUrl = this.hyp3.apiUrl;
-        }
-      }),
-    );
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
-  }
 }

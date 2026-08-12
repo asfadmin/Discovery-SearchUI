@@ -32,7 +32,7 @@
       @if (pathRange().start || pathRange().end) {
         <span>
           <b>
-            @if (selectedDatasetIsNISARFormat) {
+            @if (useTrack()) {
               {{ 'TRACK' | translate }}
             } @else {
               {{ 'PATH' | translate }}
