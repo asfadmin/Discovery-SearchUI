@@ -60,9 +60,9 @@
           {{ shouldOmitSearchPolygon() ? 'Yes' : 'No' }}
         </span>
       }
-      @if (productTypes) {
+      @if (productTypes()) {
         <span>
-          <b>{{ 'FILE_TYPES' | translate }}:</b> {{ productTypes }}
+          <b>{{ 'FILE_TYPES' | translate }}:</b> {{ productTypes() }}
         </span>
       }
       @if (beamModes().length) {
@@ -70,7 +70,7 @@
           <b>{{ 'BEAM_MODES' | translate | titlecase }}:</b> {{ beamModes() }}
         </span>
       }
-      @if (polarizations.length) {
+      @if (polarizations().length) {
         <span>
           <b>
             @if (dataset().id !== 'NISAR') {
@@ -80,13 +80,13 @@
             }
             :</b
           >
-          {{ polarizations | join: ', ' }}
+          {{ polarizations() | join: ', ' }}
         </span>
       }
-      @if (sidePolarizations.length) {
+      @if (sidePolarizations().length) {
         <span>
           <b>{{ 'SIDE_POLARIZATIONS' | translate }}:</b>
-          {{ sidePolarizations | join: ', ' }}
+          {{ sidePolarizations() | join: ', ' }}
         </span>
       }
       @if (instruments().length) {
@@ -135,9 +135,9 @@
           <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ flightDirections() }}
         </span>
       }
-      @if (platforms) {
+      @if (platforms()) {
         <span>
-          <b>{{ 'SATELLITES' | translate }}:</b> {{ platforms }}
+          <b>{{ 'SATELLITES' | translate }}:</b> {{ platforms() }}
         </span>
       }
       @if (mission()) {
@@ -205,9 +205,9 @@
         }
       </span>
       <span>
-        @if (!!shortNames) {
+        @if (!!shortNames()) {
           <span>
-            <b> {{ 'SHORT_NAMES' | translate }}:</b> {{ shortNames }}
+            <b> {{ 'SHORT_NAMES' | translate }}:</b> {{ shortNames() }}
           </span>
         }
       </span>

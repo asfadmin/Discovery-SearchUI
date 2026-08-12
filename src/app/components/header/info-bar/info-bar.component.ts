@@ -62,14 +62,11 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public searchList: Signal<string[]> = this.store$.selectSignal(
     filtersStore.getSearchList,
   );
-  public shortNames: string;
   public beamModes: Signal<models.DatasetBeamModes> = this.store$.selectSignal(
     filtersStore.getBeamModes,
   );
-  public polarizations: models.DatasetPolarizations;
   public flightDirections: Signal<models.FlightDirection[]> =
     this.store$.selectSignal(filtersStore.getFlightDirections);
-  public platforms: string;
   public mission: Signal<string> = this.store$.selectSignal(
     filtersStore.getSelectedMission,
   );
@@ -92,11 +89,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public userID: Signal<string> = this.store$.selectSignal(
     hyp3Store.getOnDemandUserId,
   );
-  public sidePolarizations: models.DatasetPolarizations;
   public rangeBandwidth: Signal<string[]> = this.store$.selectSignal(
     filtersStore.getRangeBandwidth,
   );
-
   public instruments: Signal<string[]> = this.store$.selectSignal(
     filtersStore.getInstruments,
   );
@@ -130,9 +125,40 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public granuleListMinified = computed(() => {
     return this.granuleList().split(',').length;
   });
-
-  public eventProductTypes: string;
-  public productTypes: string;
+  private productTypeBase = this.store$.selectSignal(
+    filtersStore.getProductTypes,
+  );
+  public productTypes: Signal<string> = computed(() => {
+    return this.productTypeBase()
+      .map((productType) => productType.apiValue)
+      .join(',');
+  });
+  private shortNameBase = this.store$.selectSignal(filtersStore.getShortNames);
+  public shortNames: Signal<string> = computed(() => {
+    return this.shortNameBase()
+      .map((shortName) => shortName.apiValue)
+      .join(',');
+  });
+  private polarizationsBase = this.store$.selectSignal(
+    filtersStore.getPolarizations,
+  );
+  public polarizations: Signal<models.DatasetPolarizations> = computed(() => {
+    return this.polarizationsBase().map((x) => x.replaceAll(',', '+'));
+  });
+  private sidePolarizationsBase = this.store$.selectSignal(
+    filtersStore.getSidePolarizations,
+  );
+  public sidePolarizations: Signal<models.DatasetPolarizations> = computed(
+    () => {
+      return this.sidePolarizationsBase().map((x) => x.replaceAll(',', '+'));
+    },
+  );
+  private platformsBase = this.store$.selectSignal(filtersStore.getPlatforms);
+  public platforms: Signal<string> = computed(() => {
+    return this.platformsBase()
+      .map((platform) => platform.apiValue)
+      .join(',');
+  });
 
   private subs = new SubSink();
 
@@ -157,64 +183,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
           }
         }),
     );
-
-    const productTypesSub = this.store$
-      .select(filtersStore.getProductTypes)
-      .subscribe(
-        (productTypes) =>
-          (this.productTypes = productTypes
-            .map((productType) => productType.apiValue)
-            .join(',')),
-      );
-    const shortNamesSub = this.store$
-      .select(filtersStore.getShortNames)
-      .subscribe(
-        (shortNames) =>
-          (this.shortNames = shortNames
-            .map((shortName) => shortName.apiValue)
-            .join(',')),
-      );
-    const polsSub = this.store$
-      .select(filtersStore.getPolarizations)
-      .subscribe(
-        (pols) =>
-          (this.polarizations = pols.map((x) => x.replaceAll(',', '+'))),
-      );
-    const sidePolsSub = this.store$
-      .select(filtersStore.getSidePolarizations)
-      .subscribe(
-        (sidePols) =>
-          (this.sidePolarizations = sidePols.map((x) =>
-            x.replaceAll(',', '+'),
-          )),
-      );
-
-    const platformsSub = this.store$
-      .select(filtersStore.getPlatforms)
-      .subscribe(
-        (platforms) =>
-          (this.platforms = platforms
-            .map((platform) => platform.apiValue)
-            .join(',')),
-      );
-
-    const eventProductType = this.store$
-      .select(filtersStore.getHyp3ProductTypes)
-      .subscribe(
-        (productTypes) =>
-          (this.eventProductTypes = productTypes
-            .map((productType) => productType.id)
-            .join(', ')),
-      );
-
-    [
-      productTypesSub,
-      shortNamesSub,
-      polsSub,
-      sidePolsSub,
-      platformsSub,
-      eventProductType,
-    ].forEach((sub) => this.subs.add(sub));
 
     this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe((profile) => {
