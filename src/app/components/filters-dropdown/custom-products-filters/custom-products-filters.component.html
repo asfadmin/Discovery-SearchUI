@@ -23,7 +23,7 @@
       ></app-on-demand-user-selector>
 
       <app-job-id-selector
-        [jobIds]="hyp3JobIds"
+        [jobIds]="hyp3JobIds()"
         (newJobIds)="onNewHyp3JobIds($event)"
         class="selector-top-offset"
       ></app-job-id-selector>

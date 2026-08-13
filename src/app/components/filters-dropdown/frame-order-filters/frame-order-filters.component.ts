@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, Signal } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 
@@ -54,7 +54,9 @@ export class FrameOrderFiltersComponent {
   customCollapsedHeight = '30px';
   customExpandedHeight = '30px';
   flightDirections: models.FlightDirection[];
-  public dataset = this.store$.selectSignal(filtersStore.getSelectedDataset);
+  public dataset: Signal<models.Dataset> = this.store$.selectSignal(
+    filtersStore.getSelectedDataset,
+  );
   public datasets = models.datasetList;
   public p = models.Props;
 

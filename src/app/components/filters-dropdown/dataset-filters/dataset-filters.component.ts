@@ -1,12 +1,4 @@
-import {
-  Component,
-  input,
-  OnInit,
-  OnDestroy,
-  inject,
-  signal,
-} from '@angular/core';
-import { SubSink } from 'subsink';
+import { Component, input, inject, signal, Signal } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
@@ -40,7 +32,6 @@ import { OperaS1SelectorComponent } from '@components/shared/selectors/opera-s1-
 import { TranslateModule } from '@ngx-translate/core';
 import { GranuleListSelectorComponent } from '@components/shared/selectors/granule-list-selector/granule-list-selector.component';
 import { IsRelevantPipe } from '@pipes/relevant.pipe';
-// import { TranslateService } from "@ngx-translate/core";
 
 enum FilterPanel {
   DATE = 'Date',
@@ -82,7 +73,7 @@ enum FilterPanel {
     TranslateModule,
   ],
 })
-export class DatasetFiltersComponent implements OnInit, OnDestroy {
+export class DatasetFiltersComponent {
   prop = inject(PropertyService);
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
@@ -100,21 +91,13 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
   customExpandedHeight = '30px';
 
   public datasets = models.datasetList;
-  public selectedDataset: string;
+  public selectedDataset: Signal<string> = this.store$.selectSignal(
+    filtersStore.getSelectedDatasetId,
+  );
   public p = models.Props;
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-
-  private subs = new SubSink();
-
-  ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(filtersStore.getSelectedDatasetId)
-        .subscribe((selected) => (this.selectedDataset = selected)),
-    );
-  }
 
   public onDatasetChange(dataset: string): void {
     this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
@@ -126,9 +109,5 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
 
   public onOpenHelp(url: string): void {
     window.open(url);
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 }
