@@ -257,7 +257,7 @@ describe('SceneFilesComponent file grouping', () => {
       .build();
     await setup(scene, [scene]);
 
-    expect(component.showDispS1Warning()).toBe(true);
+    expect(component.sceneFilesWarning()).toBeTruthy();
     expect(fixture.nativeElement.querySelector('.dem-warning')).not.toBe(null);
   });
 
@@ -268,7 +268,7 @@ describe('SceneFilesComponent file grouping', () => {
       .build();
     await setup(scene, [scene]);
 
-    expect(component.showDispS1Warning()).toBe(false);
+    expect(component.sceneFilesWarning()).toBe(null);
     expect(fixture.nativeElement.querySelector('.dem-warning')).toBe(null);
   });
 });
