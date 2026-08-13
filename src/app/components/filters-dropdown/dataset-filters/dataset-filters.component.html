@@ -18,7 +18,7 @@
         <div class="search-options-row">
           <app-search-type-selector> </app-search-type-selector>
           <app-dataset-selector
-            [(selected)]="selectedDataset"
+            [selected]="selectedDataset()"
             (selectedChange)="onDatasetChange($event)"
             [datasets]="datasets"
           >
@@ -78,7 +78,7 @@
         <app-season-selector></app-season-selector>
       </div>
     </mat-expansion-panel>
-    @if (selectedDataset === 'NISAR') {
+    @if (selectedDataset() === 'NISAR') {
       <mat-expansion-panel
         [expanded]="defaultPanelOpenState"
         [disabled]="panelIsDisabled"
@@ -137,7 +137,7 @@
         [expandedHeight]="customExpandedHeight"
       >
         <mat-panel-title class="panel-title">
-          @if (selectedDataset !== 'NISAR') {
+          @if (selectedDataset() !== 'NISAR') {
             {{ 'ADDITIONAL_FILTERS' | translate }}
             <app-docs-modal
               class="info-text"
@@ -157,7 +157,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="selector-card-spacing">
-        @if (selectedDataset !== 'NISAR') {
+        @if (selectedDataset() !== 'NISAR') {
           <app-other-selector></app-other-selector>
         } @else {
           <app-observation-panel-selector></app-observation-panel-selector>
@@ -179,9 +179,9 @@
           [expandedHeight]="customExpandedHeight"
         >
           <mat-panel-title class="panel-title">
-            @if (selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
+            @if (selectedDataset() === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
               {{ 'TRACK' | translate }} {{ 'FILTERS' | translate }}
-            } @else if (selectedDataset !== 'NISAR') {
+            } @else if (selectedDataset() !== 'NISAR') {
               {{ 'PATH_AND_FRAME_FILTERS' | translate }}
             } @else {
               {{ 'TRACK_AND_FRAME_FILTERS' | translate }}
@@ -218,7 +218,7 @@
         <app-mission-selector></app-mission-selector>
       </mat-expansion-panel>
     }
-    @if (selectedDataset === 'SENTINEL-1 BURSTS') {
+    @if (selectedDataset() === 'SENTINEL-1 BURSTS') {
       <mat-expansion-panel
         [expanded]="defaultPanelOpenState"
         [disabled]="panelIsDisabled"
@@ -239,7 +239,7 @@
         </div>
       </mat-expansion-panel>
     }
-    @if (selectedDataset === 'OPERA-S1') {
+    @if (selectedDataset() === 'OPERA-S1') {
       <mat-expansion-panel
         [expanded]="defaultPanelOpenState"
         [disabled]="panelIsDisabled"
