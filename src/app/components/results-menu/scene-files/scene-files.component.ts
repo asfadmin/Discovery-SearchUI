@@ -145,8 +145,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       };
     } else if (
       this.scene()?.dataset === 'ALOS' &&
-      this.scene()?.metadata.productType &&
-      this.scene()?.metadata.productType.includes('RTC_')
+      this.scene()?.metadata?.productType.includes('RTC_')
     ) {
       return {
         translationKey: 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING',

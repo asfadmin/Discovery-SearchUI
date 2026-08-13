@@ -261,6 +261,20 @@ describe('SceneFilesComponent file grouping', () => {
     expect(fixture.nativeElement.querySelector('.dem-warning')).not.toBe(null);
   });
 
+  it('shows the dem warning for ALOS RTC product', async () => {
+    let scene = productFactory
+      .withBasicInfo('alos rtc')
+      .withMetadata({ productType: 'ALPSRP279071390-RTC_LOW_RES' })
+      .build();
+
+    scene = { ...scene, dataset: 'ALOS' };
+
+    await setup(scene, [scene]);
+
+    expect(component.sceneFilesWarning()).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.dem-warning')).not.toBe(null);
+  });
+
   it('does not show the DISP-S1 footprint warning for other product types', async () => {
     const scene = productFactory
       .withBasicInfo('disp-s1-static-scene')
