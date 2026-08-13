@@ -1,126 +1,126 @@
 @if (breakpoint$ | async; as breakpoint) {
   <div class="info-bar">
     <div class="first-info">
-      @if ((searchType$ | async) === searchTypes.CUSTOM_PRODUCTS) {
+      @if (searchType() === searchTypes.CUSTOM_PRODUCTS) {
         <span>
           <app-hyp3-url></app-hyp3-url>
           <span>
-            @if (!!userID) {
+            @if (!!userID()) {
               <span>
-                <b>{{ 'USER_ID_INFO_BAR' | translate }}:</b> {{ userID }}
+                <b>{{ 'USER_ID_INFO_BAR' | translate }}:</b> {{ userID() }}
               </span>
             }
-            @if (jobIds?.length) {
+            @if (jobIds()?.length) {
               <span>
                 <b>{{ 'HYP3_JOB_IDS_INFO_BAR' | translate }}:</b>
-                {{ jobIds.length }}
+                {{ jobIds().length }}
               </span>
             }
           </span>
         </span>
       }
-      @if (breakpoint > breakpoints.SMALL && !!startDate) {
+      @if (breakpoint > breakpoints.SMALL && !!startDate()) {
         <span>
-          <b>{{ 'START' | translate }}:</b> {{ startDate | shortDate }}
+          <b>{{ 'START' | translate }}:</b> {{ startDate() | shortDate }}
         </span>
       }
-      @if (breakpoint > breakpoints.SMALL && !!endDate) {
+      @if (breakpoint > breakpoints.SMALL && !!endDate()) {
         <span>
-          <b>{{ 'END' | translate }}:</b> {{ endDate | shortDate }}
+          <b>{{ 'END' | translate }}:</b> {{ endDate() | shortDate }}
         </span>
       }
-      @if (pathRange.start || pathRange.end) {
+      @if (pathRange().start || pathRange().end) {
         <span>
           <b>
-            @if (selectedDatasetIsNISARFormat) {
+            @if (useTrack()) {
               {{ 'TRACK' | translate }}
             } @else {
               {{ 'PATH' | translate }}
             }
             :</b
           >
-          {{ pathRange.start }} - {{ pathRange.end }}
+          {{ pathRange().start }} - {{ pathRange().end }}
         </span>
       }
-      @if (frameRange.start || frameRange.end) {
+      @if (frameRange().start || frameRange().end) {
         <span>
-          <b>{{ 'FRAME' | translate }}:</b> {{ frameRange.start }} -
-          {{ frameRange.end }}
+          <b>{{ 'FRAME' | translate }}:</b> {{ frameRange().start }} -
+          {{ frameRange().end }}
         </span>
       }
-      @if (season.start || season.end) {
+      @if (season().start || season().end) {
         <span>
-          <b>{{ 'SEASON' | translate }}:</b> {{ season.start }} -
-          {{ season.end }}
+          <b>{{ 'SEASON' | translate }}:</b> {{ season().start }} -
+          {{ season().end }}
         </span>
       }
-      @if (shouldOmitSearchPolygon) {
+      @if (shouldOmitSearchPolygon()) {
         <span>
           <b>{{ 'OMIT_GEO' | translate }}:</b>
-          {{ shouldOmitSearchPolygon ? 'Yes' : 'No' }}
+          {{ shouldOmitSearchPolygon() ? 'Yes' : 'No' }}
         </span>
       }
-      @if (productTypes) {
+      @if (productTypes()) {
         <span>
-          <b>{{ 'FILE_TYPES' | translate }}:</b> {{ productTypes }}
+          <b>{{ 'FILE_TYPES' | translate }}:</b> {{ productTypes() }}
         </span>
       }
-      @if (beamModes.length) {
+      @if (beamModes().length) {
         <span>
-          <b>{{ 'BEAM_MODES' | translate | titlecase }}:</b> {{ beamModes }}
+          <b>{{ 'BEAM_MODES' | translate | titlecase }}:</b> {{ beamModes() }}
         </span>
       }
-      @if (polarizations.length) {
+      @if (polarizations().length) {
         <span>
           <b>
-            @if (dataset !== 'NISAR') {
+            @if (dataset().id !== 'NISAR') {
               {{ 'POLARIZATIONS' | translate }}
             } @else {
               {{ 'MAIN_POLARIZATIONS' | translate }}
             }
             :</b
           >
-          {{ polarizations | join: ', ' }}
+          {{ polarizations() | join: ', ' }}
         </span>
       }
-      @if (sidePolarizations.length) {
+      @if (sidePolarizations().length) {
         <span>
           <b>{{ 'SIDE_POLARIZATIONS' | translate }}:</b>
-          {{ sidePolarizations | join: ', ' }}
+          {{ sidePolarizations() | join: ', ' }}
         </span>
       }
-      @if (instruments.length) {
+      @if (instruments().length) {
         <span>
-          <b>{{ 'INSTRUMENTS' | translate }}:</b> {{ instruments }}
+          <b>{{ 'INSTRUMENTS' | translate }}:</b> {{ instruments() }}
         </span>
       }
-      @if (frameCoverage.length) {
+      @if (frameCoverage().length) {
         <span>
-          <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ frameCoverage }}
+          <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ frameCoverage() }}
         </span>
       }
-      @if (rangeBandwidth.length) {
+      @if (rangeBandwidth().length) {
         <span>
-          <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ rangeBandwidth }}
+          <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ rangeBandwidth() }}
         </span>
       }
-      @if (jointObservation) {
+      @if (jointObservation()) {
         <span>
           <b>{{ 'DATA_TYPE' | translate }}:</b>
           {{ 'JOINT_OBSERVATION_ONLY' | translate }}
         </span>
       }
-      @if (dataset === 'NISAR') {
-        @if (scienceProducts.length) {
+      @if (dataset().id === 'NISAR') {
+        @if (scienceProducts().length) {
           <span>
             <b>{{ 'SCIENCE_PRODUCT' | translate }}:</b>
-            {{ scienceProducts | join: ', ' }}
+            {{ scienceProducts() | join: ', ' }}
           </span>
         }
-        @if (productionConfig.length) {
+        @if (productionConfig().length) {
           <span>
             <b>{{ 'PRODUCTION_CONFIGURATION' | translate }}:</b>
-            {{ productionConfig }}
+            {{ productionConfig() }}
           </span>
         }
         @if (productMaturity().length) {
@@ -130,67 +130,67 @@
           </span>
         }
       }
-      @if (flightDirections.length) {
+      @if (flightDirections().length) {
         <span>
-          <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ flightDirections }}
+          <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ flightDirections() }}
         </span>
       }
-      @if (platforms) {
+      @if (platforms()) {
         <span>
-          <b>{{ 'SATELLITES' | translate }}:</b> {{ platforms }}
+          <b>{{ 'SATELLITES' | translate }}:</b> {{ platforms() }}
         </span>
       }
-      @if (mission) {
+      @if (mission()) {
         <span>
-          <b>{{ 'CAMPAIGN' | translate }}:</b> {{ mission }}
+          <b>{{ 'CAMPAIGN' | translate }}:</b> {{ mission() }}
         </span>
       }
-      @if ((searchType$ | async) !== searchTypes.DISPLACEMENT) {
+      @if (searchType() !== searchTypes.DISPLACEMENT) {
         <span>
-          @if (tempRange.start || tempRange.end) {
+          @if (tempRange().start || tempRange().end) {
             <span>
-              <b>{{ 'TEMPORAL' | translate }}:</b> {{ tempRange.start }}
-              @if (!!tempRange.end) {
-                <span> {{ 'TO' | translate }} {{ tempRange.end }}</span>
+              <b>{{ 'TEMPORAL' | translate }}:</b> {{ tempRange().start }}
+              @if (!!tempRange().end) {
+                <span> {{ 'TO' | translate }} {{ tempRange().end }}</span>
               }
             </span>
           }
         </span>
       }
-      @if (perpRange.start || perpRange.end) {
+      @if (perpRange().start || perpRange().end) {
         <span>
-          <b>{{ 'PERPENDICULAR' | translate }}:</b> {{ perpRange.start }}
-          @if (!!perpRange.end) {
-            <span> {{ 'TO' | translate }} {{ perpRange.end }} </span>
+          <b>{{ 'PERPENDICULAR' | translate }}:</b> {{ perpRange().start }}
+          @if (!!perpRange().end) {
+            <span> {{ 'TO' | translate }} {{ perpRange().end }} </span>
           }
         </span>
       }
       <span>
-        @if (fullBurstIDs?.length > 0) {
+        @if (fullBurstIDs()?.length > 0) {
           <span>
             <b>{{ 'FULL_BURST_ID' | translate }}:</b>
             {{
-              fullBurstIDs.length <= 4
-                ? fullBurstIDs.join(', ')
-                : fullBurstIDs.length + ' IDs'
+              fullBurstIDs().length <= 4
+                ? fullBurstIDs().join(', ')
+                : fullBurstIDs().length + ' IDs'
             }}
           </span>
         }
       </span>
       <span>
-        @if (operaBurstIDs?.length > 0) {
+        @if (operaBurstIDs()?.length > 0) {
           <span>
             <b>{{ 'OPERA_BURST_ID' | translate }}:</b>
             {{
-              operaBurstIDs.length <= 4
-                ? operaBurstIDs.join(', ')
-                : operaBurstIDs.length + ' IDs'
+              operaBurstIDs().length <= 4
+                ? operaBurstIDs().join(', ')
+                : operaBurstIDs().length + ' IDs'
             }}
           </span>
         }
       </span>
       <span>
-        @if (useCalibrationData) {
+        @if (useCalibrationData()) {
           <span>
             <b>{{ 'DATA_TYPE' | translate }}:</b>
             {{ 'CALIBRATION' | translate }}
@@ -198,29 +198,29 @@
         }
       </span>
       <span>
-        @if (!!groupID) {
+        @if (!!groupID()) {
           <span>
-            <b> {{ 'GROUP_ID_INFO_BAR' | translate }}:</b> {{ groupID }}
+            <b> {{ 'GROUP_ID_INFO_BAR' | translate }}:</b> {{ groupID() }}
           </span>
         }
       </span>
       <span>
-        @if (!!shortNames) {
+        @if (!!shortNames()) {
           <span>
-            <b> {{ 'SHORT_NAMES' | translate }}:</b> {{ shortNames }}
+            <b> {{ 'SHORT_NAMES' | translate }}:</b> {{ shortNames() }}
           </span>
         }
       </span>
       <span>
-        @if (!!ariaVersion) {
+        @if (!!ariaVersion()) {
           <span>
-            <b> {{ 'ARIA_VERSION' | translate }}:</b> {{ ariaVersion }}
+            <b> {{ 'ARIA_VERSION' | translate }}:</b> {{ ariaVersion() }}
           </span>
         }
       </span>
-      @if (!!tileID) {
+      @if (!!tileID()) {
         <span>
-          <b> {{ 'TILE_ID' | translate }}:</b> {{ tileID }}
+          <b> {{ 'TILE_ID' | translate }}:</b> {{ tileID() }}
         </span>
       }
       @if (granuleList()) {
