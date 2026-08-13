@@ -31,11 +31,11 @@
     class="clickable additional-aoi-toggle"
     matSuffix
   >
-    {{ isAOIOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
+    {{ isAOIOptionsOpen() ? 'arrow_drop_up' : 'arrow_drop_down' }}
   </mat-icon>
 </mat-form-field>
 
-@if (isAOIOptionsOpen) {
+@if (isAOIOptionsOpen()) {
   <mat-card [@fadeTransition] class="breadcrumb-filter aoi-mat-card">
     <app-aoi-options (close)="closeAOIOptions()"></app-aoi-options>
   </mat-card>

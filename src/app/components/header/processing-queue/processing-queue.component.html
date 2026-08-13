@@ -29,7 +29,7 @@
             {{ 'ON_DEMAND' | translate }}
           </div>
           <div class="on-demand-subtitle">
-            @if (!isHyp3PlusMode) {
+            @if (!isHyp3PlusMode()) {
               {{ 'POWERED_BY_HYP3' | translate }}
             } @else {
               {{ 'POWERED_BY_HYP3_PLUS' | translate }}
@@ -178,7 +178,7 @@
 >
   @if (!this.isSignupSelected) {
     <div class="content-block">
-      @if (!isUserLoggedIn && !isUserLoading) {
+      @if (!isUserLoggedIn && !isUserLoading()) {
         <div #errorHeader class="w100 error-header">
           <div style="padding-left: 10px">
             <b>{{ 'SIGN_IN_TO_PROCESS_DATA' | translate }}</b>
@@ -233,7 +233,7 @@
               @if (
                 isUserLoggedIn &&
                 !isUnlimitedUser &&
-                !isUserLoading &&
+                !isUserLoading() &&
                 allJobs.length > remaining
               ) {
                 <div class="w100 error-header">
@@ -256,12 +256,12 @@
               @if (
                 isUserLoggedIn &&
                 !isUnlimitedUser &&
-                !isUserLoading &&
+                !isUserLoading() &&
                 remaining === 0
               ) {
                 <div class="w100 error-header">
                   <div style="padding-left: 10px">
-                    @if (!isHyp3PlusMode) {
+                    @if (!isHyp3PlusMode()) {
                       <b>{{ 'NO_CREDITS_LEFT_THIS_MONTH' | translate }}</b>
                     } @else {
                       <b>{{ 'NO_CREDITS_LEFT' | translate }}</b>
@@ -282,7 +282,7 @@
                       [jobs]="jobs"
                       [costPerJob]="costPerJobByType[selectedJobTypeId]"
                       [areJobsLoading]="areJobsLoading"
-                      [isHyp3PlusMode]="isHyp3PlusMode"
+                      [isHyp3PlusMode]="isHyp3PlusMode()"
                       (removeJob)="onRemoveJob($event)"
                     >
                     </app-processing-queue-jobs>
@@ -296,7 +296,7 @@
                         [jobs]="jobs"
                         [costPerJob]="costPerJobByType[selectedJobTypeId]"
                         [areJobsLoading]="areJobsLoading"
-                        [isHyp3PlusMode]="isHyp3PlusMode"
+                        [isHyp3PlusMode]="isHyp3PlusMode()"
                         (removeJob)="onRemoveJob($event)"
                       >
                       </app-processing-queue-jobs>
@@ -415,7 +415,7 @@
           </a>
         }
         @default {
-          @if (isUserLoggedIn && !isUserLoading && user !== '') {
+          @if (isUserLoggedIn && !isUserLoading() && user !== '') {
             <div>
               <span>
                 @if (!isUnlimitedUser) {
@@ -458,7 +458,7 @@
             </div>
           }
 
-          @if (isUserLoggedIn && isUserLoading) {
+          @if (isUserLoggedIn && isUserLoading()) {
             <div>
               <b>{{ 'LOADING' | translate }}...</b>
             </div>
@@ -541,7 +541,7 @@
           <span> {{ 'LOADING' | translate }}... </span>
         }
       </button>
-      @if (isHyp3PlusMode) {
+      @if (isHyp3PlusMode()) {
         <a
           href="https://hyp3-docs.asf.alaska.edu/about/hyp3_plus/#purchasing-credits"
           target="_blank"

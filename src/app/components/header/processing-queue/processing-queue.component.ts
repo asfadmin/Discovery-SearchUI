@@ -5,6 +5,7 @@ import {
   ViewChild,
   inject,
   DestroyRef,
+  Signal,
 } from '@angular/core';
 import {
   MatDialog,
@@ -115,8 +116,12 @@ export class ProcessingQueueComponent implements OnInit {
   public jobs: models.QueuedHyp3Job[] = [];
   public user = '';
   public isUserLoggedIn = false;
-  public isHyp3PlusMode = false;
-  public isUserLoading = true;
+  public isHyp3PlusMode: Signal<boolean> = this.store$.selectSignal(
+    searchStore.getHyp3PlusMode,
+  );
+  public isUserLoading: Signal<boolean> = this.store$.selectSignal(
+    hyp3Store.getIsHyp3UserLoading,
+  );
   public remaining = 0;
   public isUnlimitedUser = false;
   public areJobsLoading = false;
@@ -129,7 +134,9 @@ export class ProcessingQueueComponent implements OnInit {
   public selectedTab = ProcessingQueueTab.SCENES;
   public Tabs = ProcessingQueueTab;
 
-  public projectName = '';
+  public projectName: Signal<string> = this.store$.selectSignal(
+    hyp3Store.getProcessingProjectName,
+  );
   public processingOptions: models.Hyp3ProcessingOptions;
   public validateOnly = false;
 
@@ -151,13 +158,6 @@ export class ProcessingQueueComponent implements OnInit {
 
   ngOnInit(): void {
     this.store$.dispatch(new hyp3Store.LoadUser());
-
-    this.store$
-      .select(hyp3Store.getIsHyp3UserLoading)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((isUserLoading) => {
-        this.isUserLoading = isUserLoading;
-      });
 
     combineLatest(
       this.store$.select(queueStore.getQueuedJobs),
@@ -249,11 +249,6 @@ export class ProcessingQueueComponent implements OnInit {
       .subscribe((breakpoint) => (this.breakpoint = breakpoint));
 
     this.store$
-      .select(hyp3Store.getProcessingProjectName)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((projectName) => (this.projectName = projectName));
-
-    this.store$
       .select(userStore.getIsUserLoggedIn)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((isLoggedIn) => {
@@ -261,14 +256,7 @@ export class ProcessingQueueComponent implements OnInit {
         this.updateContentBottomHeight();
       });
 
-    this.store$
-      .select(searchStore.getHyp3PlusMode)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((isHyp3PlusMode) => {
-        this.isHyp3PlusMode = isHyp3PlusMode;
-      });
-
-    if (!this.isUserLoggedIn && !this.isUserLoading) {
+    if (!this.isUserLoggedIn && !this.isUserLoading()) {
       if (this.errorHeaderRef !== undefined) {
         this.errorHeaderHeight = this.errorHeaderRef.nativeElement.offsetHeight;
       } else {
@@ -304,7 +292,7 @@ export class ProcessingQueueComponent implements OnInit {
       maxHeight: '600px',
       data: {
         jobTypesWithQueued: this.jobTypesWithQueued,
-        projectName: this.projectName,
+        projectName: this.projectName(),
         processingOptions: this.processingOptions,
         validateOnly: this.validateOnly,
       },

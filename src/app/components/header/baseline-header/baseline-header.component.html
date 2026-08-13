@@ -8,7 +8,7 @@
           <div class="breadcrumb reference-toggle-wrapper">
             <app-baseline-frame-reference-toggle></app-baseline-frame-reference-toggle>
           </div>
-          @if (shouldUseFramesForReference) {
+          @if (shouldUseFramesForReference()) {
             <div class="breadcrumb dataset-selector--layout">
               <app-dataset-selector
                 class="w100"
