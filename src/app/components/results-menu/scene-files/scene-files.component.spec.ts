@@ -249,4 +249,26 @@ describe('SceneFilesComponent file grouping', () => {
     expect(component.groups()).toBe(null);
     expect(fixture.nativeElement.querySelector('mat-tree')).toBe(null);
   });
+
+  it('shows the DISP-S1 footprint warning for DISP-S1 products', async () => {
+    const scene = productFactory
+      .withBasicInfo('disp-s1-scene')
+      .withMetadata({ productType: 'DISP-S1' })
+      .build();
+    await setup(scene, [scene]);
+
+    expect(component.showDispS1Warning()).toBe(true);
+    expect(fixture.nativeElement.querySelector('.dem-warning')).not.toBe(null);
+  });
+
+  it('does not show the DISP-S1 footprint warning for other product types', async () => {
+    const scene = productFactory
+      .withBasicInfo('disp-s1-static-scene')
+      .withMetadata({ productType: 'DISP-S1-STATIC' })
+      .build();
+    await setup(scene, [scene]);
+
+    expect(component.showDispS1Warning()).toBe(false);
+    expect(fixture.nativeElement.querySelector('.dem-warning')).toBe(null);
+  });
 });

@@ -132,6 +132,9 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     }
     return productsByGroups;
   });
+  readonly showDispS1Warning = computed(
+    () => this.scene()?.metadata.productType === 'DISP-S1',
+  );
   private subs = new SubSink();
 
   ngOnInit() {

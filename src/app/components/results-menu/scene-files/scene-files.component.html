@@ -6,7 +6,20 @@
       target="_blank"
       href="https://asf.alaska.edu/information/palsar-rtc-dem-information/"
     >
-      Read this first
+      {{ 'READ_THIS_FIRST' | translate }}
+    </a>
+  </div>
+}
+
+@if (showDispS1Warning()) {
+  <div class="dem-warning">
+    {{ 'DISP_S1_FOOTPRINTS_HAVE_KNOWN_LIMITATIONS' | translate }}
+    <a
+      class="more-link"
+      target="_blank"
+      href="https://github.com/opera-adt/disp-s1/issues/376"
+    >
+      {{ 'READ_THIS_FIRST' | translate }}
     </a>
   </div>
 }
