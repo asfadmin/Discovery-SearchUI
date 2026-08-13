@@ -8,6 +8,8 @@ import {
   inject,
 } from '@angular/core';
 
+import { ScrollingModule } from '@angular/cdk/scrolling';
+
 import { ClipboardService } from 'ngx-clipboard';
 import { map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -95,6 +97,7 @@ export interface selectedItems {
     ReadableSizeFromBytesPipe,
     FilterExtensionPipe,
     TranslateModule,
+    ScrollingModule,
   ],
 })
 export class QueueComponent implements OnInit, OnDestroy {
