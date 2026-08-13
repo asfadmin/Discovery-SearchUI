@@ -144,9 +144,9 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         url: 'https://github.com/opera-adt/disp-s1/issues/376',
       };
     } else if (
-      this.scene().dataset === 'ALOS' &&
-      this.scene().metadata.productType &&
-      this.scene().metadata.productType.includes('RTC_')
+      this.scene()?.dataset === 'ALOS' &&
+      this.scene()?.metadata.productType &&
+      this.scene()?.metadata.productType.includes('RTC_')
     ) {
       return {
         translationKey: 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING',
