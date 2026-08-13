@@ -140,7 +140,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public numberQueuedProducts: number;
   public queuedCustomProducts: Signal<models.QueuedHyp3Job[]> =
     this.store$.selectSignal(queueStore.getQueuedJobs);
-  public currentLanguage: string;
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
@@ -168,12 +167,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.isAutoTheme) {
           this.themeService.setTheme(`theme-${theme}`);
         }
-      }),
-    );
-
-    this.subs.add(
-      this.store$.select(uiStore.getCurrentLanguage).subscribe((language) => {
-        this.currentLanguage = language;
       }),
     );
 
