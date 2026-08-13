@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, Signal } from '@angular/core';
 
 import {
   trigger,
@@ -20,7 +20,6 @@ import {
   NotificationService,
   ScreenSizeService,
 } from '@services';
-import { SubSink } from 'subsink';
 import * as models from '@models';
 import { Observable } from 'rxjs';
 import { areFiltersChanged } from '@store/filters';
@@ -38,6 +37,7 @@ import { MaxResultsSelectorComponent } from '@components/shared/max-results-sele
 import { CancelFilterChangesComponent } from '@components/shared/cancel-filter-changes/cancel-filter-changes.component';
 import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-filters-dropdown',
@@ -67,7 +67,7 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
   ],
 })
-export class FiltersDropdownComponent implements OnInit, OnDestroy {
+export class FiltersDropdownComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
   private notificationService = inject(NotificationService);
@@ -76,39 +76,24 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
   @Input() dataset$: Observable<models.CMRProduct>;
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
-  public searchType$ = this.store$.select(searchStore.getSearchType);
-  private searchType;
+  public searchType: Signal<models.SearchType> = this.store$.selectSignal(
+    searchStore.getSearchType,
+  );
   public searchTypes = models.SearchType;
 
-  public breakpoint: models.Breakpoints;
+  public breakpoint: Signal<models.Breakpoints> = toSignal(
+    this.screenSize.breakpoint$,
+  );
   public breakpoints = models.Breakpoints;
 
-  private areFiltersChanged;
+  private areFiltersChanged: Signal<boolean> =
+    this.store$.selectSignal(areFiltersChanged);
 
-  public subs = new SubSink();
   public frameSelectionEnabled$ = this.store$.select(
     uiStore.getIsFrameSelectionEnabled,
   );
 
   ngOnInit() {
-    this.subs.add(
-      this.screenSize.breakpoint$.subscribe(
-        (breakpoint) => (this.breakpoint = breakpoint),
-      ),
-    );
-    this.subs.add(
-      this.searchType$.subscribe(
-        (searchType) => (this.searchType = searchType),
-      ),
-    );
-    this.subs.add(
-      this.store$
-        .select(areFiltersChanged)
-        .subscribe(
-          (filtersChanged) => (this.areFiltersChanged = filtersChanged),
-        ),
-    );
-
     if (this.environmentService.maturity === 'prod') {
       this.store$.dispatch(
         new filterStore.SetSBASOverlapThreshold(SBASOverlap.ALL),
@@ -118,9 +103,9 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
 
   public closePanel(): void {
     if (
-      this.searchType !== this.searchTypes.SBAS &&
-      this.searchType !== this.searchTypes.BASELINE &&
-      this.areFiltersChanged
+      this.searchType() !== this.searchTypes.SBAS &&
+      this.searchType() !== this.searchTypes.BASELINE &&
+      this.areFiltersChanged()
     ) {
       this.notificationService.closeFiltersPanel();
     }
@@ -129,9 +114,5 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
 
   public onSetSearchType(searchType: models.SearchType): void {
     this.store$.dispatch(new searchStore.SetSearchType(searchType));
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 }
