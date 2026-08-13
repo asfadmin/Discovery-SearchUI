@@ -41,7 +41,4 @@ test('Add files to Download Queue', async ({ page }) => {
   await expect(page.locator('.dl-subtitle')).toContainText(
     `${fileCount} Files`,
   );
-  await expect(
-    page.locator('.dl-mat-dialog-content mat-list-item'),
-  ).toHaveCount(fileCount);
 });

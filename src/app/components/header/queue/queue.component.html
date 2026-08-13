@@ -85,9 +85,14 @@
     showDemWarning && breakpoint === breakpoints.MOBILE
   "
 >
-  <mat-list id="matListProducts" role="list" class="dl-list">
-    @if (products$ | async; as products) {
-      @for (product of products; track product) {
+  @if ((products$ | async).length > 0) {
+    <cdk-virtual-scroll-viewport itemSize="50" class="queue-scroll-viewport">
+      <mat-list
+        *cdkVirtualFor="let product of products$"
+        id="matListProducts"
+        role="list"
+        class="dl-list"
+      >
         <mat-list-item role="listitem">
           <div
             matListItemTitle
@@ -178,15 +183,15 @@
             <mat-icon>close</mat-icon>
           </button>
         </mat-list-item>
-      }
-    }
-    @if ((products$ | async).length < 1) {
-      <div class="dl-empty-message">
-        <br /><br />
-        {{ 'YOUR_DOWNLOAD_QUEUE_IS_EMPTY' | translate }}
-      </div>
-    }
-  </mat-list>
+      </mat-list>
+    </cdk-virtual-scroll-viewport>
+  }
+  @if ((products$ | async).length < 1) {
+    <div class="dl-empty-message">
+      <br /><br />
+      {{ 'YOUR_DOWNLOAD_QUEUE_IS_EMPTY' | translate }}
+    </div>
+  }
 </mat-dialog-content>
 
 <mat-dialog-actions class="dl-mat-dialog-actions">
