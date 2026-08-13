@@ -1,11 +1,9 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
-import * as scenesStore from '@store/scenes';
 import * as hyp3Store from '@store/hyp3';
 
-import { SubSink } from 'subsink';
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
 import {
@@ -48,13 +46,12 @@ enum FilterPanel {
     TranslateModule,
   ],
 })
-export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
+export class CustomProductsFiltersComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-  public areResultsLoaded: boolean;
 
   selectedPanel: FilterPanel | null = null;
   panels = FilterPanel;
@@ -62,23 +59,9 @@ export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
   panelIsDisabled = true;
   customCollapsedHeight = '30px';
   customExpandedHeight = '30px';
-  hyp3JobIds: string[];
-
-  private subs = new SubSink();
-
-  ngOnInit(): void {
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getAreResultsLoaded)
-        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(hyp3Store.getHyp3JobIds)
-        .subscribe((jobId) => (this.hyp3JobIds = jobId)),
-    );
-  }
+  hyp3JobIds: Signal<string[]> = this.store$.selectSignal(
+    hyp3Store.getHyp3JobIds,
+  );
 
   public isSelected(panel: FilterPanel): boolean {
     return this.selectedPanel === panel;
@@ -90,9 +73,5 @@ export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
 
   public onNewHyp3JobIds(jobIds: string[]) {
     this.store$.dispatch(new hyp3Store.SetHyp3JobIDs(jobIds));
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 }

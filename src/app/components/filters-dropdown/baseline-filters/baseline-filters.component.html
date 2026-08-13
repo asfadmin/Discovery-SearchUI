@@ -20,7 +20,7 @@
     </mat-expansion-panel>
   }
 
-  @if ((breakpoint$ | async) === breakpoints.MOBILE || !areResultsLoaded) {
+  @if ((breakpoint$ | async) === breakpoints.MOBILE || !areResultsLoaded()) {
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
@@ -38,7 +38,7 @@
       <div class="w100 search-options-row">
         <app-baseline-frame-reference-toggle></app-baseline-frame-reference-toggle>
         <div class="w100 scene-selectors-column">
-          @if (shouldUseFramesForReference) {
+          @if (shouldUseFramesForReference()) {
             <app-dataset-selector
               class="w100"
               [(selected)]="selectedDataset"
@@ -69,7 +69,7 @@
     </mat-expansion-panel>
   }
 
-  @if (areResultsLoaded) {
+  @if (areResultsLoaded()) {
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
@@ -98,7 +98,7 @@
     </mat-expansion-panel>
   }
 
-  @if (areResultsLoaded) {
+  @if (areResultsLoaded()) {
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"

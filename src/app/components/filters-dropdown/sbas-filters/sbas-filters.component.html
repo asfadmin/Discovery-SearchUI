@@ -20,7 +20,7 @@
     </mat-expansion-panel>
   }
 
-  @if ((breakpoint$ | async) === breakpoints.MOBILE || !areResultsLoaded) {
+  @if ((breakpoint$ | async) === breakpoints.MOBILE || !areResultsLoaded()) {
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
@@ -38,7 +38,7 @@
       <div class="breadcrumb reference-toggle-row">
         <app-baseline-frame-reference-toggle></app-baseline-frame-reference-toggle>
       </div>
-      @if (shouldUseFramesForReference) {
+      @if (shouldUseFramesForReference()) {
         <div class="breadcrumb dataset-selector--layout">
           <app-dataset-selector
             class="w100"
@@ -71,7 +71,7 @@
     </mat-expansion-panel>
   }
 
-  @if (areResultsLoaded) {
+  @if (areResultsLoaded()) {
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
@@ -113,7 +113,7 @@
   <!--  </div>-->
   <!--  </mat-expansion-panel>-->
 
-  @if (areResultsLoaded) {
+  @if (areResultsLoaded()) {
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
