@@ -261,7 +261,7 @@ describe('SceneFilesComponent file grouping', () => {
     expect(fixture.nativeElement.querySelector('.dem-warning')).not.toBe(null);
   });
 
-  it('shows the dem warning for ALOS RTC product', async () => {
+  it('shows the DEM warning for ALOS RTC products', async () => {
     let scene = productFactory
       .withBasicInfo('alos rtc')
       .withMetadata({ productType: 'ALPSRP279071390-RTC_LOW_RES' })
