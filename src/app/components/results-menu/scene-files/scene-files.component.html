@@ -1,12 +1,8 @@
-@if (showDemWarning) {
+@if (sceneFilesWarning()) {
   <div class="dem-warning">
-    {{ 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING' | translate }}
-    <a
-      class="more-link"
-      target="_blank"
-      href="https://asf.alaska.edu/information/palsar-rtc-dem-information/"
-    >
-      Read this first
+    {{ sceneFilesWarning().translationKey | translate }}
+    <a class="more-link" target="_blank" [href]="sceneFilesWarning().url">
+      {{ 'READ_THIS_FIRST' | translate }}
     </a>
   </div>
 }
