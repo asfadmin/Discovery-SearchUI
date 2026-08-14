@@ -257,7 +257,21 @@ describe('SceneFilesComponent file grouping', () => {
       .build();
     await setup(scene, [scene]);
 
-    expect(component.showDispS1Warning()).toBe(true);
+    expect(component.sceneFilesWarning()).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.dem-warning')).not.toBe(null);
+  });
+
+  it('shows the DEM warning for ALOS RTC products', async () => {
+    let scene = productFactory
+      .withBasicInfo('alos rtc')
+      .withMetadata({ productType: 'ALPSRP279071390-RTC_LOW_RES' })
+      .build();
+
+    scene = { ...scene, dataset: 'ALOS' };
+
+    await setup(scene, [scene]);
+
+    expect(component.sceneFilesWarning()).toBeTruthy();
     expect(fixture.nativeElement.querySelector('.dem-warning')).not.toBe(null);
   });
 
@@ -268,7 +282,7 @@ describe('SceneFilesComponent file grouping', () => {
       .build();
     await setup(scene, [scene]);
 
-    expect(component.showDispS1Warning()).toBe(false);
+    expect(component.sceneFilesWarning()).toBe(null);
     expect(fixture.nativeElement.querySelector('.dem-warning')).toBe(null);
   });
 });
