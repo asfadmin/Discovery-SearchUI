@@ -1,6 +1,15 @@
 <div class="group-file-wrapper">
   <div class="group-file-row">
     <span class="file-name">{{ product().productTypeDisplay }}</span>
+
+    <span class="file-size">
+       @if (product().bytes === 0 && !product()?.id?.startsWith('OPERA')) {
+         {{ 'VIRTUAL' | translate }}
+       } @else if (product().bytes !== 0) {
+         {{ product().bytes.toString() | readableSizeFromBytes }}
+       }
+    </span>
+
     @if (isScienceData()) {
     <div class="gdal-button-wrapper">
       <button (click)="toggleExportGDAL()" mat-icon-button>
