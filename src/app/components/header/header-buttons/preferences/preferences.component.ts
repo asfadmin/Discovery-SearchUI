@@ -5,6 +5,7 @@ import {
   OnInit,
   Output,
   inject,
+  Signal,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -45,6 +46,7 @@ import { MatSelect, MatOption } from '@angular/material/select';
 import { UpperCasePipe, TitleCasePipe } from '@angular/common';
 import { Hyp3UrlSelectorComponent } from './hyp3-url-selector/hyp3-url-selector.component';
 import { MatButton } from '@angular/material/button';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-preferences',
@@ -83,7 +85,9 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   @Output() selectedChange = new EventEmitter<string>();
 
-  public breakpoint: models.Breakpoints;
+  public breakpoint: Signal<models.Breakpoints> = toSignal(
+    this.screenSize.breakpoint$,
+  );
   public breakpoints = models.Breakpoints;
 
   public datasets = datasetList;
@@ -99,7 +103,9 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public maxResults = [250, 1000, 5000];
   public mapLayerTypes = MapLayerTypes;
 
-  public userAuth: UserAuth;
+  public userAuth: Signal<UserAuth> = this.store$.selectSignal(
+    userStore.getUserAuth,
+  );
 
   public searchType = SearchType;
   public searchTypeKeys = Object.keys(this.searchType).filter(
@@ -128,10 +134,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   ngOnInit() {
-    this.screenSize.breakpoint$.subscribe(
-      (breakpoint) => (this.breakpoint = breakpoint),
-    );
-
     this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe((profile) => {
         this.defaultLanguage = profile.language;
@@ -155,12 +157,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.hyp3SavedUrls = [this.hyp3BackendUrl];
         }
       }),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(userStore.getUserAuth)
-        .subscribe((user) => (this.userAuth = user)),
     );
 
     this.subs.add(

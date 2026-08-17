@@ -5,6 +5,7 @@ import {
   ElementRef,
   OnDestroy,
   inject,
+  Signal,
 } from '@angular/core';
 
 import { combineLatest } from 'rxjs';
@@ -57,7 +58,10 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
   private criticalBaseline: number;
   private isFirstLoad = true;
-  private offsets = { temporal: 0, perpendicular: 0 };
+  private offsets: Signal<{
+    temporal: number;
+    perpendicular: number;
+  }> = this.store$.selectSignal(scenesStore.getMasterOffsets);
   private subs = new SubSink();
 
   private data = [[], [], [], [], [], [], [], []];
@@ -93,12 +97,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         ),
       ),
       map((products) => products.map(this.productToPoint)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getMasterOffsets)
-        .subscribe((offsets) => (this.offsets = offsets)),
     );
 
     this.subs.add(
@@ -390,8 +388,8 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
   private productToPoint = (product: CMRProduct) => {
     return {
-      x: product.metadata.temporal + this.offsets.temporal,
-      y: product.metadata.perpendicular + this.offsets.perpendicular,
+      x: product.metadata.temporal + this.offsets().temporal,
+      y: product.metadata.perpendicular + this.offsets().perpendicular,
       id: product.id,
     };
   };

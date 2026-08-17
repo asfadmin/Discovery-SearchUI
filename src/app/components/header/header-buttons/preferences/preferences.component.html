@@ -1,6 +1,6 @@
 <div class="dialog-header">
   <div mat-dialog-title class="dialog-title-overrides">
-    {{ 'PREFERENCES_FOR' | translate }} {{ userAuth?.id }}
+    {{ 'PREFERENCES_FOR' | translate }} {{ userAuth()?.id }}
   </div>
 
   <div class="dl-close-x" (click)="onCloseDownloadQueue()">
@@ -18,7 +18,7 @@
       <div class="preferences-group">
         <div
           class="section-heading"
-          [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL"
+          [class.section-heading-mobile]="breakpoint() <= breakpoints.SMALL"
         >
           {{ 'DEFAULT_LANGUAGE_AND_THEME' | translate }}
         </div>
@@ -59,7 +59,7 @@
       <div class="preferences-group">
         <div
           class="section-heading"
-          [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL"
+          [class.section-heading-mobile]="breakpoint() <= breakpoints.SMALL"
         >
           {{ 'DEFAULT_SEARCH_PRESETS' | translate }}
         </div>
@@ -101,7 +101,7 @@
       <div class="preferences-group">
         <div
           class="section-heading"
-          [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL"
+          [class.section-heading-mobile]="breakpoint() <= breakpoints.SMALL"
         >
           {{ 'DEFAULT_SEARCH_FILTERS_PRESETS' | translate }}
         </div>
@@ -135,7 +135,7 @@
       <div class="preferences-group">
         <div
           class="section-heading"
-          [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL"
+          [class.section-heading-mobile]="breakpoint() <= breakpoints.SMALL"
         >
           {{ 'DEFAULT_ON_DEMAND_PRESETS' | translate }}
         </div>

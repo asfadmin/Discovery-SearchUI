@@ -8,6 +8,7 @@ import {
   inject,
   effect,
   Injector,
+  Signal,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -137,12 +138,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     .select(queueStore.getQueuedProducts)
     .pipe(map((q) => q || []));
   public numberQueuedProducts: number;
-  public queuedCustomProducts: models.QueuedHyp3Job[];
-  public currentLanguage: string;
+  public queuedCustomProducts: Signal<models.QueuedHyp3Job[]> =
+    this.store$.selectSignal(queueStore.getQueuedJobs);
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
-  public kioskMode = false;
+  public kioskMode: Signal<boolean> = this.store$.selectSignal(
+    searchStore.getKioskMode,
+  );
   private injector = inject(Injector);
 
   private subs = new SubSink();
@@ -151,7 +154,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @HostListener('window:keydown.control./', ['$event'])
   handleKeyDown(_event: Event) {
     console.log('Toggling kiosk mode. Use "ctrl+/" to re-toggle');
-    this.store$.dispatch(new searchStore.setSearchKioskMode(!this.kioskMode));
+    this.store$.dispatch(new searchStore.setSearchKioskMode(!this.kioskMode()));
   }
 
   public ngOnInit(): void {
@@ -167,23 +170,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       }),
     );
 
-    this.subs.add(
-      this.store$
-        .select(queueStore.getQueuedJobs)
-        .subscribe((jobs) => (this.queuedCustomProducts = jobs)),
-    );
-
-    this.subs.add(
-      this.store$.select(uiStore.getCurrentLanguage).subscribe((language) => {
-        this.currentLanguage = language;
-      }),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(searchStore.getKioskMode)
-        .subscribe((kioskMode) => (this.kioskMode = kioskMode)),
-    );
     effect(
       () => {
         const iconPath = this.hyp3PlusMode()
@@ -253,7 +239,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
             event: 'open-processing-queue',
-            'open-processing-queue': this.queuedCustomProducts.length,
+            'open-processing-queue': this.queuedCustomProducts().length,
           });
 
           const ref = this.dialog.open(ProcessingQueueComponent, {
