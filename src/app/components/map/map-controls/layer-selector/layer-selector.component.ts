@@ -43,20 +43,16 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   private mapService = inject(MapService);
   private screenSize = inject(ScreenSizeService);
 
-  public overviewMapVisible$ = this.store$.select(
-    mapStore.getIsOverviewMapOpen,
-  );
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
-  public overviewMapVisible = false;
+  public overviewMapVisible = this.store$.selectSignal(
+    mapStore.getIsOverviewMapOpen,
+  );
 
   public layerTypes = models.MapLayerTypes;
-  public layerType: models.MapLayerTypes;
+  public layerType = this.store$.selectSignal(mapStore.getMapLayerType);
 
-  public areGridlinesActive$ = this.store$.select(
-    mapStore.getAreGridlinesActive,
-  );
-  public gridActive = false;
+  public gridActive = this.store$.selectSignal(mapStore.getAreGridlinesActive);
   public coherenceLayerMonths: string | null;
   public months = ['DEC_JAN_FEB', 'MAR_APR_MAY', 'JUN_JUL_AUG', 'SEP_OCT_NOV'];
 
@@ -69,24 +65,6 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(mapStore.getMapLayerType)
-        .subscribe((layerType) => (this.layerType = layerType)),
-    );
-
-    this.subs.add(
-      this.overviewMapVisible$.subscribe(
-        (isOpen) => (this.overviewMapVisible = isOpen),
-      ),
-    );
-
-    this.subs.add(
-      this.areGridlinesActive$.subscribe((gridActive) => {
-        this.gridActive = gridActive;
-      }),
-    );
-
     this.subs.add(
       this.mapService.hasCoherenceLayer$.subscribe((months) => {
         this.coherenceLayerMonths = months;
@@ -103,9 +81,9 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onNewLayerType(layerType: models.MapLayerTypes): void {
+  public onNewLayerType(newLayerType: models.MapLayerTypes): void {
     const action =
-      layerType === models.MapLayerTypes.STREET
+      newLayerType === models.MapLayerTypes.STREET
         ? new mapStore.SetStreetView()
         : new mapStore.SetSatelliteView();
 
