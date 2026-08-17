@@ -1285,5 +1285,12 @@
   "EVENT_SEARCH_DEPRECATION_BODY": "Event search has been deprecated. Use ASF's free",
   "EVENT_SEARCH_DEPRECATION_LINK_TEXT": "HyP3 service",
   "EVENT_SEARCH_DEPRECATION_LINK_ARIA": "HyP3 service (opens in new tab)",
-  "EVENT_SEARCH_DEPRECATION_BODY_SUFFIX": "instead to create S1 RTC and InSAR products."
+  "EVENT_SEARCH_DEPRECATION_BODY_SUFFIX": "instead to create S1 RTC and InSAR products.",
+  "EXPORT_GDAL": "Export GDAL Snippets",
+  "EXPORT_GDAL_HELP": "What is this?",
+  "EXPORT_GDAL_HELP_SUMMARY": "How to use GDAL to perform subsetting operations.",
+  "EXPORT_GDAL_HELP_BODY": "TODO",
+  "EXPORT_GDAL_CLIPBOARD": "Copy GDAL snippet to clipboard.",
+  "EXPORTED_GDAL_CLIPBOARD": "Copied GDAL snippet to clipboard.",
+  "CUSTOMIZE_PRODUCT": "Customize with GDAL"
 }

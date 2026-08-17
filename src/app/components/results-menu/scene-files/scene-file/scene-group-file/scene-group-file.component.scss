@@ -1,12 +1,39 @@
 @use 'asf-theme-variables' as *;
 
+.gdal-button-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  width: 20px;
+  height: 20px;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+
+    @include themify($themes) {
+      color: themed('light-black');
+    }
+  }
+}
+
+.group-file-wrapper {
+  padding: 10px 24px 10px 24px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+
 .group-file-row {
   display: flex;
   align-items: center;
+  height: fit-content;
   gap: 10px;
-  height: 44px;
-  padding: 0 24px 0 40px;
-  font-size: 14px;
 }
 
 .file-name {

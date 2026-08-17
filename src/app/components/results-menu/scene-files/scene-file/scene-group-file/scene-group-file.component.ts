@@ -11,6 +11,7 @@ import { DownloadFileButtonComponent } from '@components/shared/download-file-bu
 import { CartToggleComponent } from '@components/shared/cart-toggle/cart-toggle.component';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { TranslateModule } from '@ngx-translate/core';
+import { SceneFileGdalDropdownComponent } from '../../scene-group-files/scene-file-gdal-dropdown/scene-file-gdal-dropdown.component';
 
 @Component({
   selector: 'app-scene-group-file',
@@ -28,15 +29,18 @@ import { TranslateModule } from '@ngx-translate/core';
     CartToggleComponent,
     ReadableSizeFromBytesPipe,
     TranslateModule,
+    SceneFileGdalDropdownComponent,
   ],
 })
 export class SceneGroupFileComponent {
   product = input.required<models.CMRProduct>();
   isQueued = input(false);
   validHyp3JobTypes = input<models.Hyp3JobType[]>([]);
+  isScienceData = input(false);
 
   toggle = output<void>();
   queueHyp3Job = output<models.QueuedHyp3Job>();
+  exportGDAL = false;
 
   public addJobToProcessingQueue(jobType: models.Hyp3JobType): void {
     this.queueHyp3Job.emit({
@@ -48,5 +52,9 @@ export class SceneGroupFileComponent {
   public onOpenHelp(e: Event, infoUrl: string) {
     e.stopPropagation();
     window.open(infoUrl);
+  }
+
+  public toggleExportGDAL() {
+    this.exportGDAL = !this.exportGDAL;
   }
 }

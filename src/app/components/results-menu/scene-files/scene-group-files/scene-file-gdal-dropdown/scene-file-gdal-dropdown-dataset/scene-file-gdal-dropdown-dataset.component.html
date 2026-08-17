@@ -1,0 +1,15 @@
+<div class="gdal-dataset">
+  <span class="gdal-dataset-name">
+    {{ dataset().name | translate}}
+  </span>
+  @if (dataset().type) {
+    <span class="gdal-dataset-type">
+      {{ dataset().type }}
+    </span>
+  }
+  <span class="flex-grow"></span>
+  <span class="icon-row">
+    <app-copy-to-clipboard class="compact" [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate" [value]="gdalCommand()" [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"></app-copy-to-clipboard>
+    <app-gdal-customize-menu class="compact" [product]="product()" [dataset]="dataset()"></app-gdal-customize-menu>
+  </span>
+</div>

@@ -1,91 +1,99 @@
-<div class="group-file-row">
-  <span class="file-name">{{ product().productTypeDisplay }}</span>
-
-  <span class="file-size">
-    @if (product().bytes === 0 && !product()?.id?.startsWith('OPERA')) {
-      {{ 'VIRTUAL' | translate }}
-    } @else if (product().bytes !== 0) {
-      {{ product().bytes.toString() | readableSizeFromBytes }}
+<div class="group-file-wrapper">
+  <div class="group-file-row">
+    <span class="file-name">{{ product().productTypeDisplay }}</span>
+    @if (isScienceData()) {
+    <div class="gdal-button-wrapper">
+      <button (click)="toggleExportGDAL()" mat-icon-button>
+        <mat-icon
+          fontIcon="satellite_alt"
+          [matTooltip]="'CUSTOMIZE_PRODUCT' | translate"
+        >
+        </mat-icon>
+      </button>
+    </div>
     }
-  </span>
 
-  <app-copy-to-clipboard
-    class="compact"
-    [value]="
-      product().metadata.productType === 'BURST_XML'
-        ? product().id?.split('-XML')[0]
-        : product().metadata.parentID || product().id
-    "
-    [message]="'COPIED_FILE_ID' | translate"
-    prompt="{{ 'COPY_FILE_ID' | translate }}"
-  >
-  </app-copy-to-clipboard>
-
-  @if (product().metadata?.s3URI !== null) {
     <app-copy-to-clipboard
       class="compact"
-      [prompt]="'COPY_URLS' | translate"
-      [submenu]="[
-        {
-          prompt: 'COPY_URL' | translate,
-          message: 'COPIED_SCENE_DOWNLOAD_URL' | translate,
-          value: product().downloadUrl,
-        },
-        {
-          prompt: 'COPY_S3_URL' | translate,
-          message: 'COPIED_S3_URL' | translate,
-          value: product().metadata?.s3URI,
-        },
-      ]"
-      copyIcon="link_2"
-    ></app-copy-to-clipboard>
-  } @else {
-    <app-copy-to-clipboard
-      class="compact"
-      [prompt]="'COPY_DOWNLOAD_URL' | translate"
-      [message]="'COPIED_SCENE_DOWNLOAD_URL' | translate"
-      [value]="product().downloadUrl"
-      copyIcon="link_2"
-    ></app-copy-to-clipboard>
-  }
-
-  @if (validHyp3JobTypes().length > 0) {
-    <button
-      [matMenuTriggerFor]="customJobTypes"
-      mat-icon-button
-      class="hyp3-button"
+      [value]="
+        product().metadata.productType === 'BURST_XML'
+          ? product().id?.split('-XML')[0]
+          : product().metadata.parentID || product().id
+      "
+      [message]="'COPIED_FILE_ID' | translate"
+      prompt="{{ 'COPY_FILE_ID' | translate }}"
     >
-      <mat-icon
-        svgIcon="hyp3"
-        matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
+    </app-copy-to-clipboard>
+
+    @if (product().metadata?.s3URI !== null) {
+      <app-copy-to-clipboard
+        class="compact"
+        [prompt]="'COPY_URLS' | translate"
+        [submenu]="[
+          {
+            prompt: 'COPY_URL' | translate,
+            message: 'COPIED_SCENE_DOWNLOAD_URL' | translate,
+            value: product().downloadUrl,
+          },
+          {
+            prompt: 'COPY_S3_URL' | translate,
+            message: 'COPIED_S3_URL' | translate,
+            value: product().metadata?.s3URI,
+          },
+        ]"
+        copyIcon="link_2"
+      ></app-copy-to-clipboard>
+    } @else {
+      <app-copy-to-clipboard
+        class="compact"
+        [prompt]="'COPY_DOWNLOAD_URL' | translate"
+        [message]="'COPIED_SCENE_DOWNLOAD_URL' | translate"
+        [value]="product().downloadUrl"
+        copyIcon="link_2"
+      ></app-copy-to-clipboard>
+    }
+
+    @if (validHyp3JobTypes().length > 0) {
+      <button
+        [matMenuTriggerFor]="customJobTypes"
+        mat-icon-button
+        class="hyp3-button"
       >
-      </mat-icon>
-      <mat-menu #customJobTypes="matMenu">
-        @for (jobType of validHyp3JobTypes(); track jobType) {
-          <button (click)="addJobToProcessingQueue(jobType)" mat-menu-item>
-            {{ 'ADD' | translate }} {{ jobType.name }} to On Demand
-            <mat-icon
-              (click)="onOpenHelp($event, jobType.infoUrl)"
-              class="clickable info-icon"
-              >info</mat-icon
-            >
-          </button>
-        }
-      </mat-menu>
-    </button>
+        <mat-icon
+          svgIcon="hyp3"
+          matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
+        >
+        </mat-icon>
+        <mat-menu #customJobTypes="matMenu">
+          @for (jobType of validHyp3JobTypes(); track jobType) {
+            <button (click)="addJobToProcessingQueue(jobType)" mat-menu-item>
+              {{ 'ADD' | translate }} {{ jobType.name }} to On Demand
+              <mat-icon
+                (click)="onOpenHelp($event, jobType.infoUrl)"
+                class="clickable info-icon"
+                >info</mat-icon
+              >
+            </button>
+          }
+        </mat-menu>
+      </button>
+    }
+
+    <app-cart-toggle
+      class="compact"
+      (toggle)="toggle.emit()"
+      [isQueued]="isQueued()"
+    >
+    </app-cart-toggle>
+
+    <app-download-file-button
+      class="compact"
+      [attr.id]="'scene_' + product().id"
+      [product]="product()"
+    >
+    </app-download-file-button>
+  </div>
+  @if (exportGDAL) {
+   <app-scene-file-gdal-dropdown [product]="product()"/>
   }
-
-  <app-cart-toggle
-    class="compact"
-    (toggle)="toggle.emit()"
-    [isQueued]="isQueued()"
-  >
-  </app-cart-toggle>
-
-  <app-download-file-button
-    class="compact"
-    [attr.id]="'scene_' + product().id"
-    [product]="product()"
-  >
-  </app-download-file-button>
 </div>

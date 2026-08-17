@@ -1285,5 +1285,12 @@
   "EVENT_SEARCH_DEPRECATION_BODY": "La búsqueda de eventos ha quedado obsoleta. Use el servicio gratuito de",
   "EVENT_SEARCH_DEPRECATION_LINK_TEXT": "HyP3",
   "EVENT_SEARCH_DEPRECATION_LINK_ARIA": "Servicio HyP3 (se abre en una nueva pestaña)",
-  "EVENT_SEARCH_DEPRECATION_BODY_SUFFIX": "para crear productos S1 RTC e InSAR."
+  "EVENT_SEARCH_DEPRECATION_BODY_SUFFIX": "para crear productos S1 RTC e InSAR.",
+  "EXPORT_GDAL": "Export GDAL snippets",
+  "EXPORT_GDAL_HELP": "What is this?",
+  "EXPORT_GDAL_HELP_SUMMARY": "How to use GDAL to perform subsetting operations.",
+  "EXPORT_GDAL_HELP_BODY": "TODO",
+  "EXPORT_GDAL_CLIPBOARD": "Copy GDAL snippet to clipboard.",
+  "EXPORTED_GDAL_CLIPBOARD": "Copied GDAL snippet to clipboard.",
+  "CUSTOMIZE_PRODUCT": "Generate GDAL Snippet"
 }
