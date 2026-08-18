@@ -308,18 +308,22 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public pairs: models.CMRProductPair[];
   public sbasProducts: models.CMRProduct[] = [];
-  public queuedProducts: models.CMRProduct[];
+
   public canHideRawData: boolean;
-  public showS1RawData: boolean;
+  public showS1RawData = this.store$.selectSignal(uiStore.getShowS1RawData);
 
   public canHideExpiredData: boolean;
-  public showExpiredData: boolean;
+  public showExpiredData = this.store$.selectSignal(uiStore.getShowExpiredData);
 
-  public temporalSort: models.ColumnSortDirection;
-  public perpendicularSort: models.ColumnSortDirection;
+  public temporalSort = this.store$.selectSignal(
+    scenesStore.getTemporalSortDirection,
+  );
+  public perpendicularSort = this.store$.selectSignal(
+    scenesStore.getPerpendicularSortDirection,
+  );
   public SortDirection = models.ColumnSortDirection;
 
-  public searchType: models.SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public SearchTypes = models.SearchType;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -333,7 +337,9 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public hyp3able = { total: 0, byJobType: [] };
   public hyp3ableEventProducts = { total: 0, byJobType: [] };
-  public moreHyp3JobsToLoad: boolean;
+  public moreHyp3JobsToLoad = this.store$.selectSignal(
+    hyp3Store.getAreMoreJobsToLoad,
+  );
 
   ngOnInit() {
     this.subs.add(
@@ -410,50 +416,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
               searchType === models.SearchType.CUSTOM_PRODUCTS),
         ),
     );
-
-    this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
-        this.searchType = searchType;
-      }),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getTemporalSortDirection)
-        .subscribe((temporalSort) => (this.temporalSort = temporalSort)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getPerpendicularSortDirection)
-        .subscribe((perpSort) => (this.perpendicularSort = perpSort)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(uiStore.getShowS1RawData)
-        .subscribe((showS1RawData) => (this.showS1RawData = showS1RawData)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(uiStore.getShowExpiredData)
-        .subscribe(
-          (showExpiredData) => (this.showExpiredData = showExpiredData),
-        ),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(queueStore.getQueuedProducts)
-        .subscribe((products) => (this.queuedProducts = products)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(hyp3Store.getAreMoreJobsToLoad)
-        .subscribe((moreToLoad) => (this.moreHyp3JobsToLoad = moreToLoad)),
-    );
   }
 
   public onZoomToResults(): void {
@@ -462,7 +424,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public onToggleS1RawData(): void {
     this.store$.dispatch(
-      this.showS1RawData
+      this.showS1RawData()
         ? new uiStore.HideS1RawData()
         : new uiStore.ShowS1RawData(),
     );
@@ -470,14 +432,14 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public onToggleExpiredData(): void {
     this.store$.dispatch(
-      this.showExpiredData
+      this.showExpiredData()
         ? new uiStore.HideExpiredData()
         : new uiStore.ShowExpiredData(),
     );
   }
 
   public onTogglePerpendicularSort(): void {
-    const direction = this.oppositeDirection(this.perpendicularSort);
+    const direction = this.oppositeDirection(this.perpendicularSort());
 
     this.store$.dispatch(
       new scenesStore.SetTemporalSortDirection(models.ColumnSortDirection.NONE),
@@ -488,7 +450,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onToggleTemporalSort(): void {
-    const direction = this.oppositeDirection(this.temporalSort);
+    const direction = this.oppositeDirection(this.temporalSort());
 
     this.store$.dispatch(
       new scenesStore.SetPerpendicularSortDirection(
@@ -513,7 +475,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public queueAllProducts(products: models.CMRProduct[]): void {
-    if (this.searchType === models.SearchType.CUSTOM_PRODUCTS) {
+    if (this.searchType() === models.SearchType.CUSTOM_PRODUCTS) {
       products = this.hyp3JobStatus.downloadable(products);
     }
 
@@ -569,7 +531,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public onMetadataExport(format: models.AsfApiOutputFormat): void {
     const action = new queueStore.DownloadSearchtypeMetadata(format);
 
-    if (this.searchType === this.SearchTypes.BASELINE) {
+    if (this.searchType() === this.SearchTypes.BASELINE) {
       this.store$.dispatch(action);
     }
   }

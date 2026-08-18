@@ -55,7 +55,7 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
   public selectedProducts$ = this.store$.select(
     scenesStore.getSelectedSceneProducts,
   );
-  public products: models.CMRProduct[];
+  public products = this.store$.selectSignal(scenesStore.getAllProducts);
 
   public menuHeightPx: number;
 
@@ -73,25 +73,13 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-  public searchType: models.SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public SearchTypes = models.SearchType;
 
   private subs = new SubSink();
 
   ngOnInit() {
     this.menuHeightPx = this.defaultMenuHeight();
-
-    this.subs.add(
-      this.store$.select(scenesStore.getAllProducts).subscribe((products) => {
-        this.products = products;
-      }),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
-    );
   }
 
   @HostListener('window:resize', ['$event'])

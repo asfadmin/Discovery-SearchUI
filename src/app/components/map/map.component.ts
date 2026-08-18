@@ -28,7 +28,6 @@ import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 import * as sceneStore from '@store/scenes';
 import * as models from '@models';
-import { CMRProduct } from '@models';
 import {
   DisplacementDisclaimerService,
   MapService,
@@ -106,7 +105,9 @@ export class MapComponent implements OnInit, OnDestroy {
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
-  public isFiltersMenuOpen: boolean;
+  public isFiltersMenuOpen = this.store$.selectSignal(
+    uiStore.getIsFiltersMenuOpen,
+  );
 
   public banners$ = this.store$.select(uiStore.getBanners);
 
@@ -121,7 +122,9 @@ export class MapComponent implements OnInit, OnDestroy {
   public overlay: Overlay;
   public currentOverlayPosition;
   public shouldShowOverlay: boolean;
-  public isResultsMenuOpen: boolean;
+  public isResultsMenuOpen = this.store$.selectSignal(
+    uiStore.getIsResultsMenuOpen,
+  );
   public isHyp3PlusMode = this.store$.selectSignal(searchStore.getHyp3PlusMode);
 
   public fullscreenControl = FullscreenControls.NONE;
@@ -130,10 +133,10 @@ export class MapComponent implements OnInit, OnDestroy {
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
-  public searchType: models.SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
-  public selectedScene: CMRProduct;
+  public selectedScene = this.store$.selectSignal(scenesStore.getSelectedScene);
   public SelectedOnDemandFrameID: Feature = null;
   public OnDemandFrames: { frameID: string; feature: Feature<Geometry> }[] = [];
   private subs = new SubSink();
@@ -187,27 +190,9 @@ export class MapComponent implements OnInit, OnDestroy {
       });
 
     this.subs.add(
-      this.store$
-        .select(scenesStore.getSelectedScene)
-        .subscribe((scene) => (this.selectedScene = scene)),
-    );
-
-    this.subs.add(
       this.screenSize.breakpoint$.subscribe(
         (breakpoint) => (this.breakpoint = breakpoint),
       ),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(uiStore.getIsResultsMenuOpen)
-        .subscribe((isOpen) => (this.isResultsMenuOpen = isOpen)),
     );
 
     this.subs.add(
@@ -429,12 +414,6 @@ export class MapComponent implements OnInit, OnDestroy {
         this.mapService.loadPolygonFrom(wktRepresentation.toString());
       }),
     );
-
-    this.subs.add(
-      this.store$
-        .select(uiStore.getIsFiltersMenuOpen)
-        .subscribe((isOpen) => (this.isFiltersMenuOpen = isOpen)),
-    );
   }
 
   public respondToActiveWkt(uuid: string) {
@@ -450,8 +429,8 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public onFileHovered(e): void {
     if (
-      !this.isFiltersMenuOpen &&
-      this.searchType === models.SearchType.DATASET
+      !this.isFiltersMenuOpen() &&
+      this.searchType() === models.SearchType.DATASET
     ) {
       this.store$.dispatch(new uiStore.OpenAOIOptions());
     }
@@ -525,7 +504,7 @@ export class MapComponent implements OnInit, OnDestroy {
           ),
         )
         .subscribe((feature) => {
-          if (this.searchType !== this.searchTypes.DISPLACEMENT) {
+          if (this.searchType() !== this.searchTypes.DISPLACEMENT) {
             this.mapService.setSelectedFeature(feature);
           }
         }),
@@ -586,7 +565,7 @@ export class MapComponent implements OnInit, OnDestroy {
           map(([searchPolygon, features]) => {
             let polygonFeatures = features;
             if (
-              this.searchType === models.SearchType.SBAS &&
+              this.searchType() === models.SearchType.SBAS &&
               searchPolygon != null
             ) {
               const geometryType = searchPolygon.getGeometry().getType();
@@ -597,7 +576,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 intersectionMethod(searchPolygon, feature),
               );
             }
-            if (this.searchType === this.searchTypes.DISPLACEMENT) {
+            if (this.searchType() === this.searchTypes.DISPLACEMENT) {
               const vectorFeature = new Feature();
               return this.featuresToSource(
                 [vectorFeature],
@@ -663,7 +642,7 @@ export class MapComponent implements OnInit, OnDestroy {
       map((scenes) =>
         scenes.filter(
           (scene) =>
-            scene.id !== this.selectedScene?.id && !!scene.metadata.polygon,
+            scene.id !== this.selectedScene()?.id && !!scene.metadata.polygon,
         ),
       ),
       map((scenes) => this.scenesToFeature(scenes, projection)),

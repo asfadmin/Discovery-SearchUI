@@ -1,5 +1,4 @@
 import { Component, inject, computed } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 import * as models from '@models';
 import { ScreenSizeService, PropertyService } from '@services';
@@ -10,7 +9,6 @@ import * as userStore from '@store/user';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { distinctUntilChanged } from 'rxjs/operators';
 import { DatasetForProductService } from '@services';
 
 import { NgStyle, NgClass, UpperCasePipe, AsyncPipe } from '@angular/common';
@@ -47,11 +45,7 @@ export class SceneSearchToolbarComponent {
   public breakpoints = models.Breakpoints;
   private dateRange = this.store$.selectSignal(filtersStore.getDateRange);
 
-  readonly scene = toSignal(
-    this.store$
-      .select(scenesStore.getSelectedScene)
-      .pipe(distinctUntilChanged()),
-  );
+  readonly scene = this.store$.selectSignal(scenesStore.getSelectedScene);
 
   readonly selectedProducts = this.store$.selectSignal(
     scenesStore.getSelectedSceneProducts,

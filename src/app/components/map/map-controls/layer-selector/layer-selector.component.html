@@ -5,7 +5,7 @@
   [attr.aria-label]="'LAYER_SELECTOR' | translate"
 >
   <div class="layer-btn layer-select-icon arctic">
-    @if (layerType === layerTypes.SATELLITE) {
+    @if (layerType() === layerTypes.SATELLITE) {
       <mat-icon class="control-icon">terrain</mat-icon>
     } @else {
       <mat-icon class="control-icon">directions_car</mat-icon>
@@ -41,12 +41,12 @@
   <button
     mat-menu-item
     class="control-mat-checkbox-toggle"
-    (click)="onToggleOverviewMap(overviewMapVisible)"
+    (click)="onToggleOverviewMap(overviewMapVisible())"
   >
     <mat-checkbox
       class="checkbox"
       [disabled]="true"
-      [checked]="overviewMapVisible"
+      [checked]="overviewMapVisible()"
     >
     </mat-checkbox>
     {{ 'OVERVIEW_MAP' | translate }}
@@ -89,7 +89,7 @@
     class="control-mat-checkbox-toggle"
     (click)="onToggleGridlines()"
   >
-    <mat-checkbox class="checkbox" [disabled]="true" [checked]="gridActive">
+    <mat-checkbox class="checkbox" [disabled]="true" [checked]="gridActive()">
     </mat-checkbox>
     {{ 'GRIDLINES_OVERLAY' | translate }}
   </button>

@@ -21,7 +21,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
-import * as searchStore from '@store/search';
 
 import * as models from '@models';
 import { ScenesService } from '@services';
@@ -56,8 +55,6 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   public selectedId: string;
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
 
-  public searchType$ = this.store$.select(searchStore.getSearchType);
-  public searchtype = models.SearchType.DATASET;
   public searchTypes = models.SearchType;
 
   private selectedFromList = false;
@@ -73,12 +70,6 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
               ? this.scenesService.withBrowses$(this.scenesSorted$)
               : this.scenesSorted$),
         ),
-    );
-
-    this.subs.add(
-      this.searchType$.subscribe(
-        (searchtype) => (this.searchtype = searchtype),
-      ),
     );
   }
 

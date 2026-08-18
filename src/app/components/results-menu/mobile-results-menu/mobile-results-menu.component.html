@@ -14,12 +14,13 @@
     >
       {{ 'SCENE_DETAIL' | translate }}
       @if (
-        searchType !== SearchTypes.BASELINE && searchType !== SearchTypes.SBAS
+        searchType() !== SearchTypes.BASELINE &&
+        searchType() !== SearchTypes.SBAS
       ) {
         {{ 'AND_FILES' | translate }}
       }
     </button>
-    @if (searchType === SearchTypes.BASELINE) {
+    @if (searchType() === SearchTypes.BASELINE) {
       <button
         (click)="onSelectChart()"
         [class.selected]="view === Views.CHART"
@@ -28,7 +29,7 @@
         {{ 'CHART' | translate }}
       </button>
     }
-    @if (searchType === SearchTypes.SBAS) {
+    @if (searchType() === SearchTypes.SBAS) {
       <button
         (click)="onSelectSBASChart()"
         [class.selected]="view === Views.SBAS"
@@ -60,8 +61,8 @@
         <mat-card-subtitle class="header mobile">
           {{ 'SCENE_DETAIL' | translate }}
           @if (
-            searchType !== SearchTypes.BASELINE &&
-            searchType !== SearchTypes.SBAS
+            searchType() !== SearchTypes.BASELINE &&
+            searchType() !== SearchTypes.SBAS
           ) {
             /
             @if (selectedProducts$ | async; as products) {
@@ -79,13 +80,13 @@
           }
         </mat-card-subtitle>
         <div class="app-scene-list scroll-y scroll-x">
-          @if (searchType !== SearchTypes.SBAS) {
+          @if (searchType() !== SearchTypes.SBAS) {
             <app-scene-detail [isScrollable]="false"></app-scene-detail>
           } @else {
             <div class="scrollable pair-detail-scroll">
-              @if (pair) {
+              @if (pair()) {
                 <div class="pair-metadata">
-                  @for (product of pair; track product) {
+                  @for (product of pair(); track product) {
                     <div>
                       <div class="product-name-spacing">
                         <b class="product-name">{{ product.name }}</b>
@@ -109,7 +110,7 @@
                       <app-scene-metadata
                         [scene]="product"
                         [dataset]="datasetForProduct.match(product)"
-                        [searchType]="searchType"
+                        [searchType]="searchType()"
                       >
                       </app-scene-metadata>
                       <hr />
@@ -117,7 +118,7 @@
                   }
                 </div>
               }
-              @if (!pair) {
+              @if (!pair()) {
                 <div class="pair-metadata">
                   <div class="faint-text w100 h100 no-pair-message">
                     {{ 'NO_PAIR_SELECTED' | translate }}
@@ -128,8 +129,8 @@
           }
           <!--        For displaying both products within a pair in SBAS only-->
           @if (
-            searchType !== SearchTypes.BASELINE &&
-            searchType !== SearchTypes.SBAS
+            searchType() !== SearchTypes.BASELINE &&
+            searchType() !== SearchTypes.SBAS
           ) {
             <hr />
             <app-scene-files></app-scene-files>

@@ -106,7 +106,7 @@ export class AddCustomPairs implements Action {
 export class RemoveCustomPair implements Action {
   public readonly type = ScenesActionType.REMOVE_CUSTOM_PAIR;
 
-  constructor(public payload: CMRProductPair) {}
+  constructor(public payload: CMRProductPair | string[]) {}
 }
 
 export class AddCmrDataToOnDemandScenes implements Action {

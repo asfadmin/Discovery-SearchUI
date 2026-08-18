@@ -164,7 +164,6 @@ export class ProductService {
   public productTypeToGroup(product: models.CMRProduct, type: string): string {
     const dataset = models.datasets[product.dataset];
     if (!dataset?.productTypeDisplays?.groups) {
-      console.log('not found');
       return null;
     }
     for (const { name, files } of dataset.productTypeDisplays.groups) {
