@@ -84,11 +84,15 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       }),
     ),
   );
-  public loadingHyp3JobName: string | null = null;
+  public loadingHyp3JobName = this.store$.selectSignal(
+    hyp3Store.getSubmittingJobName,
+  );
   public validJobTypesByProduct: Record<string, models.Hyp3JobType[]> = {};
 
-  public isUserLoggedIn: boolean;
-  public hasAccessToRestrictedData: boolean;
+  public isUserLoggedIn = this.store$.selectSignal(userStore.getIsUserLoggedIn);
+  public hasAccessToRestrictedData = this.store$.selectSignal(
+    userStore.getHasRestrictedDataAccess,
+  );
   public showDemWarning: boolean;
 
   public dynamicQueryLoaded = signal(false);
@@ -154,22 +158,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       this.queuedProductIds$.subscribe(
         (ids) => (this.queuedProductIds = Array.from(ids)),
       ),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(userStore.getIsUserLoggedIn)
-        .subscribe((isLoggedIn) => (this.isUserLoggedIn = isLoggedIn)),
-    );
-    this.subs.add(
-      this.store$
-        .select(userStore.getHasRestrictedDataAccess)
-        .subscribe((hasAccess) => (this.hasAccessToRestrictedData = hasAccess)),
-    );
-    this.subs.add(
-      this.store$
-        .select(hyp3Store.getSubmittingJobName)
-        .subscribe((jobName) => (this.loadingHyp3JobName = jobName)),
     );
   }
 

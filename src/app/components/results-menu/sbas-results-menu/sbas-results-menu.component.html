@@ -24,7 +24,7 @@
                 <app-scene-metadata
                   [scene]="product"
                   [dataset]="datasetForProduct.match(product)"
-                  [searchType]="searchType"
+                  [searchType]="searchType()"
                 >
                 </app-scene-metadata>
                 <hr />
@@ -64,7 +64,7 @@
               <app-scene-metadata
                 [scene]="product"
                 [dataset]="datasetForProduct.match(product)"
-                [searchType]="searchType"
+                [searchType]="searchType()"
               >
               </app-scene-metadata>
               <hr />
@@ -156,7 +156,7 @@
             [hideSingleSelectionIndicator]="true"
           >
             <mat-button-toggle
-              [disabled]="isAddingCustomPoint"
+              [disabled]="isAddingCustomPoint()"
               value="add"
               class="control-mat-button-toggle"
               (click)="startAddingCustomPoint()"
@@ -166,7 +166,7 @@
             </mat-button-toggle>
 
             <mat-button-toggle
-              [disabled]="!isAddingCustomPoint"
+              [disabled]="!isAddingCustomPoint()"
               value="stop"
               class="control-mat-button-toggle"
               (click)="stopAddingCustomPoint()"
@@ -176,7 +176,7 @@
             </mat-button-toggle>
 
             <mat-button-toggle
-              [disabled]="!isSelectedPairCustom"
+              [disabled]="!isSelectedPairCustom()"
               value="remove"
               class="control-mat-button-toggle"
               (click)="deleteSelectedPair()"

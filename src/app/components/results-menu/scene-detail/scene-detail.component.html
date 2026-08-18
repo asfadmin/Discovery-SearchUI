@@ -58,7 +58,7 @@
     </mat-card-header>
     <div class="detail-card-info">
       <p class="faint-text accessing-text">
-        @if (!isLoggedIn) {
+        @if (!isLoggedIn()) {
           <span>
             {{
               'ACCESSING_THIS_DATA_REQUIRES_YOU_TO_LOG_IN'
@@ -104,12 +104,12 @@
             <app-scene-metadata
               [scene]="scene"
               [dataset]="dataset"
-              [searchType]="searchType"
+              [searchType]="searchType()"
               [offsets]="masterOffsets$ | async"
             >
             </app-scene-metadata>
           }
-          @if (searchType === searchTypes.CUSTOM_PRODUCTS) {
+          @if (searchType() === searchTypes.CUSTOM_PRODUCTS) {
             <div>
               @if (scene.metadata.job.scenes.length > 1) {
                 <div>
@@ -127,7 +127,7 @@
                   <app-scene-metadata
                     [scene]="scene.metadata.job.scenes[1]"
                     [dataset]="dataset"
-                    [searchType]="searchType"
+                    [searchType]="searchType()"
                     [offsets]="masterOffsets$ | async"
                   >
                   </app-scene-metadata>

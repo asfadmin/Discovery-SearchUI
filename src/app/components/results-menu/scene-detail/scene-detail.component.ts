@@ -77,9 +77,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public scene: models.CMRProduct;
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public dataset: models.Dataset;
-  public searchType: models.SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;
-  public isLoggedIn: boolean;
+  public isLoggedIn = this.store$.selectSignal(userStore.getIsUserLoggedIn);
   public sceneLen: number;
   public p = models.Props;
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -121,12 +121,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$
-        .select(userStore.getIsUserLoggedIn)
-        .subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn)),
-    );
-
-    this.subs.add(
       this.screenSize.size$
         .pipe(map((size) => (size.width > 1750 ? 32 : 16)))
         .subscribe((len) => (this.sceneLen = len)),
@@ -159,12 +153,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
           this.browseIndex = 0;
         }),
     );
-
-    this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
-    );
   }
 
   public sceneHasBrowse() {
@@ -176,7 +164,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public productHasSceneBrowses() {
-    if (this.searchType === this.searchTypes.CUSTOM_PRODUCTS) {
+    if (this.searchType() === this.searchTypes.CUSTOM_PRODUCTS) {
       return this.scene.metadata.job.scenes.some(
         (x) => !x.browses[0].includes('no-browse'),
       );
