@@ -126,7 +126,7 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onToggleGridlines() {
-    this.store$.dispatch(new mapStore.SetGridlines(!this.gridActive));
+    this.store$.dispatch(new mapStore.SetGridlines(!this.gridActive()));
   }
 
   ngOnDestroy() {
