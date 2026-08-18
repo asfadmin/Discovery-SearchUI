@@ -100,7 +100,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   );
   public showDemWarning: boolean;
 
-
   public dynamicQueryLoaded = signal(false);
 
   private scene = toSignal(this.store$.select(scenesStore.getSelectedScene));
