@@ -1,5 +1,5 @@
 <mat-button-toggle-group
-  [value]="interaction"
+  [value]="interaction()"
   class="interaction-toggle-group"
   name="viewSelect"
   [attr.aria-label]="'FONT_STYLE' | translate"
@@ -12,7 +12,7 @@
     [value]="types.EDIT"
     class="control-mat-button-toggle"
     [matTooltip]="
-      interaction === types.EDIT
+      interaction() === types.EDIT
         ? ('STOP_EDITING' | translate)
         : ('EDIT_CURRENT_AREA_OF_INTEREST' | translate)
     "
@@ -25,7 +25,7 @@
     [value]="types.DRAW"
     class="control-mat-button-toggle"
     [matTooltip]="
-      interaction === types.DRAW
+      interaction() === types.DRAW
         ? ('STOP_DRAWING' | translate)
         : ('DRAW_NEW_AREA_OF_INTEREST' | translate)
     "

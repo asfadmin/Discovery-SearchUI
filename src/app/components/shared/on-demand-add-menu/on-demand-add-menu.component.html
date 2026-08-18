@@ -32,9 +32,13 @@
       @if (prodType.products.length !== 0) {
         <button
           (click)="
-            queueAllOnDemand(prodType.products, byJobType.jobType, isFrameBased)
+            queueAllOnDemand(
+              prodType.products,
+              byJobType.jobType,
+              isFrameBased()
+            )
           "
-          [disabled]=""
+          [disabled]="false"
           mat-menu-item
         >
           {{ 'ADD' | translate }}

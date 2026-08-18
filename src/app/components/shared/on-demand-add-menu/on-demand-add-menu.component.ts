@@ -8,14 +8,12 @@ import {
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
-import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { getMasterName, getScenes } from '@store/scenes';
-import { getSearchType } from '@store/search';
 import { CMRProduct, Hyp3ableByProductType, SearchType } from '@models';
 import { withLatestFrom } from 'rxjs/operators';
 import { EnvironmentService, Hyp3ApiService } from '@services';
@@ -58,54 +56,25 @@ export class OnDemandAddMenuComponent implements OnInit {
 
   @ViewChild('addMenu', { static: true }) addMenu: MatMenu;
 
-  public isLoggedIn = false;
-
   public referenceScene: CMRProduct;
 
   private scenes: CMRProduct[];
-  public costs;
-  public options;
+  public costs = this.store$.selectSignal(hyp3Store.getCosts);
+  public options = this.store$.selectSignal(hyp3Store.getProcessingOptions);
 
-  public searchType: models.SearchType;
   public searchTypes = models.SearchType;
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
-  public isFrameBased = false;
+  public isFrameBased = this.store$.selectSignal(
+    getShouldUseFramesForReference,
+  );
   private referenceID: string;
   public userStatus;
 
   private subs = new SubSink();
 
   ngOnInit(): void {
-    this.subs.add(
-      this.store$
-        .select(getShouldUseFramesForReference)
-        .subscribe((isFrameBased) => (this.isFrameBased = isFrameBased)),
-    );
-    this.subs.add(
-      this.store$
-        .select(getSearchType)
-        .subscribe((searchtype) => (this.searchType = searchtype)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(userStore.getIsUserLoggedIn)
-        .subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(hyp3Store.getCosts)
-        .subscribe((costs) => (this.costs = costs)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(hyp3Store.getProcessingOptions)
-        .subscribe((options) => (this.options = options)),
-    );
     this.subs.add(
       this.store$.select(hyp3Store.getHyp3User).subscribe((profile) => {
         this.userStatus = profile?.application_status;
@@ -211,8 +180,8 @@ export class OnDemandAddMenuComponent implements OnInit {
   public calculateCost(jobTypeId: string, numberOfJobs: number): number {
     return (
       this.hyp3.calculateCredits(
-        this.options[jobTypeId],
-        this.costs[jobTypeId],
+        this.options()[jobTypeId],
+        this.costs()[jobTypeId],
       ) * numberOfJobs
     );
   }
