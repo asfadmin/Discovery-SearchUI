@@ -9,4 +9,66 @@ h1 {
   text-align: center;
 }
 
+.gdal-dataset {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25em;
+  align-items: center;
+}
 
+.gdal-dataset-type {
+  font-size: 0.8rem;
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
+  height: fit-content;
+  padding: 0.2em;
+  border-radius: 5px;
+  align-self: flex-start;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.icon-row {
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.dataset-list-card {
+  flex-grow: 1;
+}
+
+.dataset-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0em 1em 0em 1em;
+}
+
+.options-list-card {
+  flex-shrink: 1;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0em 1em 0em 1em;
+}
+
+.option {
+  height: 80px;
+  display: flex;
+  align-items: center;
+
+  @include mat.checkbox-overrides((
+    label-text-size: 16px,
+  ));
+}
+
+.two-column-layout {
+  display: flex;
+}

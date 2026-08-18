@@ -1,7 +1,4 @@
 <div class="gdal-dropdown-wrapper">
-  <h3 class="gdal-header">
-    {{ 'CUSTOMIZE_PRODUCT' | translate }}
-  </h3>
   <div class="dataset-list">
     @for (dataset of datasets(); track dataset) {
       <app-scene-file-gdal-dropdown-dataset [dataset]="dataset" [product]="product()">

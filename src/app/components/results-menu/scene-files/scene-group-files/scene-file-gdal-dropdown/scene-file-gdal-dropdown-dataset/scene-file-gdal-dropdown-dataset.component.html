@@ -9,7 +9,6 @@
   }
   <span class="flex-grow"></span>
   <span class="icon-row">
-    <app-copy-to-clipboard class="compact" [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate" [value]="gdalCommand()" [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"></app-copy-to-clipboard>
-    <app-gdal-customize-menu class="compact" [product]="product()" [dataset]="dataset()"></app-gdal-customize-menu>
+    <app-copy-to-clipboard class="compact" [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate" [value]="gdalCommand()" [message]="'EXPORTED_GDAL_CLIPBOARD' | translate" copyIcon="terminal_alt"></app-copy-to-clipboard>
   </span>
 </div>

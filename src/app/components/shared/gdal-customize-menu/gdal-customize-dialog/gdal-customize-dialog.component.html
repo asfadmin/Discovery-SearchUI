@@ -3,11 +3,69 @@
   <mat-accordion>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title> {{ 'EXPORT_GDAL_HELP' | translate }} </mat-panel-title>
-        <mat-panel-description> {{ 'EXPORT_GDAL_HELP_SUMMARY' | translate }} </mat-panel-description>
+        <mat-panel-title>
+          {{ 'EXPORT_GDAL_HELP' | translate }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ 'EXPORT_GDAL_HELP_SUMMARY' | translate }}
+        </mat-panel-description>
       </mat-expansion-panel-header>
-      <p> {{ 'EXPORT_GDAL_HELP_BODY' | translate }} </p>
+      <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
     </mat-expansion-panel>
   </mat-accordion>
 
+  <div class="two-column-layout">
+    <div class="dataset-list-card">
+      <h2>1. {{ 'SELECT_A_DATASET' | translate }}</h2>
+      <mat-radio-group [(ngModel)]="selectedDataset" class="dataset-list">
+        @for (dataset of datasets; track dataset) {
+          <div class="gdal-dataset">
+            <span class="gdal-dataset-name">
+              {{ dataset.name }}
+            </span>
+            @if (dataset.type) {
+              <span class="gdal-dataset-type">
+                {{ dataset.type }}
+              </span>
+            }
+            <span class="flex-grow"></span>
+            <mat-radio-button [value]="dataset.path"> </mat-radio-button>
+          </div>
+        }
+      </mat-radio-group>
+    </div>
+
+    <div class="options-list-card">
+      <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
+      <div class="options-list">
+        <span class="option">
+        <mat-checkbox>{{ 'CROP_TO_AOI' | translate }}</mat-checkbox>
+        </span>
+        <span class="option">
+        <mat-form-field>
+          <mat-label> {{ 'REPROJECT' | translate }}</mat-label>
+          <input matInput [matTooltip]="'REPROJECT_TOOLTIP' | translate" />
+        </mat-form-field>
+        </span>
+        <span class="option">
+        <mat-form-field>
+          <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
+          <mat-select>
+            <mat-option value="GTiff"> GeoTIFF </mat-option>
+            <mat-option value="COG"> COG </mat-option>
+            <mat-option value="PNG"> PNG </mat-option>
+            <mat-option value="JPEG"> JPEG </mat-option>
+          </mat-select>
+        </mat-form-field>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="gdal-output-card">
+    <h2>3. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
+    <pre>
+      {{ gdalCommand() }}
+    </pre>
+  </div>
 </div>

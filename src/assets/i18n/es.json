@@ -1292,5 +1292,12 @@
   "EXPORT_GDAL_HELP_BODY": "TODO",
   "EXPORT_GDAL_CLIPBOARD": "Copy GDAL snippet to clipboard.",
   "EXPORTED_GDAL_CLIPBOARD": "Copied GDAL snippet to clipboard.",
-  "CUSTOMIZE_PRODUCT": "Generate GDAL Snippet"
+  "CUSTOMIZE_PRODUCT": "Generate GDAL Snippet",
+  "SELECT_A_DATASET": "Select a dataset to export.",
+  "CONFIGURE_GDAL_OPTIONS": "Configure output options.",
+  "RUN_GDAL_SNIPPET": "Copy GDAL snippet.",
+  "CROP_TO_AOI": "Crop to Vertex AOI",
+  "REPROJECT": "Output Projection",
+  "REPROJECT_TOOLTIP": "Supports any WGS or EPSG code.",
+  "OUTPUT_FORMAT": "File Format"
 }

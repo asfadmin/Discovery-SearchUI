@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 
 import * as models from '@models';
 
@@ -11,7 +11,9 @@ import { DownloadFileButtonComponent } from '@components/shared/download-file-bu
 import { CartToggleComponent } from '@components/shared/cart-toggle/cart-toggle.component';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatNestedTreeNode } from '@angular/material/tree';
 import { SceneFileGdalDropdownComponent } from '../../scene-group-files/scene-file-gdal-dropdown/scene-file-gdal-dropdown.component';
+import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-menu/gdal-customize-menu.component';
 
 @Component({
   selector: 'app-scene-group-file',
@@ -30,6 +32,8 @@ import { SceneFileGdalDropdownComponent } from '../../scene-group-files/scene-fi
     ReadableSizeFromBytesPipe,
     TranslateModule,
     SceneFileGdalDropdownComponent,
+    MatNestedTreeNode,
+    GdalCustomizeMenuComponent
   ],
 })
 export class SceneGroupFileComponent {
@@ -40,7 +44,7 @@ export class SceneGroupFileComponent {
 
   toggle = output<void>();
   queueHyp3Job = output<models.QueuedHyp3Job>();
-  exportGDAL = false;
+  expanded = signal<boolean>(false);
 
   public addJobToProcessingQueue(jobType: models.Hyp3JobType): void {
     this.queueHyp3Job.emit({
@@ -54,7 +58,7 @@ export class SceneGroupFileComponent {
     window.open(infoUrl);
   }
 
-  public toggleExportGDAL() {
-    this.exportGDAL = !this.exportGDAL;
+  public toggleExpanded() {
+    this.expanded.set(!this.expanded());
   }
 }
