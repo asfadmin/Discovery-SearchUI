@@ -1,6 +1,6 @@
 @if (breakpoint$ | async; as breakpoint) {
   <span>
-    @if (searchType !== searchTypes.DISPLACEMENT) {
+    @if (searchType() !== searchTypes.DISPLACEMENT) {
       <mat-button-toggle-group
         [hideSingleSelectionIndicator]="true"
         [hideMultipleSelectionIndicator]="true"
@@ -15,7 +15,7 @@
             [disabled]="
               (!(canSearch$ | async) && !(isMaxResultsLoading$ | async)) ||
               ((isFrameSelectionEnabled$ | async) &&
-                searchType === searchTypes.DATASET &&
+                searchType() === searchTypes.DATASET &&
                 !isFiltersOpen)
             "
             mat-flat-button
@@ -41,11 +41,11 @@
         </mat-button-toggle>
       </mat-button-toggle-group>
     }
-    @if (searchType === searchTypes.DISPLACEMENT) {
+    @if (searchType() === searchTypes.DISPLACEMENT) {
       <span class="displacement-header-menu">
         <button
           [matMenuTriggerFor]="searchActionDropdown"
-          matTooltip="{{ 'SHARE_SAVE_INFORMATION' | translate }}"
+          [matTooltip]="'SHARE_SAVE_INFORMATION' | translate"
           class="spacing nav-icon-buttons"
           color="basic"
           mat-button
@@ -58,41 +58,41 @@
       </span>
     }
     <mat-menu #searchActionDropdown="matMenu">
-      @if (searchType !== searchTypes.DISPLACEMENT) {
+      @if (searchType() !== searchTypes.DISPLACEMENT) {
         <button mat-menu-item (click)="onClearSearch()">
           {{ 'CLEAR_SEARCH' | translate }}
         </button>
         <mat-divider></mat-divider>
       }
       <span
-        [matTooltipDisabled]="isLoggedIn"
-        matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SAVED_SEARCHES' | translate }}"
+        [matTooltipDisabled]="isLoggedIn()"
+        [matTooltip]="'SIGN_IN_TO_SEE_YOUR_SAVED_SEARCHES' | translate"
         matTooltipPosition="after"
       >
         <button mat-menu-item [matMenuTriggerFor]="savedSearchesMenu">
           {{ 'SAVED_SEARCHES' | translate }}
         </button>
       </span>
-      @if (searchType !== searchTypes.DISPLACEMENT) {
+      @if (searchType() !== searchTypes.DISPLACEMENT) {
         <span
           [matTooltipDisabled]="
-            isLoggedIn &&
-            searchType !== searchTypes.LIST &&
-            searchType !== searchTypes.CUSTOM_PRODUCTS
+            isLoggedIn() &&
+            searchType() !== searchTypes.LIST &&
+            searchType() !== searchTypes.CUSTOM_PRODUCTS
           "
-          matTooltip="{{
-            isLoggedIn &&
-            (searchType === searchTypes.LIST ||
-              searchType === searchTypes.CUSTOM_PRODUCTS)
+          [matTooltip]="
+            isLoggedIn() &&
+            (searchType() === searchTypes.LIST ||
+              searchType() === searchTypes.CUSTOM_PRODUCTS)
               ? ('SAVED_FILTERS_ARE_NOT_AVAILABLE_FOR_SEARCH_TYPE' | translate)
               : ('SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' | translate)
-          }}"
+          "
           matTooltipPosition="after"
         >
           <button
             [disabled]="
-              searchType === searchTypes.LIST ||
-              searchType === searchTypes.CUSTOM_PRODUCTS
+              searchType() === searchTypes.LIST ||
+              searchType() === searchTypes.CUSTOM_PRODUCTS
             "
             mat-menu-item
             [matMenuTriggerFor]="savedFiltersMenu"
@@ -105,7 +105,7 @@
       <button mat-menu-item [matMenuTriggerFor]="shareSearchMenu">
         {{ 'SHARE_SEARCH' | translate }}
       </button>
-      @if (searchType !== searchTypes.DISPLACEMENT) {
+      @if (searchType() !== searchTypes.DISPLACEMENT) {
         <button mat-menu-item [matMenuTriggerFor]="exportSearchMenu">
           {{ 'EXPORT' | translate }}
         </button>
@@ -119,18 +119,18 @@
     </mat-menu>
     <mat-menu #savedFiltersMenu="matMenu">
       <span
-        matTooltip="{{ 'SIGN_IN_TO_SAVE_YOUR_FILTERS' | translate }}"
-        [matTooltipDisabled]="isLoggedIn"
+        [matTooltip]="'SIGN_IN_TO_SAVE_YOUR_FILTERS' | translate"
+        [matTooltipDisabled]="isLoggedIn()"
         matTooltipPosition="after"
       >
         @if (
-          searchType !== searchTypes.CUSTOM_PRODUCTS &&
-          searchType !== searchTypes.LIST &&
-          searchType !== searchTypes.DISPLACEMENT
+          searchType() !== searchTypes.CUSTOM_PRODUCTS &&
+          searchType() !== searchTypes.LIST &&
+          searchType() !== searchTypes.DISPLACEMENT
         ) {
           <button
             mat-menu-item
-            [disabled]="!isLoggedIn"
+            [disabled]="!isLoggedIn()"
             (click)="saveCurrentFilters()"
           >
             {{ 'SAVE_FILTERS' | translate }}
@@ -138,19 +138,19 @@
         }
       </span>
       <span
-        [matTooltipDisabled]="isLoggedIn"
-        matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' | translate }}"
+        [matTooltipDisabled]="isLoggedIn()"
+        [matTooltip]="'SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' | translate"
         matTooltipPosition="after"
       >
         @if (
-          searchType !== searchTypes.CUSTOM_PRODUCTS &&
-          searchType !== searchTypes.LIST &&
-          searchType !== searchTypes.DISPLACEMENT
+          searchType() !== searchTypes.CUSTOM_PRODUCTS &&
+          searchType() !== searchTypes.LIST &&
+          searchType() !== searchTypes.DISPLACEMENT
         ) {
           <button
             (click)="onOpenSavedFilters()"
             mat-menu-item
-            [disabled]="!isLoggedIn"
+            [disabled]="!isLoggedIn()"
           >
             {{ 'VIEW_FILTERS' | translate }}
           </button>
@@ -166,7 +166,7 @@
         (click)="onShareWithEmail()"
         href="mailto:?subject=&body=:%20"
         target="_blank"
-        title="{{ 'SHARE_WITH_EMAIL' | translate }}"
+        [title]="'SHARE_WITH_EMAIL' | translate"
         mat-menu-item
         matSuffix
       >
@@ -176,14 +176,14 @@
     </mat-menu>
     <mat-menu #savedSearchesMenu="matMenu">
       <span
-        matTooltip="{{ 'SIGN_IN_TO_SAVE_YOUR_SEARCH' | translate }}"
-        [matTooltipDisabled]="isLoggedIn"
+        [matTooltip]="'SIGN_IN_TO_SAVE_YOUR_SEARCH' | translate"
+        [matTooltipDisabled]="isLoggedIn()"
         matTooltipPosition="after"
       >
-        @if (searchType !== searchTypes.CUSTOM_PRODUCTS) {
+        @if (searchType() !== searchTypes.CUSTOM_PRODUCTS) {
           <button
             mat-menu-item
-            [disabled]="!isLoggedIn"
+            [disabled]="!isLoggedIn()"
             (click)="saveCurrentSearch()"
           >
             {{ 'SAVE_SEARCH' | translate }}
@@ -191,26 +191,26 @@
         }
       </span>
       <span
-        [matTooltipDisabled]="isLoggedIn"
-        matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SAVED_SEARCHES' | translate }}"
+        [matTooltipDisabled]="isLoggedIn()"
+        [matTooltip]="'SIGN_IN_TO_SEE_YOUR_SAVED_SEARCHES' | translate"
         matTooltipPosition="after"
       >
         <button
           mat-menu-item
-          [disabled]="!isLoggedIn"
+          [disabled]="!isLoggedIn()"
           (click)="onOpenSavedSearches()"
         >
           {{ 'VIEW_SEARCHES' | translate }}
         </button>
       </span>
       <span
-        [matTooltipDisabled]="isLoggedIn"
-        matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SEARCH_HISTORY' | translate }}"
+        [matTooltipDisabled]="isLoggedIn()"
+        [matTooltip]="'SIGN_IN_TO_SEE_YOUR_SEARCH_HISTORY' | translate"
         matTooltipPosition="after"
       >
         <button
           mat-menu-item
-          [disabled]="!isLoggedIn"
+          [disabled]="!isLoggedIn()"
           (click)="onOpenSearchHistory()"
         >
           {{ 'SEARCH_HISTORY' | translate }}...
@@ -225,10 +225,10 @@
         matSuffix
         [disabled]="
           !(
-            searchType === searchTypes.DATASET ||
-            searchType === searchTypes.LIST ||
-            searchType === searchTypes.BASELINE ||
-            searchType === searchTypes.CUSTOM_PRODUCTS
+            searchType() === searchTypes.DATASET ||
+            searchType() === searchTypes.LIST ||
+            searchType() === searchTypes.BASELINE ||
+            searchType() === searchTypes.CUSTOM_PRODUCTS
           )
         "
       >

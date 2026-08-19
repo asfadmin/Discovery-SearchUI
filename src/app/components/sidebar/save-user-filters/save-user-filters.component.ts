@@ -9,7 +9,7 @@ import * as models from '@models';
 import { SubSink } from 'subsink';
 import { map } from 'rxjs/operators';
 import { ScreenSizeService } from '@services';
-import { NgClass, AsyncPipe } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { SaveUserFilterComponent } from './save-user-filter/save-user-filter.component';
 import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
@@ -17,14 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-save-user-filters',
   templateUrl: './save-user-filters.component.html',
   styleUrls: ['./save-user-filters.component.scss'],
-  imports: [
-    NgClass,
-
-    SaveUserFilterComponent,
-    MatButton,
-    AsyncPipe,
-    TranslateModule,
-  ],
+  imports: [NgClass, SaveUserFilterComponent, MatButton, TranslateModule],
 })
 export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -34,8 +27,7 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
-  public searchType$ = this.store$.select(searchStore.getSearchType);
-  public searchType: models.SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public SearchType = models.SearchType;
 
   public saveFilterOn: boolean;
@@ -92,19 +84,13 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
         this.displayedFilter = output.reverse();
       }),
     );
-
-    this.subs.add(
-      this.searchType$.subscribe((searchType) => {
-        this.searchType = searchType;
-      }),
-    );
   }
 
   public filterBySearchType(filters: models.SavedFilterPreset[]) {
     let output = filters.filter(
       (preset) => preset.searchType === this.currentSearchType,
     );
-    if (this.searchType === SearchType.DATASET) {
+    if (this.searchType() === SearchType.DATASET) {
       output = output.map((preset) => ({
         ...preset,
         filters: {

@@ -41,20 +41,14 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   public expiredJobs: models.Hyp3Job[] = [];
   public failedJobs: models.Hyp3Job[] = [];
 
-  private costs: models.Hyp3Costs;
-  private processingOptions: Hyp3ProcessingOptions;
+  private costs = this.store$.selectSignal(hyp3Store.getCosts);
+  private processingOptions = this.store$.selectSignal(
+    hyp3Store.getProcessingOptions,
+  );
   private validateOnly = false;
   public remaining = 0;
 
   ngOnInit(): void {
-    this.store$
-      .select(hyp3Store.getProcessingOptions)
-      .subscribe((options) => (this.processingOptions = options));
-
-    this.store$
-      .select(hyp3Store.getCosts)
-      .subscribe((costs) => (this.costs = costs));
-
     this.store$.select(hyp3Store.getHyp3User).subscribe((user) => {
       if (user === null) {
         return;
@@ -119,14 +113,14 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   }
 
   private openConfirmationDialog(jobType: models.Hyp3JobType, job) {
-    let options: Hyp3ProcessingOptions = this.processingOptions;
+    let options: Hyp3ProcessingOptions = this.processingOptions();
 
     const jobTypeOptions = { ...options[jobType.id] };
 
     for (const [optionName, optionVal] of Object.entries(
       job.processingOptions,
     )) {
-      if (optionName in this.processingOptions[jobType.id]) {
+      if (optionName in this.processingOptions()[jobType.id]) {
         jobTypeOptions[optionName] = optionVal;
       }
     }
@@ -138,7 +132,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
 
     const costPerJob = this.hyp3.calculateCredits(
       options[jobType.id],
-      this.costs[jobType.id],
+      this.costs()[jobType.id],
     );
 
     const jobTypesWithQueued = [

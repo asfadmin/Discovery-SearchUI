@@ -528,8 +528,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     const root = this.chart;
     const bounds = root.node().getBBox();
     const parent = root.node().parentElement;
-    const fullWidth = parent.clientWidth || parent.clientWidth,
-      fullHeight = parent.clientHeight || parent.clientHeight;
+    const fullWidth = parent.clientWidth,
+      fullHeight = parent.clientHeight;
     const width = bounds.width,
       height = bounds.height;
     const midX = bounds.x + width / 2,

@@ -68,17 +68,18 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public SearchType = models.SearchType;
 
-  public sidebarType$ = this.store$.select(uiStore.getSidebar);
-  public sidebarType: models.SidebarType;
+  public sidebarType = this.store$.selectSignal(uiStore.getSidebar);
   public SidebarType = models.SidebarType;
 
-  public searches$ = this.sidebarType$.pipe(
-    switchMap((savedSearchType) =>
-      savedSearchType === models.SidebarType.SAVED_SEARCHES
-        ? this.store$.select(userStore.getSavedSearches)
-        : this.store$.select(userStore.getSearchHistory),
-    ),
-  );
+  public searches$ = this.store$
+    .select(uiStore.getSidebar)
+    .pipe(
+      switchMap((savedSearchType) =>
+        savedSearchType === models.SidebarType.SAVED_SEARCHES
+          ? this.store$.select(userStore.getSavedSearches)
+          : this.store$.select(userStore.getSearchHistory),
+      ),
+    );
   public lockedFocus = false;
 
   public breakpoint: models.Breakpoints;
@@ -98,12 +99,6 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
         (breakpoint) => (this.breakpoint = breakpoint),
-      ),
-    );
-
-    this.subs.add(
-      this.sidebarType$.subscribe(
-        (sidebarType) => (this.sidebarType = sidebarType),
       ),
     );
 

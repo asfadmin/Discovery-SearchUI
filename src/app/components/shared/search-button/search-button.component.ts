@@ -88,7 +88,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   private exportService = inject(services.ExportService);
   private screenSize = inject(ScreenSizeService);
 
-  public searchType: SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = SearchType;
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(
@@ -106,7 +106,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     searchStore.getareResultsOutOfDate,
   );
 
-  public isLoggedIn = false;
+  public isLoggedIn = this.store$.selectSignal(userStore.getIsUserLoggedIn);
   public searchError$ = new Subject<searchStore.SearchError>();
   public isSearchError = false;
   public isFiltersOpen = false;
@@ -115,27 +115,11 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
   private stackReferenceScene: string;
   private latestReferenceScene: string;
-  private resultsMenuOpen = false;
+  private resultsMenuOpen = this.store$.selectSignal(
+    uiStore.getIsResultsMenuOpen,
+  );
 
   ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(userStore.getIsUserLoggedIn)
-        .subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(uiStore.getIsResultsMenuOpen)
-        .subscribe((isOpen) => (this.resultsMenuOpen = isOpen)),
-    );
-
     this.subs.add(
       this.actions$
         .pipe(
@@ -165,8 +149,8 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
         this.store$.select(uiStore.getIsFiltersMenuOpen),
       ]).subscribe(([latestFilter, isOpen]) => {
         if (
-          (isOpen && this.searchType === this.searchTypes.BASELINE) ||
-          this.searchType === this.searchTypes.SBAS
+          (isOpen && this.searchType() === this.searchTypes.BASELINE) ||
+          this.searchType() === this.searchTypes.SBAS
         ) {
           this.latestReferenceScene = latestFilter;
           if (this.stackReferenceScene == null || '') {
@@ -182,17 +166,17 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
   public onDoSearch(): void {
     if (
-      ((this.searchType === this.searchTypes.SBAS ||
-        this.searchType === this.searchTypes.BASELINE) &&
+      ((this.searchType() === this.searchTypes.SBAS ||
+        this.searchType() === this.searchTypes.BASELINE) &&
         this.isFiltersOpen &&
         (this.stackReferenceScene !== this.latestReferenceScene ||
-          !this.resultsMenuOpen)) ||
+          !this.resultsMenuOpen())) ||
       ((this.stackReferenceScene !== this.latestReferenceScene ||
         !this.isFiltersOpen) &&
-        (this.searchType === this.searchTypes.SBAS ||
-          this.searchType === this.searchTypes.BASELINE)) ||
-      (this.searchType !== this.searchTypes.SBAS &&
-        this.searchType !== this.searchTypes.BASELINE)
+        (this.searchType() === this.searchTypes.SBAS ||
+          this.searchType() === this.searchTypes.BASELINE)) ||
+      (this.searchType() !== this.searchTypes.SBAS &&
+        this.searchType() !== this.searchTypes.BASELINE)
     ) {
       this.store$.dispatch(new searchStore.MakeSearch());
 
@@ -212,7 +196,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.ClearListFilters());
     this.store$.dispatch(new searchStore.ClearSearch());
 
-    if (this.searchType === SearchType.CUSTOM_PRODUCTS) {
+    if (this.searchType() === SearchType.CUSTOM_PRODUCTS) {
       this.store$.dispatch(new hyp3Store.SetOnDemandUserID(null));
     }
   }
@@ -352,7 +336,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public exportPython(): void {
-    if (this.searchType !== SearchType.CUSTOM_PRODUCTS) {
+    if (this.searchType() !== SearchType.CUSTOM_PRODUCTS) {
       this.exportService.convertSearchAPIQueryToAsfSearch
         .pipe(take(1))
         .subscribe((data) => {

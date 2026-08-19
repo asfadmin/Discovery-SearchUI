@@ -8,13 +8,13 @@
   @if (isDataset) {
     <span>
       <span>
-        {{ maxResults | formatNumber }}
+        {{ maxResults() | formatNumber }}
         <mat-icon class="faint-text clickable"> arrow_drop_down</mat-icon>
       </span>
       {{ 'OF' | translate }}
     </span>
   }
-  @if (!isMaxResultsLoading) {
+  @if (!isMaxResultsLoading()) {
     <span>
       {{ totalResultsCount !== -1 ? (totalResultsCount | formatNumber) : '0' }}
     </span>

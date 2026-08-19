@@ -11,34 +11,32 @@
   </div>
 
   <div class="content-wrapper">
-    @if (searchType$ | async; as searchType) {
-      <div
-        [ngClass]="{
-          'saved-filters-presets__content-mobile':
-            breakpoint <= breakpoints.SMALL,
-          'saved-filters-presets__content': breakpoint > breakpoints.SMALL,
-        }"
-      >
-        @if (displayedFilter.length > 0) {
-          <div>
-            @for (filterPreset of displayedFilter; track filterPreset) {
-              <div class="saved-filters-presets-row">
-                <app-save-user-filter
-                  [filterPreset]="filterPreset"
-                  [isNew]="filterPreset.id === newSearchId"
-                  (updateName)="updatedSearchName($event)"
-                >
-                </app-save-user-filter>
-              </div>
-            }
-          </div>
-        } @else {
-          <div class="no-saved-filters-presets">
-            <h2>{{ 'YOU_HAVE_NO_SAVED_FILTERS' | translate }}</h2>
-          </div>
-        }
-      </div>
-    }
+    <div
+      [ngClass]="{
+        'saved-filters-presets__content-mobile':
+          breakpoint <= breakpoints.SMALL,
+        'saved-filters-presets__content': breakpoint > breakpoints.SMALL,
+      }"
+    >
+      @if (displayedFilter.length > 0) {
+        <div>
+          @for (filterPreset of displayedFilter; track filterPreset) {
+            <div class="saved-filters-presets-row">
+              <app-save-user-filter
+                [filterPreset]="filterPreset"
+                [isNew]="filterPreset.id === newSearchId"
+                (updateName)="updatedSearchName($event)"
+              >
+              </app-save-user-filter>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="no-saved-filters-presets">
+          <h2>{{ 'YOU_HAVE_NO_SAVED_FILTERS' | translate }}</h2>
+        </div>
+      }
+    </div>
   </div>
 
   <div
