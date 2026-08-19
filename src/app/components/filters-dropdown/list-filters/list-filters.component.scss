@@ -32,29 +32,10 @@
   padding-right: 12px;
 }
 
-.search-list-input {
-  height: 150px;
-}
-
 .file-upload-container {
   width: 30%;
   margin-bottom: 20px;
 }
-
-//.drop-file-area {
-//
-//  @include themify($themes) {
-//    background-color: darken(themed('background-white'), 10%);
-//    outline: 2px dashed themed('primary');
-//  }
-//  background-size: contain;
-//  background-repeat: no-repeat;
-//  background-position: center;
-//  width: 350px;
-//  height: 180px;
-//  display: inline-block;
-//  outline-offset: -8px;
-//}
 
 .drop-file-area {
   @include themify($themes) {
@@ -103,11 +84,6 @@
   margin-left: 20%;
   color: rgba(0, 0, 0, 0.54);
   font-weight: 400;
-}
-
-.file-list-container {
-  width: 70%;
-  margin-right: 15px;
 }
 
 .input-field-container {
