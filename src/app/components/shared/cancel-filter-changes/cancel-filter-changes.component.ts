@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SearchType } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
-import { SubSink } from 'subsink';
 import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 @Component({
@@ -14,27 +13,13 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./cancel-filter-changes.component.scss'],
   imports: [MatButton, TranslateModule],
 })
-export class CancelFilterChangesComponent implements OnInit, OnDestroy {
+export class CancelFilterChangesComponent {
   private store$ = inject<Store<AppState>>(Store);
 
-  private searchType$ = this.store$.select(searchStore.getSearchType);
-  private searchType: SearchType;
-  private subs = new SubSink();
-
-  ngOnInit(): void {
-    this.subs.add(
-      this.searchType$.subscribe(
-        (currentSearchType) => (this.searchType = currentSearchType),
-      ),
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
-  }
+  private searchType = this.store$.selectSignal(searchStore.getSearchType);
 
   public onCancelFiltersChange(): void {
-    if (this.searchType === SearchType.LIST) {
+    if (this.searchType() === SearchType.LIST) {
       this.store$.dispatch(new filtersStore.ClearListFilters());
     }
 

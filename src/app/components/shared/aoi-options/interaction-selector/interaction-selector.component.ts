@@ -1,19 +1,17 @@
-import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import {
   MatButtonToggle,
   MatButtonToggleGroup,
 } from '@angular/material/button-toggle';
-import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
-import { MapInteractionModeType, SearchType } from '@models';
+import { MapInteractionModeType } from '@models';
 import * as services from '@services';
 import * as models from '@models';
-import * as searchStore from '@store/search';
 import { DrawSelectorComponent } from '../draw-selector/draw-selector.component';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
@@ -37,36 +35,17 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
   ],
 })
-export class InteractionSelectorComponent implements OnInit, OnDestroy {
+export class InteractionSelectorComponent {
   private store$ = inject<Store<AppState>>(Store);
   private mapService = inject(services.MapService);
   private screenSize = inject(services.ScreenSizeService);
 
   @ViewChild('clearButton') clearButton: MatButtonToggle;
-  public interaction: MapInteractionModeType;
+  public interaction = this.store$.selectSignal(mapStore.getMapInteractionMode);
   public types = MapInteractionModeType;
-
-  public searchType: SearchType;
-  public searchTypes = SearchType;
 
   public breakpoints = models.Breakpoints;
   public breakpoint$ = this.screenSize.breakpoint$;
-
-  private subs = new SubSink();
-
-  ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(mapStore.getMapInteractionMode)
-        .subscribe((interaction) => (this.interaction = interaction)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
-    );
-  }
 
   public onNewInteractionMode(mode: MapInteractionModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
@@ -74,14 +53,14 @@ export class InteractionSelectorComponent implements OnInit, OnDestroy {
 
   public onDrawSelected = () =>
     this.onNewInteractionMode(
-      this.interaction === MapInteractionModeType.DRAW
+      this.interaction() === MapInteractionModeType.DRAW
         ? MapInteractionModeType.NONE
         : MapInteractionModeType.DRAW,
     );
 
   public onEditSelected = () =>
     this.onNewInteractionMode(
-      this.interaction === MapInteractionModeType.EDIT
+      this.interaction() === MapInteractionModeType.EDIT
         ? MapInteractionModeType.NONE
         : MapInteractionModeType.EDIT,
     );
@@ -99,8 +78,4 @@ export class InteractionSelectorComponent implements OnInit, OnDestroy {
       new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW),
     );
   };
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
-  }
 }

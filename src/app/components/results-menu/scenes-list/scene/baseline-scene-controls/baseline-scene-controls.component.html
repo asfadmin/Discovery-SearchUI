@@ -34,7 +34,7 @@
       @if (hyp3ableByJobType.total < 1) {
         <mat-icon
           class="noselect list-icon icon-margin icon-disabled"
-          matTooltip="{{ 'ONLY_CO_POLARIZED_BURSTS' | translate }}"
+          [matTooltip]="'ONLY_CO_POLARIZED_BURSTS' | translate"
           svgIcon="hyp3"
           matListItemMeta
         >
@@ -44,11 +44,11 @@
         <mat-icon
           (click)="onToggle()"
           class="icon-margin"
-          matTooltip="{{
+          [matTooltip]="
             isQueued
               ? ('REMOVE_SCENE_FILES_FROM_DOWNLOADS' | translate)
               : ('ADD_SCENE_FILES_TO_DOWNLOADS' | translate)
-          }}"
+          "
         >
           {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
         </mat-icon>

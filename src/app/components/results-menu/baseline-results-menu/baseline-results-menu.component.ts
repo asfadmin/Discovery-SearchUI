@@ -103,7 +103,9 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   public searchType: models.SearchType;
   public SearchTypes = models.SearchType;
   public sbasProducts: models.CMRProduct[];
-  public queuedProducts: models.CMRProduct[];
+  public queuedProducts = this.store$.selectSignal(
+    queueStore.getQueuedProducts,
+  );
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -155,12 +157,6 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
         (products) => (this.sbasProducts = products),
       ),
     );
-
-    this.subs.add(
-      this.store$
-        .select(queueStore.getQueuedProducts)
-        .subscribe((products) => (this.queuedProducts = products)),
-    );
   }
 
   public onZoomToResults(): void {
@@ -191,14 +187,14 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     products: models.CMRProduct[],
     format: models.AsfApiOutputFormat,
   ): void {
-    const currentQueue = this.queuedProducts;
+    const currentQueue = this.queuedProducts();
     const action = new queueStore.DownloadSearchtypeMetadata(format);
 
     this.clearDispatchRestoreQueue(action, products, currentQueue);
   }
 
   public onMakeDownloadScript(products: models.CMRProduct[]): void {
-    const currentQueue = this.queuedProducts;
+    const currentQueue = this.queuedProducts();
 
     this.clearDispatchRestoreQueue(
       new queueStore.MakeDownloadScript(),

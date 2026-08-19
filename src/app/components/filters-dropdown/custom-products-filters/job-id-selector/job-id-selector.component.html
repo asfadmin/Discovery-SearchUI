@@ -7,7 +7,7 @@
     #autosize="cdkTextareaAutosize"
     cdkAutosizeMinRows="1"
     cdkAutosizeMaxRows="10"
-    placeholder="{{ 'JOB_IDS_SELECTOR' | translate }}"
+    [placeholder]="'JOB_IDS_SELECTOR' | translate"
     aria-label="JOB_IDS_SELECTOR"
     (change)="onJobIdsChange($event)"
     [(ngModel)]="jobIds"

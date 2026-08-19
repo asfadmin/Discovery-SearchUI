@@ -548,7 +548,7 @@
         <a
           [href]="citation()"
           target="_blank"
-          matTooltip="{{ 'HOW_TO_CITE_USING_THIS_DATA' | translate }}"
+          [matTooltip]="'HOW_TO_CITE_USING_THIS_DATA' | translate"
         >
           @if (collectionMapped()) {
             {{ collectionMapped() }}

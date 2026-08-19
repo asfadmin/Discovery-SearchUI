@@ -16,7 +16,7 @@
       <div
         class="browse-image--container"
         [matBadgeHidden]="scene.browses.length <= 1"
-        matBadge="{{ scene.browses.length }}"
+        [matBadge]="scene.browses.length"
         matBadgePosition="above after"
       >
         <img

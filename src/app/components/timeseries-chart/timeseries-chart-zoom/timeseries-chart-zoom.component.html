@@ -9,7 +9,7 @@
         <mat-button-toggle
           class="control-mat-button-toggle"
           (click)="zoomIn()"
-          matTooltip="{{ 'ZOOM_IN' | translate }}"
+          [matTooltip]="'ZOOM_IN' | translate"
         >
           <mat-icon class="control-icon">add</mat-icon>
         </mat-button-toggle>
@@ -17,7 +17,7 @@
         <mat-button-toggle
           class="control-mat-button-toggle"
           (click)="zoomToFit()"
-          matTooltip="{{ 'ZOOM_TO_FIT' | translate }}"
+          [matTooltip]="'ZOOM_TO_FIT' | translate"
         >
           <mat-icon class="control-icon">aspect_ratio</mat-icon>
         </mat-button-toggle>
@@ -25,7 +25,7 @@
         <mat-button-toggle
           class="control-mat-button-toggle"
           (click)="zoomOut()"
-          matTooltip="{{ 'ZOOM_OUT' | translate }}"
+          [matTooltip]="'ZOOM_OUT' | translate"
         >
           <mat-icon class="control-icon">remove</mat-icon>
         </mat-button-toggle>

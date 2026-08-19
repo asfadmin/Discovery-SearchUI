@@ -270,10 +270,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
   private isBurstDone(resp, _product): boolean {
-    if (
-      resp.type === HttpEventType.DownloadProgress ||
-      resp.type === HttpEventType.DownloadProgress
-    ) {
+    if (resp.type === HttpEventType.DownloadProgress) {
       return resp.loaded > 1000;
     }
     return false;

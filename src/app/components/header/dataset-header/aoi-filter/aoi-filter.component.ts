@@ -1,4 +1,11 @@
-import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+  inject,
+  Signal,
+} from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { ClipboardService } from 'ngx-clipboard';
 import { SubSink } from 'subsink';
@@ -60,27 +67,18 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
 
   public isAOIError = false;
   public isHoveringAOISelector = false;
-  public isAOIOptionsOpen: boolean;
+  public isAOIOptionsOpen: Signal<boolean> = this.store$.selectSignal(
+    uiStore.getIsAOIOptionsOpen,
+  );
 
-  public searchType$ = this.store$.select(searchStore.getSearchType);
-  public searchtype: SearchType;
+  public searchtype: Signal<SearchType> = this.store$.selectSignal(
+    searchStore.getSearchType,
+  );
 
   public polygon: string;
   private subs = new SubSink();
 
   ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(uiStore.getIsAOIOptionsOpen)
-        .subscribe(
-          (isAOIOptionsOpen) => (this.isAOIOptionsOpen = isAOIOptionsOpen),
-        ),
-    );
-    this.subs.add(
-      this.searchType$.subscribe(
-        (searchtype) => (this.searchtype = searchtype),
-      ),
-    );
     this.subs.add(
       this.mapService.searchPolygon$.subscribe((p) => {
         this.polygon = p;
@@ -117,7 +115,7 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
 
     if (
       !didLoad ||
-      (this.searchtype === SearchType.DISPLACEMENT &&
+      (this.searchtype() === SearchType.DISPLACEMENT &&
         !polygon.toLowerCase().includes('point'))
     ) {
       this.aoiErrors$.next();

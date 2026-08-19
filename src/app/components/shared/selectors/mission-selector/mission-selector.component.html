@@ -3,19 +3,19 @@
     <input
       type="text"
       matInput
-      placeholder="{{ 'FILTER_CAMPAIGN' | translate }}"
+      [placeholder]="'FILTER_CAMPAIGN' | translate"
       formControlName="missionFilter"
     />
   </mat-form-field>
 </form>
 
-@if (!!selectedMission) {
+@if (!!selectedMission()) {
   <div class="selected">
     <div class="selected-row">
       <div>
         <span class="v-mid selected-label">
           <b>{{ 'SELECTED' | translate }}</b> <span> • </span>
-          {{ selectedMission }}
+          {{ selectedMission() }}
         </span>
       </div>
       <div>
@@ -23,8 +23,8 @@
           (click)="setMission(null)"
           class="clickable v-mid clear-mission-icon"
           mat-list-icon
-          matTooltip="{{ 'CLEAR_SELECTED_MISSION' | translate }}"
-          >{{ 'CLEAR' | translate }}</mat-icon
+          [matTooltip]="'CLEAR_SELECTED_MISSION' | translate"
+          >clear</mat-icon
         >
       </div>
     </div>

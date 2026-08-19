@@ -62,20 +62,16 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   private browseOverlayService = inject(services.BrowseOverlayService);
 
   public view$ = this.store$.select(mapStore.getMapView);
-  public browseOverlayOpacity$ = this.store$.select(
-    mapStore.getBrowseOverlayOpacity,
-  );
-  public velocityOverlayOpacity$ = this.store$.select(
-    mapStore.getVelocityOverlayOpacity,
-  );
 
   public currentBrowseID = '';
 
-  public searchType: models.SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;
   public viewTypes = models.MapViewType;
   public mousePos: LonLat;
-  public browseOverlayOpacity: number;
+  public browseOverlayOpacity = this.store$.selectSignal(
+    mapStore.getBrowseOverlayOpacity,
+  );
   public velocityOverlayOpacity: number;
   public showToolBar = true;
   public toolBarWidth = 571;
@@ -109,23 +105,9 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new mapStore.SetVelocityOverlayOpacity(0.8));
 
     this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
-    );
-
-    this.subs.add(
       this.mapService.mousePosition$.subscribe((mp) => (this.mousePos = mp)),
     );
 
-    this.subs.add(
-      this.store$
-        .select(mapStore.getBrowseOverlayOpacity)
-        .subscribe(
-          (browseOverlayOpacity) =>
-            (this.browseOverlayOpacity = browseOverlayOpacity),
-        ),
-    );
     this.subs.add(
       this.store$
         .select(mapStore.getVelocityOverlayOpacity)

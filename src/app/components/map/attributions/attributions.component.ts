@@ -1,11 +1,8 @@
 import { Component, Input, inject } from '@angular/core';
 
-import { map } from 'rxjs/operators';
-
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
-import * as scenesStore from '@store/scenes';
 
 import { Breakpoints, asfWebsite } from '@models';
 import { MaxResultsSelectorComponent } from '@components/shared/max-results-selector/max-results-selector.component';
@@ -29,10 +26,6 @@ export class AttributionsComponent {
 
   anio: number = new Date().getFullYear();
 
-  public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
-  public areNoScenes$ = this.store$
-    .select(scenesStore.getScenes)
-    .pipe(map((scenes) => scenes.length === 0));
   public breakpoints = Breakpoints;
   public asfWebsite = asfWebsite;
 

@@ -57,7 +57,7 @@
             (input)="onValueChanged($event, inputTypes.FRAME_START)"
             [(ngModel)]="frameStart"
             name="frameStart"
-            placeholder="{{ 'FRAME_START' | translate }}"
+            [placeholder]="'FRAME_START' | translate"
           />
         </mat-form-field>
       }
@@ -74,7 +74,7 @@
             (input)="onValueChanged($event, inputTypes.FRAME_END)"
             [(ngModel)]="frameEnd"
             name="frameEnd"
-            placeholder="{{ 'FRAME_END' | translate }}"
+            [placeholder]="'FRAME_END' | translate"
           />
         </mat-form-field>
       }

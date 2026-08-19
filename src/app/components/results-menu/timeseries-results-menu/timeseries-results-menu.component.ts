@@ -35,7 +35,7 @@ import {
   WktService,
 } from '@services';
 import * as models from '@models';
-import { Breakpoints, SearchType } from '@models';
+import { Breakpoints } from '@models';
 
 import { SubSink } from 'subsink';
 
@@ -131,7 +131,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   @ViewChild('radio-group', { read: ElementRef }) radioGroup: ElementRef;
 
   @Input() resize$: Observable<void>;
-  public searchType: SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public isAddingPoints = false;
   public mouseOver = false;
 
@@ -200,12 +200,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
-    );
-
-    this.subs.add(
       this.language.translate.onLangChange.subscribe(() => {
         this.chartStateChanged(this.chartStates);
       }),
@@ -265,7 +259,10 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
           withLatestFrom(this.store$.select(chartStore.getMinSeriesNumber)),
         )
         .subscribe(([polygon, minSeriesNumber]) => {
-          if (!!polygon && this.searchType === models.SearchType.DISPLACEMENT) {
+          if (
+            !!polygon &&
+            this.searchType() === models.SearchType.DISPLACEMENT
+          ) {
             const temp = polygon.getGeometry().clone() as Geometry;
             temp.transform('EPSG:3857', 'EPSG:4326');
             this.pointHistoryService.addPoint(

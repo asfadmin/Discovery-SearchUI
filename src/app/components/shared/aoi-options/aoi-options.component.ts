@@ -77,10 +77,9 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
 
-  public searchType$ = this.store$.select(getSearchType);
-  public searchtype: SearchType;
-  public isResultsMenuOpen: boolean;
-  public isFiltersMenuOpen: boolean;
+  public searchtype = this.store$.selectSignal(getSearchType);
+  public isResultsMenuOpen = this.store$.selectSignal(getIsResultsMenuOpen);
+  public isFiltersMenuOpen = this.store$.selectSignal(getIsFiltersMenuOpen);
 
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
@@ -110,24 +109,6 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
       ),
     );
 
-    this.subs.add(
-      this.searchType$.subscribe(
-        (searchtype) => (this.searchtype = searchtype),
-      ),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(getIsFiltersMenuOpen)
-        .subscribe((isOpen) => (this.isFiltersMenuOpen = isOpen)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(getIsResultsMenuOpen)
-        .subscribe((isOpen) => (this.isResultsMenuOpen = isOpen)),
-    );
-
     this.handleAOIErrors();
   }
 
@@ -141,15 +122,15 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
 
     if (
       !didLoad ||
-      (this.searchtype === SearchType.DISPLACEMENT &&
+      (this.searchtype() === SearchType.DISPLACEMENT &&
         !polygon.toLowerCase().includes('point'))
     ) {
       this.aoiErrors$.next();
     } else {
       if (
-        this.searchtype === SearchType.DATASET &&
-        this.isResultsMenuOpen &&
-        !this.isFiltersMenuOpen
+        this.searchtype() === SearchType.DATASET &&
+        this.isResultsMenuOpen() &&
+        !this.isFiltersMenuOpen()
       ) {
         this.store$.dispatch(new SetSearchOutOfDate(true));
       }
@@ -160,15 +141,15 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new SetGeocode(event.geocode));
     if (
       !didLoad ||
-      (this.searchtype === SearchType.DISPLACEMENT &&
+      (this.searchtype() === SearchType.DISPLACEMENT &&
         !event.wkt.toLowerCase().includes('point'))
     ) {
       this.aoiErrors$.next();
     } else {
       if (
-        this.searchtype === SearchType.DATASET &&
-        this.isResultsMenuOpen &&
-        !this.isFiltersMenuOpen
+        this.searchtype() === SearchType.DATASET &&
+        this.isResultsMenuOpen() &&
+        !this.isFiltersMenuOpen()
       ) {
         this.store$.dispatch(new SetSearchOutOfDate(true));
       }

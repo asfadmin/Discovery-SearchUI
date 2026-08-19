@@ -51,9 +51,15 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   private pairService = inject(PairService);
   private sceneService = inject(ScenesService);
 
-  public maxResults: number;
-  public isMaxResultsLoading: boolean;
-  public areResultsLoaded = false;
+  public maxResults = this.store$.selectSignal(
+    filtersStore.getMaxSearchResults,
+  );
+  public isMaxResultsLoading = this.store$.selectSignal(
+    searchStore.getIsMaxResultsLoading,
+  );
+  public areResultsLoaded = this.store$.selectSignal(
+    scenesStore.getAreResultsLoaded,
+  );
 
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
@@ -66,22 +72,6 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(filtersStore.getMaxSearchResults)
-        .subscribe((maxResults) => (this.maxResults = maxResults)),
-    );
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getAreResultsLoaded)
-        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
-    );
-    this.subs.add(
-      this.store$
-        .select(searchStore.getIsMaxResultsLoading)
-        .subscribe((isLoading) => (this.isMaxResultsLoading = isLoading)),
-    );
-
     this.subs.add(
       combineLatest([
         this.store$.select(searchStore.getSearchType),
@@ -119,7 +109,7 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   public onNewMaxResults(maxResults: number): void {
     this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
 
-    if (this.areResultsLoaded) {
+    if (this.areResultsLoaded()) {
       this.store$.dispatch(new searchStore.MakeSearch());
     }
   }

@@ -3,11 +3,11 @@
     <div
       [class.mobile-menu-offset]="
         breakpoint === breakpoints.MOBILE &&
-        searchType !== SearchTypes.DISPLACEMENT
+        searchType() !== SearchTypes.DISPLACEMENT
       "
       [class.mobile-displacement-menu-offset]="
         breakpoint === breakpoints.MOBILE &&
-        searchType === SearchTypes.DISPLACEMENT
+        searchType() === SearchTypes.DISPLACEMENT
       "
       [class.desktop-menu-offset]="breakpoint !== breakpoints.MOBILE"
       [class.hidden]="
@@ -16,12 +16,14 @@
       class="rectangle-wrapper w100"
     >
       @if (
-        products.length !== 0 || searchType === SearchTypes.CUSTOM_PRODUCTS
+        products().length !== 0 || searchType() === SearchTypes.CUSTOM_PRODUCTS
       ) {
         <div
           id="result-div"
           class="w100"
-          [class.displacement-results]="searchType === SearchTypes.DISPLACEMENT"
+          [class.displacement-results]="
+            searchType() === SearchTypes.DISPLACEMENT
+          "
           [ngClass]="{ 'mobile-size': breakpoint === breakpoints.MOBILE }"
           [style.height.px]="menuHeightPx"
           mwlResizable
@@ -41,17 +43,17 @@
           <div
             [class.hidden]="
               (areNoScenes$ | async) &&
-              searchType !== SearchTypes.CUSTOM_PRODUCTS
+              searchType() !== SearchTypes.CUSTOM_PRODUCTS
             "
             class="h100 results-pane"
           >
-            @if (products.length !== 0) {
+            @if (products().length !== 0) {
               <div class="results-menu--background h100 w100 mp0 fx-row">
                 @if (breakpoint > breakpoints.MOBILE) {
                   @if (
-                    searchType !== SearchTypes.BASELINE &&
-                    searchType !== SearchTypes.SBAS &&
-                    searchType !== SearchTypes.DISPLACEMENT
+                    searchType() !== SearchTypes.BASELINE &&
+                    searchType() !== SearchTypes.SBAS &&
+                    searchType() !== SearchTypes.DISPLACEMENT
                   ) {
                     <app-desktop-results-menu
                       class="w100 h100 results-menu--layout"
@@ -60,14 +62,14 @@
                     >
                     </app-desktop-results-menu>
                   }
-                  @if (searchType === SearchTypes.DISPLACEMENT) {
+                  @if (searchType() === SearchTypes.DISPLACEMENT) {
                     <app-timeseries-results-menu
                       class="w100 h100 results-menu--layout"
                       [resize$]="resize$"
                     >
                     </app-timeseries-results-menu>
                   }
-                  @if (searchType === SearchTypes.BASELINE) {
+                  @if (searchType() === SearchTypes.BASELINE) {
                     <app-baseline-results-menu
                       class="w100 h100 results-menu--layout"
                       [class.small-size]="breakpoint === breakpoints.SMALL"
@@ -75,7 +77,7 @@
                     >
                     </app-baseline-results-menu>
                   }
-                  @if (searchType === SearchTypes.SBAS) {
+                  @if (searchType() === SearchTypes.SBAS) {
                     <app-sbas-results-menu
                       class="w100 h100 results-menu--layout"
                       [class.small-size]="breakpoint === breakpoints.SMALL"
@@ -85,12 +87,12 @@
                   }
                 }
                 @if (breakpoint === breakpoints.MOBILE) {
-                  @if (searchType === SearchTypes.DISPLACEMENT) {
+                  @if (searchType() === SearchTypes.DISPLACEMENT) {
                     <div class="mobile-displacement-search">
                       {{ 'NO_MOBILE_DISPLACEMENT_SEARCH' | translate }}
                     </div>
                   }
-                  @if (searchType !== SearchTypes.DISPLACEMENT) {
+                  @if (searchType() !== SearchTypes.DISPLACEMENT) {
                     <app-mobile-results-menu
                       class="w100 h100 mobile-size"
                       [resize$]="resize$"
@@ -101,8 +103,8 @@
               </div>
             }
             @if (
-              products.length === 0 &&
-              searchType === SearchTypes.CUSTOM_PRODUCTS
+              products().length === 0 &&
+              searchType() === SearchTypes.CUSTOM_PRODUCTS
             ) {
               <div
                 class="results-menu--background no-results faint-text h100 w100 mp0 fx-col"

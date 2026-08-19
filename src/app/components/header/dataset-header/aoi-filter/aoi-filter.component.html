@@ -16,7 +16,7 @@
   @if (!!polygon) {
     <mat-icon
       (click)="onCopy()"
-      matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
+      [matTooltip]="'COPY_TO_CLIPBOARD' | translate"
       [class.ghost-item]="!isHoveringAOISelector"
       class="clickable copy-icon"
       matSuffix
@@ -27,15 +27,15 @@
 
   <mat-icon
     (click)="toggleAOIOptions()"
-    matTooltip="{{ 'MORE_OPTIONS' | translate }}"
+    [matTooltip]="'MORE_OPTIONS' | translate"
     class="clickable additional-aoi-toggle"
     matSuffix
   >
-    {{ isAOIOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
+    {{ isAOIOptionsOpen() ? 'arrow_drop_up' : 'arrow_drop_down' }}
   </mat-icon>
 </mat-form-field>
 
-@if (isAOIOptionsOpen) {
+@if (isAOIOptionsOpen()) {
   <mat-card [@fadeTransition] class="breadcrumb-filter aoi-mat-card">
     <app-aoi-options (close)="closeAOIOptions()"></app-aoi-options>
   </mat-card>

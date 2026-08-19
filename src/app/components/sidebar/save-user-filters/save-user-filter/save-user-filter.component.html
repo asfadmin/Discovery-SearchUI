@@ -27,7 +27,7 @@
                     [(ngModel)]="editName"
                     (change)="onNewName($event)"
                     name="editNameInput"
-                    placeholder="{{ 'FILTER_PRESET_NAME' | translate }}"
+                    [placeholder]="'FILTER_PRESET_NAME' | translate"
                     #nameEditInput
                   />
                 </mat-form-field>

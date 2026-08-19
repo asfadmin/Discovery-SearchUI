@@ -23,11 +23,13 @@
                   @if (option.type === 'DROPDOWN') {
                     <app-dropdown-option
                       (valueChange)="onSetOptionValue(option.apiName, $event)"
-                      [value]="optionValues[selectedJobType.id][option.apiName]"
+                      [value]="
+                        optionValues()[selectedJobType.id][option.apiName]
+                      "
                       [options]="option.options"
                       [optionName]="option.name | uppercase | translate"
                       [optionInfo]="option.info | translate"
-                      [costsTable]="getCostTable(costs, jobType, option)"
+                      [costsTable]="getCostTable(costs(), jobType, option)"
                       class="margin-right"
                     >
                     </app-dropdown-option>
@@ -35,7 +37,9 @@
                   @if (option.type === 'RANGE') {
                     <app-range-option
                       (valueChange)="onSetOptionValue(option.apiName, $event)"
-                      [value]="optionValues[selectedJobType.id][option.apiName]"
+                      [value]="
+                        optionValues()[selectedJobType.id][option.apiName]
+                      "
                       [optionName]="option.name | uppercase | translate"
                       [optionInfo]="option.info | translate"
                       [range]="option.range"
@@ -60,7 +64,9 @@
                   @if (option.type === 'TOGGLE') {
                     <app-checkbox-option
                       (valueChange)="onSetOptionValue(option.apiName, $event)"
-                      [value]="optionValues[selectedJobType.id][option.apiName]"
+                      [value]="
+                        optionValues()[selectedJobType.id][option.apiName]
+                      "
                       [optionName]="option.name | translate"
                       [optionInfo]="option.info | translate"
                       class="margin-right"
@@ -81,7 +87,9 @@
                   @if (option.type === 'CHECKBOX') {
                     <app-checkbox-option
                       (valueChange)="onSetOptionValue(option.apiName, $event)"
-                      [value]="optionValues[selectedJobType.id][option.apiName]"
+                      [value]="
+                        optionValues()[selectedJobType.id][option.apiName]
+                      "
                       [optionName]="option.name | translate"
                       [optionInfo]="option.info | translate"
                     >

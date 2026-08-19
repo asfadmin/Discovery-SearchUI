@@ -39,7 +39,7 @@
                   (keyup.enter)="onEditFocusLeave()"
                   (focusout)="onEditFocusLeave()"
                   name="editNameInput"
-                  placeholder="{{ 'SEARCH_NAME' | translate }}"
+                  [placeholder]="'SEARCH_NAME' | translate"
                   #nameEditInput
                 />
               </mat-form-field>

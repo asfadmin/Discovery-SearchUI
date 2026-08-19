@@ -71,7 +71,7 @@
       (selectionChange)="onNewFlightDirectionsSelected($event.value)"
       [(ngModel)]="flightDirections"
       [disabled]="!(dataset | isRelevant: p.FLIGHT_DIRECTION)"
-      placeholder="{{ 'DIRECTION' | translate }}"
+      [placeholder]="'DIRECTION' | translate"
       multiple
     >
       @for (direction of flightDirectionTypes; track direction) {
@@ -97,7 +97,7 @@
         (selectionChange)="onNewPlatformSelected($event.value)"
         [(ngModel)]="platforms"
         [disabled]="!(dataset | isRelevant: p.PLATFORM)"
-        placeholder="{{ 'SATELLITE' | translate }}"
+        [placeholder]="'SATELLITE' | translate"
         multiple
       >
         @for (platform of dataset.platforms; track platform) {
@@ -123,7 +123,7 @@
       (selectionChange)="onNewInstrument($event.value)"
       [(ngModel)]="instruments"
       [disabled]="!(dataset | isRelevant: p.INSTRUMENT)"
-      placeholder="{{ 'INSTRUMENT' | translate }}"
+      [placeholder]="'INSTRUMENT' | translate"
       multiple
     >
       @for (instrument of dataset.instruments; track instrument) {
@@ -147,7 +147,7 @@
     <mat-select
       (selectionChange)="onNewFrameCoverageSelected($event.value)"
       [(ngModel)]="frameCoverage"
-      placeholder="{{ 'FRAME_COVERAGE' | translate }}"
+      [placeholder]="'FRAME_COVERAGE' | translate"
       multiple
     >
       <mat-option value="Full">
@@ -172,7 +172,7 @@
     <mat-select
       (selectionChange)="onNewRangeBandwidthSelected($event.value)"
       [(ngModel)]="rangeBandwidth"
-      placeholder="{{ 'RANGE_BANDWIDTH' | translate }}"
+      [placeholder]="'RANGE_BANDWIDTH' | translate"
       multiple
     >
       @for (parent of dataset.bandwidth | keyvalue; track $index) {

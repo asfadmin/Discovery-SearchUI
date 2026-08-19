@@ -26,7 +26,9 @@ export class MasterSceneSelectorComponent implements OnInit, OnDestroy {
   public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)';
   public SearchTypes = SearchType;
   public masterScene: string;
-  public shouldUseFramesForReference = false;
+  public shouldUseFramesForReference = this.store$.selectSignal(
+    filtersStore.getShouldUseFramesForReference,
+  );
   private subs = new SubSink();
 
   ngOnInit(): void {
@@ -34,15 +36,6 @@ export class MasterSceneSelectorComponent implements OnInit, OnDestroy {
       this.store$
         .select(scenesStore.getFilterMaster)
         .subscribe((master) => (this.masterScene = master)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(filtersStore.getShouldUseFramesForReference)
-        .subscribe(
-          (shouldUseFrames) =>
-            (this.shouldUseFramesForReference = shouldUseFrames),
-        ),
     );
   }
 
@@ -54,7 +47,9 @@ export class MasterSceneSelectorComponent implements OnInit, OnDestroy {
 
   public onFrameModeToggled() {
     this.store$.dispatch(
-      new filtersStore.SetUseFrameForBaseline(this.shouldUseFramesForReference),
+      new filtersStore.SetUseFrameForBaseline(
+        this.shouldUseFramesForReference(),
+      ),
     );
   }
 

@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  Output,
-  EventEmitter,
-  inject,
-} from '@angular/core';
+import { Component, Output, EventEmitter, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -14,7 +7,6 @@ import {
 } from '@angular/material/checkbox';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { SubSink } from 'subsink';
 import * as chartsStore from '@store/charts';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -24,12 +16,11 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './timeseries-chart-config.component.html',
   styleUrl: './timeseries-chart-config.component.scss',
 })
-export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
+export class TimeseriesChartConfigComponent {
   private store$ = inject<Store<AppState>>(Store);
 
-  private subs = new SubSink();
-  public showLines = true;
-  public showLinearFit = false;
+  public showLines = this.store$.selectSignal(chartsStore.getShowLines);
+  public showLinearFit = this.store$.selectSignal(chartsStore.getShowLinearFit);
   @Output() public resetReferenceEvent = new EventEmitter();
 
   public onToggleLines(event: MatCheckboxChange) {
@@ -47,24 +38,7 @@ export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {
-    this.subs.add(
-      this.store$
-        .select(chartsStore.getShowLines)
-        .subscribe((showLines) => (this.showLines = showLines)),
-    );
-    this.subs.add(
-      this.store$
-        .select(chartsStore.getShowLinearFit)
-        .subscribe((showLinearFit) => (this.showLinearFit = showLinearFit)),
-    );
-  }
-
   public resetReference() {
     this.resetReferenceEvent.emit();
-  }
-
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
   }
 }

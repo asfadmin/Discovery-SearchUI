@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
-import { SubSink } from 'subsink';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
@@ -14,27 +13,15 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./gridlines-selector.component.scss'],
   imports: [MatButtonToggle, MatTooltip, MatIcon, TranslateModule],
 })
-export class GridlinesSelectorComponent implements OnInit, OnDestroy {
+export class GridlinesSelectorComponent {
   private store$ = inject<Store<AppState>>(Store);
 
-  public areGridlinesActive$ = this.store$.select(
+  public areGridlinesActive = this.store$.selectSignal(
     mapStore.getAreGridlinesActive,
   );
   public active = false;
 
-  public subs = new SubSink();
-
-  ngOnInit(): void {
-    this.subs.add(
-      this.areGridlinesActive$.subscribe((active) => (this.active = active)),
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
-  }
-
   public onToggleGridlines() {
-    this.store$.dispatch(new mapStore.SetGridlines(!this.active));
+    this.store$.dispatch(new mapStore.SetGridlines(!this.areGridlinesActive()));
   }
 }

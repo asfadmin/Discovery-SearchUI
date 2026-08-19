@@ -18,7 +18,7 @@
               <a
                 [href]="dataset.infoUrl"
                 target="_blank"
-                matTooltip="{{ 'DATASET' | translate }}"
+                [matTooltip]="'DATASET' | translate"
               >
                 {{ dataset.name }}
               </a>
@@ -55,7 +55,7 @@
       <div class="thumbs">
         @for (browse of browses$ | async; track browse) {
           <div (click)="onNewBrowseSelected(scene, browse)" class="clickable">
-            <img mat-card-sm-image src="{{ browse }}" />
+            <img mat-card-sm-image [src]="browse" />
           </div>
         }
       </div>
@@ -160,11 +160,11 @@
                       (click)="
                         $event.stopPropagation(); onToggleQueueProduct(product)
                       "
-                      matTooltip="{{
+                      [matTooltip]="
                         !queuedProductIds.has(product.id)
                           ? ('ADD_FILE_TO_QUEUE' | translate)
                           : ('REMOVE_FILE_FROM_QUEUE' | translate)
-                      }}"
+                      "
                       mat-menu-item
                     >
                       @if (!queuedProductIds.has(product.id)) {
