@@ -80,9 +80,11 @@
                     [(ngModel)]="searchList"
                     class="search-list-input"
                     [placeholder]="
-                      ('LIST_OF' | translate) + ' ' + mode === types.SCENE
-                        ? ('SCENE_NAMES' | translate)
-                        : ('FILE_IDS' | translate)
+                      `${('LIST_OF' | translate)} ${
+                        mode === types.SCENE
+                          ? ('SCENE_NAMES' | translate)
+                          : ('FILE_IDS' | translate)
+                      }`
                     "
                   >
                   </textarea>
