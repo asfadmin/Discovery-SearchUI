@@ -10,7 +10,7 @@ export interface GdalOptionsWithFileType {
   outputExtension: string;
   aoi?: boolean;
   minimalCommand?: boolean;
-  os?: string,
+  os?: string;
 }
 
 export interface GdalOptionsWithoutFileType {
@@ -94,7 +94,9 @@ export class GdalService {
 
     if (!minimalCommand) {
       configOptions.push(
-        ...this.configOptions(options.os).map((configOption) => `--config ${configOption}`),
+        ...this.configOptions(options.os).map(
+          (configOption) => `--config ${configOption}`,
+        ),
       );
     }
 
@@ -120,5 +122,13 @@ export class GdalService {
 
   public getProductDatasets(product: CMRProduct): NISARDataset[] {
     return NISARDatasetByProduct[product.metadata.productType](product);
+  }
+
+  public isCropToAOIAvailable(): boolean {
+    if (this.searchPolygon() === null || this.searchPolygon() === undefined) {
+      return false;
+    }
+
+    return this.searchPolygon().includes('POLYGON');
   }
 }

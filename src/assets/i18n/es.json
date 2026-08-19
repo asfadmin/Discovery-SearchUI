@@ -1299,6 +1299,7 @@
   "CONFIGURE_GDAL_OPTIONS": "Configure output options.",
   "RUN_GDAL_SNIPPET": "Copy GDAL snippet.",
   "CROP_TO_AOI": "Crop to Vertex AOI",
+  "CROP_TO_AOI_DISABLED": "Select a polygon AOI to use this feature.",
   "REPROJECT": "Output Projection",
   "REPROJECT_TOOLTIP": "Supports any WGS or EPSG code.",
   "MINIMAL_COMMAND": "Utilize Config File",

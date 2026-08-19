@@ -21,8 +21,12 @@
             <span class="gdal-output-snippet-header-file"> ~/.netrc </span>
           }
           <span class="flex-grow"></span>
-          <div class="copy-to-clipboard-overlay" (click)="copyClipboardNetrcClickTarget.onCopyIconClicked($event)">
-            <app-copy-to-clipboard #copyClipboardNetrcClickTarget
+          <div
+            class="copy-to-clipboard-overlay"
+            (click)="copyClipboardNetrcClickTarget.onCopyIconClicked($event)"
+          >
+            <app-copy-to-clipboard
+              #copyClipboardNetrcClickTarget
               [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
               [value]="netrc.innerText"
               [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
@@ -92,9 +96,19 @@ machine urs.earthdata.nasa.gov
         </mat-form-field>
       </span>
       <span class="option checkbox">
-        <mat-checkbox [(ngModel)]="cropToAOI">{{
-          'CROP_TO_AOI' | translate
-        }}</mat-checkbox>
+        @if (!gdalService.isCropToAOIAvailable()) {
+          <mat-checkbox
+            disabled
+            disabledInteractive
+            [(ngModel)]="cropToAOI"
+            [matTooltip]="'CROP_TO_AOI_DISABLED' | translate"
+            >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
+          >
+        } @else {
+          <mat-checkbox [(ngModel)]="cropToAOI">{{
+            'CROP_TO_AOI' | translate
+          }}</mat-checkbox>
+        }
       </span>
       <span class="option checkbox">
         <mat-checkbox [(ngModel)]="minimalCommand">{{
@@ -108,8 +122,12 @@ machine urs.earthdata.nasa.gov
     <h2>3. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
     <div class="gdal-output-list">
       <div class="gdal-output-wrapper inline">
-        <div class="copy-to-clipboard-overlay hidden" (click)="copyClipboardCommandClickTarget.onCopyIconClicked($event)">
-          <app-copy-to-clipboard #copyClipboardCommandClickTarget
+        <div
+          class="copy-to-clipboard-overlay hidden"
+          (click)="copyClipboardCommandClickTarget.onCopyIconClicked($event)"
+        >
+          <app-copy-to-clipboard
+            #copyClipboardCommandClickTarget
             [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
             [value]="gdalCommand()"
             [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
@@ -132,8 +150,12 @@ machine urs.earthdata.nasa.gov
               </span>
             }
             <span class="flex-grow"></span>
-            <div class="copy-to-clipboard-overlay" (click)="copyClipboardGdalrcClickTarget.onCopyIconClicked($event)">
-              <app-copy-to-clipboard #copyClipboardGdalrcClickTarget
+            <div
+              class="copy-to-clipboard-overlay"
+              (click)="copyClipboardGdalrcClickTarget.onCopyIconClicked($event)"
+            >
+              <app-copy-to-clipboard
+                #copyClipboardGdalrcClickTarget
                 [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
                 [value]="gdalService.generateGdalrc(gdalOptions())"
                 [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
