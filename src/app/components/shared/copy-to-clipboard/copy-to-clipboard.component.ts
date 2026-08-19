@@ -47,7 +47,7 @@ export class CopyToClipboardComponent implements OnDestroy {
   }
   public onCopyIconClicked(e: Event): void {
     this.clipboardService.copyFromContent(this.value());
-    if (this.toast) {
+    if (this.toast()) {
       this.notificationService.info(this.message());
     }
 
@@ -65,7 +65,7 @@ export class CopyToClipboardComponent implements OnDestroy {
 
   public onCopyFromMenu(prompt: string, message: string, value: string) {
     this.clipboardService.copyFromContent(value);
-    if (this.toast) {
+    if (this.toast()) {
       this.notificationService.info(message);
     }
 

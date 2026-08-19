@@ -92,7 +92,7 @@ export class QueueEffects {
           ([format, searchParams]): MetadataDownload => ({
             params: {
               ...searchParams,
-              ...{ output: format.toLowerCase() },
+              output: format.toLowerCase(),
             },
             format: format,
           }),
@@ -117,7 +117,7 @@ export class QueueEffects {
         ),
         map(
           ([format, params]): MetadataDownload => ({
-            params: { ...params, ...{ output: format } },
+            params: { ...params, output: format },
             format,
           }),
         ),

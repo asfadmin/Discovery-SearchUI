@@ -1,4 +1,4 @@
-@if (searchType !== searchTypes.DISPLACEMENT) {
+@if (searchType() !== searchTypes.DISPLACEMENT) {
   <button
     mat-stroked-button
     class="shape-select-button"
@@ -6,13 +6,13 @@
     [attr.aria-label]="'MAP_PROJECTION_VIEW' | translate"
   >
     <div class="shape-select-icon equatorial">
-      @if (drawMode === types.POINT) {
+      @if (drawMode() === types.POINT) {
         <mat-icon class="draw-icon">place</mat-icon>
       }
-      @if (drawMode === types.LINESTRING) {
+      @if (drawMode() === types.LINESTRING) {
         <mat-icon class="draw-icon">timeline</mat-icon>
       }
-      @if (drawMode === types.POLYGON) {
+      @if (drawMode() === types.POLYGON) {
         <svg class="draw-svg-icon" viewBox="0 0 24 24">
           <path
             class="draw-svg"
@@ -20,10 +20,10 @@
           />
         </svg>
       }
-      @if (drawMode === types.BOX) {
+      @if (drawMode() === types.BOX) {
         <mat-icon class="draw-icon">format_shapes</mat-icon>
       }
-      @if (drawMode === types.CIRCLE) {
+      @if (drawMode() === types.CIRCLE) {
         <mat-icon class="draw-icon">radio_button_unchecked</mat-icon>
       }
     </div>
@@ -43,9 +43,9 @@
         >
           <div class="button-text">
             <mat-icon class="material-icons-outlined menu-draw-icon">
-              {{ drawMode | aoiIcon }}
+              {{ drawMode() | aoiIcon }}
             </mat-icon>
-            {{ drawMode.toUpperCase() | translate }}
+            {{ drawMode().toUpperCase() | translate }}
             <span class="mat-select-arrow"></span>
           </div>
         </button>
@@ -56,7 +56,7 @@
           <mat-slide-toggle
             class="draw-toggle"
             (click)="toggleDrawMode()"
-            [checked]="isDrawing"
+            [checked]="isDrawing()"
             [disabled]="isDisabled"
           >
             {{ 'DRAW' | translate | titlecase }}
@@ -80,7 +80,7 @@
     {{ 'PLACE_A_POINT' | translate }}
   </button>
 
-  @if (searchType !== searchTypes.DISPLACEMENT) {
+  @if (searchType() !== searchTypes.DISPLACEMENT) {
     <button
       mat-menu-item
       (click)="onLineStringSelected()"
@@ -94,7 +94,7 @@
     </button>
   }
 
-  @if (searchType !== searchTypes.DISPLACEMENT) {
+  @if (searchType() !== searchTypes.DISPLACEMENT) {
     <button
       mat-menu-item
       (click)="onPolygonSelected()"
@@ -108,7 +108,7 @@
     </button>
   }
 
-  @if (searchType !== searchTypes.DISPLACEMENT) {
+  @if (searchType() !== searchTypes.DISPLACEMENT) {
     <button
       mat-menu-item
       (click)="onBoxSelected()"
@@ -122,7 +122,7 @@
     </button>
   }
 
-  @if (searchType !== searchTypes.DISPLACEMENT) {
+  @if (searchType() !== searchTypes.DISPLACEMENT) {
     <button
       mat-menu-item
       (click)="onCircleSelected()"
@@ -137,7 +137,8 @@
   }
 
   @if (
-    breakpoint !== breakpoints.MOBILE && searchType !== searchTypes.DISPLACEMENT
+    breakpoint !== breakpoints.MOBILE &&
+    searchType() !== searchTypes.DISPLACEMENT
   ) {
     <button
       mat-menu-item

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -43,47 +43,32 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
 
-  public drawMode: MapDrawModeType;
+  public drawMode = this.store$.selectSignal(mapStore.getMapDrawMode);
   public types = MapDrawModeType;
   private subs = new SubSink();
 
   public breakpoint: Breakpoints;
-  public searchType: SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = SearchType;
   public breakpoints = Breakpoints;
 
+  public interactionMode = this.store$.selectSignal(
+    mapStore.getMapInteractionMode,
+  );
   public interaction: MapInteractionModeType;
   public interactionTypes = MapInteractionModeType;
 
-  public isDrawing = true;
+  public isDrawing = computed(() => {
+    return this.interactionMode() === MapInteractionModeType.DRAW;
+  });
   isDisabled = false;
   color: ThemePalette = 'accent';
 
   ngOnInit() {
     this.subs.add(
-      this.store$
-        .select(mapStore.getMapInteractionMode)
-        .subscribe(
-          (mode) => (this.isDrawing = mode === MapInteractionModeType.DRAW),
-        ),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(mapStore.getMapDrawMode)
-        .subscribe((drawMode) => (this.drawMode = drawMode)),
-    );
-
-    this.subs.add(
       this.screenSize.breakpoint$.subscribe(
         (breakpoint) => (this.breakpoint = breakpoint),
       ),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
     );
   }
 
@@ -96,7 +81,7 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
 
   public toggleDrawMode() {
     let newMode = MapInteractionModeType.DRAW;
-    if (this.isDrawing) {
+    if (this.isDrawing()) {
       newMode = MapInteractionModeType.NONE;
     }
     this.onNewInteractionMode(newMode);

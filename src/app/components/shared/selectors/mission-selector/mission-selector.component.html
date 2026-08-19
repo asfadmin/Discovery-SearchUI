@@ -9,13 +9,13 @@
   </mat-form-field>
 </form>
 
-@if (!!selectedMission) {
+@if (!!selectedMission()) {
   <div class="selected">
     <div class="selected-row">
       <div>
         <span class="v-mid selected-label">
           <b>{{ 'SELECTED' | translate }}</b> <span> • </span>
-          {{ selectedMission }}
+          {{ selectedMission() }}
         </span>
       </div>
       <div>
@@ -24,7 +24,7 @@
           class="clickable v-mid clear-mission-icon"
           mat-list-icon
           matTooltip="{{ 'CLEAR_SELECTED_MISSION' | translate }}"
-          >{{ 'CLEAR' | translate }}</mat-icon
+          >clear</mat-icon
         >
       </div>
     </div>

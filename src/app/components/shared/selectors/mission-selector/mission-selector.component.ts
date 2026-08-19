@@ -61,17 +61,15 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   private fb = inject(UntypedFormBuilder);
 
-  public missionsByDataset$ = this.store$.select(
-    filtersStore.getMissionsByDataset,
-  );
-  public missionDatasets$ = this.missionsByDataset$.pipe(
-    map((missions) => Object.keys(missions)),
-  );
   public dataset$ = this.store$.select(filtersStore.getSelectedDataset);
 
-  public missionsByDataset: Record<string, string[]>;
-  public missionDatasets: string[];
-  public selectedMission: string | null;
+  public missionsByDataset = this.store$.selectSignal(
+    filtersStore.getMissionsByDataset,
+  );
+
+  public selectedMission = this.store$.selectSignal(
+    filtersStore.getSelectedMission,
+  );
 
   public filteredMissions: string[];
   public datasetFilter: string | null = null;
@@ -88,22 +86,9 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      this.missionsByDataset$.subscribe((missions) => {
-        this.missionsByDataset = missions;
+      this.store$.select(filtersStore.getMissionsByDataset).subscribe((_) => {
         this.filteredMissions = this._filterGroup(this.currentFilter);
       }),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(filtersStore.getSelectedMission)
-        .subscribe((selected) => (this.selectedMission = selected)),
-    );
-
-    this.subs.add(
-      this.missionDatasets$.subscribe(
-        (datasets) => (this.missionDatasets = datasets),
-      ),
     );
 
     this.subs.add(
@@ -138,8 +123,8 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
 
   private _filterGroup(filterValue: string): string[] {
     const missionsUnfiltered = this.datasetFilter
-      ? this.missionsByDataset[this.datasetFilter]
-      : Object.values(this.missionsByDataset).reduce(
+      ? this.missionsByDataset()[this.datasetFilter]
+      : Object.values(this.missionsByDataset()).reduce(
           (allMissions, missions) => [...allMissions, ...missions],
           [],
         );

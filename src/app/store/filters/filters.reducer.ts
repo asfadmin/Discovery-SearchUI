@@ -813,13 +813,13 @@ export function filtersReducer(
     case FiltersActionType.SET_FULL_BURSTS: {
       return {
         ...state,
-        fullBurstIDs: [...new Set([...action.payload])],
+        fullBurstIDs: [...new Set(action.payload)],
       };
     }
     case FiltersActionType.SET_OPERA_BURST_IDS: {
       return {
         ...state,
-        operaBurstIDs: [...new Set([...action.payload])],
+        operaBurstIDs: [...new Set(action.payload)],
       };
     }
     case FiltersActionType.ADD_FULL_BURSTS: {

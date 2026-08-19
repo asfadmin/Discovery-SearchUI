@@ -14,6 +14,11 @@ module.exports = tseslint.config(
       ...angular.configs.tsRecommended,
     ],
     processor: angular.processInlineTemplates,
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+      },
+    },
     rules: {
       '@angular-eslint/component-selector': [
         'error',
@@ -40,6 +45,7 @@ module.exports = tseslint.config(
       'no-useless-escape': 'off',
       '@angular-eslint/no-output-on-prefix': 'off',
       '@angular-eslint/no-output-native': 'off',
+      '@angular-eslint/no-uncalled-signals': 'error',
     },
   },
   {

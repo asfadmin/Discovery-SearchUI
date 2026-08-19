@@ -72,7 +72,9 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
 
   @Input() headerView: boolean;
 
-  public productNameFilter = '';
+  public productNameFilter = this.store$.selectSignal(
+    filtersStore.getProductNameFilter,
+  );
   private subs = new SubSink();
   public filteredOptions: EventEmitter<string[]> = new EventEmitter<string[]>();
   public unfilteredScenes: string[];
@@ -85,14 +87,6 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   public screenWidth: number;
 
   ngOnInit(): void {
-    this.subs.add(
-      this.store$
-        .select(filtersStore.getProductNameFilter)
-        .subscribe(
-          (productNameFilter) => (this.productNameFilter = productNameFilter),
-        ),
-    );
-
     this.subs.add(
       this.screenSize.size$.subscribe(
         (screenSize) => (this.screenWidth = screenSize.width),
@@ -133,8 +127,8 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
       ])
         .pipe(map(([_, filteredRes]) => filteredRes))
         .subscribe((res) => {
-          if (this.productNameFilter != null) {
-            const temp = this.productNameFilter
+          if (this.productNameFilter() != null) {
+            const temp = this.productNameFilter()
               .replace(/\s+/g, '')
               .endsWith(',')
               ? this.unfilteredScenes.filter((scene) => !res.includes(scene))
@@ -172,12 +166,12 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   public autoCompleteEntry(suggestion: string) {
     let output = '';
 
-    if (this.productNameFilter != null) {
-      if (this.productNameFilter.split(',').length > 1) {
-        if (this.productNameFilter.replace(/\s+/g, '').endsWith(',')) {
-          output = this.productNameFilter + suggestion;
+    if (this.productNameFilter() != null) {
+      if (this.productNameFilter().split(',').length > 1) {
+        if (this.productNameFilter().replace(/\s+/g, '').endsWith(',')) {
+          output = this.productNameFilter() + suggestion;
         } else {
-          const fields = this.productNameFilter.split(',');
+          const fields = this.productNameFilter().split(',');
           fields[fields.length - 1] = suggestion;
           output = fields.join(', ');
         }
@@ -189,11 +183,11 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   }
 
   public autoSuggestion(suggestion: string) {
-    if (this.productNameFilter == null) {
+    if (this.productNameFilter() == null) {
       return suggestion;
     }
-    if (this.productNameFilter.split(',').length > 1) {
-      const filenames = this.productNameFilter
+    if (this.productNameFilter().split(',').length > 1) {
+      const filenames = this.productNameFilter()
         .replace(/\s+/g, '')
         .toLowerCase();
       if (filenames.endsWith(',')) {
@@ -204,7 +198,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
         return suggestion.includes(lastEntry) ? suggestion : '';
       }
     }
-    return suggestion.includes(this.productNameFilter) ? suggestion : '';
+    return suggestion.includes(this.productNameFilter()) ? suggestion : '';
   }
 
   public autoSuggestionDisplay(suggestion: string) {
@@ -247,10 +241,9 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   }
 
   private latestInput(): string {
-    const entries = this.productNameFilter.replace(/\s+/g, '').split(',');
+    const entries = this.productNameFilter().replace(/\s+/g, '').split(',');
     return entries[entries.length - 1].toLowerCase();
   }
-
   public toggleJobFilterOptions() {
     this.isJobFilterOptionsOpen = !this.isJobFilterOptionsOpen;
   }
