@@ -179,7 +179,7 @@
                         [disabled]="(numOfScenesWithPolygon$ | async) === 0"
                         (click)="onZoomToResults()"
                         class="control-mat-button-toggle clickable noselect"
-                        matTooltip="{{ 'ZOOM_TO_RESULTS' | translate }}"
+                        [matTooltip]="'ZOOM_TO_RESULTS' | translate"
                       >
                         <mat-icon class="list-icon">
                           settings_overscan
@@ -205,9 +205,9 @@
                       <mat-button-toggle
                         class="control-mat-button-toggle"
                         [matMenuTriggerFor]="addAllProducts"
-                        matTooltip="{{
+                        [matTooltip]="
                           'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate
-                        }}"
+                        "
                       >
                         <mat-icon class="list-icon">
                           add_shopping_cart
@@ -236,9 +236,9 @@
                         class="control-mat-button-toggle clickable noselect"
                         [matMenuTriggerFor]="listAdd.addMenu"
                         [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
-                        matTooltip="{{
+                        [matTooltip]="
                           'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate
-                        }}"
+                        "
                         [aria-label]="
                           'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate
                         "
@@ -266,9 +266,9 @@
                       <mat-button-toggle
                         class="control-mat-button-toggle clickable noselect"
                         [matMenuTriggerFor]="OnDemandCodeExport"
-                        matTooltip="{{
+                        [matTooltip]="
                           'SDK_PYTHON_CODE_EXPORT_TOOLTIP' | translate
-                        }}"
+                        "
                       >
                         <mat-icon class="list-icon"> get_app </mat-icon>
                       </mat-button-toggle>
@@ -334,9 +334,7 @@
                       <mat-button-toggle
                         class="control-mat-button-toggle clickable noselect"
                         [matMenuTriggerFor]="ExportAll"
-                        matTooltip="{{
-                          'DOWNLOAD_DATA_METADATA_AS' | translate
-                        }}"
+                        [matTooltip]="'DOWNLOAD_DATA_METADATA_AS' | translate"
                       >
                         <mat-icon class="list-icon"> get_app </mat-icon>
                       </mat-button-toggle>
@@ -360,7 +358,7 @@
                       <mat-button-toggle
                         (click)="onDownloadPairCSV()"
                         class="control-mat-button-toggle clickable noselect"
-                        matTooltip="{{ 'DOWNLOAD_PAIR_CSV' | translate }}"
+                        [matTooltip]="'DOWNLOAD_PAIR_CSV' | translate"
                       >
                         <mat-icon class="list-icon"> get_app </mat-icon>
                       </mat-button-toggle>

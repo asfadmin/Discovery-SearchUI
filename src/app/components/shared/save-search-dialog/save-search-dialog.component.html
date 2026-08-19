@@ -12,9 +12,9 @@
           #saveNameInput="ngModel"
           ngModel
           name="searchNameInput"
-          placeholder="{{
+          [placeholder]="
             (saveTypeName | uppercase | translate) + ' ' + ('NAME' | translate)
-          }}"
+          "
           matInput
           (input)="onSaveNameInput($event)"
           (change)="onSaveNameChange($event)"

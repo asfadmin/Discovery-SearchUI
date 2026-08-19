@@ -13,7 +13,7 @@
         (selectionChange)="onNewDatasetBeamModes($event.value)"
         [(ngModel)]="beamModes"
         [disabled]="!(dataset | isRelevant: p.BEAM_MODE)"
-        placeholder="{{ 'BEAM_MODE' | translate }}"
+        [placeholder]="'BEAM_MODE' | translate"
         multiple
       >
         @for (mode of dataset.beamModes; track mode) {
@@ -38,7 +38,7 @@
       (selectionChange)="onNewDatasetPolarizations($event.value)"
       [(ngModel)]="polarizations"
       [disabled]="!(dataset | isRelevant: p.POLARIZATION)"
-      placeholder="{{ 'POLARIZATION' | translate }}"
+      [placeholder]="'POLARIZATION' | translate"
       multiple
     >
       @for (pol of dataset.polarizations; track pol) {
@@ -62,7 +62,7 @@
       (selectionChange)="onNewFlightDirectionsSelected($event.value)"
       [(ngModel)]="flightDirections"
       [disabled]="!(dataset | isRelevant: p.FLIGHT_DIRECTION)"
-      placeholder="{{ 'DIRECTION' | translate }}"
+      [placeholder]="'DIRECTION' | translate"
       multiple
     >
       @for (direction of flightDirectionTypes; track direction) {
@@ -88,7 +88,7 @@
         (selectionChange)="onNewPlatformSelected($event.value)"
         [(ngModel)]="platforms"
         [disabled]="!(dataset | isRelevant: p.PLATFORM)"
-        placeholder="{{ 'SATELLITE' | translate }}"
+        [placeholder]="'SATELLITE' | translate"
         multiple
       >
         @for (platform of dataset.platforms; track platform) {

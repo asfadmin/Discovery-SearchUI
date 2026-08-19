@@ -7,7 +7,7 @@
             [matMenuTriggerFor]="onDemandQueue"
             class="spacing nav-icon-buttons"
             color="basic"
-            matTooltip="{{ 'ON_DEMAND_QUEUE' | translate }}"
+            [matTooltip]="'ON_DEMAND_QUEUE' | translate"
             mat-button
           >
             <mat-icon
@@ -48,7 +48,7 @@
             (click)="onOpenDownloadQueue()"
             class="spacing nav-icon-buttons"
             color="basic"
-            matTooltip="{{ 'DOWNLOADS' | translate }}"
+            [matTooltip]="'DOWNLOADS' | translate"
             mat-button
           >
             <mat-icon
@@ -91,10 +91,10 @@
                 (isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL')
                   | translate
               "
-              matTooltip="{{
+              [matTooltip]="
                 (isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL')
                   | translate
-              }}"
+              "
             >
               <mat-icon>{{
                 isHeaderExpanded ? 'chevron_right' : 'chevron_left'
@@ -107,7 +107,7 @@
                 class="spacing nav-icon-buttons nav-icon-buttons-raised panel-storymap-button"
                 color="basic"
                 mat-button
-                matTooltip="{{ 'STORYMAP' | translate }}"
+                [matTooltip]="'STORYMAP' | translate"
                 (click)="onOpenStoryMap()"
               >
                 <img
@@ -124,7 +124,7 @@
                 class="spacing nav-icon-buttons nav-icon-buttons-raised panel-info-button"
                 color="basic"
                 mat-button
-                matTooltip="{{ 'DATASET_INFO' | translate }}"
+                [matTooltip]="'DATASET_INFO' | translate"
                 (click)="onOpenOperaInfo()"
               >
                 <mat-icon class="material-symbols-outlined large-icon"
@@ -137,7 +137,7 @@
               </button>
               <button
                 [matMenuTriggerFor]="helpMenu"
-                matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+                [matTooltip]="'HELP_AND_INFORMATION' | translate"
                 class="spacing nav-icon-buttons"
                 color="basic"
                 mat-button
@@ -149,7 +149,7 @@
               </button>
               <button
                 [matMenuTriggerFor]="languageMenu"
-                matTooltip="{{ 'LANGUAGE' | translate }}"
+                [matTooltip]="'LANGUAGE' | translate"
                 class="spacing nav-icon-buttons disp-translate-button"
                 color="basic"
                 mat-button
@@ -168,7 +168,7 @@
                 (click)="onAccountButtonClicked()"
                 class="spacing nav-icon-buttons"
                 color="basic"
-                matTooltip="{{ 'LOGIN' | translate }}"
+                [matTooltip]="'LOGIN' | translate"
                 mat-button
               >
                 <mat-icon class="large-icon">account_circle</mat-icon>
@@ -181,7 +181,7 @@
                 [matMenuTriggerFor]="profileMenu"
                 class="spacing nav-icon-buttons"
                 color="basic"
-                matTooltip="{{ 'PROFILE' | translate }}"
+                [matTooltip]="'PROFILE' | translate"
                 mat-button
               >
                 <mat-icon class="large-icon">account_circle</mat-icon>
@@ -202,7 +202,7 @@
             class="spacing nav-icon-buttons disp-icon-adjust panel-storymap-button"
             color="basic"
             mat-button
-            matTooltip="{{ 'STORYMAP' | translate }}"
+            [matTooltip]="'STORYMAP' | translate"
             (click)="onOpenStoryMap()"
           >
             <img
@@ -219,7 +219,7 @@
             class="spacing nav-icon-buttons disp-icon-adjust panel-info-button"
             color="basic"
             mat-button
-            matTooltip="{{ 'DATASET_INFO' | translate }}"
+            [matTooltip]="'DATASET_INFO' | translate"
             (click)="onOpenOperaInfo()"
           >
             <mat-icon class="material-symbols-outlined large-icon"
@@ -238,7 +238,7 @@
           <!-- Help, Language, Login for non-Displacement OR Displacement with larger breakpoints -->
           <button
             [matMenuTriggerFor]="helpMenu"
-            matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+            [matTooltip]="'HELP_AND_INFORMATION' | translate"
             class="spacing nav-icon-buttons"
             color="basic"
             mat-button
@@ -248,7 +248,7 @@
           </button>
           <button
             [matMenuTriggerFor]="languageMenu"
-            matTooltip="{{ 'LANGUAGE' | translate }}"
+            [matTooltip]="'LANGUAGE' | translate"
             class="spacing nav-icon-buttons"
             [class.disp-translate-button]="
               searchType === searchTypes.DISPLACEMENT
@@ -264,7 +264,7 @@
               (click)="onAccountButtonClicked()"
               class="spacing nav-icon-buttons"
               color="basic"
-              matTooltip="{{ 'LOGIN' | translate }}"
+              [matTooltip]="'LOGIN' | translate"
               mat-button
             >
               <mat-icon class="large-icon">account_circle</mat-icon>
@@ -277,7 +277,7 @@
               [matMenuTriggerFor]="profileMenu"
               class="spacing nav-icon-buttons"
               color="basic"
-              matTooltip="{{ 'PROFILE' | translate }}"
+              [matTooltip]="'PROFILE' | translate"
               mat-button
             >
               <mat-icon class="large-icon">account_circle</mat-icon>
@@ -291,7 +291,7 @@
       <mat-icon
         [matMenuTriggerFor]="onDemandQueue"
         class="mobile-icon-spacing"
-        matTooltip="{{ 'ON_DEMAND_QUEUE' | translate }}"
+        [matTooltip]="'ON_DEMAND_QUEUE' | translate"
         svgIcon="hyp3"
         [matBadge]="queuedCustomProducts.length"
         [matBadgeColor]="

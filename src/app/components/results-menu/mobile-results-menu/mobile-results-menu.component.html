@@ -96,7 +96,7 @@
                           <a
                             [href]="dataset.infoUrl"
                             target="_blank"
-                            matTooltip="{{ 'DATASET' | translate }}"
+                            [matTooltip]="'DATASET' | translate"
                             class="faint-text"
                           >
                             {{ dataset.name | translate }}
@@ -192,7 +192,7 @@
                   >error_outline</mat-icon
                 >
                 <app-docs-modal
-                  text="{{ 'GAPS_DETECTED' | translate }}"
+                  [text]="'GAPS_DETECTED' | translate"
                   url="https://docs.asf.alaska.edu/vertex/sbas/#gaps-detected-warning-message"
                 ></app-docs-modal>
               </div>

@@ -36,7 +36,7 @@
   <mat-button-toggle
     (click)="onClearSelected()"
     class="control-mat-button-toggle"
-    matTooltip="{{ 'CLEAR_CURRENT_AREA_OF_INTEREST' | translate }}"
+    [matTooltip]="'CLEAR_CURRENT_AREA_OF_INTEREST' | translate"
     #clearButton
   >
     <mat-icon class="interaction-icon">delete</mat-icon>

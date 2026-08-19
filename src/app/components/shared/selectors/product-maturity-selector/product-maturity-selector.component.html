@@ -1,6 +1,6 @@
 <mat-form-field
   appearance="fill"
-  matTooltip="{{ 'PRODUCT_MATURITY_TOOLTIP' | translate }}"
+  [matTooltip]="'PRODUCT_MATURITY_TOOLTIP' | translate"
 >
   <mat-label>{{ 'PRODUCT_MATURITY' | translate }}</mat-label>
   <mat-select

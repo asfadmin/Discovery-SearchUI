@@ -3,7 +3,7 @@
     <input
       type="text"
       matInput
-      placeholder="{{ 'FILTER_CAMPAIGN' | translate }}"
+      [placeholder]="'FILTER_CAMPAIGN' | translate"
       formControlName="missionFilter"
     />
   </mat-form-field>
@@ -23,7 +23,7 @@
           (click)="setMission(null)"
           class="clickable v-mid clear-mission-icon"
           mat-list-icon
-          matTooltip="{{ 'CLEAR_SELECTED_MISSION' | translate }}"
+          [matTooltip]="'CLEAR_SELECTED_MISSION' | translate"
           >clear</mat-icon
         >
       </div>

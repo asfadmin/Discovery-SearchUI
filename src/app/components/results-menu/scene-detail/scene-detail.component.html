@@ -25,7 +25,7 @@
         <a
           [href]="dataset.infoUrl"
           target="_blank"
-          matTooltip="{{ 'DATASET' | translate }}"
+          [matTooltip]="'DATASET' | translate"
           class="faint-text"
         >
           {{ dataset.name }}
@@ -37,11 +37,11 @@
         @if (dataset.id === 'NISAR') {
           <app-docs-modal
             class="info-text nisar-product-type"
-            text="{{ scene.metadata.productType }}"
+            [text]="scene.metadata.productType"
             [url]="productTypeDocsUrl"
           ></app-docs-modal>
         }
-        <span matTooltip="{{ 'FREQUENCY' | translate }}">
+        <span [matTooltip]="'FREQUENCY' | translate">
           {{ dataset.frequency }}
         </span>
         @if (nisarCalibration(); as calibration) {
@@ -97,7 +97,7 @@
             <p>{{ 'JOB_INGEST_PROCESSING' | translate }}</p>
             <app-docs-modal
               url="https://hyp3-docs.asf.alaska.edu/guides/gunw_product_guide/#accessing-products-in-the-archive"
-              text="{{ 'ARIA_INGEST_DOCS' | translate }}"
+              [text]="'ARIA_INGEST_DOCS' | translate"
             >
             </app-docs-modal>
           } @else {
@@ -121,7 +121,7 @@
                   </span>
                   <app-copy-to-clipboard
                     [value]="scene.metadata.job.scenes[1].name"
-                    prompt="{{ 'COPY_SECONDARY_SCENE_NAME' | translate }}"
+                    [prompt]="'COPY_SECONDARY_SCENE_NAME' | translate"
                     class="clipboard-icon"
                   ></app-copy-to-clipboard>
                   <app-scene-metadata
@@ -143,7 +143,7 @@
                 <div
                   class="fullscreen clickable"
                   (click)="onOpenImage()"
-                  matTooltip="{{ 'OPEN_IN_IMAGE_VIEWER' | translate }}"
+                  [matTooltip]="'OPEN_IN_IMAGE_VIEWER' | translate"
                 >
                   <mat-icon>preview</mat-icon>
                 </div>
@@ -151,7 +151,7 @@
                   class="download clickable"
                   [href]="(browses$ | async)[0]"
                   target="_blank"
-                  matTooltip="{{ 'DOWNLOAD_THIS_IMAGE' | translate }}"
+                  [matTooltip]="'DOWNLOAD_THIS_IMAGE' | translate"
                 >
                   <mat-icon>download</mat-icon>
                 </a>

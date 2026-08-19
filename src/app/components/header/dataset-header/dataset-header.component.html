@@ -32,7 +32,7 @@
               @if (frameSelectionEnabled$ | async) {
                 <div
                   class="download-frame-map"
-                  matTooltip="{{ 'DOWNLOAD_FRAME_MAP_TOOLTIP' | translate }}"
+                  [matTooltip]="'DOWNLOAD_FRAME_MAP_TOOLTIP' | translate"
                 >
                   <a (click)="frameMapService.downloadFrameMap(dataset().id)">
                     <mat-icon>download</mat-icon>

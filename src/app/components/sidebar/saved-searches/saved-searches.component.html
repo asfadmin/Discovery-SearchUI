@@ -51,7 +51,7 @@
             (input)="onNewFilter($event)"
             (keyup.enter)="unfocusFilter()"
             name="filterSearches"
-            placeholder="{{ 'FILTER_SEARCHES' | translate }}"
+            [placeholder]="'FILTER_SEARCHES' | translate"
           />
         </mat-form-field>
       </form>

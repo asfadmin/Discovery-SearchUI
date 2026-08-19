@@ -2,7 +2,7 @@
   <mat-select
     [value]="selected"
     (selectionChange)="onSelect($event)"
-    placeholder="{{ 'PRODUCT_TYPE' | translate }}"
+    [placeholder]="'PRODUCT_TYPE' | translate"
     multiple
   >
     @for (jobType of hyp3JobTypes; track jobType) {

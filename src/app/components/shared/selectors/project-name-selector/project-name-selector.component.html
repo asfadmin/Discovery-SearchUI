@@ -6,7 +6,7 @@
     <input
       type="text"
       name="projectNameInput"
-      placeholder="{{ 'PROJECT_NAME' | translate }}"
+      [placeholder]="'PROJECT_NAME' | translate"
       aria-label="PROJECT_NAME"
       matInput
       (input)="onProjectNameInput($event)"

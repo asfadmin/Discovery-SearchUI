@@ -50,7 +50,7 @@
               : product.metadata.parentID || product.id
           "
           [message]="'COPIED_FILE_ID' | translate"
-          prompt="{{ 'COPY_FILE_ID' | translate }}"
+          [prompt]="'COPY_FILE_ID' | translate"
         >
         </app-copy-to-clipboard>
         @if (product.metadata?.s3URI !== null) {
@@ -95,7 +95,7 @@
         <mat-icon
           svgIcon="hyp3"
           class="hype-icon-button"
-          matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
+          [matTooltip]="'ADD_TO_ON_DEMAND_QUEUE' | translate"
         >
         </mat-icon>
       }
@@ -160,7 +160,7 @@
         <div matListItemLine>
           <b>{{ 'JOB_ID' | translate }} </b>
           <app-copy-to-clipboard
-            prompt="{{ 'COPY_JOB_ID' | translate }}"
+            [prompt]="'COPY_JOB_ID' | translate"
             [value]="product.metadata.job.job_id"
           >
           </app-copy-to-clipboard>
@@ -209,7 +209,7 @@
         >
           <mat-icon
             class="hype-icon-button clickable"
-            matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
+            [matTooltip]="'ADD_TO_ON_DEMAND_QUEUE' | translate"
             svgIcon="hyp3"
           >
           </mat-icon>
