@@ -11,13 +11,32 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
-      <code>
-        <pre class="gdal-output file" data-file="~/.netrc">
+      <div class="gdal-output-wrapper">
+        <div class="gdal-output-snippet-header inline">
+          @if (getOS() === 'Windows') {
+            <span class="gdal-output-snippet-header-file">
+              %USERPROFILE%/.netrc
+            </span>
+          } @else {
+            <span class="gdal-output-snippet-header-file"> ~/.netrc </span>
+          }
+          <span class="flex-grow"></span>
+          <div class="copy-to-clipboard-overlay" (click)="copyClipboardNetrcClickTarget.onCopyIconClicked($event)">
+            <app-copy-to-clipboard #copyClipboardNetrcClickTarget
+              [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
+              [value]="netrc.innerText"
+              [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
+            ></app-copy-to-clipboard>
+          </div>
+        </div>
+        <code>
+          <pre #netrc class="gdal-output file">
 machine urs.earthdata.nasa.gov
     login &lt;YOUR USERNAME&gt;
     password &lt;YOUR PASSWORD&gt;</pre
-        >
-      </code>
+          >
+        </code>
+      </div>
       <app-docs-modal
         class="info-text"
         text="EXPORT_GDAL_HELP_LINK"
@@ -87,30 +106,45 @@ machine urs.earthdata.nasa.gov
 
   <div class="gdal-output-card">
     <h2>3. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
-    <code>
-      <app-copy-to-clipboard
-        class="compact"
-        [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
-        [value]="gdalCommand()"
-        [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
-      ></app-copy-to-clipboard>
-      <pre #gdalOutput class="gdal-output sh">
-      </pre>
-    </code>
-    @if (minimalCommand()) {
-      <code>
-        <app-copy-to-clipboard
-          class="compact"
-          [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
-          [value]="gdalService.generateGdalrc()"
-          [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
-        ></app-copy-to-clipboard>
-        <pre
-          #gdalrcOutput
-          class="gdal-output file"
-          data-file="~/.gdal/gdalrc"
-        ></pre>
-      </code>
-    }
+    <div class="gdal-output-list">
+      <div class="gdal-output-wrapper inline">
+        <div class="copy-to-clipboard-overlay hidden" (click)="copyClipboardCommandClickTarget.onCopyIconClicked($event)">
+          <app-copy-to-clipboard #copyClipboardCommandClickTarget
+            [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
+            [value]="gdalCommand()"
+            [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
+          ></app-copy-to-clipboard>
+        </div>
+        <code>
+          <pre #gdalOutput class="gdal-output sh"></pre>
+        </code>
+      </div>
+      @if (minimalCommand()) {
+        <div class="gdal-output-wrapper">
+          <div class="gdal-output-snippet-header">
+            @if (getOS() === 'Windows') {
+              <span class="gdal-output-snippet-header-file">
+                %USERPROFILE%/.gdal/gdalrc
+              </span>
+            } @else {
+              <span class="gdal-output-snippet-header-file">
+                ~/.gdal/gdalrc
+              </span>
+            }
+            <span class="flex-grow"></span>
+            <div class="copy-to-clipboard-overlay" (click)="copyClipboardGdalrcClickTarget.onCopyIconClicked($event)">
+              <app-copy-to-clipboard #copyClipboardGdalrcClickTarget
+                [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
+                [value]="gdalService.generateGdalrc(gdalOptions())"
+                [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
+              ></app-copy-to-clipboard>
+            </div>
+          </div>
+          <code>
+            <pre #gdalrcOutput class="gdal-output file"></pre>
+          </code>
+        </div>
+      }
+    </div>
   </div>
 </div>

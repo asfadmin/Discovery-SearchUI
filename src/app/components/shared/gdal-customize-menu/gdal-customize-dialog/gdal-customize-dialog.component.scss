@@ -14,7 +14,7 @@ h1 {
 .gdal-dataset {
   display: flex;
   flex-direction: row;
-  gap: 0.25em;
+  gap: 0.5em;
   align-items: center;
 }
 
@@ -93,25 +93,66 @@ h1 {
   display: flex;
 }
 
-.gdal-output {
-  padding: 1em;
+.gdal-output-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.gdal-output-wrapper {
+  position: relative;
+  padding: 1em 1em 0em 1em;
   border-radius: 15px;
-  overflow: scroll;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
 }
 
-.gdal-output::before {
+.gdal-output-wrapper.inline {
+  padding-top: 0.5em;
+}
+
+.gdal-output {
+  padding: 0em 0em 0.5em 0em;
+  overflow: scroll;
+}
+
+.gdal-output-snippet-header, .gdal-output::before {
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
 }
 
-.gdal-output.file::before {
+.gdal-output-snippet-header {
   font-size: 16px;
   font-style: italic;
-  display: block;
-  padding-bottom: 0.4em;
-  content: attr(data-file);
+  display: flex;
+}
+
+.copy-to-clipboard-overlay {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
+}
+
+.copy-to-clipboard-overlay.hidden {
+  display: none;
+}
+
+.gdal-output-wrapper:hover {
+  @include themify($themes) {
+    background-color: themed('dark-focused');
+  }
+
+  .copy-to-clipboard-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Dynamically offsets by its own width/height */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .gdal-output.sh::before {

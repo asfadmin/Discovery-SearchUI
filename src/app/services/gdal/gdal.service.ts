@@ -10,6 +10,7 @@ export interface GdalOptionsWithFileType {
   outputExtension: string;
   aoi?: boolean;
   minimalCommand?: boolean;
+  os?: string,
 }
 
 export interface GdalOptionsWithoutFileType {
@@ -19,6 +20,7 @@ export interface GdalOptionsWithoutFileType {
   outputExtension?: never;
   aoi?: boolean;
   minimalCommand?: boolean;
+  os?: string;
 }
 
 export type GdalOptions = GdalOptionsWithFileType | GdalOptionsWithoutFileType;
@@ -29,19 +31,29 @@ export type GdalOptions = GdalOptionsWithFileType | GdalOptionsWithoutFileType;
 export class GdalService {
   mapService = inject(MapService);
   searchPolygon = toSignal(this.mapService.searchPolygon$);
-  configOptions = [
-    'CPL_VSIL_CURL_CHUNK_SIZE=2097152',
-    'CPL_VSIL_CURL_CACHE_SIZE=67108864',
-    'GDAL_CACHEMAX=64000000',
-    'GDAL_DISABLE_READDIR_ON_OPEN=TRUE',
-    'GDAL_HTTP_MERGE_CONSECUTIVE_RANGES=YES',
-    'GDAL_HTTP_MULTIPLEX=YES',
-    'GDAL_NUM_THREADS=ALL_CPUS',
-    'CPL_VSIL_CURL_CACHE_SIZE=1GB',
-    'GDAL_HTTP_NETRC=YES',
-    'GDAL_HTTP_COOKIEFILE=/tmp/gdal_cookies.txt',
-    'GDAL_HTTP_COOKIEJAR=/tmp/gdal_cookies.txt',
-  ];
+  public configOptions(os: string) {
+    return [
+      'CPL_VSIL_CURL_CHUNK_SIZE=2097152',
+      'CPL_VSIL_CURL_CACHE_SIZE=67108864',
+      'GDAL_CACHEMAX=64000000',
+      'GDAL_DISABLE_READDIR_ON_OPEN=TRUE',
+      'GDAL_HTTP_MERGE_CONSECUTIVE_RANGES=YES',
+      'GDAL_HTTP_MULTIPLEX=YES',
+      'GDAL_NUM_THREADS=ALL_CPUS',
+      'CPL_VSIL_CURL_CACHE_SIZE=1GB',
+      'GDAL_HTTP_NETRC=YES',
+      `GDAL_HTTP_COOKIEFILE=${this.getTempDir(os)}gdal_cookies.txt`,
+      `GDAL_HTTP_COOKIEJAR=${this.getTempDir(os)}gdal_cookies.txt`,
+    ];
+  }
+
+  private getTempDir(os: string) {
+    if (os == 'Windows') {
+      return '%TEMP%/';
+    }
+
+    return '/tmp/';
+  }
 
   public generateGDALTranslateArguments(
     product: CMRProduct,
@@ -82,7 +94,7 @@ export class GdalService {
 
     if (!minimalCommand) {
       configOptions.push(
-        ...this.configOptions.map((configOption) => `--config ${configOption}`),
+        ...this.configOptions(options.os).map((configOption) => `--config ${configOption}`),
       );
     }
 
@@ -95,8 +107,8 @@ export class GdalService {
     ];
   }
 
-  public generateGdalrc() {
-    return this.configOptions.join('\n');
+  public generateGdalrc(options: GdalOptions) {
+    return this.configOptions(options.os).join('\n');
   }
 
   public generateGDALCommand(

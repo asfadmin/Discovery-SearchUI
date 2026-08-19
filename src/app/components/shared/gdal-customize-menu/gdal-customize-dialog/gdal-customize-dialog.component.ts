@@ -2,6 +2,7 @@ import {
   Component,
   inject,
   signal,
+  Signal,
   computed,
   ElementRef,
   effect,
@@ -9,7 +10,7 @@ import {
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { GdalService } from '@services/gdal/gdal.service';
+import { GdalOptions, GdalService } from '@services/gdal/gdal.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -69,20 +70,32 @@ export class GdalCustomizeDialogComponent {
   });
   cropToAOI = signal<boolean>(false);
   minimalCommand = signal<boolean>(false);
-  gdalCommand = computed(() =>
-    this.gdalService.generateGDALCommand(this.data.product, {
+  gdalOptions: Signal<GdalOptions> = computed(() => {
+    return {
       datasetPath: this.selectedDataset() ?? '<DATASET PATH>',
       projection: this.selectedProjection(),
       outputFormat: this.outputFormat(),
       outputExtension: this.outputExtension(),
       aoi: this.cropToAOI(),
       minimalCommand: this.minimalCommand(),
-    }),
+      os: this.getOS()
+    }
+  });
+  gdalCommand = computed(() =>
+    this.gdalService.generateGDALCommand(this.data.product, this.gdalOptions()),
   );
   grammar = Prism.languages['bash'];
 
   gdalOutput = viewChild<ElementRef>('gdalOutput');
   gdalrcOutput = viewChild<ElementRef>('gdalrcOutput');
+
+  getOS(): string {
+    const userAgent = window.navigator.userAgent;
+
+    if (userAgent.includes('Windows')) return 'Windows';
+
+    return 'Unix';
+  }
 
   constructor() {
     effect(() => {
@@ -97,7 +110,7 @@ export class GdalCustomizeDialogComponent {
     effect(() => {
       if (this.gdalrcOutput()) {
         const gdalrcContent = Prism.highlight(
-          this.gdalService.generateGdalrc(),
+          this.gdalService.generateGdalrc(this.gdalOptions()),
           this.grammar,
           'bash',
         );
