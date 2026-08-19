@@ -108,7 +108,7 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
             return names;
           }, new Set<string>(this.projectNames));
 
-        this.projectNames = [...Array.from(projectNamesSet)];
+        this.projectNames = Array.from(projectNamesSet);
       }),
     );
   }
