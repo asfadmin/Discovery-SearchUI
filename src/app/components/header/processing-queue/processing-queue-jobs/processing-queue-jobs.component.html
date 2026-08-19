@@ -130,7 +130,7 @@
           <div class="button-remove-job" matListItemMeta>
             <button
               (click)="onRemoveJob(job)"
-              matTooltip="{{ 'REMOVE_JOB' | translate }}"
+              [matTooltip]="'REMOVE_JOB' | translate"
               mat-icon-button
             >
               <mat-icon>close</mat-icon>

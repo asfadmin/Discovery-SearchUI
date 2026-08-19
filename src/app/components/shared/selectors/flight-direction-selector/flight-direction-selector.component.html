@@ -6,7 +6,7 @@
     [value]="
       multiple ? (flightDirections$ | async) : (flightDirections$ | async)[0]
     "
-    placeholder="{{ 'DIRECTION' | translate }}"
+    [placeholder]="'DIRECTION' | translate"
     [multiple]="multiple"
   >
     @for (direction of flightDirectionTypes; track direction) {

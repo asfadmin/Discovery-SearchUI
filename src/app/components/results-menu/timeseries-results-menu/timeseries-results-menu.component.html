@@ -19,7 +19,7 @@
               mat-icon-button
               (click)="openDialog()"
               class="delete-all-btn2"
-              matTooltip="{{ 'DELETE_ALL_SERIES' | translate }}"
+              [matTooltip]="'DELETE_ALL_SERIES' | translate"
               matTooltipPosition="right"
             >
               <mat-icon class="ts-trash-can">delete</mat-icon>

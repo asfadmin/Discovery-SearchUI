@@ -64,6 +64,7 @@ module.exports = tseslint.config(
       '@angular-eslint/template/no-negated-async': 'off',
       '@angular-eslint/template/mouse-events-have-key-events': 'off',
       '@angular-eslint/template/label-has-associated-control': 'off',
+      '@angular-eslint/template/no-interpolation-in-attributes': 'error',
     },
   },
   {

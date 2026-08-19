@@ -5,16 +5,16 @@
     <form #saveSearchName="ngForm">
       <mat-form-field
         [class.invalid-input-animation]="isNameError"
-        hintLabel="Max 20 {{ 'CHARACTERS' | translate }}"
+        [hintLabel]="'Max 20 ' + ('CHARACTERS' | translate)"
       >
         <input
           type="text"
           #saveNameInput="ngModel"
           ngModel
           name="searchNameInput"
-          placeholder="{{
+          [placeholder]="
             (saveTypeName | uppercase | translate) + ' ' + ('NAME' | translate)
-          }}"
+          "
           matInput
           (input)="onSaveNameInput($event)"
           (change)="onSaveNameChange($event)"

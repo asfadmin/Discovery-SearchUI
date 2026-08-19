@@ -34,7 +34,7 @@
             max="1"
             step="0.05"
             class="opacity-slider"
-            matTooltip="{{ 'VELOCITY_OVERVIEW_OPACITY' | translate }}"
+            [matTooltip]="'VELOCITY_OVERVIEW_OPACITY' | translate"
             matTooltipPosition="right"
             discrete
             (change)="onSliderDragEnd($event)"
@@ -54,7 +54,7 @@
           <app-docs-modal
             class="info-icon"
             custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
-            text="{{ 'HELP' | translate }}"
+            [text]="'HELP' | translate"
             url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers"
           >
           </app-docs-modal>

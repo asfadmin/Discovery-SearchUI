@@ -54,7 +54,7 @@
       @if (!!apiLink) {
         <mat-icon
           (click)="onCopyLink()"
-          matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
+          [matTooltip]="'COPY_TO_CLIPBOARD' | translate"
           class="clickable copy-icon"
           matSuffix
         >

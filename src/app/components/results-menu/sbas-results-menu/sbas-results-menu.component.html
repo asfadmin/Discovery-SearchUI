@@ -117,7 +117,7 @@
             <mat-button-toggle
               class="control-mat-button-toggle"
               (click)="zoomIn()"
-              matTooltip="{{ 'ZOOM_IN' | translate }}"
+              [matTooltip]="'ZOOM_IN' | translate"
             >
               <mat-icon class="control-icon">add</mat-icon>
             </mat-button-toggle>
@@ -125,7 +125,7 @@
             <mat-button-toggle
               class="control-mat-button-toggle"
               (click)="zoomToFit()"
-              matTooltip="{{ 'ZOOM_TO_FIT' | translate }}"
+              [matTooltip]="'ZOOM_TO_FIT' | translate"
             >
               <mat-icon class="control-icon">aspect_ratio</mat-icon>
             </mat-button-toggle>
@@ -133,7 +133,7 @@
             <mat-button-toggle
               class="control-mat-button-toggle"
               (click)="zoomOut()"
-              matTooltip="{{ 'ZOOM_OUT' | translate }}"
+              [matTooltip]="'ZOOM_OUT' | translate"
             >
               <mat-icon class="control-icon">remove</mat-icon>
             </mat-button-toggle>
@@ -160,7 +160,7 @@
               value="add"
               class="control-mat-button-toggle"
               (click)="startAddingCustomPoint()"
-              matTooltip="{{ 'START_ADDING_CUSTOM_PAIR' | translate }}"
+              [matTooltip]="'START_ADDING_CUSTOM_PAIR' | translate"
             >
               <mat-icon class="control-icon">add_circle</mat-icon>
             </mat-button-toggle>
@@ -170,7 +170,7 @@
               value="stop"
               class="control-mat-button-toggle"
               (click)="stopAddingCustomPoint()"
-              matTooltip="{{ 'STOP_ADDING_CUSTOM_PAIR' | translate }}"
+              [matTooltip]="'STOP_ADDING_CUSTOM_PAIR' | translate"
             >
               <mat-icon class="control-icon">stop_circle</mat-icon>
             </mat-button-toggle>
@@ -180,7 +180,7 @@
               value="remove"
               class="control-mat-button-toggle"
               (click)="deleteSelectedPair()"
-              matTooltip="{{ 'REMOVE_CUSTOM_PAIR' | translate }}"
+              [matTooltip]="'REMOVE_CUSTOM_PAIR' | translate"
             >
               <mat-icon class="control-icon">remove_circle</mat-icon>
             </mat-button-toggle>

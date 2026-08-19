@@ -25,7 +25,7 @@
             class="options-clear-button"
             (click)="onClearFilter()"
             mat-flat-button
-            matTooltip="{{ 'CLEAR_PRODUCT_NAME_FILTER' | translate }}"
+            [matTooltip]="'CLEAR_PRODUCT_NAME_FILTER' | translate"
           >
             <strong>{{ 'CLEAR' | translate }}</strong>
           </button>
@@ -45,7 +45,7 @@
     @if (headerView) {
       <mat-icon
         (click)="toggleJobFilterOptions()"
-        matTooltip="{{ 'MORE_OPTIONS' | translate }}"
+        [matTooltip]="'MORE_OPTIONS' | translate"
         class="v-mid"
         matSuffix
       >
@@ -77,7 +77,7 @@
         <button
           class="options-clear-button"
           (click)="onCloseOptions()"
-          matTooltip="{{ 'HIDE_OPTIONS' | translate }}"
+          [matTooltip]="'HIDE_OPTIONS' | translate"
           mat-icon-button
         >
           <mat-icon>clear</mat-icon>
@@ -99,7 +99,7 @@
           class="options-clear-button"
           (click)="onClearFilter()"
           mat-flat-button
-          matTooltip="{{ 'CLEAR_PRODUCT_NAME_FILTER' | translate }}"
+          [matTooltip]="'CLEAR_PRODUCT_NAME_FILTER' | translate"
         >
           <strong>{{ 'CLEAR' | translate }}</strong>
         </button>

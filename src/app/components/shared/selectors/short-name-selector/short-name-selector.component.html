@@ -5,7 +5,7 @@
     (selectionChange)="onNewShortNames($event)"
     [disabled]="selectableShortNames.length === 0"
     panelClass="short-name-selector"
-    placeholder="{{ 'SHORT_NAME' | translate }}"
+    [placeholder]="'SHORT_NAME' | translate"
     multiple
   >
     @for (type of selectableShortNames(); track type) {
