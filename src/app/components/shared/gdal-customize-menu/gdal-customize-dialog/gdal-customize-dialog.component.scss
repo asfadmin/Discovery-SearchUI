@@ -2,7 +2,9 @@
 @use 'asf-theme-variables' as *;
 
 .gdal-export-wrapper {
-  margin: 1em;
+  padding: 1em;
+  overflow-x: scroll;
+  max-height: 90vh;
 }
 
 h1 {
@@ -17,14 +19,26 @@ h1 {
 }
 
 .gdal-dataset-type {
-  font-size: 0.8rem;
   @include themify($themes) {
-    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
   }
+  font-style: italic;
+  font-size: 0.8rem;
+  background: rgba(0, 0, 0, 0.075);
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.3),
+    0 -1px 2px rgba(0, 0, 0, 0.15);
   height: fit-content;
-  padding: 0.2em;
+  padding: 0.4em;
   border-radius: 5px;
-  align-self: flex-start;
+}
+
+.gdal-dataset-path {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
+  padding-left: 1em;
+  text-align: right;
 }
 
 .flex-grow {
@@ -55,20 +69,56 @@ h1 {
 
 .options-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 2em;
   padding: 0em 1em 0em 1em;
 }
 
 .option {
-  height: 80px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-end;
+  @include mat.checkbox-overrides(
+    (
+      label-text-size: 16px,
+    )
+  );
+}
 
-  @include mat.checkbox-overrides((
-    label-text-size: 16px,
-  ));
+.option.checkbox {
+  padding-bottom: 20px;
 }
 
 .two-column-layout {
   display: flex;
+}
+
+.gdal-output {
+  padding: 1em;
+  border-radius: 15px;
+  overflow: scroll;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+.gdal-output::before {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
+}
+
+.gdal-output.file::before {
+  font-size: 16px;
+  font-style: italic;
+  display: block;
+  padding-bottom: 0.4em;
+  content: attr(data-file);
+}
+
+.gdal-output.sh::before {
+  content: '$ ';
+}
+
+code {
+  font-family: monospace;
+  font-size: 14px;
 }

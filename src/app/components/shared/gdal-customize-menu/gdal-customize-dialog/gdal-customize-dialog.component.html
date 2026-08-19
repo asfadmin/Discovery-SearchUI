@@ -11,61 +11,106 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
+      <code>
+        <pre class="gdal-output file" data-file="~/.netrc">
+machine urs.earthdata.nasa.gov
+    login &lt;YOUR USERNAME&gt;
+    password &lt;YOUR PASSWORD&gt;</pre
+        >
+      </code>
+      <app-docs-modal
+        class="info-text"
+        text="EXPORT_GDAL_HELP_LINK"
+        url="https://nisar-docs.asf.alaska.edu/gdal/"
+      ></app-docs-modal>
     </mat-expansion-panel>
   </mat-accordion>
 
-  <div class="two-column-layout">
-    <div class="dataset-list-card">
-      <h2>1. {{ 'SELECT_A_DATASET' | translate }}</h2>
-      <mat-radio-group [(ngModel)]="selectedDataset" class="dataset-list">
-        @for (dataset of datasets; track dataset) {
-          <div class="gdal-dataset">
-            <span class="gdal-dataset-name">
-              {{ dataset.name }}
+  <div class="dataset-list-card">
+    <h2>1. {{ 'SELECT_A_DATASET' | translate }}</h2>
+    <mat-radio-group [(ngModel)]="selectedDataset" class="dataset-list">
+      @for (dataset of data.datasets; track dataset) {
+        <div class="gdal-dataset">
+          <span class="gdal-dataset-name">
+            {{ dataset.name }}
+          </span>
+          @if (dataset.type) {
+            <span class="gdal-dataset-type">
+              {{ dataset.type }}
             </span>
-            @if (dataset.type) {
-              <span class="gdal-dataset-type">
-                {{ dataset.type }}
-              </span>
-            }
-            <span class="flex-grow"></span>
-            <mat-radio-button [value]="dataset.path"> </mat-radio-button>
-          </div>
-        }
-      </mat-radio-group>
-    </div>
+          }
+          <span class="gdal-dataset-path flex-grow">
+            {{ dataset.path }}
+          </span>
+          <mat-radio-button [value]="dataset.path"> </mat-radio-button>
+        </div>
+      }
+    </mat-radio-group>
+  </div>
 
-    <div class="options-list-card">
-      <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
-      <div class="options-list">
-        <span class="option">
-        <mat-checkbox>{{ 'CROP_TO_AOI' | translate }}</mat-checkbox>
-        </span>
-        <span class="option">
+  <div class="options-list-card">
+    <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
+    <div class="options-list">
+      <span class="option">
         <mat-form-field>
           <mat-label> {{ 'REPROJECT' | translate }}</mat-label>
-          <input matInput [matTooltip]="'REPROJECT_TOOLTIP' | translate" />
+          <input
+            matInput
+            [matTooltip]="'REPROJECT_TOOLTIP' | translate"
+            [(ngModel)]="selectedProjection"
+          />
         </mat-form-field>
-        </span>
-        <span class="option">
+      </span>
+      <span class="option">
         <mat-form-field>
           <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
-          <mat-select>
+          <mat-select [(ngModel)]="outputFormat">
             <mat-option value="GTiff"> GeoTIFF </mat-option>
             <mat-option value="COG"> COG </mat-option>
             <mat-option value="PNG"> PNG </mat-option>
             <mat-option value="JPEG"> JPEG </mat-option>
           </mat-select>
         </mat-form-field>
-        </span>
-      </div>
+      </span>
+      <span class="option checkbox">
+        <mat-checkbox [(ngModel)]="cropToAOI">{{
+          'CROP_TO_AOI' | translate
+        }}</mat-checkbox>
+      </span>
+      <span class="option checkbox">
+        <mat-checkbox [(ngModel)]="minimalCommand">{{
+          'MINIMAL_COMMAND' | translate
+        }}</mat-checkbox>
+      </span>
     </div>
   </div>
 
   <div class="gdal-output-card">
     <h2>3. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
-    <pre>
-      {{ gdalCommand() }}
-    </pre>
+    <code>
+      <app-copy-to-clipboard
+        class="compact"
+        [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
+        [value]="gdalCommand()"
+        [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
+      ></app-copy-to-clipboard>
+      <pre #gdalOutput class="gdal-output sh">
+      </pre>
+    </code>
+    @if (minimalCommand()) {
+      <code>
+        <app-copy-to-clipboard
+          class="compact"
+          [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
+          [value]="gdalService.generateGdalrc()"
+          [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
+        ></app-copy-to-clipboard>
+        <pre
+          #gdalrcOutput
+          class="gdal-output file"
+          data-file="~/.gdal/gdalrc"
+        ></pre>
+      </code>
+    }
   </div>
 </div>

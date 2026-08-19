@@ -1286,10 +1286,12 @@
   "EVENT_SEARCH_DEPRECATION_LINK_TEXT": "HyP3 service",
   "EVENT_SEARCH_DEPRECATION_LINK_ARIA": "HyP3 service (opens in new tab)",
   "EVENT_SEARCH_DEPRECATION_BODY_SUFFIX": "instead to create S1 RTC and InSAR products.",
+  "EXPORT_GDAL_DATASET": "Export Subdatasets with GDAL",
   "EXPORT_GDAL": "Export GDAL Snippets",
   "EXPORT_GDAL_HELP": "What is this?",
   "EXPORT_GDAL_HELP_SUMMARY": "How to use GDAL to perform subsetting operations.",
-  "EXPORT_GDAL_HELP_BODY": "TODO",
+  "EXPORT_GDAL_HELP_BODY": "To use this feature you must have a Unix compute environment with GDAL installed and the following .netrc file placed in your home directory.",
+  "EXPORT_GDAL_HELP_LINK": "Click here to learn more about using GDAL with NISAR data.",
   "EXPORT_GDAL_CLIPBOARD": "Copy GDAL GeoTIFF extraction snippet.",
   "EXPORTED_GDAL_CLIPBOARD": "Copied GDAL snippet to clipboard.",
   "CUSTOMIZE_PRODUCT": "Customize with GDAL",
@@ -1299,5 +1301,6 @@
   "CROP_TO_AOI": "Crop to Vertex AOI",
   "REPROJECT": "Output Projection",
   "REPROJECT_TOOLTIP": "Supports any WGS or EPSG code.",
+  "MINIMAL_COMMAND": "Utilize Config File",
   "OUTPUT_FORMAT": "File Format"
 }

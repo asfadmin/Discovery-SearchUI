@@ -11,6 +11,7 @@ import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/c
 import { SceneFileGdalDropdownDatasetComponent } from './scene-file-gdal-dropdown-dataset/scene-file-gdal-dropdown-dataset.component';
 
 import * as models from '@models';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 
 @Component({
   selector: 'app-scene-file-gdal-dropdown',
@@ -25,6 +26,7 @@ import * as models from '@models';
     SceneFileGdalDropdownDatasetComponent, // I apologize for this name
     MatListItem,
     MatList,
+    DocsModalComponent
   ],
   templateUrl: './scene-file-gdal-dropdown.component.html',
   styleUrl: './scene-file-gdal-dropdown.component.scss',

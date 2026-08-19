@@ -1,7 +1,19 @@
 <div class="gdal-dropdown-wrapper">
   <div class="dataset-list">
+    <div class="gdal-dataset-header">
+      <span class="gdal-dataset-header-title">
+        {{ 'EXPORT_GDAL_DATASET' | translate }}
+      </span>
+      <span class="gdal-dataset-header-documentation">
+        <app-docs-modal class="info-text" text="DOCUMENTATION" url="https://nisar-docs.asf.alaska.edu/gdal/">{{ 'DOCUMENTATION' | translate }}</app-docs-modal>
+      </span>
+    </div>
+
     @for (dataset of datasets(); track dataset) {
-      <app-scene-file-gdal-dropdown-dataset [dataset]="dataset" [product]="product()">
+      <app-scene-file-gdal-dropdown-dataset
+        [dataset]="dataset"
+        [product]="product()"
+      >
       </app-scene-file-gdal-dropdown-dataset>
     }
   </div>
