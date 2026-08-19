@@ -79,11 +79,11 @@
                     (input)="onTextInputChange($event)"
                     [(ngModel)]="searchList"
                     class="search-list-input"
-                    placeholder="{{ 'LIST_OF' | translate }} {{
-                      mode === types.SCENE
+                    [placeholder]="
+                      ('LIST_OF' | translate) + ' ' + mode === types.SCENE
                         ? ('SCENE_NAMES' | translate)
                         : ('FILE_IDS' | translate)
-                    }}"
+                    "
                   >
                   </textarea>
                 </mat-form-field>
