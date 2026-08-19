@@ -647,6 +647,13 @@ export class ProductService {
         productTypeDisplay = models.nisar.productTypeDisplays.displays.qa;
       }
 
+      if (
+        productTypeDisplay.includes('Footprint KML') &&
+        p.includes('_LATLON')
+      ) {
+        productTypeDisplay = 'Lat/Lon Footprint KML';
+      }
+
       if (['Log File', 'Metadata JSON'].includes(productTypeDisplay)) {
         continue;
       }
