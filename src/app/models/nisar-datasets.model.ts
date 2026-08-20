@@ -260,6 +260,40 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
         );
       }
       break;
+    case 'GSLC':
+      if (nisar.mainBandPolarization) {
+        datasets.push(
+          ...nisar.mainBandPolarization.map((polarization) => {
+            return {
+              path: `//science/LSAR/GSLC/grids/frequencyA/${polarization}`,
+              name: `Frequency A ${polarization} Focused SLC Image`,
+              type: 'CFloat32',
+            };
+          }),
+          {
+            path: `//science/LSAR/GSLC/grids/frequencyA/mask`,
+            name: 'Frequency A Mask',
+            type: 'UByte',
+          },
+        );
+      }
+      if (nisar.sideBandPolarization) {
+        datasets.push(
+          ...nisar.sideBandPolarization.map((polarization) => {
+            return {
+              path: `//science/LSAR/GSLC/grids/frequencyB/${polarization}`,
+              name: `Frequency B ${polarization} Focused SLC Image`,
+              type: 'CFloat32',
+            };
+          }),
+          {
+            path: `//science/LSAR/GSLC/grids/frequencyA/mask`,
+            name: 'Frequency B Mask',
+            type: 'UByte',
+          },
+        );
+      }
+      break;
   }
 
   return datasets;
