@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, input, output, signal, inject, computed } from '@angular/core';
 
 import * as models from '@models';
 
@@ -14,6 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatNestedTreeNode } from '@angular/material/tree';
 import { SceneFileGdalDropdownComponent } from '../../scene-group-files/scene-file-gdal-dropdown/scene-file-gdal-dropdown.component';
 import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-menu/gdal-customize-menu.component';
+import { GdalService } from '@services/gdal/gdal.service';
 
 @Component({
   selector: 'app-scene-group-file',
@@ -33,14 +34,20 @@ import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-me
     TranslateModule,
     SceneFileGdalDropdownComponent,
     MatNestedTreeNode,
-    GdalCustomizeMenuComponent
+    GdalCustomizeMenuComponent,
   ],
 })
 export class SceneGroupFileComponent {
+  gdalService = inject(GdalService);
   product = input.required<models.CMRProduct>();
   isQueued = input(false);
   validHyp3JobTypes = input<models.Hyp3JobType[]>([]);
   isScienceData = input(false);
+  isGdalable = computed(
+    () =>
+      this.isScienceData() &&
+      this.gdalService.getProductDatasets(this.product()).length !== 0,
+  );
 
   toggle = output<void>();
   queueHyp3Job = output<models.QueuedHyp3Job>();
