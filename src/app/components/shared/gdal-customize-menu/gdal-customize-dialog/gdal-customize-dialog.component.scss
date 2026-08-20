@@ -24,10 +24,10 @@ h1 {
   }
   font-style: italic;
   font-size: 0.8rem;
-  background: rgba(0, 0, 0, 0.075);
+  background: rgb(0, 0, 0, 0.075);
   box-shadow:
-    0 2px 5px rgba(0, 0, 0, 0.3),
-    0 -1px 2px rgba(0, 0, 0, 0.15);
+    0 2px 5px rgb(0, 0, 0, 0.3),
+    0 -1px 2px rgb(0, 0, 0, 0.15);
   height: fit-content;
   padding: 0.4em;
   border-radius: 5px;
@@ -60,7 +60,7 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 0em 1em 0em 1em;
+  padding: 0 1em 0 1em;
 }
 
 .options-list-card {
@@ -71,7 +71,7 @@ h1 {
   display: flex;
   flex-direction: row;
   gap: 2em;
-  padding: 0em 1em 0em 1em;
+  padding: 0 1em 0 1em;
 }
 
 .option {
@@ -101,9 +101,9 @@ h1 {
 
 .gdal-output-wrapper {
   position: relative;
-  padding: 1em 1em 0em 1em;
+  padding: 1em 1em 0 1em;
   border-radius: 15px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 15px rgb(0, 0, 0, 0.3);
 }
 
 .gdal-output-wrapper.inline {
@@ -111,7 +111,7 @@ h1 {
 }
 
 .gdal-output {
-  padding: 0em 0em 0.5em 0em;
+  padding: 0 0 0.5em 0;
   overflow: scroll;
 }
 
