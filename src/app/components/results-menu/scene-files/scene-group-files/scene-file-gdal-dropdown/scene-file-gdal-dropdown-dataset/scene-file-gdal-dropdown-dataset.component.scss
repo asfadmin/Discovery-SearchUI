@@ -10,12 +10,12 @@
 
 .gdal-dataset-name {
   white-space: nowrap;
-   overflow: hidden;
-   text-overflow: ellipsis;
-   width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
-.gdal-dataset-type {
+.gdal-dataset-chip {
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
@@ -28,6 +28,9 @@
   height: fit-content;
   padding: 0.3em 0.4em 0.3em 0.3em;
   border-radius: 5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .flex-grow {

@@ -18,7 +18,14 @@ h1 {
   align-items: center;
 }
 
-.gdal-dataset-type {
+.gdal-dataset-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.gdal-dataset-chip {
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
@@ -31,6 +38,9 @@ h1 {
   height: fit-content;
   padding: 0.4em;
   border-radius: 5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .gdal-dataset-path {
@@ -39,6 +49,9 @@ h1 {
   }
   padding-left: 1em;
   text-align: right;
+  font-size: 0.75rem;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .flex-grow {

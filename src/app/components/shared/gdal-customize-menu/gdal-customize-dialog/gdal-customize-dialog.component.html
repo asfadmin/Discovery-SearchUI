@@ -58,11 +58,17 @@ machine urs.earthdata.nasa.gov
             {{ dataset.name }}
           </span>
           @if (dataset.type) {
-            <span class="gdal-dataset-type">
+            <span class="gdal-dataset-chip">
               {{ dataset.type }}
             </span>
           }
-          <span class="gdal-dataset-path flex-grow">
+          @if (dataset.unit) {
+            <span class="gdal-dataset-chip">
+              {{ dataset.unit }}
+            </span>
+          }
+          <span class="flex-grow"></span>
+          <span class="gdal-dataset-path">
             {{ dataset.path }}
           </span>
           <mat-radio-button [value]="dataset.path"> </mat-radio-button>

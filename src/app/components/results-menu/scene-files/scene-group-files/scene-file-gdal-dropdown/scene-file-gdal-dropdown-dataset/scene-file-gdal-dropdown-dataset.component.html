@@ -2,8 +2,13 @@
   <span class="gdal-dataset-name">
     {{ dataset().name | translate }}
   </span>
+  @if (dataset().unit) {
+    <span class="gdal-dataset-chip">
+      {{ dataset().unit }}
+    </span>
+  }
   @if (dataset().type) {
-    <span class="gdal-dataset-type">
+    <span class="gdal-dataset-chip">
       {{ dataset().type }}
     </span>
   }
