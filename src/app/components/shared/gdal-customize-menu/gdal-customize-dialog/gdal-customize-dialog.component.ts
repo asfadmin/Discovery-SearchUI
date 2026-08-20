@@ -70,6 +70,7 @@ export class GdalCustomizeDialogComponent {
   });
   cropToAOI = signal<boolean>(false);
   minimalCommand = signal<boolean>(false);
+  outputOS = signal<string>(this.getOS());
   gdalOptions: Signal<GdalOptions> = computed(() => {
     return {
       datasetPath: this.selectedDataset() ?? '<DATASET PATH>',
@@ -78,7 +79,7 @@ export class GdalCustomizeDialogComponent {
       outputExtension: this.outputExtension(),
       aoi: this.cropToAOI(),
       minimalCommand: this.minimalCommand(),
-      os: this.getOS()
+      os: this.outputOS()
     }
   });
   gdalCommand = computed(() =>

@@ -13,7 +13,7 @@
       <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
       <div class="gdal-output-wrapper">
         <div class="gdal-output-snippet-header inline">
-          @if (getOS() === 'Windows') {
+          @if (outputOS() === 'Windows') {
             <span class="gdal-output-snippet-header-file">
               %USERPROFILE%/.netrc
             </span>
@@ -95,6 +95,15 @@ machine urs.earthdata.nasa.gov
           </mat-select>
         </mat-form-field>
       </span>
+      <span class="option">
+        <mat-form-field>
+          <mat-label> {{ 'OUTPUT_OS' | translate }}</mat-label>
+          <mat-select [(ngModel)]="outputOS">
+            <mat-option value="Windows"> Windows </mat-option>
+            <mat-option value="Unix"> Unix </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </span>
       <span class="option checkbox">
         @if (!gdalService.isCropToAOIAvailable()) {
           <mat-checkbox
@@ -140,7 +149,7 @@ machine urs.earthdata.nasa.gov
       @if (minimalCommand()) {
         <div class="gdal-output-wrapper">
           <div class="gdal-output-snippet-header">
-            @if (getOS() === 'Windows') {
+            @if (outputOS() === 'Windows') {
               <span class="gdal-output-snippet-header-file">
                 %USERPROFILE%/.gdal/gdalrc
               </span>

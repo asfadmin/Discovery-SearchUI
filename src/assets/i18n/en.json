@@ -1303,5 +1303,6 @@
   "REPROJECT": "Output Projection",
   "REPROJECT_TOOLTIP": "Supports any WGS or EPSG code.",
   "MINIMAL_COMMAND": "Utilize Config File",
-  "OUTPUT_FORMAT": "File Format"
+  "OUTPUT_FORMAT": "File Format",
+  "OUTPUT_OS": "Operating System"
 }
