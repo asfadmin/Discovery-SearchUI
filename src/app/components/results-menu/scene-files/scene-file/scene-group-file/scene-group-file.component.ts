@@ -1,4 +1,11 @@
-import { Component, input, output, signal, inject, computed } from '@angular/core';
+import {
+  Component,
+  input,
+  output,
+  signal,
+  inject,
+  computed,
+} from '@angular/core';
 
 import * as models from '@models';
 

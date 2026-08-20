@@ -22,6 +22,8 @@ export class SceneFileGdalDropdownDatasetComponent {
   dataset = input<models.NISARDataset>();
   product = input<models.CMRProduct>();
   gdalCommand = computed(() =>
-    this.gdalService.generateGDALCommand(this.product(), { datasetPath: this.dataset().path }),
+    this.gdalService.generateGDALCommand(this.product(), {
+      datasetPath: this.dataset().path,
+    }),
   );
 }

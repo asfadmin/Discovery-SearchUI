@@ -47,7 +47,7 @@ import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
     MatInput,
     FormsModule,
     DocsModalComponent,
-    CopyToClipboardComponent
+    CopyToClipboardComponent,
   ],
   templateUrl: './gdal-customize-dialog.component.html',
   styleUrl: './gdal-customize-dialog.component.scss',
@@ -79,8 +79,8 @@ export class GdalCustomizeDialogComponent {
       outputExtension: this.outputExtension(),
       aoi: this.cropToAOI(),
       minimalCommand: this.minimalCommand(),
-      os: this.outputOS()
-    }
+      os: this.outputOS(),
+    };
   });
   gdalCommand = computed(() =>
     this.gdalService.generateGDALCommand(this.data.product, this.gdalOptions()),

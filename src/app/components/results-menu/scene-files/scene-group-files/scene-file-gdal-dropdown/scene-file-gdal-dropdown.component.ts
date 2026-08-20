@@ -26,7 +26,7 @@ import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.com
     SceneFileGdalDropdownDatasetComponent, // I apologize for this name
     MatListItem,
     MatList,
-    DocsModalComponent
+    DocsModalComponent,
   ],
   templateUrl: './scene-file-gdal-dropdown.component.html',
   styleUrl: './scene-file-gdal-dropdown.component.scss',
