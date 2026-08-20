@@ -1294,6 +1294,9 @@
   "EXPORT_GDAL_HELP_LINK": "Click here to learn more about using GDAL with NISAR data.",
   "EXPORT_GDAL_CLIPBOARD": "Copy GDAL GeoTIFF extraction snippet.",
   "EXPORTED_GDAL_CLIPBOARD": "Copied GDAL snippet to clipboard.",
+  "EXPORT_GDALRC_CLIPBOARD": "Copy 'gdalrc' configuration to clipboard.",
+  "EXPORTED_GDALRC_CLIPBOARD": "Copied 'gdalrc' configuration to clipboard.",
+  "GDAL_COMMAND_DESCRIPTION": "GDAL shell command",
   "CUSTOMIZE_PRODUCT": "Customize with GDAL",
   "SELECT_A_DATASET": "Select a dataset to export.",
   "CONFIGURE_GDAL_OPTIONS": "Configure output options.",
@@ -1304,5 +1307,7 @@
   "REPROJECT_TOOLTIP": "Supports any WGS or EPSG code.",
   "MINIMAL_COMMAND": "Utilize Config File",
   "OUTPUT_FORMAT": "File Format",
-  "OUTPUT_OS": "Operating System"
+  "OUTPUT_OS": "Operating System",
+  "EXPORT_NETRC_CLIPBOARD": "Copy 'netrc' config file to clipboard.",
+  "EXPORTED_NETRC_CLIPBOARD": "Copied 'netrc' config file to clipboard."
 }

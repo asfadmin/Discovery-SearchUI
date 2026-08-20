@@ -1,0 +1,20 @@
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-header-description"> {{ codeDescription() }} </span>
+    <span class="flex-grow"></span>
+    <app-copy-to-clipboard
+      #copyClipboardGdalrcClickTarget
+      class="compact"
+      [prompt]="copyPrompt()"
+      [value]="codeContent()"
+      [message]="copyMessage()"
+    ></app-copy-to-clipboard>
+  </div>
+  <code>
+    @if (isCommand()) {
+      <pre #codeBlock class="code sh"></pre>
+    } @else {
+      <pre #codeBlock class="code file"></pre>
+    }
+  </code>
+</div>

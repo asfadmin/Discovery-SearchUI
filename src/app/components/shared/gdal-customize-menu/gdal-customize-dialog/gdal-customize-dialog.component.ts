@@ -1,13 +1,4 @@
-import {
-  Component,
-  inject,
-  signal,
-  Signal,
-  computed,
-  ElementRef,
-  effect,
-  viewChild,
-} from '@angular/core';
+import { Component, inject, signal, Signal, computed } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { GdalOptions, GdalService } from '@services/gdal/gdal.service';
@@ -21,8 +12,6 @@ import { MatOption } from '@angular/material/select';
 import { MatInput } from '@angular/material/input';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
-import Prism from 'prismjs';
-import 'prismjs/components/prism-bash';
 
 import {
   GdalCustomizeMenuComponent,
@@ -30,6 +19,7 @@ import {
 } from '../gdal-customize-menu.component';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
+import { CodeBlockComponent } from '@components/shared/code-block/code-block.component';
 
 @Component({
   selector: 'app-gdal-customize-dialog',
@@ -48,6 +38,7 @@ import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
     FormsModule,
     DocsModalComponent,
     CopyToClipboardComponent,
+    CodeBlockComponent,
   ],
   templateUrl: './gdal-customize-dialog.component.html',
   styleUrl: './gdal-customize-dialog.component.scss',
@@ -85,10 +76,12 @@ export class GdalCustomizeDialogComponent {
   gdalCommand = computed(() =>
     this.gdalService.generateGDALCommand(this.data.product, this.gdalOptions()),
   );
-  grammar = Prism.languages['bash'];
 
-  gdalOutput = viewChild<ElementRef>('gdalOutput');
-  gdalrcOutput = viewChild<ElementRef>('gdalrcOutput');
+  netrcContent = `\
+machine urs.earthdata.nasa.gov
+    login <YOUR USERNAME>
+    password <YOUR PASSWORD>\
+  `;
 
   getOS(): string {
     const userAgent = window.navigator.userAgent;
@@ -96,27 +89,5 @@ export class GdalCustomizeDialogComponent {
     if (userAgent.includes('Windows')) return 'Windows';
 
     return 'Unix';
-  }
-
-  constructor() {
-    effect(() => {
-      const gdalCommandContent = Prism.highlight(
-        this.gdalCommand(),
-        this.grammar,
-        'bash',
-      );
-      this.gdalOutput().nativeElement.innerHTML = gdalCommandContent;
-    });
-
-    effect(() => {
-      if (this.gdalrcOutput()) {
-        const gdalrcContent = Prism.highlight(
-          this.gdalService.generateGdalrc(this.gdalOptions()),
-          this.grammar,
-          'bash',
-        );
-        this.gdalrcOutput().nativeElement.innerHTML = gdalrcContent;
-      }
-    });
   }
 }

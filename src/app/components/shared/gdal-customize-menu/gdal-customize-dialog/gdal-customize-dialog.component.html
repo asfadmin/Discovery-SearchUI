@@ -11,36 +11,17 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
-      <div class="gdal-output-wrapper">
-        <div class="gdal-output-snippet-header inline">
-          @if (outputOS() === 'Windows') {
-            <span class="gdal-output-snippet-header-file">
-              %USERPROFILE%/.netrc
-            </span>
-          } @else {
-            <span class="gdal-output-snippet-header-file"> ~/.netrc </span>
-          }
-          <span class="flex-grow"></span>
-          <div
-            class="copy-to-clipboard-overlay"
-            (click)="copyClipboardNetrcClickTarget.onCopyIconClicked($event)"
-          >
-            <app-copy-to-clipboard
-              #copyClipboardNetrcClickTarget
-              [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
-              [value]="netrc.innerText"
-              [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
-            ></app-copy-to-clipboard>
-          </div>
-        </div>
-        <code>
-          <pre #netrc class="gdal-output file">
-machine urs.earthdata.nasa.gov
-    login &lt;YOUR USERNAME&gt;
-    password &lt;YOUR PASSWORD&gt;</pre
-          >
-        </code>
-      </div>
+      <app-code-block
+        [codeDescription]="
+          outputOS() === 'Windows' ? '%USERPROFILE/.netrc' : '~/.netrc'
+        "
+        [codeContent]="netrcContent"
+        [copyPrompt]="'EXPORT_NETRC_CLIPBOARD' | translate"
+        [copyMessage]="'EXPORTED_NETRC_CLIPBOARD' | translate"
+        language="bash"
+      >
+      </app-code-block>
+      <div><br /></div>
       <app-docs-modal
         class="info-text"
         text="EXPORT_GDAL_HELP_LINK"
@@ -136,51 +117,28 @@ machine urs.earthdata.nasa.gov
   <div class="gdal-output-card">
     <h2>3. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
     <div class="gdal-output-list">
-      <div class="gdal-output-wrapper inline">
-        <div
-          class="copy-to-clipboard-overlay hidden"
-          (click)="copyClipboardCommandClickTarget.onCopyIconClicked($event)"
-        >
-          <app-copy-to-clipboard
-            #copyClipboardCommandClickTarget
-            [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
-            [value]="gdalCommand()"
-            [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
-          ></app-copy-to-clipboard>
-        </div>
-        <code>
-          <pre #gdalOutput class="gdal-output sh"></pre>
-        </code>
-      </div>
+      <app-code-block
+        [codeDescription]="'GDAL_COMMAND_DESCRIPTION' | translate"
+        [codeContent]="gdalCommand()"
+        [copyPrompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
+        [copyMessage]="'EXPORTED_GDAL_CLIPBOARD' | translate"
+        [isCommand]="true"
+        language="bash"
+      >
+      </app-code-block>
       @if (minimalCommand()) {
-        <div class="gdal-output-wrapper">
-          <div class="gdal-output-snippet-header">
-            @if (outputOS() === 'Windows') {
-              <span class="gdal-output-snippet-header-file">
-                %USERPROFILE%/.gdal/gdalrc
-              </span>
-            } @else {
-              <span class="gdal-output-snippet-header-file">
-                ~/.gdal/gdalrc
-              </span>
-            }
-            <span class="flex-grow"></span>
-            <div
-              class="copy-to-clipboard-overlay"
-              (click)="copyClipboardGdalrcClickTarget.onCopyIconClicked($event)"
-            >
-              <app-copy-to-clipboard
-                #copyClipboardGdalrcClickTarget
-                [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
-                [value]="gdalService.generateGdalrc(gdalOptions())"
-                [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
-              ></app-copy-to-clipboard>
-            </div>
-          </div>
-          <code>
-            <pre #gdalrcOutput class="gdal-output file"></pre>
-          </code>
-        </div>
+        <app-code-block
+          [codeDescription]="
+            outputOS() === 'Windows'
+              ? '%USERPROFILE/.gdal/gdalrc'
+              : '~/.gdal/gdalrc'
+          "
+          [codeContent]="gdalService.generateGdalrc(gdalOptions())"
+          [copyPrompt]="'EXPORT_GDALRC_CLIPBOARD' | translate"
+          [copyMessage]="'EXPORTED_GDALRC_CLIPBOARD' | translate"
+          language="bash"
+        >
+        </app-code-block>
       }
     </div>
   </div>

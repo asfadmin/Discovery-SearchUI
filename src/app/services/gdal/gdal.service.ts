@@ -117,7 +117,7 @@ export class GdalService {
     product: CMRProduct,
     options: GdalOptions,
   ): string {
-    return `${this.generateGDALTranslateArguments(product, options).join(' \\\n                          ')}`;
+    return `${this.generateGDALTranslateArguments(product, options).join(' \\\n        ')}`;
   }
 
   public getProductDatasets(product: CMRProduct): NISARDataset[] {
