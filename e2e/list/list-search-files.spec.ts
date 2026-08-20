@@ -27,7 +27,7 @@ test(
     await expect(page).toHaveScreenshot();
 
     await page
-      .getByPlaceholder('List of File IDs')
+      .getByRole('textbox', { name: 'List of File IDs' })
       .fill(
         [
           'S1C_IW_RAW__0SDV_20260512T032011_20260512T032043_007615_00F774_B7C5-RAW',

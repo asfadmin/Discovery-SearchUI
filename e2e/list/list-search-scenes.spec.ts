@@ -18,7 +18,7 @@ test('List Search: searching by scene names returns scenes', async ({
     .click();
 
   await page
-    .getByPlaceholder('List of scene names')
+    .getByRole('textbox', { name: 'List of scene names' })
     .fill(
       [
         'S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906',

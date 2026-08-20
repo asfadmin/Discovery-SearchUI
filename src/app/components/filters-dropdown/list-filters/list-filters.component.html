@@ -72,23 +72,28 @@
                   </mat-button-toggle-group>
                 </div>
               </div>
+
               <div class="input-field-container">
-                <mat-form-field class="w100 file-list-container">
+                <mat-form-field class="list-input">
+                  <mat-label>
+                    {{ 'LIST_OF' | translate }}
+                    {{
+                      mode === types.SCENE
+                        ? ('SCENE_NAMES' | translate)
+                        : ('FILE_IDS' | translate)
+                    }}
+                  </mat-label>
                   <textarea
                     matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="10"
+                    cdkAutosizeMaxRows="20"
                     (input)="onTextInputChange($event)"
                     [(ngModel)]="searchList"
-                    class="search-list-input"
-                    [placeholder]="
-                      `${('LIST_OF' | translate)} ${
-                        mode === types.SCENE
-                          ? ('SCENE_NAMES' | translate)
-                          : ('FILE_IDS' | translate)
-                      }`
-                    "
-                  >
-                  </textarea>
+                  ></textarea>
                 </mat-form-field>
+
                 <div
                   class="drop-file-area file-upload-container"
                   [class.drop-file-area-scenes]="mode === types.SCENE"
