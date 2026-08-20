@@ -46,6 +46,7 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
           ),
         );
       }
+      break;
     case 'GUNW':
       if (product.metadata.nisar.mainBandPolarization) {
         datasets.push(
@@ -97,6 +98,7 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
           },
         );
       }
+      break;
   }
 
   return datasets;
