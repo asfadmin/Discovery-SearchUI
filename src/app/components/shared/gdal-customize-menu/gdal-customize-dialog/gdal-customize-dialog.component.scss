@@ -115,7 +115,8 @@ h1 {
   overflow: scroll;
 }
 
-.gdal-output-snippet-header, .gdal-output::before {
+.gdal-output-snippet-header,
+.gdal-output::before {
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
@@ -146,7 +147,10 @@ h1 {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Dynamically offsets by its own width/height */
+    transform: translate(
+      -50%,
+      -50%
+    ); /* Dynamically offsets by its own width/height */
     width: 100%;
     height: 100%;
     display: flex;

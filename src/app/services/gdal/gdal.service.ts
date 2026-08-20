@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { CMRProduct, NISARDatasetByProduct, NISARDataset } from '@models';
+import { CMRProduct, NISARDatasetsByProduct, NISARDataset } from '@models';
 import { MapService } from '@services';
 
 export interface GdalOptionsWithFileType {
@@ -121,7 +121,7 @@ export class GdalService {
   }
 
   public getProductDatasets(product: CMRProduct): NISARDataset[] {
-    return NISARDatasetByProduct[product.metadata.productType](product);
+    return NISARDatasetsByProduct(product);
   }
 
   public isCropToAOIAvailable(): boolean {

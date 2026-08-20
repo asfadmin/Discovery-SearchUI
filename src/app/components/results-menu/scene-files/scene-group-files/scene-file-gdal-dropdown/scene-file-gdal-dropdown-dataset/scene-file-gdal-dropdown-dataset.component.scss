@@ -8,6 +8,13 @@
   align-items: center;
 }
 
+.gdal-dataset-name {
+  white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   width: 100%;
+}
+
 .gdal-dataset-type {
   @include themify($themes) {
     color: themed('dark-primary-text');
