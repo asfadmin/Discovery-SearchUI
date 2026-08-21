@@ -16,6 +16,19 @@
   <span class="icon-row">
     <app-copy-to-clipboard
       class="compact"
+      [prompt]="'EXPORT_DATASET_LINK_CLIPBOARD' | translate"
+      [value]="downloadURL()"
+      [message]="'EXPORTED_DATASET_LINK_CLIPBOARD' | translate"
+      copyIcon="link"
+    ></app-copy-to-clipboard>
+    <app-copy-to-clipboard
+      class="compact"
+      [prompt]="'EXPORT_DATASET_PATH_CLIPBOARD' | translate"
+      [value]="dataset().path"
+      [message]="'EXPORTED_DATASET_PATH_CLIPBOARD' | translate"
+    ></app-copy-to-clipboard>
+    <app-copy-to-clipboard
+      class="compact"
       [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
       [value]="gdalCommand()"
       [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"

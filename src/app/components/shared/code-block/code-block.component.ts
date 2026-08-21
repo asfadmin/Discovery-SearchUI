@@ -22,6 +22,10 @@ export class CodeBlockComponent {
 
   constructor() {
     effect(() => {
+      if (!this.codeBlock()) {
+        return false;
+      }
+
       const grammar = Prism.languages[this.language()];
 
       const codeContent = Prism.highlight(

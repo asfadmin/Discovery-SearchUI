@@ -1,34 +1,5 @@
 <div class="gdal-export-wrapper">
   <h1>{{ 'EXPORT_GDAL' | translate }}</h1>
-  <mat-accordion>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ 'EXPORT_GDAL_HELP' | translate }}
-        </mat-panel-title>
-        <mat-panel-description>
-          {{ 'EXPORT_GDAL_HELP_SUMMARY' | translate }}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
-      <app-code-block
-        [codeDescription]="
-          outputOS() === 'Windows' ? '%USERPROFILE/.netrc' : '~/.netrc'
-        "
-        [codeContent]="netrcContent"
-        [copyPrompt]="'EXPORT_NETRC_CLIPBOARD' | translate"
-        [copyMessage]="'EXPORTED_NETRC_CLIPBOARD' | translate"
-        language="bash"
-      >
-      </app-code-block>
-      <div><br /></div>
-      <app-docs-modal
-        class="info-text"
-        text="EXPORT_GDAL_HELP_LINK"
-        url="https://nisar-docs.asf.alaska.edu/gdal/"
-      ></app-docs-modal>
-    </mat-expansion-panel>
-  </mat-accordion>
 
   <div class="dataset-list-card">
     <h2>1. {{ 'SELECT_A_DATASET' | translate }}</h2>
@@ -114,8 +85,30 @@
     </div>
   </div>
 
+  <div class="gdal-configure-card">
+    <h2> 3. {{ 'CONFIGURE_ENVIRONMENT' | translate }} </h2>
+    <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
+    <app-code-block
+      [codeDescription]="
+        outputOS() === 'Windows' ? '%USERPROFILE/.netrc' : '~/.netrc'
+      "
+      [codeContent]="netrcContent"
+      [copyPrompt]="'EXPORT_NETRC_CLIPBOARD' | translate"
+      [copyMessage]="'EXPORTED_NETRC_CLIPBOARD' | translate"
+      language="bash"
+    >
+    </app-code-block>
+    <div><br /></div>
+    <app-docs-modal
+      class="info-text"
+      text="EXPORT_GDAL_HELP_LINK"
+      url="https://nisar-docs.asf.alaska.edu/gdal/"
+    ></app-docs-modal>
+
+  </div>
+
   <div class="gdal-output-card">
-    <h2>3. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
+    <h2>4. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
     <div class="gdal-output-list">
       <app-code-block
         [codeDescription]="'GDAL_COMMAND_DESCRIPTION' | translate"
