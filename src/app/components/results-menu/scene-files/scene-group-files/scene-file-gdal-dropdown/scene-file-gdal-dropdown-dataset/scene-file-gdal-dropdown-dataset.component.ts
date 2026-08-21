@@ -26,7 +26,7 @@ export class SceneFileGdalDropdownDatasetComponent {
       datasetPath: this.dataset().path,
     }),
   );
-  downloadURL = computed(() =>
-    `/vsicurl/"${this.product().downloadUrl}":${this.dataset().path}`
-  )
+  downloadURL = computed(
+    () => `/vsicurl/"${this.product().downloadUrl}":${this.dataset().path}`,
+  );
 }

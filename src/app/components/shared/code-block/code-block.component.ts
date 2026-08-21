@@ -19,7 +19,6 @@ export class CodeBlockComponent {
 
   codeBlock = viewChild<ElementRef>('codeBlock');
 
-
   constructor() {
     effect(() => {
       if (!this.codeBlock()) {
