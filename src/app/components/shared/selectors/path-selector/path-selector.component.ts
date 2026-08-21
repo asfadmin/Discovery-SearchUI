@@ -12,6 +12,7 @@ import * as filtersStore from '@store/filters';
 import { Props } from '@models';
 import { PropertyService } from '@services';
 import { MatFormField, MatInput } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { AoiClearComponent } from './aoi-clear/aoi-clear.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -32,6 +33,7 @@ enum PathFormInputType {
     FormsModule,
 
     MatFormField,
+    MatLabel,
     MatInput,
     MatButton,
     AoiClearComponent,
