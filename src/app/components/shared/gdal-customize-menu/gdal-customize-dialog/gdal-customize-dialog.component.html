@@ -31,6 +31,16 @@
 
   <div class="options-list-card">
     <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
+    <div class="output-type">
+      <mat-button-toggle-group [(ngModel)]="outputType" class="mat-elevation-z2">
+        <mat-button-toggle value="gdal">
+          {{ 'GDAL_OUTPUT' | translate }}
+        </mat-button-toggle>
+        <mat-button-toggle value="qgis">
+          {{ 'QGIS_OUTPUT' | translate }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
     <div class="options-list">
       <span class="option">
         <mat-form-field>
@@ -90,7 +100,7 @@
     <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
     <app-code-block
       [codeDescription]="
-        outputOS() === 'Windows' ? '%USERPROFILE/.netrc' : '~/.netrc'
+        outputOS() === 'Windows' ? '%USERPROFILE%/.netrc' : '~/.netrc'
       "
       [codeContent]="netrcContent"
       [copyPrompt]="'EXPORT_NETRC_CLIPBOARD' | translate"
@@ -106,32 +116,64 @@
     ></app-docs-modal>
   </div>
 
-  <div class="gdal-output-card">
-    <h2>4. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
-    <div class="gdal-output-list">
-      <app-code-block
-        [codeDescription]="'GDAL_COMMAND_DESCRIPTION' | translate"
-        [codeContent]="gdalCommand()"
-        [copyPrompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
-        [copyMessage]="'EXPORTED_GDAL_CLIPBOARD' | translate"
-        [isCommand]="true"
-        language="bash"
-      >
-      </app-code-block>
-      @if (minimalCommand()) {
+  @if (outputType() == 'gdal') {
+    <div class="gdal-output-card">
+      <h2>4. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
+      <div class="gdal-output-list">
         <app-code-block
-          [codeDescription]="
-            outputOS() === 'Windows'
-              ? '%USERPROFILE/.gdal/gdalrc'
-              : '~/.gdal/gdalrc'
-          "
-          [codeContent]="gdalService.generateGdalrc(gdalOptions())"
-          [copyPrompt]="'EXPORT_GDALRC_CLIPBOARD' | translate"
-          [copyMessage]="'EXPORTED_GDALRC_CLIPBOARD' | translate"
+          [codeDescription]="'GDAL_COMMAND_DESCRIPTION' | translate"
+          [codeContent]="gdalCommand()"
+          [copyPrompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
+          [copyMessage]="'EXPORTED_GDAL_CLIPBOARD' | translate"
+          [isCommand]="true"
           language="bash"
         >
         </app-code-block>
-      }
+        @if (minimalCommand()) {
+          <app-code-block
+            [codeDescription]="
+              outputOS() === 'Windows'
+                ? '%USERPROFILE%/.gdal/gdalrc'
+                : '~/.gdal/gdalrc'
+            "
+            [codeContent]="gdalService.generateGdalrc(gdalOptions())"
+            [copyPrompt]="'EXPORT_GDALRC_CLIPBOARD' | translate"
+            [copyMessage]="'EXPORTED_GDALRC_CLIPBOARD' | translate"
+            language="bash"
+          >
+          </app-code-block>
+        }
+      </div>
     </div>
-  </div>
+  }
+
+  @if (outputType() == 'qgis') {
+    <div class="gdal-output-card">
+      <h2>4. {{ 'RUN_QGIS_SNIPPET' | translate }}</h2>
+      <div class="gdal-output-list">
+        <app-code-block
+          [codeDescription]="'QGIS_SCRIPT_DESCRIPTION' | translate"
+          [codeContent]="qgisCommand()"
+          [copyPrompt]="'EXPORT_QGIS_CLIPBOARD' | translate"
+          [copyMessage]="'EXPORTED_QGIS_CLIPBOARD' | translate"
+          language="python"
+        >
+        </app-code-block>
+        @if (minimalCommand()) {
+          <app-code-block
+            [codeDescription]="
+              outputOS() === 'Windows'
+                ? '%USERPROFILE%/.gdal/gdalrc'
+                : '~/.gdal/gdalrc'
+            "
+            [codeContent]="gdalService.generateGdalrc(gdalOptions())"
+            [copyPrompt]="'EXPORT_GDALRC_CLIPBOARD' | translate"
+            [copyMessage]="'EXPORTED_GDALRC_CLIPBOARD' | translate"
+            language="bash"
+          >
+          </app-code-block>
+        }
+      </div>
+    </div>
+  }
 </div>

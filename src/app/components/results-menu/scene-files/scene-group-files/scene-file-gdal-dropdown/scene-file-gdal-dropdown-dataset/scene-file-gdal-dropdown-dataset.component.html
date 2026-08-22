@@ -29,6 +29,13 @@
     ></app-copy-to-clipboard>
     <app-copy-to-clipboard
       class="compact"
+      [prompt]="'EXPORT_QGIS_CLIPBOARD' | translate"
+      [value]="qgisScript()"
+      [message]="'EXPORTED_QGIS_CLIPBOARD' | translate"
+      svgIcon="qgis"
+    ></app-copy-to-clipboard>
+    <app-copy-to-clipboard
+      class="compact"
       [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
       [value]="gdalCommand()"
       [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"

@@ -20,6 +20,7 @@ import {
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
 import { CodeBlockComponent } from '@components/shared/code-block/code-block.component';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-gdal-customize-dialog',
@@ -35,6 +36,8 @@ import { CodeBlockComponent } from '@components/shared/code-block/code-block.com
     MatSelect,
     MatOption,
     MatInput,
+    MatButtonToggle,
+    MatButtonToggleGroup,
     FormsModule,
     DocsModalComponent,
     CopyToClipboardComponent,
@@ -62,6 +65,7 @@ export class GdalCustomizeDialogComponent {
   cropToAOI = signal<boolean>(false);
   minimalCommand = signal<boolean>(false);
   outputOS = signal<string>(this.getOS());
+  outputType = signal<string>('gdal');
   gdalOptions: Signal<GdalOptions> = computed(() => {
     return {
       datasetPath: this.selectedDataset() ?? '<DATASET PATH>',
@@ -76,6 +80,9 @@ export class GdalCustomizeDialogComponent {
   gdalCommand = computed(() =>
     this.gdalService.generateGDALCommand(this.data.product, this.gdalOptions()),
   );
+  qgisCommand = computed(() =>
+    this.gdalService.generateQGISScript(this.data.product, this.gdalOptions()),
+  )
 
   netrcContent = `\
 machine urs.earthdata.nasa.gov

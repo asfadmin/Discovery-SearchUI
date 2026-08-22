@@ -5,8 +5,11 @@
     [matTooltip]="display"
     matTooltipPosition="left"
     inline="true"
+    [svgIcon]="svgIcon()"
   >
-    {{ copyIcon() }}
+    @if (!svgIcon()) {
+      {{ copyIcon() }}
+    }
   </mat-icon>
 }
 

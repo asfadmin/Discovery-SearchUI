@@ -55,11 +55,23 @@ export class GdalService {
     return '/tmp/';
   }
 
+  private resolveGDALCommand(options: GdalOptions): string {
+    const reproject = 'projection' in options && options.projection !== '';
+    const spatialSubset = 'aoi' in options && options.aoi;
+
+    if (spatialSubset || reproject) {
+      return 'gdalwarp';
+    }
+
+    return 'gdal_translate';
+  }
+
   public generateGDALTranslateArguments(
     product: CMRProduct,
     options: GdalOptions,
+    qgisArgs = false,
   ): string[] {
-    let command = 'gdal_translate';
+    let command = this.resolveGDALCommand(options);
     const datasetPath = options.datasetPath ?? '<DATASET PATH>';
     const downloadURL = `HDF5:"/vsicurl/${product.downloadUrl}":${datasetPath}`;
     const outputFormat = options.outputFormat ?? 'GTiff';
@@ -87,8 +99,7 @@ export class GdalService {
       optionalArgs.push(projection);
     }
 
-    if (spatialSubset || reproject) {
-      command = 'gdalwarp';
+    if (command == 'gdalwarp') {
       optionalArgs.push('-dstalpha');
     }
 
@@ -98,6 +109,10 @@ export class GdalService {
           (configOption) => `--config ${configOption}`,
         ),
       );
+    }
+
+    if (qgisArgs) {
+      return [...optionalArgs, ...configOptions];
     }
 
     return [
@@ -117,7 +132,63 @@ export class GdalService {
     product: CMRProduct,
     options: GdalOptions,
   ): string {
+    if (options.os && options.os == 'Windows') {
+      return `${this.generateGDALTranslateArguments(product, options).join(' ^\n        ')}`;
+    }
+
     return `${this.generateGDALTranslateArguments(product, options).join(' \\\n        ')}`;
+  }
+
+  public generateQGISScript(product: CMRProduct, options: GdalOptions): string {
+    const extraArgs = this.generateGDALTranslateArguments(
+      product,
+      options,
+      true,
+    );
+
+//     if (options.os == 'Windows' || true) {
+//       const gdalFunction =
+//         this.resolveGDALCommand(options) === 'gdal_translate'
+//           ? 'gdal.Translate'
+//           : 'gdal.Warp';
+
+//       return `
+// from osgeo import gdal
+
+// input_raster = gdal.Open('HDF5:/vsicurl/"${product.downloadUrl}":${options.datasetPath}')
+// output_raster = '/tmp/${product.name}'
+// args_list = "${extraArgs.join(' ')}"
+// gdaloptions = ${gdalFunction}Options(options=args_list)
+
+// ${gdalFunction}(output_raster, input_raster, options=gdaloptions)
+
+// iface.addRasterLayer("/tmp/${product.name}", "${product.name}")
+// print("Done!")
+//       `;
+//     }
+
+    const processingString =
+      this.resolveGDALCommand(options) === 'gdal_translate'
+        ? 'gdal:translate'
+        : 'gdal:warpreproject';
+
+    return `
+import qgis.processing
+
+input_raster = 'HDF5:/vsicurl/"${product.downloadUrl}":${options.datasetPath}'
+output_raster = "TEMPORARY_OUTPUT"
+
+parameters = {
+    "INPUT": input_raster,
+    "OUTPUT": output_raster,
+    "EXTRA": "${extraArgs.join(' ')}",
+}
+
+result = processing.run("${processingString}", parameters)
+
+iface.addRasterLayer(result["OUTPUT"], "${product.name}")
+print("Done!")
+    `;
   }
 
   public getProductDatasets(product: CMRProduct): NISARDataset[] {

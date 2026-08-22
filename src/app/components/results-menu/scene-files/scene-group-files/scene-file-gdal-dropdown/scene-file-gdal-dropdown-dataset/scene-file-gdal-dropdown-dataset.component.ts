@@ -26,6 +26,12 @@ export class SceneFileGdalDropdownDatasetComponent {
       datasetPath: this.dataset().path,
     }),
   );
+  qgisScript = computed(() =>
+    this.gdalService.generateQGISScript(this.product(), {
+      datasetPath: this.dataset().path,
+    }),
+  );
+
   downloadURL = computed(
     () => `/vsicurl/"${this.product().downloadUrl}":${this.dataset().path}`,
   );

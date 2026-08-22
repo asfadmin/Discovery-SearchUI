@@ -2,6 +2,7 @@ import { Component, effect, ElementRef, input, viewChild } from '@angular/core';
 import { CopyToClipboardComponent } from '../copy-to-clipboard';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-python';
 
 @Component({
   selector: 'app-code-block',

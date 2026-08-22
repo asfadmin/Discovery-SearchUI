@@ -80,6 +80,18 @@ h1 {
   flex-shrink: 1;
 }
 
+.output-type {
+  @include themify($themes) {
+    @include mat.button-toggle-overrides(
+      (
+        divider-color: white,
+        hover-state-layer-opacity: 0.3,
+        shape: 15px,
+      )
+    );
+  }
+}
+
 .options-list {
   display: flex;
   flex-direction: row;
