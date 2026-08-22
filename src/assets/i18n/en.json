@@ -1219,6 +1219,7 @@
   "VELOCITY_OVERVIEW_OPACITY": "Velocity Overview Opacity",
   "VERIFY_EARTHDATA_LOGIN_PROFILE": "Verify your Earthdata Login profile information",
   "VERIFY_EARTHDATA_LOGIN_PROFILE_DESCRIPTION": "Please review your Earthdata Login profile information below. We will use the email address listed to notify you of your approval status. If any of this information is incorrect, please update your Earthdata Login profile and then refresh this page to view your updated information.",
+  "VERSION_NUMBER": "Version Number",
   "VERTEX_CODE_REPOSITORY": "Vertex Code Repository",
   "VERTEX_USER_GUIDE": "Vertex User Guide",
   "VIDEO_LIBRARY": "video_library",
