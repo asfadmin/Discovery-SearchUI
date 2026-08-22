@@ -32,7 +32,10 @@
   <div class="options-list-card">
     <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
     <div class="output-type">
-      <mat-button-toggle-group [(ngModel)]="outputType" class="mat-elevation-z2">
+      <mat-button-toggle-group
+        [(ngModel)]="outputType"
+        class="mat-elevation-z2"
+      >
         <mat-button-toggle value="gdal">
           {{ 'GDAL_OUTPUT' | translate }}
         </mat-button-toggle>

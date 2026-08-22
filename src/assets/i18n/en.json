@@ -1308,6 +1308,13 @@
   "MINIMAL_COMMAND": "Utilize Config File",
   "OUTPUT_FORMAT": "File Format",
   "OUTPUT_OS": "Operating System",
+  "CONFIGURE_ENVIRONMENT": "Setup GDAL environment.",
+  "RUN_QGIS_SCRIPT": "Run QGIS script.",
+  "GDAL_OUTPUT": "Output GDAL Command",
+  "QGIS_OUTPUT": "Output QGIS Script",
+  "QGIS_SCRIPT_DESCRIPTION": "QGIS Layer Subsetting and Import Script",
+  "EXPORT_QGIS_CLIPBOARD": "Copy QGIS layer subsetting and import script to clipboard",
+  "EXPORTED_QGIS_CLIPBOARD": "Copied QGIS layer subsetting and import script to clipboard",
   "EXPORT_NETRC_CLIPBOARD": "Copy 'netrc' config file to clipboard.",
   "EXPORTED_NETRC_CLIPBOARD": "Copied 'netrc' config file to clipboard."
 }

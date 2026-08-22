@@ -146,26 +146,26 @@ export class GdalService {
       true,
     );
 
-//     if (options.os == 'Windows' || true) {
-//       const gdalFunction =
-//         this.resolveGDALCommand(options) === 'gdal_translate'
-//           ? 'gdal.Translate'
-//           : 'gdal.Warp';
+    //     if (options.os == 'Windows' || true) {
+    //       const gdalFunction =
+    //         this.resolveGDALCommand(options) === 'gdal_translate'
+    //           ? 'gdal.Translate'
+    //           : 'gdal.Warp';
 
-//       return `
-// from osgeo import gdal
+    //       return `
+    // from osgeo import gdal
 
-// input_raster = gdal.Open('HDF5:/vsicurl/"${product.downloadUrl}":${options.datasetPath}')
-// output_raster = '/tmp/${product.name}'
-// args_list = "${extraArgs.join(' ')}"
-// gdaloptions = ${gdalFunction}Options(options=args_list)
+    // input_raster = gdal.Open('HDF5:/vsicurl/"${product.downloadUrl}":${options.datasetPath}')
+    // output_raster = '/tmp/${product.name}'
+    // args_list = "${extraArgs.join(' ')}"
+    // gdaloptions = ${gdalFunction}Options(options=args_list)
 
-// ${gdalFunction}(output_raster, input_raster, options=gdaloptions)
+    // ${gdalFunction}(output_raster, input_raster, options=gdaloptions)
 
-// iface.addRasterLayer("/tmp/${product.name}", "${product.name}")
-// print("Done!")
-//       `;
-//     }
+    // iface.addRasterLayer("/tmp/${product.name}", "${product.name}")
+    // print("Done!")
+    //       `;
+    //     }
 
     const processingString =
       this.resolveGDALCommand(options) === 'gdal_translate'
