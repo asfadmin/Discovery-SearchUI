@@ -1,9 +1,8 @@
 <mat-form-field>
+  <mat-label>{{ 'USER_ID_SELECTOR' | translate }}</mat-label>
   <input
     type="text"
     name="projectNameInput"
-    [placeholder]="'USER_ID_SELECTOR' | translate"
-    aria-label="ON_DEMAND_USER_ID"
     matInput
     (change)="onOnDemandUserChange($event)"
     [(ngModel)]="onDemandUserName"
