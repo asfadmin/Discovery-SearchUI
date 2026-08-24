@@ -20,7 +20,10 @@ import {
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
 import { CodeBlockComponent } from '@components/shared/code-block/code-block.component';
-import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import {
+  MatButtonToggle,
+  MatButtonToggleGroup,
+} from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-gdal-customize-dialog',
@@ -49,6 +52,16 @@ import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-
 export class GdalCustomizeDialogComponent {
   readonly dialogRef = inject(MatDialogRef<GdalCustomizeMenuComponent>);
   readonly data = inject<GdalCustomizeDialogData>(MAT_DIALOG_DATA);
+  datasets = this.data.datasets.sort((a, b) => {
+    if (a.ancillary == b.ancillary) {
+      return 0;
+    }
+    if (a.ancillary !== undefined && a.ancillary) {
+      return 1;
+    }
+
+    return -1;
+  });
   gdalService = inject(GdalService);
   selectedDataset = signal<string>(null);
   selectedProjection = signal<string>('');
@@ -82,7 +95,7 @@ export class GdalCustomizeDialogComponent {
   );
   qgisCommand = computed(() =>
     this.gdalService.generateQGISScript(this.data.product, this.gdalOptions()),
-  )
+  );
 
   netrcContent = `\
 machine urs.earthdata.nasa.gov
