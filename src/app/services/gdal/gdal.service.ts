@@ -33,17 +33,17 @@ export class GdalService {
   searchPolygon = toSignal(this.mapService.searchPolygon$);
   public configOptions(os: string) {
     return [
-      'CPL_VSIL_CURL_CHUNK_SIZE=2097152',
-      'CPL_VSIL_CURL_CACHE_SIZE=67108864',
-      'GDAL_CACHEMAX=64000000',
-      'GDAL_DISABLE_READDIR_ON_OPEN=TRUE',
-      'GDAL_HTTP_MERGE_CONSECUTIVE_RANGES=YES',
-      'GDAL_HTTP_MULTIPLEX=YES',
-      'GDAL_NUM_THREADS=ALL_CPUS',
-      'CPL_VSIL_CURL_CACHE_SIZE=1GB',
-      'GDAL_HTTP_NETRC=YES',
-      `GDAL_HTTP_COOKIEFILE=${this.getTempDir(os)}gdal_cookies.txt`,
-      `GDAL_HTTP_COOKIEJAR=${this.getTempDir(os)}gdal_cookies.txt`,
+      'CPL_VSIL_CURL_CHUNK_SIZE 2097152',
+      'CPL_VSIL_CURL_CACHE_SIZE 67108864',
+      'GDAL_CACHEMAX 64000000',
+      'GDAL_DISABLE_READDIR_ON_OPEN TRUE',
+      'GDAL_HTTP_MERGE_CONSECUTIVE_RANGES YES',
+      'GDAL_HTTP_MULTIPLEX YES',
+      'GDAL_NUM_THREADS ALL_CPUS',
+      'CPL_VSIL_CURL_CACHE_SIZE 1GB',
+      'GDAL_HTTP_NETRC YES',
+      `GDAL_HTTP_COOKIEFILE ${this.getTempDir(os)}gdal_cookies.txt`,
+      `GDAL_HTTP_COOKIEJAR ${this.getTempDir(os)}gdal_cookies.txt`,
     ];
   }
 
