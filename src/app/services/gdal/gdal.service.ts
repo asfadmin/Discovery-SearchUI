@@ -87,7 +87,7 @@ export class GdalService {
 
     if (spatialSubset) {
       const cutlineArgs = [
-        `-cutline ${this.searchPolygon()}`,
+        `-cutline "${this.searchPolygon()}"`,
         `-cutline_srs WGS84`,
         `-crop_to_cutline`,
       ];
@@ -95,7 +95,7 @@ export class GdalService {
     }
 
     if (reproject) {
-      const projection = `-t_srs "${options.projection}"`;
+      const projection = `-t_srs ${options.projection}`;
       optionalArgs.push(projection);
     }
 
