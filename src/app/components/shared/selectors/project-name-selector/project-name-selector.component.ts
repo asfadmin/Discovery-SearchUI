@@ -19,6 +19,7 @@ import * as filtersStore from '@store/filters';
 import { NotificationService } from '@services/notification.service';
 import { ScenesService } from '@services';
 import { MatFormField, MatInput } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import {
   MatAutocompleteTrigger,
   MatAutocomplete,
@@ -34,6 +35,7 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     FormsModule,
     MatFormField,
+    MatLabel,
     MatInput,
     MatAutocompleteTrigger,
     MatAutocomplete,
