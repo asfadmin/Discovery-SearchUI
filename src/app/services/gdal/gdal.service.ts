@@ -133,7 +133,7 @@ export class GdalService {
     options: GdalOptions,
   ): string {
     if (options.os && options.os == 'Windows') {
-      return `${this.generateGDALTranslateArguments(product, options).join(' ^\n        ')}`;
+      return `${this.generateGDALTranslateArguments(product, options).join(' ^\r\n        ')}`;
     }
 
     return `${this.generateGDALTranslateArguments(product, options).join(' \\\n        ')}`;
