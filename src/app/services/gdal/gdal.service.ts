@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { CMRProduct, NISARDatasetsByProduct, NISARDataset } from '@models';
+import { CMRProduct, datasetsForNISARProduct, NISARDataset } from '@models';
 import { MapService } from '@services';
 
 export interface GdalOptionsWithFileType {
@@ -158,13 +158,12 @@ export class GdalService {
     // input_raster = gdal.Open('HDF5:/vsicurl/"${product.downloadUrl}":${options.datasetPath}')
     // output_raster = '/tmp/${product.name}'
     // args_list = "${extraArgs.join(' ')}"
-    // gdaloptions = ${gdalFunction}Options(options=args_list)
 
-    // ${gdalFunction}(output_raster, input_raster, options=gdaloptions)
+    // ${gdalFunction}(output_raster, input_raster, options=args_list)
 
     // iface.addRasterLayer("/tmp/${product.name}", "${product.name}")
     // print("Done!")
-    //       `;
+    //           `;
     //     }
 
     const processingString =
@@ -192,7 +191,7 @@ print("Done!")
   }
 
   public getProductDatasets(product: CMRProduct): NISARDataset[] {
-    return NISARDatasetsByProduct(product);
+    return datasetsForNISARProduct(product);
   }
 
   public isCropToAOIAvailable(): boolean {

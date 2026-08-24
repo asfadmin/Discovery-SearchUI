@@ -1,6 +1,6 @@
 import { CMRProduct } from '@models';
 
-export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
+export function datasetsForNISARProduct(product: CMRProduct): NISARDataset[] {
   if (!('nisar' in product.metadata)) {
     return [];
   }
@@ -11,6 +11,45 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
   switch (product.metadata.productType) {
     case 'GCOV':
       if (product.metadata.nisar.mainBandPolarization) {
+        if (
+          ['HH', 'HV', 'VH', 'VV'].every((polarization) =>
+            nisar.mainBandPolarization.includes(polarization),
+          )
+        ) {
+          datasets.push(
+            {
+              path: `//science/LSAR/GCOV/grids/frequencyA/HHHV`,
+              name: `Frequency A HHHV Covariance`,
+              type: 'Float32',
+            },
+            {
+              path: `//science/LSAR/GCOV/grids/frequencyA/HHVH`,
+              name: `Frequency A HHVH Covariance`,
+              type: 'Float32',
+            },
+            {
+              path: `//science/LSAR/GCOV/grids/frequencyA/HHVV`,
+              name: `Frequency A HHVV Covariance`,
+              type: 'Float32',
+            },
+            {
+              path: `//science/LSAR/GCOV/grids/frequencyA/HVVH`,
+              name: `Frequency A HVVH Covariance`,
+              type: 'Float32',
+            },
+            {
+              path: `//science/LSAR/GCOV/grids/frequencyA/HVVV`,
+              name: `Frequency A HVVV Covariance`,
+              type: 'Float32',
+            },
+            {
+              path: `//science/LSAR/GCOV/grids/frequencyA/VHVV`,
+              name: `Frequency A VHVV Covariance`,
+              type: 'Float32',
+            },
+          );
+        }
+
         datasets.push(
           ...nisar.mainBandPolarization.map(
             (polarization: string): NISARDataset => {
@@ -25,11 +64,13 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
             path: '//science/LSAR/GCOV/grids/frequencyA/numberOfLooks',
             name: 'Frequency A Number of Looks',
             type: 'Float32',
+            ancillary: true,
           },
           {
             path: '//science/LSAR/GCOV/grids/frequencyA/rtcGammaToSigmaFactor',
             name: 'Frequency A RTC Gamma To Sigma Factor',
             type: 'Float32',
+            ancillary: true,
           },
           {
             path: '//science/LSAR/GCOV/grids/frequencyA/mask',
@@ -53,11 +94,13 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
             path: '//science/LSAR/GCOV/grids/frequencyA/numberOfLooks',
             name: 'Frequency B Number of Looks',
             type: 'Float32',
+            ancillary: true,
           },
           {
             path: '//science/LSAR/GCOV/grids/frequencyA/rtcGammaToSigmaFactor',
             name: 'Frequency B RTC Gamma To Sigma Factor',
             type: 'Float32',
+            ancillary: true,
           },
           {
             path: '//science/LSAR/GCOV/grids/frequencyB/mask',
@@ -85,18 +128,8 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
                   type: 'Float32',
                 },
                 {
-                  path: `//science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/${polarization}/connectedComponents`,
-                  name: `Frequency A ${polarization} Unwrapped Connected Components`,
-                  type: 'UInt16',
-                },
-                {
-                  path: `//science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/${polarization}/ionospherePhaseScreen`,
-                  name: `Frequency A ${polarization} Unwrapped Ionosphere Phase Screen`,
-                  type: 'Float32',
-                },
-                {
-                  path: `//science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/${polarization}/ionospherePhaseScreenUncertainty`,
-                  name: `Frequency A ${polarization} Unwrapped Ionosphere Phase Screen Uncertainty`,
+                  path: `//science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/${polarization}/wrappedInterferogram`,
+                  name: `Frequency A ${polarization} Wrapped Interferogram`,
                   type: 'Float32',
                 },
                 {
@@ -105,27 +138,42 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
                   type: 'Float32',
                 },
                 {
-                  path: `//science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/${polarization}/wrappedInterferogram`,
-                  name: `Frequency A ${polarization} Wrapped Interferogram`,
+                  path: `//science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/${polarization}/connectedComponents`,
+                  name: `Frequency A ${polarization} Unwrapped Connected Components`,
+                  type: 'UInt16',
+                  ancillary: true,
+                },
+                {
+                  path: `//science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/${polarization}/ionospherePhaseScreen`,
+                  name: `Frequency A ${polarization} Unwrapped Ionosphere Phase Screen`,
                   type: 'Float32',
+                  ancillary: true,
+                },
+                {
+                  path: `//science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/${polarization}/ionospherePhaseScreenUncertainty`,
+                  name: `Frequency A ${polarization} Unwrapped Ionosphere Phase Screen Uncertainty`,
+                  type: 'Float32',
+                  ancillary: true,
                 },
                 {
                   path: `//science/LSAR/GUNW/grids/frequencyA/pixelOffsets/${polarization}/alongTrackOffset`,
                   name: `Frequency A ${polarization} Along Track Pixel Offset`,
                   type: 'Float32',
                   unit: 'Meters',
+                  ancillary: true,
                 },
                 {
                   path: `//science/LSAR/GUNW/grids/frequencyA/pixelOffsets/${polarization}/slantRangeOffset`,
                   name: `Frequency A ${polarization} Slant Range Pixel Offset`,
                   type: 'Float32',
                   unit: 'Meters',
+                  ancillary: true,
                 },
-
                 {
                   path: `//science/LSAR/GUNW/grids/frequencyA/pixelOffsets/${polarization}/correlationSurfacePeak`,
                   name: `Frequency A ${polarization} Correlation Surface Peak`,
                   type: 'Float32',
+                  ancillary: true,
                 },
               ];
             })
@@ -144,6 +192,7 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
             path: '//science/LSAR/GUNW/grids/frequencyA/pixelOffsets/mask',
             name: 'Frequency A Pixel Offset Mask',
             type: 'UByte',
+            ancillary: true,
           },
         );
       }
@@ -152,7 +201,7 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
       datasets.push(
         {
           path: '//science/LSAR/SME2/grids/soilMoisture',
-          name: 'Soil Moisture Estimate',
+          name: 'Soil Moisture',
           type: 'Float32',
           unit: 'Meters³/Meters³',
         },
@@ -163,20 +212,23 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
           unit: 'Meters³/Meters³',
         },
         {
-          path: '//science/LSAR/SME2/grids/ancillaryData/localIncidentAngle',
-          name: 'Local Incident Angle',
-          type: 'Float32',
-          unit: 'Degrees',
-        },
-        {
           path: '//science/LSAR/SME2/grids/retrievalQualityFlag',
           name: 'Retrieval Quality Flag',
           type: 'UInt16',
+          ancillary: true,
         },
         {
           path: '//science/LSAR/SME2/grids/surfaceQualityFlag',
           name: 'Surface Quality Flag',
           type: 'Int16',
+          ancillary: true,
+        },
+        {
+          path: '//science/LSAR/SME2/grids/ancillaryData/localIncidentAngle',
+          name: 'Local Incident Angle',
+          type: 'Float32',
+          unit: 'Degrees',
+          ancillary: true,
         },
       );
       if (nisar.mainBandPolarization) {
@@ -186,6 +238,7 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
               path: `//science/LSAR/SME2/grids/radarData/frequencyA/sigma0${polarization}`,
               name: `Frequency A ${polarization} Sigma0`,
               type: 'Float32',
+              ancillary: true,
             };
           }),
         );
@@ -197,6 +250,7 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
               path: `//science/LSAR/SME2/grids/radarData/frequencyB/sigma0${polarization}`,
               name: `Frequency B ${polarization} Sigma0`,
               type: 'Float32',
+              ancillary: true,
             };
           }),
         );
@@ -220,27 +274,16 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
                     unit: 'Meters',
                   },
                   {
-                    path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/${polarization}/${layer.path}/alongTrackOffsetVariance`,
-                    name: `Frequency A ${polarization} ${layer.display} Along Track Offset Variance`,
-                    type: 'Float32',
-                    unit: 'Meters²',
-                  },
-                  {
-                    path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/${polarization}/${layer.path}/correlationSurfacePeak`,
-                    name: `Frequency A ${polarization} ${layer.display} Correlation Surface Peak`,
-                    type: 'Float32',
-                  },
-                  {
-                    path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/${polarization}/${layer.path}/crossOffsetVariance`,
-                    name: `Frequency A ${polarization} ${layer.display} Cross Offset Variance`,
-                    type: 'Float32',
-                    unit: 'Meters²',
-                  },
-                  {
                     path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/${polarization}/${layer.path}/slantRangeOffset`,
                     name: `Frequency A ${polarization} ${layer.display} Slant Range Offset`,
                     type: 'Float32',
                     unit: 'Meters',
+                  },
+                  {
+                    path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/${polarization}/${layer.path}/alongTrackOffsetVariance`,
+                    name: `Frequency A ${polarization} ${layer.display} Along Track Offset Variance`,
+                    type: 'Float32',
+                    unit: 'Meters²',
                   },
                   {
                     path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/${polarization}/${layer.path}/slantRangeOffsetVariance`,
@@ -249,9 +292,23 @@ export function NISARDatasetsByProduct(product: CMRProduct): NISARDataset[] {
                     unit: 'Meters²',
                   },
                   {
+                    path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/${polarization}/${layer.path}/correlationSurfacePeak`,
+                    name: `Frequency A ${polarization} ${layer.display} Correlation Surface Peak`,
+                    type: 'Float32',
+                    ancillary: true,
+                  },
+                  {
+                    path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/${polarization}/${layer.path}/crossOffsetVariance`,
+                    name: `Frequency A ${polarization} ${layer.display} Cross Offset Variance`,
+                    type: 'Float32',
+                    unit: 'Meters²',
+                    ancillary: true,
+                  },
+                  {
                     path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/${polarization}/${layer.path}/snr`,
                     name: `Frequency A ${polarization} ${layer.display} Signal To Noise Ratio`,
                     type: 'Float32',
+                    ancillary: true,
                   },
                 ];
               }),
@@ -304,4 +361,5 @@ export interface NISARDataset {
   name: string;
   type?: string;
   unit?: string;
+  ancillary?: boolean;
 }
