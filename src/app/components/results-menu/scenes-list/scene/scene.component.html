@@ -59,6 +59,7 @@
             @if (hovered) {
               <app-copy-to-clipboard
                 [prompt]="'COPY_SCENE_NAME' | translate"
+                [message]="'COPIED_SCENE_NAME' | translate"
                 [value]="
                   scene.metadata.fileName ||
                   scene.name ||
