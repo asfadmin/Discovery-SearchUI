@@ -233,10 +233,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     distinctUntilChanged((prev, curr) => prev?.id === curr?.id),
     withLatestFrom(this.store$.select(filterStore.getUseCalibrationData)),
     map(([scene, useCalibrationData]) => {
-      return (
-        this.operaSubqueryCriteria(scene, useCalibrationData) ||
-        this.nisarSubqueryCriteria(scene)
-      );
+      return this.operaSubqueryCriteria(scene, useCalibrationData);
+      // || this.nisarSubqueryCriteria(scene)
     }),
   );
 
@@ -251,6 +249,11 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       scene?.id.startsWith('OPERA')
     );
   }
+
+  /*
+   * Removed because this is yeilding the wrong orbit files and there isn't a
+   * well defined way of which orbits to show for each product
+   *
   private nisarSubqueryCriteria(scene: models.CMRProduct) {
     const isNisar = !!scene && scene.id?.startsWith('NISAR');
     const processingLevel = scene?.metadata?.productType ?? '';
@@ -270,6 +273,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       ].includes(processingLevel)
     );
   }
+  */
+
   public dynamicallySearchedProduct$ = combineLatest([
     this.store$.select(scenesStore.getSelectedScene),
     this.nisarOrbitEphemera$,

@@ -153,6 +153,7 @@
           @if (!product.metadata.job) {
             <app-copy-to-clipboard
               [prompt]="'COPY_FILE_ID' | translate"
+              [message]="'COPIED_FILE_ID' | translate"
               [value]="
                 product.metadata.productType === 'BURST_XML'
                   ? product.id?.split('-XML')[0]

@@ -131,6 +131,11 @@
                         ? ('COPY_SCENE_NAMES' | translate)
                         : ('COPY_FILE_IDS' | translate)
                     "
+                    [message]="
+                      mode === types.SCENE
+                        ? ('COPIED_SCENE_NAMES' | translate)
+                        : ('COPIED_FILE_IDS' | translate)
+                    "
                     class="clipboard-icon"
                   >
                   </app-copy-to-clipboard>
