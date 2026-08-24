@@ -1,0 +1,27 @@
+<PAMDataset>
+  <SRS dataAxisToSRSAxisMapping="1,2">PROJCS["WGS 84 / UTM zone 12N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-111],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","32612"]]</SRS>
+  <GeoTransform>  2.3112000000000000e+05,  8.0000000000000000e+01,  0.0000000000000000e+00,  5.7571200000000000e+06,  0.0000000000000000e+00, -8.0000000000000000e+01</GeoTransform>
+  <Metadata>
+    <MDI key="contact">nisar-sds-ops@jpl.nasa.gov</MDI>
+    <MDI key="Conventions">CF-1.7</MDI>
+    <MDI key="institution">NASA JPL</MDI>
+    <MDI key="mission_name">NISAR</MDI>
+    <MDI key="reference_document">D-102274 NISAR NASA SDS Product Specification Level-2 Geocoded Polarimetric Covariance L2 GCOV</MDI>
+    <MDI key="title">NISAR L2 GCOV Product</MDI>
+  </Metadata>
+  <PAMRasterBand band="1">
+    <NoDataValue le_hex_equiv="000000000000F87F">nan</NoDataValue>
+    <Metadata>
+      <MDI key="description">Covariance between HV and HV</MDI>
+      <MDI key="grid_mapping">projection</MDI>
+      <MDI key="long_name">Geocoded polarimetric covariance term HVHV</MDI>
+      <MDI key="max_value">16.14946</MDI>
+      <MDI key="mean_value">0.010407969</MDI>
+      <MDI key="min_value">0</MDI>
+      <MDI key="sample_stddev">0.022858374</MDI>
+      <MDI key="units">1</MDI>
+      <MDI key="valid_min">0</MDI>
+      <MDI key="_FillValue">nan</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>

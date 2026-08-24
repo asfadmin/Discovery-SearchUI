@@ -76,7 +76,7 @@ export class GdalService {
     const downloadURL = `HDF5:"/vsicurl/${product.downloadUrl}":${datasetPath}`;
     const outputFormat = options.outputFormat ?? 'GTiff';
     const outputExtension = options.outputExtension ?? '.tiff';
-    const outputFileName = `-of ${outputFormat} ${product.name}${outputExtension}`;
+    const outputFileName = `-of ${outputFormat} "${product.name}${datasetPath.replaceAll('\/', '_')}${outputExtension}"`;
     const configOptions = [];
     const optionalArgs = [];
 
