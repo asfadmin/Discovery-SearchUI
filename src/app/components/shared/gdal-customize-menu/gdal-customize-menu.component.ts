@@ -33,7 +33,7 @@ export class GdalCustomizeMenuComponent {
   openDialog(): void {
     this.dialog.open(GdalCustomizeDialogComponent, {
       data: { product: this.product(), datasets: this.datasets() },
-      minWidth: '80em',
+      maxWidth: '80em',
     });
   }
 }

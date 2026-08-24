@@ -97,7 +97,8 @@ h1 {
 .options-list {
   display: flex;
   flex-direction: row;
-  gap: 2em;
+  flex-wrap: wrap;
+  column-gap: 2em;
   padding: 0 1em 0 1em;
 }
 

@@ -1316,5 +1316,9 @@
   "EXPORT_QGIS_CLIPBOARD": "Copy QGIS layer subsetting and import script to clipboard",
   "EXPORTED_QGIS_CLIPBOARD": "Copied QGIS layer subsetting and import script to clipboard",
   "EXPORT_NETRC_CLIPBOARD": "Copy 'netrc' config file to clipboard.",
-  "EXPORTED_NETRC_CLIPBOARD": "Copied 'netrc' config file to clipboard."
+  "EXPORTED_NETRC_CLIPBOARD": "Copied 'netrc' config file to clipboard.",
+  "EXPORT_DATASET_LINK_CLIPBOARD": "Copy dataset link to clipboard.",
+  "EXPORTED_DATASET_LINK_CLIPBOARD": "Copied dataset link to clipboard.",
+  "EXPORT_DATASET_PATH_CLIPBOARD": "Copy dataset path to clipboard.",
+  "EXPORTED_DATASET_PATH_CLIPBOARD": "Copied dataset path to clipboard."
 }
