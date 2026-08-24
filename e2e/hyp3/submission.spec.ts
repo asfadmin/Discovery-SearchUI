@@ -58,9 +58,9 @@ test(
     await loggedInPage
       .getByRole('button', { name: 'Submit 1 job (5 credits)' })
       .click();
-    await loggedInPage.getByRole('combobox', { name: 'PROJECT_NAME' }).click();
+    await loggedInPage.getByRole('combobox', { name: 'Project Name' }).click();
     await loggedInPage
-      .getByRole('combobox', { name: 'PROJECT_NAME' })
+      .getByRole('combobox', { name: 'Project Name' })
       .fill('test');
     await expect(loggedInPage.locator('app-confirmation')).toContainText(
       'Submit 1 Job (5 credits)',
