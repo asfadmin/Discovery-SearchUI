@@ -1,14 +1,16 @@
 <div class="observation-panel">
   <mat-form-field class="polarization-select-container">
+    <mat-label>
+      {{
+        dataset?.id === 'NISAR'
+          ? ('MAIN_BAND_FREQ_A_POLARIZATION' | translate)
+          : ('POLARIZATION' | translate) + ' ' + ('MAIN' | translate)
+      }}
+    </mat-label>
     <mat-select
       (selectionChange)="onNewDatasetPolarizations($event.value)"
       [(ngModel)]="polarizations"
       [disabled]="!(dataset | isRelevant: p.POLARIZATION)"
-      [placeholder]="
-        dataset?.id === 'NISAR'
-          ? ('MAIN_BAND_FREQ_A_POLARIZATION' | translate)
-          : ('POLARIZATION' | translate) + ' ' + ('MAIN' | translate)
-      "
       multiple
     >
       <mat-select-trigger>
@@ -34,14 +36,16 @@
   </mat-form-field>
 
   <mat-form-field class="polarization-select-container">
-    <mat-select
-      (selectionChange)="onNewDatasetSidePolarizations($event.value)"
-      [(ngModel)]="sidePolarizations"
-      [placeholder]="
+    <mat-label>
+      {{
         dataset?.id === 'NISAR'
           ? ('SIDE_BAND_FREQ_B_POLARIZATION' | translate)
           : ('POLARIZATION' | translate) + ' ' + ('SIDE' | translate)
-      "
+      }}
+    </mat-label>
+    <mat-select
+      (selectionChange)="onNewDatasetSidePolarizations($event.value)"
+      [(ngModel)]="sidePolarizations"
       multiple
     >
       <mat-select-trigger>
@@ -67,11 +71,11 @@
   </mat-form-field>
 
   <mat-form-field class="flight-direction-field">
+    <mat-label>{{ 'DIRECTION' | translate }}</mat-label>
     <mat-select
       (selectionChange)="onNewFlightDirectionsSelected($event.value)"
       [(ngModel)]="flightDirections"
       [disabled]="!(dataset | isRelevant: p.FLIGHT_DIRECTION)"
-      [placeholder]="'DIRECTION' | translate"
       multiple
     >
       @for (direction of flightDirectionTypes; track direction) {
@@ -93,11 +97,11 @@
 
   @if (dataset | isRelevant: p.PLATFORM) {
     <mat-form-field>
+      <mat-label>{{ 'SATELLITE' | translate }}</mat-label>
       <mat-select
         (selectionChange)="onNewPlatformSelected($event.value)"
         [(ngModel)]="platforms"
         [disabled]="!(dataset | isRelevant: p.PLATFORM)"
-        [placeholder]="'SATELLITE' | translate"
         multiple
       >
         @for (platform of dataset.platforms; track platform) {
@@ -119,11 +123,11 @@
   }
 
   <mat-form-field>
+    <mat-label>{{ 'INSTRUMENT' | translate }}</mat-label>
     <mat-select
       (selectionChange)="onNewInstrument($event.value)"
       [(ngModel)]="instruments"
       [disabled]="!(dataset | isRelevant: p.INSTRUMENT)"
-      [placeholder]="'INSTRUMENT' | translate"
       multiple
     >
       @for (instrument of dataset.instruments; track instrument) {
@@ -144,10 +148,10 @@
   </mat-form-field>
 
   <mat-form-field>
+    <mat-label>{{ 'FRAME_COVERAGE' | translate }}</mat-label>
     <mat-select
       (selectionChange)="onNewFrameCoverageSelected($event.value)"
       [(ngModel)]="frameCoverage"
-      [placeholder]="'FRAME_COVERAGE' | translate"
       multiple
     >
       <mat-option value="Full">
@@ -169,10 +173,10 @@
   </mat-form-field>
 
   <mat-form-field class="half-width">
+    <mat-label>{{ 'RANGE_BANDWIDTH' | translate }}</mat-label>
     <mat-select
       (selectionChange)="onNewRangeBandwidthSelected($event.value)"
       [(ngModel)]="rangeBandwidth"
-      [placeholder]="'RANGE_BANDWIDTH' | translate"
       multiple
     >
       @for (parent of dataset.bandwidth | keyvalue; track $index) {
