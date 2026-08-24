@@ -95,7 +95,7 @@ export class GdalService {
     }
 
     if (reproject) {
-      const projection = `-t_srs ${options.projection}`;
+      const projection = `-t_srs "${options.projection}"`;
       optionalArgs.push(projection);
     }
 
