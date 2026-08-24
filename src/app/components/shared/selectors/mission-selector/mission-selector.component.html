@@ -1,11 +1,7 @@
 <form [formGroup]="stateForm">
   <mat-form-field>
-    <input
-      type="text"
-      matInput
-      [placeholder]="'FILTER_CAMPAIGN' | translate"
-      formControlName="missionFilter"
-    />
+    <mat-label>{{ 'FILTER_CAMPAIGN' | translate }}</mat-label>
+    <input type="text" matInput formControlName="missionFilter" />
   </mat-form-field>
 </form>
 
