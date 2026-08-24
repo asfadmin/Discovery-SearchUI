@@ -1,8 +1,8 @@
 <mat-form-field>
+  <mat-label>{{ 'JOB_STATUS' | translate }}</mat-label>
   <mat-select
     (selectionChange)="onNewJobStatusSelected($event.value)"
     [(ngModel)]="selectedJobStatuses"
-    [placeholder]="'JOB_STATUS' | translate"
     multiple
   >
     @for (jobStatus of jobStatuses; track jobStatus) {
