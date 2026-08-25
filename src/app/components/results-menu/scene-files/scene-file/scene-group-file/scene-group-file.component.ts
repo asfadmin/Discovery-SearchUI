@@ -22,6 +22,7 @@ import { MatNestedTreeNode } from '@angular/material/tree';
 import { SceneFileGdalDropdownComponent } from '../../scene-group-files/scene-file-gdal-dropdown/scene-file-gdal-dropdown.component';
 import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-menu/gdal-customize-menu.component';
 import { GdalService } from '@services/gdal/gdal.service';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-scene-group-file',
@@ -42,6 +43,7 @@ import { GdalService } from '@services/gdal/gdal.service';
     SceneFileGdalDropdownComponent,
     MatNestedTreeNode,
     GdalCustomizeMenuComponent,
+    NgTemplateOutlet,
   ],
 })
 export class SceneGroupFileComponent {

@@ -11,6 +11,13 @@ h1 {
   text-align: center;
 }
 
+.subtitle {
+  font-style: italic;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .gdal-dataset {
   display: flex;
   flex-direction: row;

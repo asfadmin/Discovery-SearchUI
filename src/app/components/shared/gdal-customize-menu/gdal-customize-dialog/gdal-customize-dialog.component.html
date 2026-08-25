@@ -1,6 +1,12 @@
 <div class="gdal-export-wrapper">
   <h1>{{ 'EXPORT_GDAL' | translate }}</h1>
-
+  <span class="subtitle">
+    <app-docs-modal
+      class="subtitle"
+      text="DOCUMENTATION"
+      url="https://nisar-docs.asf.alaska.edu/gdal/"
+    ></app-docs-modal>
+  </span>
   <div class="dataset-list-card">
     <h2>1. {{ 'SELECT_A_DATASET' | translate }}</h2>
     <mat-radio-group [(ngModel)]="selectedDataset" class="dataset-list">
@@ -49,7 +55,10 @@
         <span class="option short">
           <mat-form-field>
             <mat-label> {{ 'GDAL_VERSION' | translate }}</mat-label>
-            <mat-select [(ngModel)]="gdalVersion">
+            <mat-select
+              [(ngModel)]="gdalVersion"
+              [matTooltip]="'GDAL_313_ADMONITION' | translate"
+            >
               <mat-option value=">=3.13"> ≥ 3.13 </mat-option>
               <mat-option value="<3.13"> {{ '< 3.13' }} </mat-option>
             </mat-select>

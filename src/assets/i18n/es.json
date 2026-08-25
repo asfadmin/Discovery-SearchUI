@@ -1292,7 +1292,7 @@
   "EXPORT_GDAL_HELP_SUMMARY": "How to use GDAL to perform subsetting operations.",
   "EXPORT_GDAL_HELP_BODY": "To use this feature you must have GDAL installed and the following .netrc file placed in your home/user directory.",
   "EXPORT_GDAL_HELP_LINK": "Click here to learn more about using GDAL with NISAR data.",
-  "EXPORT_GDAL_CLIPBOARD": "Copy GDAL GeoTIFF extraction snippet.",
+  "EXPORT_GDAL_CLIPBOARD": "Copy GDAL dataset extraction snippet.",
   "EXPORTED_GDAL_CLIPBOARD": "Copied GDAL snippet to clipboard.",
   "EXPORT_GDALRC_CLIPBOARD": "Copy 'gdalrc' configuration to clipboard.",
   "EXPORTED_GDALRC_CLIPBOARD": "Copied 'gdalrc' configuration to clipboard.",
@@ -1317,10 +1317,11 @@
   "QGIS_SCRIPT_DESCRIPTION": "QGIS Layer Subsetting and Import Script",
   "EXPORT_QGIS_CLIPBOARD": "Copy QGIS layer subsetting and import script to clipboard",
   "EXPORTED_QGIS_CLIPBOARD": "Copied QGIS layer subsetting and import script to clipboard",
-  "EXPORT_NETRC_CLIPBOARD": "Copy 'netrc' config file to clipboard.",
-  "EXPORTED_NETRC_CLIPBOARD": "Copied 'netrc' config file to clipboard.",
+  "EXPORT_NETRC_CLIPBOARD": "Copy netrc file content to clipboard.",
+  "EXPORTED_NETRC_CLIPBOARD": "Copied netrc file content to clipboard.",
   "EXPORT_DATASET_LINK_CLIPBOARD": "Copy dataset link to clipboard.",
   "EXPORTED_DATASET_LINK_CLIPBOARD": "Copied dataset link to clipboard.",
   "EXPORT_DATASET_PATH_CLIPBOARD": "Copy dataset path to clipboard.",
-  "EXPORTED_DATASET_PATH_CLIPBOARD": "Copied dataset path to clipboard."
+  "EXPORTED_DATASET_PATH_CLIPBOARD": "Copied dataset path to clipboard.",
+  "GDAL_313_ADMONITION": "GDAL 3.13 supports use of HDF5 driver for NISAR files instead of the NETCDF driver required by older versions."
 }
