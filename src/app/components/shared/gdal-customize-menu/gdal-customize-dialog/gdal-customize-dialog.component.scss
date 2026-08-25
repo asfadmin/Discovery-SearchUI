@@ -4,7 +4,7 @@
 .gdal-export-wrapper {
   padding: 1em;
   overflow-x: scroll;
-  max-height: 90vh;
+  height: 100%;
 }
 
 h1 {
@@ -131,4 +131,12 @@ h1 {
   max-width: 100%;
   min-width: 80%;
   flex-grow: 1;
+}
+
+.reproject {
+  width: 20ch;
+}
+
+.short {
+  width: 15ch;
 }

@@ -29,9 +29,10 @@
     </mat-radio-group>
   </div>
 
-  <div class="options-list-card">
-    <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
-    <!-- <div class="output-type">
+  @if (selectedDataset()) {
+    <div class="options-list-card">
+      <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
+      <!-- <div class="output-type">
       <mat-button-toggle-group
         [(ngModel)]="outputType"
         class="mat-elevation-z2"
@@ -44,154 +45,156 @@
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div> -->
-    <div class="options-list">
-      <span class="option">
-        <mat-form-field>
-          <mat-label> {{ 'REPROJECT' | translate }}</mat-label>
-          <input
-            matInput
-            [matTooltip]="'REPROJECT_TOOLTIP' | translate"
-            [(ngModel)]="selectedProjection"
-          />
-        </mat-form-field>
-      </span>
-      <span class="option">
-        <mat-form-field>
-          <mat-label> {{ 'GDAL_VERSION' | translate }}</mat-label>
-          <mat-select [(ngModel)]="outputFormat">
-            <mat-option value=">=3.13"> ≥ 3.13 </mat-option>
-            <mat-option value="<3.13"> {{ '< 3.13' }} </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </span>
-      <span class="option">
-        <mat-form-field>
-          <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
-          <mat-select [(ngModel)]="outputFormat">
-            <mat-option value="GTiff"> GeoTIFF </mat-option>
-            <mat-option value="COG"> COG </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </span>
-      <span class="option">
-        <mat-form-field>
-          <mat-label> {{ 'OUTPUT_OS' | translate }}</mat-label>
-          <mat-select [(ngModel)]="outputOS">
-            <mat-option value="Windows"> Windows </mat-option>
-            <mat-option value="Unix"> Unix </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </span>
-      <span class="option checkbox">
-        @if (!gdalService.isCropToAOIAvailable()) {
-          <mat-checkbox
-            disabled
-            disabledInteractive
-            [(ngModel)]="cropToAOI"
-            [matTooltip]="'CROP_TO_AOI_DISABLED' | translate"
-            >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
-          >
-        } @else {
-          <mat-checkbox [(ngModel)]="cropToAOI">{{
-            'CROP_TO_AOI' | translate
+      <div class="options-list">
+        <span class="option short">
+          <mat-form-field>
+            <mat-label> {{ 'GDAL_VERSION' | translate }}</mat-label>
+            <mat-select [(ngModel)]="gdalVersion">
+              <mat-option value=">=3.13"> ≥ 3.13 </mat-option>
+              <mat-option value="<3.13"> {{ '< 3.13' }} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </span>
+        <span class="option short">
+          <mat-form-field>
+            <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
+            <mat-select [(ngModel)]="outputFormat">
+              <mat-option value="GTiff"> GeoTIFF </mat-option>
+              <mat-option value="COG"> COG </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </span>
+        <span class="option">
+          <mat-form-field>
+            <mat-label> {{ 'OUTPUT_OS' | translate }}</mat-label>
+            <mat-select [(ngModel)]="outputOS">
+              <mat-option value="Windows"> Windows </mat-option>
+              <mat-option value="Unix"> Unix </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </span>
+        <span class="option reproject">
+          <mat-form-field>
+            <mat-label> {{ 'REPROJECT' | translate }}</mat-label>
+            <input
+              class="reproject"
+              matInput
+              [matTooltip]="'REPROJECT_TOOLTIP' | translate"
+              [(ngModel)]="selectedProjection"
+            />
+          </mat-form-field>
+        </span>
+        <span class="option checkbox">
+          @if (!gdalService.isCropToAOIAvailable()) {
+            <mat-checkbox
+              disabled
+              disabledInteractive
+              [(ngModel)]="cropToAOI"
+              [matTooltip]="'CROP_TO_AOI_DISABLED' | translate"
+              >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
+            >
+          } @else {
+            <mat-checkbox [(ngModel)]="cropToAOI">{{
+              'CROP_TO_AOI' | translate
+            }}</mat-checkbox>
+          }
+        </span>
+        <span class="option checkbox">
+          <mat-checkbox [(ngModel)]="minimalCommand">{{
+            'MINIMAL_COMMAND' | translate
           }}</mat-checkbox>
-        }
-      </span>
-      <span class="option checkbox">
-        <mat-checkbox [(ngModel)]="minimalCommand">{{
-          'MINIMAL_COMMAND' | translate
-        }}</mat-checkbox>
-      </span>
-      <span class="option filename">
-        <mat-form-field>
-          <mat-label class="filename">
-            {{ 'OUTPUT_FILENAME' | translate }}</mat-label
-          >
-          <input matInput />
-        </mat-form-field>
-      </span>
+        </span>
+        <span class="option filename">
+          <mat-form-field>
+            <mat-label class="filename">
+              {{ 'OUTPUT_FILENAME' | translate }}</mat-label
+            >
+            <input matInput [(ngModel)]="outputFilename" />
+          </mat-form-field>
+        </span>
+      </div>
     </div>
-  </div>
 
-  <div class="gdal-configure-card">
-    <h2>3. {{ 'CONFIGURE_ENVIRONMENT' | translate }}</h2>
-    <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
-    <app-code-block
-      [codeDescription]="
-        outputOS() === 'Windows' ? '%USERPROFILE%/.netrc' : '~/.netrc'
-      "
-      [codeContent]="netrcContent"
-      [copyPrompt]="'EXPORT_NETRC_CLIPBOARD' | translate"
-      [copyMessage]="'EXPORTED_NETRC_CLIPBOARD' | translate"
-      language="bash"
-    >
-    </app-code-block>
-    <div><br /></div>
-    <app-docs-modal
-      class="info-text"
-      text="EXPORT_GDAL_HELP_LINK"
-      url="https://nisar-docs.asf.alaska.edu/gdal/"
-    ></app-docs-modal>
-  </div>
+    <div class="gdal-configure-card">
+      <h2>3. {{ 'CONFIGURE_ENVIRONMENT' | translate }}</h2>
+      <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
+      <app-code-block
+        [codeDescription]="
+          outputOS() === 'Windows' ? '%USERPROFILE%/.netrc' : '~/.netrc'
+        "
+        [codeContent]="netrcContent"
+        [copyPrompt]="'EXPORT_NETRC_CLIPBOARD' | translate"
+        [copyMessage]="'EXPORTED_NETRC_CLIPBOARD' | translate"
+        language="bash"
+      >
+      </app-code-block>
+      <div><br /></div>
+      <app-docs-modal
+        class="info-text"
+        text="EXPORT_GDAL_HELP_LINK"
+        url="https://nisar-docs.asf.alaska.edu/gdal/"
+      ></app-docs-modal>
+    </div>
 
-  @if (outputType() == 'gdal') {
-    <div class="gdal-output-card">
-      <h2>4. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
-      <div class="gdal-output-list">
-        <app-code-block
-          [codeDescription]="'GDAL_COMMAND_DESCRIPTION' | translate"
-          [codeContent]="gdalCommand()"
-          [copyPrompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
-          [copyMessage]="'EXPORTED_GDAL_CLIPBOARD' | translate"
-          [isCommand]="true"
-          language="bash"
-        >
-        </app-code-block>
-        @if (minimalCommand()) {
+    @if (outputType() == 'gdal') {
+      <div class="gdal-output-card">
+        <h2>4. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
+        <div class="gdal-output-list">
           <app-code-block
-            [codeDescription]="
-              outputOS() === 'Windows'
-                ? '%USERPROFILE%/.gdal/gdalrc'
-                : '~/.gdal/gdalrc'
-            "
-            [codeContent]="gdalService.generateGdalrc(gdalOptions())"
-            [copyPrompt]="'EXPORT_GDALRC_CLIPBOARD' | translate"
-            [copyMessage]="'EXPORTED_GDALRC_CLIPBOARD' | translate"
+            [codeDescription]="'GDAL_COMMAND_DESCRIPTION' | translate"
+            [codeContent]="gdalCommand()"
+            [copyPrompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
+            [copyMessage]="'EXPORTED_GDAL_CLIPBOARD' | translate"
+            [isCommand]="true"
             language="bash"
           >
           </app-code-block>
-        }
+          @if (minimalCommand()) {
+            <app-code-block
+              [codeDescription]="
+                outputOS() === 'Windows'
+                  ? '%USERPROFILE%/.gdal/gdalrc'
+                  : '~/.gdal/gdalrc'
+              "
+              [codeContent]="gdalService.generateGdalrc(gdalOptions())"
+              [copyPrompt]="'EXPORT_GDALRC_CLIPBOARD' | translate"
+              [copyMessage]="'EXPORTED_GDALRC_CLIPBOARD' | translate"
+              language="bash"
+            >
+            </app-code-block>
+          }
+        </div>
       </div>
-    </div>
-  }
+    }
 
-  @if (outputType() == 'qgis') {
-    <div class="gdal-output-card">
-      <h2>4. {{ 'RUN_QGIS_SNIPPET' | translate }}</h2>
-      <div class="gdal-output-list">
-        <app-code-block
-          [codeDescription]="'QGIS_SCRIPT_DESCRIPTION' | translate"
-          [codeContent]="qgisCommand()"
-          [copyPrompt]="'EXPORT_QGIS_CLIPBOARD' | translate"
-          [copyMessage]="'EXPORTED_QGIS_CLIPBOARD' | translate"
-          language="python"
-        >
-        </app-code-block>
-        @if (minimalCommand()) {
+    @if (outputType() == 'qgis') {
+      <div class="gdal-output-card">
+        <h2>4. {{ 'RUN_QGIS_SNIPPET' | translate }}</h2>
+        <div class="gdal-output-list">
           <app-code-block
-            [codeDescription]="
-              outputOS() === 'Windows'
-                ? '%USERPROFILE%/.gdal/gdalrc'
-                : '~/.gdal/gdalrc'
-            "
-            [codeContent]="gdalService.generateGdalrc(gdalOptions())"
-            [copyPrompt]="'EXPORT_GDALRC_CLIPBOARD' | translate"
-            [copyMessage]="'EXPORTED_GDALRC_CLIPBOARD' | translate"
-            language="bash"
+            [codeDescription]="'QGIS_SCRIPT_DESCRIPTION' | translate"
+            [codeContent]="qgisCommand()"
+            [copyPrompt]="'EXPORT_QGIS_CLIPBOARD' | translate"
+            [copyMessage]="'EXPORTED_QGIS_CLIPBOARD' | translate"
+            language="python"
           >
           </app-code-block>
-        }
+          @if (minimalCommand()) {
+            <app-code-block
+              [codeDescription]="
+                outputOS() === 'Windows'
+                  ? '%USERPROFILE%/.gdal/gdalrc'
+                  : '~/.gdal/gdalrc'
+              "
+              [codeContent]="gdalService.generateGdalrc(gdalOptions())"
+              [copyPrompt]="'EXPORT_GDALRC_CLIPBOARD' | translate"
+              [copyMessage]="'EXPORTED_GDALRC_CLIPBOARD' | translate"
+              language="bash"
+            >
+            </app-code-block>
+          }
+        </div>
       </div>
-    </div>
+    }
   }
 </div>

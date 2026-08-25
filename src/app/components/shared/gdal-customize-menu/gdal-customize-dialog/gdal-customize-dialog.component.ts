@@ -1,4 +1,11 @@
-import { Component, inject, signal, Signal, computed } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  Signal,
+  computed,
+  effect,
+} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { GdalOptions, GdalService } from '@services/gdal/gdal.service';
@@ -70,7 +77,7 @@ export class GdalCustomizeDialogComponent {
     switch (this.outputFormat()) {
       case 'GTiff':
       case 'COG':
-        return '.tiff';
+        return '.tif';
       default:
         return `.${this.outputFormat().toLowerCase()}`;
     }
@@ -79,15 +86,19 @@ export class GdalCustomizeDialogComponent {
   minimalCommand = signal<boolean>(false);
   outputOS = signal<string>(this.getOS());
   outputType = signal<string>('gdal');
+  outputFilename = signal<string>('');
+  gdalVersion = signal<string>('>=3.13');
   gdalOptions: Signal<GdalOptions> = computed(() => {
     return {
-      datasetPath: this.selectedDataset() ?? '<DATASET PATH>',
+      datasetPath: this.selectedDataset(),
       projection: this.selectedProjection(),
       outputFormat: this.outputFormat(),
       outputExtension: this.outputExtension(),
       aoi: this.cropToAOI(),
       minimalCommand: this.minimalCommand(),
       os: this.outputOS(),
+      outputFilename: this.outputFilename(),
+      gdalVersion: this.gdalVersion(),
     };
   });
   gdalCommand = computed(() =>
@@ -109,5 +120,20 @@ machine urs.earthdata.nasa.gov
     if (userAgent.includes('Windows')) return 'Windows';
 
     return 'Unix';
+  }
+
+  constructor() {
+    effect(() => {
+      if (!this.selectedDataset()) {
+        return;
+      }
+
+      this.outputFilename.set(
+        this.gdalService.resolveOutputFilename(
+          this.data.product,
+          this.gdalOptions(),
+        ),
+      );
+    });
   }
 }

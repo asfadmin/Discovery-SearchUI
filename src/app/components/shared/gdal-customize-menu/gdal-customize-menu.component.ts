@@ -34,6 +34,9 @@ export class GdalCustomizeMenuComponent {
     this.dialog.open(GdalCustomizeDialogComponent, {
       data: { product: this.product(), datasets: this.datasets() },
       maxWidth: '80em',
+      maxHeight: '95vh',
+      height: '100%',
+      width: '100%',
     });
   }
 }

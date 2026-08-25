@@ -1305,7 +1305,7 @@
   "CROP_TO_AOI_DISABLED": "Select a polygon AOI to use this feature.",
   "REPROJECT": "Output Projection",
   "REPROJECT_TOOLTIP": "Supports WGS84 or any EPSG code.",
-  "MINIMAL_COMMAND": "Utilize Config File",
+  "MINIMAL_COMMAND": "Use Config File",
   "OUTPUT_FORMAT": "File Format",
   "OUTPUT_OS": "Operating System",
   "OUTPUT_FILENAME": "Output Filename",

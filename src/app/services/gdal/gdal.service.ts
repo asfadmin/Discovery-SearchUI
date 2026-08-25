@@ -4,23 +4,27 @@ import { CMRProduct, datasetsForNISARProduct, NISARDataset } from '@models';
 import { MapService } from '@services';
 
 export interface GdalOptionsWithFileType {
-  datasetPath?: string;
+  datasetPath: string;
   projection?: string;
   outputFormat: string;
   outputExtension: string;
   aoi?: boolean;
   minimalCommand?: boolean;
   os?: string;
+  outputFilename?: string;
+  gdalVersion?: string;
 }
 
 export interface GdalOptionsWithoutFileType {
-  datasetPath?: string;
+  datasetPath: string;
   projection?: string;
   outputFormat?: never;
   outputExtension?: never;
   aoi?: boolean;
   minimalCommand?: boolean;
   os?: string;
+  outputFilename?: string;
+  gdalVersion?: string;
 }
 
 export type GdalOptions = GdalOptionsWithFileType | GdalOptionsWithoutFileType;
@@ -66,17 +70,33 @@ export class GdalService {
     return 'gdal_translate';
   }
 
+  public resolveOutputFormat(options): string {
+    return options.outputFormat ?? 'GTiff';
+  }
+
+  public resolveOutputFilename(product, options): string {
+    if (options.outputFilename) {
+      return options.outputFilename;
+    }
+
+    const outputExtension = options.outputExtension ?? '.tif';
+    return `${product.name}${options.datasetPath.replaceAll('\/', '_')}${outputExtension}`;
+  }
+
+  public resolveGDALVersion(options): string {
+    return options.gdalVersion ?? '<3.13';
+  }
+
   public generateGDALTranslateArguments(
     product: CMRProduct,
     options: GdalOptions,
     qgisArgs = false,
   ): string[] {
     let command = this.resolveGDALCommand(options);
-    const datasetPath = options.datasetPath ?? '<DATASET PATH>';
-    const downloadURL = `HDF5:"/vsicurl/${product.downloadUrl}":${datasetPath}`;
-    const outputFormat = options.outputFormat ?? 'GTiff';
-    const outputExtension = options.outputExtension ?? '.tiff';
-    const outputFileName = `-of ${outputFormat} "${product.name}${datasetPath.replaceAll('\/', '_')}${outputExtension}"`;
+    const driver =
+      this.resolveGDALVersion(options) == '>=3.13' ? 'HDF5' : 'NETCDF';
+    const downloadURL = `${driver}:"/vsicurl/${product.downloadUrl}":${options.datasetPath}`;
+    const outputFileName = `-of ${this.resolveOutputFormat(options)} "${this.resolveOutputFilename(product, options)}"`;
     const configOptions = [];
     const optionalArgs = [];
 
