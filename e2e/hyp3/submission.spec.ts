@@ -58,7 +58,6 @@ test(
     await loggedInPage
       .getByRole('button', { name: 'Submit 1 job (5 credits)' })
       .click();
-    await loggedInPage.getByRole('combobox', { name: 'Project Name' }).click();
     await loggedInPage
       .getByRole('combobox', { name: 'Project Name' })
       .fill('test');

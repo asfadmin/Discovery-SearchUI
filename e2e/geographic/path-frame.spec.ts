@@ -15,13 +15,9 @@ test('Button to clear path/frame', async ({ page }) => {
     .fill(
       'POLYGON((-77.0154 60.4785,-41.9471 60.4785,-41.9471 66.9125,-77.0154 66.9125,-77.0154 60.4785))',
     );
-  await page.getByText('Path Start', { exact: true }).click();
   await page.getByLabel('Path Start').fill('20');
-  await page.getByText('Path End', { exact: true }).click();
   await page.getByLabel('Path End').fill('25');
-  await page.getByText('Frame Start', { exact: true }).click();
   await page.getByLabel('Frame Start').fill('5');
-  await page.getByText('Frame End', { exact: true }).click();
   await page.getByLabel('Frame End').fill('10');
   await expect(page.locator('app-info-bar')).toContainText(
     'Path : 20 - 25 Frame: 5 - 10',
@@ -44,7 +40,6 @@ test('Button to restore path/frame', async ({ page }) => {
     .fill(
       'LINESTRING(-75.673828 34.524661,-80.859375 30.751278,-79.716797 25.799891)',
     );
-  await page.getByText('Path Start', { exact: true }).click();
   await page.getByLabel('Path Start').fill('1');
 
   await page.getByRole('button', { name: 'Clear Area Of Interest' }).click();
@@ -78,7 +73,6 @@ test('Button to restore path/frame', async ({ page }) => {
     .fill(
       'LINESTRING(-75.673828 34.524661,-80.859375 30.751278,-79.716797 25.799891)',
     );
-  await page.getByText('Frame Start', { exact: true }).click();
   await page.getByLabel('Frame Start').fill('6');
   await page.getByRole('button', { name: 'Clear Area Of Interest' }).click();
   aoiValue = await page
