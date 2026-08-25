@@ -1,11 +1,11 @@
 <div class="observation-panel">
   <mat-form-field class="polarization-select-container">
     <mat-label>
-      {{
-        dataset?.id === 'NISAR'
-          ? ('MAIN_BAND_FREQ_A_POLARIZATION' | translate)
-          : ('POLARIZATION' | translate) + ' ' + ('MAIN' | translate)
-      }}
+      @if (dataset?.id === 'NISAR') {
+        {{ 'MAIN_BAND_FREQ_A_POLARIZATION' | translate }}
+      } @else {
+        {{ 'POLARIZATION' | translate }} {{ 'MAIN' | translate }}
+      }
     </mat-label>
     <mat-select
       (selectionChange)="onNewDatasetPolarizations($event.value)"
@@ -37,11 +37,11 @@
 
   <mat-form-field class="polarization-select-container">
     <mat-label>
-      {{
-        dataset?.id === 'NISAR'
-          ? ('SIDE_BAND_FREQ_B_POLARIZATION' | translate)
-          : ('POLARIZATION' | translate) + ' ' + ('SIDE' | translate)
-      }}
+      @if (dataset?.id === 'NISAR') {
+        {{ 'SIDE_BAND_FREQ_B_POLARIZATION' | translate }}
+      } @else {
+        {{ 'POLARIZATION' | translate }} {{ 'SIDE' | translate }}
+      }
     </mat-label>
     <mat-select
       (selectionChange)="onNewDatasetSidePolarizations($event.value)"

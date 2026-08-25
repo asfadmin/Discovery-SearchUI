@@ -8,9 +8,7 @@
         [hintLabel]="'Max 20 ' + ('CHARACTERS' | translate)"
       >
         <mat-label>
-          {{
-            (saveTypeName | uppercase | translate) + ' ' + ('NAME' | translate)
-          }}
+          {{ saveTypeName | uppercase | translate }} {{ 'NAME' | translate }}
         </mat-label>
         <input
           type="text"
