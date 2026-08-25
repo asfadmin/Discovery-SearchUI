@@ -57,6 +57,21 @@
       </span>
       <span class="option">
         <mat-form-field>
+          <mat-label> {{ 'OUTPUT_FILENAME' | translate }}</mat-label>
+          <input matInput />
+        </mat-form-field>
+      </span>
+      <span class="option">
+        <mat-form-field>
+          <mat-label> {{ 'GDAL_VERSION' | translate }}</mat-label>
+          <mat-select [(ngModel)]="outputFormat">
+            <mat-option value=">=3.13"> ≥ 3.13 </mat-option>
+            <mat-option value="<3.13"> {{ '< 3.13' }} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </span>
+      <span class="option">
+        <mat-form-field>
           <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
           <mat-select [(ngModel)]="outputFormat">
             <mat-option value="GTiff"> GeoTIFF </mat-option>

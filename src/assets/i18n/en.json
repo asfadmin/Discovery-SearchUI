@@ -1308,6 +1308,8 @@
   "MINIMAL_COMMAND": "Utilize Config File",
   "OUTPUT_FORMAT": "File Format",
   "OUTPUT_OS": "Operating System",
+  "OUTPUT_FILENAME": "Output Filename",
+  "GDAL_VERSION": "GDAL Version",
   "CONFIGURE_ENVIRONMENT": "Setup GDAL environment.",
   "RUN_QGIS_SCRIPT": "Run QGIS script.",
   "GDAL_OUTPUT": "Output GDAL Command",
