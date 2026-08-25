@@ -1,6 +1,12 @@
 @use '@angular/material' as mat;
 @use 'asf-theme-variables' as *;
 
+:host {
+  @include themify($themes) {
+    color: themed('light-black');
+  }
+}
+
 .exit-button {
   position: absolute;
   top: 0;
