@@ -25,4 +25,4 @@ export * from './asf-website.model';
 export * from './mapbox.model';
 export * from './timeseries.model';
 export * from './layers.model';
-export * from './nisar-datasets.model';
+export * from './gdal-datasets.model';

@@ -11,10 +11,11 @@
     ></app-copy-to-clipboard>
   </div>
   <code>
-    @if (isCommand()) {
-      <pre #codeBlock class="code sh"></pre>
-    } @else {
-      <pre #codeBlock class="code file"></pre>
-    }
+    <pre
+      #codeBlock
+      class="code"
+      [class.sh]="isCommand()"
+      [class.file]="!isCommand()"
+    ></pre>
   </code>
 </div>

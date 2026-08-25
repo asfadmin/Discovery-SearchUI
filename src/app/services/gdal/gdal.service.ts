@@ -1,33 +1,41 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { CMRProduct, datasetsForNISARProduct, NISARDataset } from '@models';
+import { CMRProduct, datasetsForGDALProduct, GDALDataset } from '@models';
 import { MapService } from '@services';
 
-export interface GdalOptionsWithFileType {
-  datasetPath: string;
-  projection?: string;
-  outputFormat: string;
+export interface GdalOutputType {
+  outputFormat: GdalFormats;
   outputExtension: string;
-  aoi?: boolean;
-  minimalCommand?: boolean;
-  os?: string;
-  outputFilename?: string;
-  gdalVersion?: string;
 }
 
-export interface GdalOptionsWithoutFileType {
+export interface GdalProductInfo {
+  name: string;
+  downloadUrl: string;
+  productType: string;
+  mainBandPolarization?: string[];
+  sideBandPolarization?: string[];
+}
+
+export interface GdalOptions {
+  product: GdalProductInfo;
   datasetPath: string;
   projection?: string;
-  outputFormat?: never;
-  outputExtension?: never;
+  outputType?: GdalOutputType;
   aoi?: boolean;
   minimalCommand?: boolean;
-  os?: string;
+  os?: GdalOs;
   outputFilename?: string;
-  gdalVersion?: string;
+  gdalVersion?: GdalVersion;
 }
 
-export type GdalOptions = GdalOptionsWithFileType | GdalOptionsWithoutFileType;
+export const GDAL_VERSIONS = ['≥3.13', '<3.13'];
+export type GdalVersion = (typeof GDAL_VERSIONS)[number];
+
+export const GDAL_OS = ['Windows', 'Unix'];
+export type GdalOs = (typeof GDAL_OS)[number];
+
+export const GDAL_FORMATS = ['GTiff', 'COG'];
+export type GdalFormats = (typeof GDAL_FORMATS)[number];
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +43,18 @@ export type GdalOptions = GdalOptionsWithFileType | GdalOptionsWithoutFileType;
 export class GdalService {
   mapService = inject(MapService);
   searchPolygon = toSignal(this.mapService.searchPolygon$);
-  public configOptions(os: string) {
+
+  public cmrProductToGDALProductInfo(product: CMRProduct): GdalProductInfo {
+    return {
+      name: product.name,
+      downloadUrl: product.downloadUrl,
+      productType: product.metadata.productType,
+      mainBandPolarization: product.metadata.nisar?.mainBandPolarization,
+      sideBandPolarization: product.metadata.nisar?.sideBandPolarization,
+    };
+  }
+
+  public configOptions(options: GdalOptions) {
     return [
       'CPL_VSIL_CURL_CHUNK_SIZE 2097152',
       'CPL_VSIL_CURL_CACHE_SIZE 67108864',
@@ -46,13 +65,13 @@ export class GdalService {
       'GDAL_NUM_THREADS ALL_CPUS',
       'CPL_VSIL_CURL_CACHE_SIZE 1GB',
       'GDAL_HTTP_NETRC YES',
-      `GDAL_HTTP_COOKIEFILE ${this.getTempDir(os)}gdal_cookies.txt`,
-      `GDAL_HTTP_COOKIEJAR ${this.getTempDir(os)}gdal_cookies.txt`,
+      `GDAL_HTTP_COOKIEFILE ${this.getTempDir(options)}gdal_cookies.txt`,
+      `GDAL_HTTP_COOKIEJAR ${this.getTempDir(options)}gdal_cookies.txt`,
     ];
   }
 
-  private getTempDir(os: string) {
-    if (os == 'Windows') {
+  private getTempDir(options: GdalOptions) {
+    if (options.os == 'Windows') {
       return '%TEMP%/';
     }
 
@@ -70,17 +89,17 @@ export class GdalService {
     return 'gdal_translate';
   }
 
-  public resolveOutputFormat(options): string {
-    return options.outputFormat ?? 'GTiff';
+  public resolveOutputFormat(options: GdalOptions): string {
+    return options.outputType?.outputFormat ?? 'GTiff';
   }
 
-  public resolveOutputFilename(product, options): string {
+  public resolveOutputFilename(options: GdalOptions): string {
     if (options.outputFilename) {
       return options.outputFilename;
     }
 
-    const outputExtension = options.outputExtension ?? '.tif';
-    return `${product.name}${options.datasetPath.replaceAll('\/', '_')}${outputExtension}`;
+    const outputExtension = options.outputType?.outputExtension ?? '.tif';
+    return `${options.product.name}${options.datasetPath.replaceAll('\/', '_')}${outputExtension}`;
   }
 
   public resolveGDALVersion(options): string {
@@ -88,15 +107,14 @@ export class GdalService {
   }
 
   public generateGDALTranslateArguments(
-    product: CMRProduct,
     options: GdalOptions,
     qgisArgs = false,
   ): string[] {
     const command = this.resolveGDALCommand(options);
     const driver =
       this.resolveGDALVersion(options) == '>=3.13' ? 'HDF5' : 'NETCDF';
-    const downloadURL = `${driver}:"/vsicurl/${product.downloadUrl}":${options.datasetPath}`;
-    const outputFileName = `-of ${this.resolveOutputFormat(options)} "${this.resolveOutputFilename(product, options)}"`;
+    const downloadURL = `${driver}:"/vsicurl/${options.product.downloadUrl}":${options.datasetPath}`;
+    const outputFileName = `-of ${this.resolveOutputFormat(options)} "${this.resolveOutputFilename(options)}"`;
     const configOptions = [];
     const optionalArgs = [];
 
@@ -125,7 +143,7 @@ export class GdalService {
 
     if (!minimalCommand) {
       configOptions.push(
-        ...this.configOptions(options.os).map(
+        ...this.configOptions(options).map(
           (configOption) => `--config ${configOption}`,
         ),
       );
@@ -145,46 +163,15 @@ export class GdalService {
   }
 
   public generateGdalrc(options: GdalOptions) {
-    return this.configOptions(options.os).join('\n');
+    return this.configOptions(options).join('\n');
   }
 
-  public generateGDALCommand(
-    product: CMRProduct,
-    options: GdalOptions,
-  ): string {
-    if (options.os && options.os == 'Windows') {
-      return `${this.generateGDALTranslateArguments(product, options).join(' ^\r\n        ')}`;
-    }
-
-    return `${this.generateGDALTranslateArguments(product, options).join(' \\\n        ')}`;
+  public generateGDALCommand(options: GdalOptions): string {
+    return `${this.generateGDALTranslateArguments(options).join(`${options.os && options.os == 'Windows' ? '^' : '\\'}\r\n        `)}`;
   }
 
-  public generateQGISScript(product: CMRProduct, options: GdalOptions): string {
-    const extraArgs = this.generateGDALTranslateArguments(
-      product,
-      options,
-      true,
-    );
-
-    //     if (options.os == 'Windows' || true) {
-    //       const gdalFunction =
-    //         this.resolveGDALCommand(options) === 'gdal_translate'
-    //           ? 'gdal.Translate'
-    //           : 'gdal.Warp';
-
-    //       return `
-    // from osgeo import gdal
-
-    // input_raster = gdal.Open('HDF5:/vsicurl/"${product.downloadUrl}":${options.datasetPath}')
-    // output_raster = '/tmp/${product.name}'
-    // args_list = "${extraArgs.join(' ')}"
-
-    // ${gdalFunction}(output_raster, input_raster, options=args_list)
-
-    // iface.addRasterLayer("/tmp/${product.name}", "${product.name}")
-    // print("Done!")
-    //           `;
-    //     }
+  public generateQGISScript(options: GdalOptions): string {
+    const extraArgs = this.generateGDALTranslateArguments(options, true);
 
     const processingString =
       this.resolveGDALCommand(options) === 'gdal_translate'
@@ -194,7 +181,7 @@ export class GdalService {
     return `
 import qgis.processing
 
-input_raster = 'HDF5:/vsicurl/"${product.downloadUrl}":${options.datasetPath}'
+input_raster = 'HDF5:/vsicurl/"${options.product.downloadUrl}":${options.datasetPath}'
 output_raster = "TEMPORARY_OUTPUT"
 
 parameters = {
@@ -205,13 +192,22 @@ parameters = {
 
 result = processing.run("${processingString}", parameters)
 
-iface.addRasterLayer(result["OUTPUT"], "${product.name}")
+iface.addRasterLayer(result["OUTPUT"], "${options.product.name}")
 print("Done!")
     `;
   }
 
-  public getProductDatasets(product: CMRProduct): NISARDataset[] {
-    return datasetsForNISARProduct(product);
+  public getProductDatasets(product: GdalProductInfo): GDALDataset[] {
+    return datasetsForGDALProduct(product).sort((a, b) => {
+      if (a.ancillary == b.ancillary) {
+        return 0;
+      }
+      if (a.ancillary !== undefined && a.ancillary) {
+        return 1;
+      }
+
+      return -1;
+    });
   }
 
   public isCropToAOIAvailable(): boolean {

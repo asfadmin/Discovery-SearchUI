@@ -61,7 +61,9 @@ export class SceneGroupFileComponent {
   isGdalable = computed(
     () =>
       this.isScienceData() &&
-      this.gdalService.getProductDatasets(this.product()).length !== 0 &&
+      this.gdalService.getProductDatasets(
+        this.gdalService.cmrProductToGDALProductInfo(this.product()),
+      ).length !== 0 &&
       this.breakpoint() !== this.breakpoints.MOBILE,
   );
 

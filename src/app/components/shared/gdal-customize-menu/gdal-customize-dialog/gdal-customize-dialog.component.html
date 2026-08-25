@@ -1,4 +1,9 @@
 <div class="gdal-export-wrapper">
+  <span class="exit-button">
+    <button matIconButton (click)="dialogRef.close()">
+      <mat-icon fontIcon="close"></mat-icon>
+    </button>
+  </span>
   <h1>{{ 'EXPORT_GDAL' | translate }}</h1>
   <span class="subtitle">
     <app-docs-modal
@@ -59,8 +64,9 @@
               [(ngModel)]="gdalVersion"
               [matTooltip]="'GDAL_313_ADMONITION' | translate"
             >
-              <mat-option value=">=3.13"> ≥ 3.13 </mat-option>
-              <mat-option value="<3.13"> {{ '< 3.13' }} </mat-option>
+              @for (version of gdalVersions; track version) {
+                <mat-option [value]="version"> {{ version }} </mat-option>
+              }
             </mat-select>
           </mat-form-field>
         </span>
@@ -68,8 +74,9 @@
           <mat-form-field>
             <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
             <mat-select [(ngModel)]="outputFormat">
-              <mat-option value="GTiff"> GeoTIFF </mat-option>
-              <mat-option value="COG"> COG </mat-option>
+              @for (format of outputFormats; track format) {
+                <mat-option [value]="format"> {{ format }} </mat-option>
+              }
             </mat-select>
           </mat-form-field>
         </span>
@@ -77,8 +84,9 @@
           <mat-form-field>
             <mat-label> {{ 'OUTPUT_OS' | translate }}</mat-label>
             <mat-select [(ngModel)]="outputOS">
-              <mat-option value="Windows"> Windows </mat-option>
-              <mat-option value="Unix"> Unix </mat-option>
+              @for (os of outputOSList; track os) {
+                <mat-option [value]="os"> {{ os }} </mat-option>
+              }
             </mat-select>
           </mat-form-field>
         </span>
@@ -94,19 +102,17 @@
           </mat-form-field>
         </span>
         <span class="option checkbox">
-          @if (!gdalService.isCropToAOIAvailable()) {
-            <mat-checkbox
-              disabled
-              disabledInteractive
-              [(ngModel)]="cropToAOI"
-              [matTooltip]="'CROP_TO_AOI_DISABLED' | translate"
-              >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
-            >
-          } @else {
-            <mat-checkbox [(ngModel)]="cropToAOI">{{
-              'CROP_TO_AOI' | translate
-            }}</mat-checkbox>
-          }
+          <mat-checkbox
+            [disabled]="!gdalService.isCropToAOIAvailable"
+            disabledInteractive
+            [(ngModel)]="cropToAOI"
+            [matTooltip]="
+              !gdalService.isCropToAOIAvailable()
+                ? ('CROP_TO_AOI_DISABLED' | translate)
+                : null
+            "
+            >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
+          >
         </span>
         <span class="option checkbox">
           <mat-checkbox [(ngModel)]="minimalCommand">{{
@@ -128,9 +134,7 @@
       <h2>3. {{ 'CONFIGURE_ENVIRONMENT' | translate }}</h2>
       <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
       <app-code-block
-        [codeDescription]="
-          outputOS() === 'Windows' ? '%USERPROFILE%/.netrc' : '~/.netrc'
-        "
+        [codeDescription]="`${homeDirectory()}/.netrc`"
         [codeContent]="netrcContent"
         [copyPrompt]="'EXPORT_NETRC_CLIPBOARD' | translate"
         [copyMessage]="'EXPORTED_NETRC_CLIPBOARD' | translate"
@@ -160,42 +164,8 @@
           </app-code-block>
           @if (minimalCommand()) {
             <app-code-block
-              [codeDescription]="
-                outputOS() === 'Windows'
-                  ? '%USERPROFILE%/.gdal/gdalrc'
-                  : '~/.gdal/gdalrc'
-              "
-              [codeContent]="gdalService.generateGdalrc(gdalOptions())"
-              [copyPrompt]="'EXPORT_GDALRC_CLIPBOARD' | translate"
-              [copyMessage]="'EXPORTED_GDALRC_CLIPBOARD' | translate"
-              language="bash"
-            >
-            </app-code-block>
-          }
-        </div>
-      </div>
-    }
-
-    @if (outputType() === 'qgis') {
-      <div class="gdal-output-card">
-        <h2>4. {{ 'RUN_QGIS_SCRIPT' | translate }}</h2>
-        <div class="gdal-output-list">
-          <app-code-block
-            [codeDescription]="'QGIS_SCRIPT_DESCRIPTION' | translate"
-            [codeContent]="qgisCommand()"
-            [copyPrompt]="'EXPORT_QGIS_CLIPBOARD' | translate"
-            [copyMessage]="'EXPORTED_QGIS_CLIPBOARD' | translate"
-            language="python"
-          >
-          </app-code-block>
-          @if (minimalCommand()) {
-            <app-code-block
-              [codeDescription]="
-                outputOS() === 'Windows'
-                  ? '%USERPROFILE%/.gdal/gdalrc'
-                  : '~/.gdal/gdalrc'
-              "
-              [codeContent]="gdalService.generateGdalrc(gdalOptions())"
+              [codeDescription]="`${homeDirectory()}/.gdal/gdalrc`"
+              [codeContent]="gdalRC()"
               [copyPrompt]="'EXPORT_GDALRC_CLIPBOARD' | translate"
               [copyMessage]="'EXPORTED_GDALRC_CLIPBOARD' | translate"
               language="bash"

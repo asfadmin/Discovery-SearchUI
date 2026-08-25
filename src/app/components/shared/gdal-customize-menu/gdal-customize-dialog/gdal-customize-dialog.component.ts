@@ -8,7 +8,13 @@ import {
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { GdalOptions, GdalService } from '@services/gdal/gdal.service';
+import {
+  GdalFormats,
+  GdalOptions,
+  GdalOs,
+  GdalService,
+  GdalVersion,
+} from '@services/gdal/gdal.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -21,16 +27,19 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
 
 import {
+  GDAL_FORMATS,
+  GDAL_OS,
+  GDAL_VERSIONS,
+} from '@services/gdal/gdal.service';
+
+import {
   GdalCustomizeMenuComponent,
   GdalCustomizeDialogData,
 } from '../gdal-customize-menu.component';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
-import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
 import { CodeBlockComponent } from '@components/shared/code-block/code-block.component';
-import {
-  MatButtonToggle,
-  MatButtonToggleGroup,
-} from '@angular/material/button-toggle';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-gdal-customize-dialog',
@@ -45,12 +54,11 @@ import {
     MatLabel,
     MatSelect,
     MatOption,
+    MatIconButton,
     MatInput,
-    MatButtonToggle,
-    MatButtonToggleGroup,
+    MatIcon,
     FormsModule,
     DocsModalComponent,
-    CopyToClipboardComponent,
     CodeBlockComponent,
   ],
   templateUrl: './gdal-customize-dialog.component.html',
@@ -59,41 +67,40 @@ import {
 export class GdalCustomizeDialogComponent {
   readonly dialogRef = inject(MatDialogRef<GdalCustomizeMenuComponent>);
   readonly data = inject<GdalCustomizeDialogData>(MAT_DIALOG_DATA);
-  datasets = this.data.datasets.sort((a, b) => {
-    if (a.ancillary == b.ancillary) {
-      return 0;
-    }
-    if (a.ancillary !== undefined && a.ancillary) {
-      return 1;
-    }
-
-    return -1;
-  });
+  datasets = this.data.datasets;
   gdalService = inject(GdalService);
   selectedDataset = signal<string>(null);
   selectedProjection = signal<string>('');
-  outputFormat = signal<string>('GTiff');
+  outputFormats = GDAL_FORMATS;
+  outputFormat = signal<GdalFormats>('GTiff');
   outputExtension = computed(() => {
     switch (this.outputFormat()) {
       case 'GTiff':
-      case 'COG':
+      case 'COG': {
         return '.tif';
-      default:
+      }
+      default: {
         return `.${this.outputFormat().toLowerCase()}`;
+      }
     }
   });
   cropToAOI = signal<boolean>(false);
   minimalCommand = signal<boolean>(false);
-  outputOS = signal<string>(this.getOS());
+  outputOSList = GDAL_OS;
+  outputOS = signal<GdalOs>(this.getOS());
   outputType = signal<string>('gdal');
   outputFilename = signal<string>('');
-  gdalVersion = signal<string>('>=3.13');
+  gdalVersions = GDAL_VERSIONS;
+  gdalVersion = signal<GdalVersion>(this.gdalVersions[0]);
   gdalOptions: Signal<GdalOptions> = computed(() => {
     return {
+      product: this.gdalService.cmrProductToGDALProductInfo(this.data.product),
       datasetPath: this.selectedDataset(),
       projection: this.selectedProjection(),
-      outputFormat: this.outputFormat(),
-      outputExtension: this.outputExtension(),
+      outputType: {
+        outputFormat: this.outputFormat(),
+        outputExtension: this.outputExtension(),
+      },
       aoi: this.cropToAOI(),
       minimalCommand: this.minimalCommand(),
       os: this.outputOS(),
@@ -102,10 +109,14 @@ export class GdalCustomizeDialogComponent {
     };
   });
   gdalCommand = computed(() =>
-    this.gdalService.generateGDALCommand(this.data.product, this.gdalOptions()),
+    this.gdalService.generateGDALCommand(this.gdalOptions()),
   );
+  gdalRC = computed(() => this.gdalService.generateGdalrc(this.gdalOptions()));
   qgisCommand = computed(() =>
-    this.gdalService.generateQGISScript(this.data.product, this.gdalOptions()),
+    this.gdalService.generateQGISScript(this.gdalOptions()),
+  );
+  homeDirectory = computed(() =>
+    this.outputOS() == 'Windows' ? '%USERPROFILE%' : '~',
   );
 
   netrcContent = `\
@@ -114,10 +125,12 @@ machine urs.earthdata.nasa.gov
     password <YOUR PASSWORD>\
   `;
 
-  getOS(): string {
+  getOS(): GdalOs {
     const userAgent = window.navigator.userAgent;
 
-    if (userAgent.includes('Windows')) return 'Windows';
+    if (userAgent.includes('Windows')) {
+      return 'Windows';
+    }
 
     return 'Unix';
   }
@@ -129,10 +142,7 @@ machine urs.earthdata.nasa.gov
       }
 
       this.outputFilename.set(
-        this.gdalService.resolveOutputFilename(
-          this.data.product,
-          this.gdalOptions(),
-        ),
+        this.gdalService.resolveOutputFilename(this.gdalOptions()),
       );
     });
   }

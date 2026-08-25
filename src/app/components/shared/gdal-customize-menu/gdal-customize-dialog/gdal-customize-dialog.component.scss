@@ -1,6 +1,12 @@
 @use '@angular/material' as mat;
 @use 'asf-theme-variables' as *;
 
+.exit-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .gdal-export-wrapper {
   padding: 1em;
   overflow-x: scroll;

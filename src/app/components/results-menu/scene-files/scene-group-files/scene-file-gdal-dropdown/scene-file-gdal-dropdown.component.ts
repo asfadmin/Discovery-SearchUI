@@ -35,6 +35,8 @@ export class SceneFileGdalDropdownComponent {
   private gdalService = inject(GdalService);
   product = input.required<models.CMRProduct>();
   datasets = computed(() =>
-    this.gdalService.getProductDatasets(this.product()),
+    this.gdalService.getProductDatasets(
+      this.gdalService.cmrProductToGDALProductInfo(this.product()),
+    ),
   );
 }

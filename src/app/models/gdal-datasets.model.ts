@@ -1,19 +1,15 @@
-import { CMRProduct } from '@models';
+import { GdalProductInfo } from '@services/gdal/gdal.service';
 
-export function datasetsForNISARProduct(product: CMRProduct): NISARDataset[] {
-  if (!('nisar' in product.metadata)) {
-    return [];
-  }
-
-  const nisar = product.metadata.nisar;
-
+export function datasetsForGDALProduct(
+  product: GdalProductInfo,
+): GDALDataset[] {
   const datasets = [];
-  switch (product.metadata.productType) {
-    case 'GCOV':
-      if (product.metadata.nisar.mainBandPolarization) {
+  switch (product.productType) {
+    case 'GCOV': {
+      if (product.mainBandPolarization) {
         if (
           ['HH', 'HV', 'VH', 'VV'].every((polarization) =>
-            nisar.mainBandPolarization.includes(polarization),
+            product.mainBandPolarization.includes(polarization),
           )
         ) {
           datasets.push(
@@ -51,8 +47,8 @@ export function datasetsForNISARProduct(product: CMRProduct): NISARDataset[] {
         }
 
         datasets.push(
-          ...nisar.mainBandPolarization.map(
-            (polarization: string): NISARDataset => {
+          ...product.mainBandPolarization.map(
+            (polarization: string): GDALDataset => {
               return {
                 path: `//science/LSAR/GCOV/grids/frequencyA/${polarization}${polarization}`,
                 name: `Frequency A ${polarization}${polarization} Covariance`,
@@ -79,10 +75,10 @@ export function datasetsForNISARProduct(product: CMRProduct): NISARDataset[] {
           },
         );
       }
-      if (product.metadata.nisar.sideBandPolarization) {
+      if (product.sideBandPolarization) {
         datasets.push(
-          ...nisar.sideBandPolarization.map(
-            (polarization: string): NISARDataset => {
+          ...product.sideBandPolarization.map(
+            (polarization: string): GDALDataset => {
               return {
                 path: `//science/LSAR/GCOV/grids/frequencyB/${polarization}${polarization}`,
                 name: `Frequency B ${polarization}${polarization} Covariance`,
@@ -110,10 +106,11 @@ export function datasetsForNISARProduct(product: CMRProduct): NISARDataset[] {
         );
       }
       break;
-    case 'GUNW':
-      if (product.metadata.nisar.mainBandPolarization) {
+    }
+    case 'GUNW': {
+      if (product.mainBandPolarization) {
         datasets.push(
-          ...nisar.mainBandPolarization
+          ...product.mainBandPolarization
             .map((polarization) => {
               return [
                 {
@@ -197,7 +194,8 @@ export function datasetsForNISARProduct(product: CMRProduct): NISARDataset[] {
         );
       }
       break;
-    case 'SME2':
+    }
+    case 'SME2': {
       datasets.push(
         {
           path: '//science/LSAR/SME2/grids/soilMoisture',
@@ -231,9 +229,9 @@ export function datasetsForNISARProduct(product: CMRProduct): NISARDataset[] {
           ancillary: true,
         },
       );
-      if (nisar.mainBandPolarization) {
+      if (product.mainBandPolarization) {
         datasets.push(
-          ...nisar.mainBandPolarization.map((polarization) => {
+          ...product.mainBandPolarization.map((polarization) => {
             return {
               path: `//science/LSAR/SME2/grids/radarData/frequencyA/sigma0${polarization}`,
               name: `Frequency A ${polarization} Sigma0`,
@@ -243,9 +241,9 @@ export function datasetsForNISARProduct(product: CMRProduct): NISARDataset[] {
           }),
         );
       }
-      if (nisar.sideBandPolarization) {
+      if (product.sideBandPolarization) {
         datasets.push(
-          ...nisar.sideBandPolarization.map((polarization) => {
+          ...product.sideBandPolarization.map((polarization) => {
             return {
               path: `//science/LSAR/SME2/grids/radarData/frequencyB/sigma0${polarization}`,
               name: `Frequency B ${polarization} Sigma0`,
@@ -256,10 +254,11 @@ export function datasetsForNISARProduct(product: CMRProduct): NISARDataset[] {
         );
       }
       break;
-    case 'GOFF':
-      if (nisar.mainBandPolarization) {
+    }
+    case 'GOFF': {
+      if (product.mainBandPolarization) {
         datasets.push(
-          ...nisar.mainBandPolarization
+          ...product.mainBandPolarization
             .map((polarization) =>
               [
                 { path: 'layer1', display: 'Layer 1' },
@@ -317,10 +316,11 @@ export function datasetsForNISARProduct(product: CMRProduct): NISARDataset[] {
         );
       }
       break;
-    case 'GSLC':
-      if (nisar.mainBandPolarization) {
+    }
+    case 'GSLC': {
+      if (product.mainBandPolarization) {
         datasets.push(
-          ...nisar.mainBandPolarization.map((polarization) => {
+          ...product.mainBandPolarization.map((polarization) => {
             return {
               path: `//science/LSAR/GSLC/grids/frequencyA/${polarization}`,
               name: `Frequency A ${polarization} Focused SLC Image`,
@@ -334,9 +334,9 @@ export function datasetsForNISARProduct(product: CMRProduct): NISARDataset[] {
           },
         );
       }
-      if (nisar.sideBandPolarization) {
+      if (product.sideBandPolarization) {
         datasets.push(
-          ...nisar.sideBandPolarization.map((polarization) => {
+          ...product.sideBandPolarization.map((polarization) => {
             return {
               path: `//science/LSAR/GSLC/grids/frequencyB/${polarization}`,
               name: `Frequency B ${polarization} Focused SLC Image`,
@@ -351,12 +351,13 @@ export function datasetsForNISARProduct(product: CMRProduct): NISARDataset[] {
         );
       }
       break;
+    }
   }
 
   return datasets;
 }
 
-export interface NISARDataset {
+export interface GDALDataset {
   path: string;
   name: string;
   type?: string;

@@ -11,7 +11,7 @@ import { GdalService } from '@services/gdal/gdal.service';
 
 export interface GdalCustomizeDialogData {
   product: models.CMRProduct;
-  datasets: models.NISARDataset[];
+  datasets: models.GDALDataset[];
 }
 
 @Component({
@@ -25,7 +25,9 @@ export class GdalCustomizeMenuComponent {
 
   product = input<models.CMRProduct>();
   datasets = computed(() =>
-    this.gdalService.getProductDatasets(this.product()),
+    this.gdalService.getProductDatasets(
+      this.gdalService.cmrProductToGDALProductInfo(this.product()),
+    ),
   );
 
   readonly dialog = inject(MatDialog);
