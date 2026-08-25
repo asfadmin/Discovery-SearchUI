@@ -145,7 +145,7 @@
       ></app-docs-modal>
     </div>
 
-    @if (outputType() == 'gdal') {
+    @if (outputType() === 'gdal') {
       <div class="gdal-output-card">
         <h2>4. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
         <div class="gdal-output-list">
@@ -176,9 +176,9 @@
       </div>
     }
 
-    @if (outputType() == 'qgis') {
+    @if (outputType() === 'qgis') {
       <div class="gdal-output-card">
-        <h2>4. {{ 'RUN_QGIS_SNIPPET' | translate }}</h2>
+        <h2>4. {{ 'RUN_QGIS_SCRIPT' | translate }}</h2>
         <div class="gdal-output-list">
           <app-code-block
             [codeDescription]="'QGIS_SCRIPT_DESCRIPTION' | translate"

@@ -92,7 +92,7 @@ export class GdalService {
     options: GdalOptions,
     qgisArgs = false,
   ): string[] {
-    let command = this.resolveGDALCommand(options);
+    const command = this.resolveGDALCommand(options);
     const driver =
       this.resolveGDALVersion(options) == '>=3.13' ? 'HDF5' : 'NETCDF';
     const downloadURL = `${driver}:"/vsicurl/${product.downloadUrl}":${options.datasetPath}`;
