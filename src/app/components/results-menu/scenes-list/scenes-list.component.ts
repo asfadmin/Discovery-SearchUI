@@ -108,7 +108,7 @@ export class ScenesListComponent
   > = {};
   public newHyp3JobNotification: ActiveToast<any> = null;
 
-  public offsets = { temporal: 0, perpendicular: 0 };
+  public offsets = this.store$.selectSignal(scenesStore.getMasterOffsets);
   public selectedFromList = false;
   public hoveredSceneName: string | null = null;
   public hoveredPairNames: string | null = null;
@@ -130,12 +130,6 @@ export class ScenesListComponent
 
   ngOnInit() {
     this.keyboardService.init();
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getMasterOffsets)
-        .subscribe((offsets) => (this.offsets = offsets)),
-    );
 
     this.store$.select(queueStore.getQueuedJobs).subscribe((jobs) => {
       const flattened: string[] = [];

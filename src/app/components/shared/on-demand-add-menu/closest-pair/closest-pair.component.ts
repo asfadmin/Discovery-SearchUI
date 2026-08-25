@@ -21,11 +21,11 @@ export class ClosestPairComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);
   private pairService = inject(PairService);
 
-  public scenes: CMRProduct[] = [];
+  public scenes = this.store$.selectSignal(getScenes);
   public points = 1;
   private referenceScene: CMRProduct;
   private referenceSceneIdx: number;
-  private temporalRange;
+  private temporalRange = this.store$.selectSignal(getTemporalRange);
 
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
@@ -34,30 +34,20 @@ export class ClosestPairComponent implements OnInit {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$
-        .select(getScenes)
-        .subscribe((scenes) => (this.scenes = scenes)),
-    );
-    this.subs.add(
       this.store$.select(getMasterName).subscribe((refSceneName) => {
-        this.referenceSceneIdx = this.scenes.findIndex(
+        this.referenceSceneIdx = this.scenes().findIndex(
           (scene) => scene.name === refSceneName,
         );
-        this.referenceScene = this.scenes[this.referenceSceneIdx];
+        this.referenceScene = this.scenes()[this.referenceSceneIdx];
       }),
-    );
-    this.subs.add(
-      this.store$
-        .select(getTemporalRange)
-        .subscribe((range) => (this.temporalRange = range)),
     );
   }
 
   public queueClosestPair(job_type: models.Hyp3JobType): void {
     const closestProduct = this.pairService.findNearestneighbour(
       this.referenceScene,
-      this.scenes.filter((scene) => this.referenceScene.id !== scene.id),
-      this.temporalRange,
+      this.scenes().filter((scene) => this.referenceScene.id !== scene.id),
+      this.temporalRange(),
       this.points,
     );
 
@@ -83,6 +73,6 @@ export class ClosestPairComponent implements OnInit {
 
   public updatePairCount(event: Event) {
     const val = (event.target as HTMLInputElement).valueAsNumber;
-    this.points = Math.min(val, this.scenes.length - 2);
+    this.points = Math.min(val, this.scenes().length - 2);
   }
 }

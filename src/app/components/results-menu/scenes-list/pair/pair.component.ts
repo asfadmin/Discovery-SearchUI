@@ -17,7 +17,6 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
 import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-pair',
@@ -46,12 +45,12 @@ export class PairComponent {
 
   public hovered = false;
 
-  readonly selectedPair = toSignal(
-    this.store$.select(scenesStore.getSelectedPairIds),
+  readonly selectedPair = this.store$.selectSignal(
+    scenesStore.getSelectedPairIds,
   );
 
-  readonly isFrameMode = toSignal(
-    this.store$.select(filtersStore.getShouldUseFramesForReference),
+  readonly isFrameMode = this.store$.selectSignal(
+    filtersStore.getShouldUseFramesForReference,
   );
 
   readonly isSelected = computed(() => {

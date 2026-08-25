@@ -1,12 +1,8 @@
-@if (showDemWarning) {
+@if (sceneFilesWarning()) {
   <div class="dem-warning">
-    {{ 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING' | translate }}
-    <a
-      class="more-link"
-      target="_blank"
-      href="https://asf.alaska.edu/information/palsar-rtc-dem-information/"
-    >
-      Read this first
+    {{ sceneFilesWarning().translationKey | translate }}
+    <a class="more-link" target="_blank" [href]="sceneFilesWarning().url">
+      {{ 'READ_THIS_FIRST' | translate }}
     </a>
   </div>
 }
@@ -22,11 +18,11 @@
           (toggle)="onToggleQueueProduct(product)"
           (queueHyp3Job)="onQueueHyp3Job($event)"
           (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-          [loadingHyp3JobName]="loadingHyp3JobName"
-          [isUserLoggedIn]="isUserLoggedIn"
+          [loadingHyp3JobName]="loadingHyp3JobName()"
+          [isUserLoggedIn]="isUserLoggedIn()"
           [product]="product"
           [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
-          [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+          [hasAccessToRestrictedData]="hasAccessToRestrictedData()"
           [isQueued]="(queuedProductIds$ | async).has(product.id)"
           [isOpen]="false"
         >

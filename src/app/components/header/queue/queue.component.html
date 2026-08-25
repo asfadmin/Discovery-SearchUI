@@ -17,7 +17,7 @@
     <mat-progress-bar
       class="global-progress"
       mode="determinate"
-      value="{{ dlQueueProgress }}"
+      [value]="dlQueueProgress"
     ></mat-progress-bar>
   </div>
 
@@ -152,7 +152,8 @@
           </div>
           @if (!product.metadata.job) {
             <app-copy-to-clipboard
-              prompt="{{ 'COPY_FILE_ID' | translate }}"
+              [prompt]="'COPY_FILE_ID' | translate"
+              [message]="'COPIED_FILE_ID' | translate"
               [value]="
                 product.metadata.productType === 'BURST_XML'
                   ? product.id?.split('-XML')[0]
@@ -176,7 +177,7 @@
           <button
             class="close-button"
             (click)="onRemoveProduct(product)"
-            matTooltip="{{ 'REMOVE_FILE' | translate }}"
+            [matTooltip]="'REMOVE_FILE' | translate"
             mat-icon-button
             matListItemMeta
           >
@@ -225,7 +226,7 @@
                 [class.button-clipboard-mobile]="
                   breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin
                 "
-                matTooltip="{{ 'COPY_FILE_ID_TO_CLIPBOARD' | translate }}"
+                [matTooltip]="'COPY_FILE_ID_TO_CLIPBOARD' | translate"
                 [matTooltipPosition]="'above'"
               >
                 <mat-icon
@@ -248,7 +249,7 @@
                   [class.button-clipboard-mobile]="
                     breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin
                   "
-                  matTooltip="{{ 'COPY_FILE_URLS_TO_CLIPBOARD' | translate }}"
+                  [matTooltip]="'COPY_FILE_URLS_TO_CLIPBOARD' | translate"
                   [matTooltipPosition]="'above'"
                 >
                   <mat-icon
@@ -276,7 +277,7 @@
                   [class.button-clipboard-mobile]="
                     breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin
                   "
-                  matTooltip="{{ 'COPY_FILE_URLS_TO_CLIPBOARD' | translate }}"
+                  [matTooltip]="'COPY_FILE_URLS_TO_CLIPBOARD' | translate"
                   [matTooltipPosition]="'above'"
                 >
                   <mat-icon

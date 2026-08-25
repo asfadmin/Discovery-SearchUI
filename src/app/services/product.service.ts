@@ -164,7 +164,6 @@ export class ProductService {
   public productTypeToGroup(product: models.CMRProduct, type: string): string {
     const dataset = models.datasets[product.dataset];
     if (!dataset?.productTypeDisplays?.groups) {
-      console.log('not found');
       return null;
     }
     for (const { name, files } of dataset.productTypeDisplays.groups) {
@@ -646,6 +645,13 @@ export class ProductService {
 
       if (p.endsWith('.h5') && p.includes('QA_')) {
         productTypeDisplay = models.nisar.productTypeDisplays.displays.qa;
+      }
+
+      if (
+        productTypeDisplay.includes('Footprint KML') &&
+        p.includes('_LATLON')
+      ) {
+        productTypeDisplay = 'Lat/Lon Footprint KML';
       }
 
       if (['Log File', 'Metadata JSON'].includes(productTypeDisplay)) {

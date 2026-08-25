@@ -249,4 +249,40 @@ describe('SceneFilesComponent file grouping', () => {
     expect(component.groups()).toBe(null);
     expect(fixture.nativeElement.querySelector('mat-tree')).toBe(null);
   });
+
+  it('shows the DISP-S1 footprint warning for DISP-S1 products', async () => {
+    const scene = productFactory
+      .withBasicInfo('disp-s1-scene')
+      .withMetadata({ productType: 'DISP-S1' })
+      .build();
+    await setup(scene, [scene]);
+
+    expect(component.sceneFilesWarning()).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.dem-warning')).not.toBe(null);
+  });
+
+  it('shows the DEM warning for ALOS RTC products', async () => {
+    let scene = productFactory
+      .withBasicInfo('alos rtc')
+      .withMetadata({ productType: 'ALPSRP279071390-RTC_LOW_RES' })
+      .build();
+
+    scene = { ...scene, dataset: 'ALOS' };
+
+    await setup(scene, [scene]);
+
+    expect(component.sceneFilesWarning()).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.dem-warning')).not.toBe(null);
+  });
+
+  it('does not show the DISP-S1 footprint warning for other product types', async () => {
+    const scene = productFactory
+      .withBasicInfo('disp-s1-static-scene')
+      .withMetadata({ productType: 'DISP-S1-STATIC' })
+      .build();
+    await setup(scene, [scene]);
+
+    expect(component.sceneFilesWarning()).toBe(null);
+    expect(fixture.nativeElement.querySelector('.dem-warning')).toBe(null);
+  });
 });

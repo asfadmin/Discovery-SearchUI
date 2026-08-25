@@ -4,7 +4,7 @@
   }}</a>
 }
 @if (text() && custStyle()) {
-  <a (click)="showDoc()" style="{{ custStyle() }}">{{ text() | translate }}</a>
+  <a (click)="showDoc()" [style]="custStyle()">{{ text() | translate }}</a>
 }
 @if (description()) {
   <a
@@ -21,9 +21,7 @@
   <a
     (click)="showDoc()"
     class="link-pointer"
-    matTooltip="{{
-      this.tooltip() ?? 'OPEN_LINK_TO_DOCUMENTATION' | translate
-    }}"
+    [matTooltip]="this.tooltip() ?? 'OPEN_LINK_TO_DOCUMENTATION' | translate"
   >
     <mat-icon class="material-symbols-outlined icon-size">{{
       icon()

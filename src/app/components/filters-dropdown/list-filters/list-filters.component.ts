@@ -1,4 +1,13 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  ViewChild,
+  afterNextRender,
+  Injector,
+} from '@angular/core';
+import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
 import { ListSearchType } from '@models';
 
 import { NgxCsvParser } from 'ngx-csv-parser';
@@ -38,7 +47,11 @@ import {
   MatButtonToggle,
 } from '@angular/material/button-toggle';
 import { MatTooltip } from '@angular/material/tooltip';
-import { MatFormField, MatInput } from '@angular/material/input';
+import {
+  MatFormField,
+  MatInput,
+  MatInputModule,
+} from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -69,10 +82,13 @@ enum FileErrors {
     MatTooltip,
     MatFormField,
     MatInput,
+    MatInputModule,
     FormsModule,
     CopyToClipboardComponent,
     AsyncPipe,
     TranslateModule,
+    CdkTextareaAutosize,
+    TextFieldModule,
   ],
 })
 export class ListFiltersComponent implements OnInit, OnDestroy {
@@ -118,7 +134,19 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       'ALPSRP111041130',
     ].join(', '),
   };
+  @ViewChild('autosize') autosize!: CdkTextareaAutosize;
+  private _injector = inject(Injector);
 
+  triggerResize() {
+    afterNextRender(
+      () => {
+        this.autosize.resizeToFitContent(true);
+      },
+      {
+        injector: this._injector,
+      },
+    );
+  }
   ngOnInit() {
     this.subs.add(
       this.fileError$

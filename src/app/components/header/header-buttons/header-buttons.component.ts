@@ -6,6 +6,7 @@ import {
   HostListener,
   ElementRef,
   ViewChild,
+  Signal,
 } from '@angular/core';
 import { SubSink } from 'subsink';
 import { saveAs } from 'file-saver';
@@ -91,8 +92,12 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   anio: number = new Date().getFullYear();
   public asfWebsite = asfWebsite;
 
-  public userAuth: UserAuth;
-  public isLoggedIn = false;
+  public userAuth: Signal<UserAuth> = this.store$.selectSignal(
+    userStore.getUserAuth,
+  );
+  public isLoggedIn: Signal<boolean> = this.store$.selectSignal(
+    userStore.getIsUserLoggedIn,
+  );
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
   private subs = new SubSink();
@@ -140,12 +145,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      this.store$.select(userStore.getUserAuth).subscribe((user) => {
-        this.userAuth = user;
-      }),
-    );
-
-    this.subs.add(
       this.store$.select(queueStore.getQueuedProducts).subscribe((products) => {
         this.queuedProducts = products;
         if (this.lastQProdCount !== products.length) {
@@ -169,12 +168,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
           this.qOnDemandState = !this.qOnDemandState;
         }
       }),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(userStore.getIsUserLoggedIn)
-        .subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn)),
     );
   }
 
@@ -210,7 +203,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'logout',
-      logout: this.userAuth,
+      logout: this.userAuth(),
     });
 
     this.subs.add(

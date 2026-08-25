@@ -5,19 +5,19 @@
     (selectionChange)="onNewShortNames($event)"
     [disabled]="selectableShortNames.length === 0"
     panelClass="short-name-selector"
-    placeholder="{{ 'SHORT_NAME' | translate }}"
+    [placeholder]="'SHORT_NAME' | translate"
     multiple
   >
-    @for (type of selectableShortNames; track type) {
+    @for (type of selectableShortNames(); track type) {
       <mat-option [value]="type.apiValue" [matTooltip]="type.apiValue">
         {{ type.displayName }}
       </mat-option>
     }
   </mat-select>
 
-  @if (selectableShortNames.length >= 1) {
+  @if (selectableShortNames().length >= 1) {
     <mat-hint align="start">
-      {{ shortNamesList?.length || 0 }}/{{ selectableShortNames.length }}
+      {{ shortNamesList?.length || 0 }}/{{ selectableShortNames().length }}
       {{ 'SHORT_NAMES_SELECTED' | translate }}
     </mat-hint>
   }

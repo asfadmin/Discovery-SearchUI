@@ -6,6 +6,7 @@ import {
   EventEmitter,
   OnDestroy,
   inject,
+  effect,
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { tap, delay, map } from 'rxjs/operators';
@@ -92,16 +93,13 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
-
+  public currentLanguage = this.store$.selectSignal(uiStore.getCurrentLanguage);
+  constructor() {
+    effect(() => {
+      this.setCalLang(this.currentLanguage());
+    });
+  }
   ngOnInit(): void {
-    this.subs.add(
-      this.store$
-        .select(uiStore.getCurrentLanguage)
-        .subscribe((currentLanguage) => {
-          this.setCalLang(currentLanguage);
-        }),
-    );
-
     this.screenSize.breakpoint$.subscribe(
       (breakpoint) => (this.breakpoint = breakpoint),
     );

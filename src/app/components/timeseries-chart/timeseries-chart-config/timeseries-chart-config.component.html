@@ -1,10 +1,10 @@
 <div style="display: flex; flex-direction: column">
-  <mat-checkbox (change)="onToggleLines($event)" [checked]="showLines">{{
+  <mat-checkbox (change)="onToggleLines($event)" [checked]="showLines()">{{
     'SHOW_LINES' | translate
   }}</mat-checkbox>
   <mat-checkbox
     (change)="onToggleLinearFit($event)"
-    [checked]="showLinearFit"
+    [checked]="showLinearFit()"
     >{{ 'SHOW_LINEAR_FIT' | translate }}</mat-checkbox
   >
   <button mat-button (click)="resetReference()">

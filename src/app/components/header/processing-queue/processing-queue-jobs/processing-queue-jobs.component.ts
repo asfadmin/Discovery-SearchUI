@@ -5,6 +5,7 @@ import {
   Output,
   EventEmitter,
   inject,
+  Signal,
 } from '@angular/core';
 
 import * as models from '@models';
@@ -101,7 +102,9 @@ export class ProcessingQueueJobsComponent implements OnInit {
   @Output() removeJob = new EventEmitter<models.QueuedHyp3Job>();
 
   public projectName = '';
-  public isLoggedIn: boolean;
+  public isLoggedIn: Signal<boolean> = this.store$.selectSignal(
+    userStore.getIsUserLoggedIn,
+  );
 
   public sortTypes = Object.keys(ProcessingQueueJobsSortType).map(
     (key) => ProcessingQueueJobsSortType[key],
@@ -119,12 +122,6 @@ export class ProcessingQueueJobsComponent implements OnInit {
   private subs = new SubSink();
 
   ngOnInit(): void {
-    this.subs.add(
-      this.store$
-        .select(userStore.getIsUserLoggedIn)
-        .subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn)),
-    );
-
     this.subs.add(
       this.jobsfiltered$.subscribe((jobs) => (this.jobsDisplay = jobs)),
     );

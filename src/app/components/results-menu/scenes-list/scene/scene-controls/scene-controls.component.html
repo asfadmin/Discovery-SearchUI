@@ -4,7 +4,7 @@
       <mat-icon
         (click)="onZoomTo()"
         class="ml-2"
-        matTooltip="{{ 'ZOOM_TO_SCENE' | translate }}"
+        [matTooltip]="'ZOOM_TO_SCENE' | translate"
       >
         settings_overscan
       </mat-icon>
@@ -26,11 +26,11 @@
       <mat-icon
         (click)="onToggle()"
         class="icon-margin"
-        matTooltip="{{
+        [matTooltip]="
           isQueued
             ? ('REMOVE_SCENE_FILES_FROM_DOWNLOADS' | translate)
             : ('ADD_SCENE_FILES_TO_DOWNLOADS' | translate)
-        }}"
+        "
       >
         {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
       </mat-icon>

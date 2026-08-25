@@ -30,7 +30,7 @@
             (click)="onSceneSelected(scene.id)"
             (toggleScene)="onToggleScene(getGroupCriteria(scene))"
             [scene]="scene"
-            [offsets]="offsets"
+            [offsets]="offsets()"
             [searchType]="searchType"
             [isQueued]="allQueued[getGroupCriteria(scene)]"
             [hyp3ableByJobType]="

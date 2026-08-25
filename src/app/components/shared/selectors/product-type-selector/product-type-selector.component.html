@@ -5,7 +5,7 @@
       (selectionChange)="onNewProductTypes($event)"
       [disabled]="selectableProductTypes.length < 1 || burstSelected"
       panelClass="product-type-selector"
-      placeholder="{{ 'FILE_TYPE' | translate }}"
+      [placeholder]="'FILE_TYPE' | translate"
       multiple
       #productTypeSelector
     >
@@ -18,7 +18,7 @@
       @if (dataset.id === 'OPERA-S1') {
         <div
           class="tropo-redirect"
-          matTooltip="{{ 'OPERA_TROPO_ZENITH_REDIRECT' | translate }}"
+          [matTooltip]="'OPERA_TROPO_ZENITH_REDIRECT' | translate"
         >
           <mat-icon [inline]="true" class="tropo-redirect-icon warn-color"
             >dataset_linked</mat-icon

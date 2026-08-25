@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Output, EventEmitter, inject, Signal } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -8,7 +8,6 @@ import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
-import { SubSink } from 'subsink';
 import * as searchStore from '@store/search';
 import * as models from '@models';
 import { AsyncPipe } from '@angular/common';
@@ -39,7 +38,7 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
   ],
 })
-export class BaselineHeaderComponent implements OnInit {
+export class BaselineHeaderComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
 
@@ -48,7 +47,6 @@ export class BaselineHeaderComponent implements OnInit {
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
-  public areResultsLoaded: boolean;
 
   public selectedProducts$ = this.store$.select(
     scenesStore.getSelectedSceneProducts,
@@ -60,25 +58,8 @@ export class BaselineHeaderComponent implements OnInit {
   public datasets = [models.beta];
   public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)';
 
-  private subs = new SubSink();
-
-  public shouldUseFramesForReference = false;
-
-  ngOnInit(): void {
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getAreResultsLoaded)
-        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
-    );
-    this.subs.add(
-      this.store$
-        .select(filtersStore.getShouldUseFramesForReference)
-        .subscribe(
-          (shouldUseFrames) =>
-            (this.shouldUseFramesForReference = shouldUseFrames),
-        ),
-    );
-  }
+  public shouldUseFramesForReference: Signal<boolean> =
+    this.store$.selectSignal(filtersStore.getShouldUseFramesForReference);
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());

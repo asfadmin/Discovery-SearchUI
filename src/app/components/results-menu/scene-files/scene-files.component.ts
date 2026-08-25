@@ -43,6 +43,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { getStaticQueryParams } from '@models/datasets/opera_s1';
 import { toSignal } from '@angular/core/rxjs-interop';
 
+interface SceneFilesWarning {
+  translationKey: string;
+  url: string;
+}
+
 @Component({
   selector: 'app-scene-files',
   templateUrl: './scene-files.component.html',
@@ -84,11 +89,15 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       }),
     ),
   );
-  public loadingHyp3JobName: string | null = null;
+  public loadingHyp3JobName = this.store$.selectSignal(
+    hyp3Store.getSubmittingJobName,
+  );
   public validJobTypesByProduct: Record<string, models.Hyp3JobType[]> = {};
 
-  public isUserLoggedIn: boolean;
-  public hasAccessToRestrictedData: boolean;
+  public isUserLoggedIn = this.store$.selectSignal(userStore.getIsUserLoggedIn);
+  public hasAccessToRestrictedData = this.store$.selectSignal(
+    userStore.getHasRestrictedDataAccess,
+  );
   public showDemWarning: boolean;
 
   public dynamicQueryLoaded = signal(false);
@@ -132,6 +141,26 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     }
     return productsByGroups;
   });
+
+  readonly sceneFilesWarning = computed<SceneFilesWarning | null>(() => {
+    if (this.scene()?.metadata.productType === 'DISP-S1') {
+      return {
+        translationKey: 'DISP_S1_FOOTPRINTS_HAVE_KNOWN_LIMITATIONS',
+        url: 'https://github.com/opera-adt/disp-s1/issues/376',
+      };
+    } else if (
+      this.scene()?.dataset === 'ALOS' &&
+      this.scene()?.metadata?.productType?.includes('RTC_')
+    ) {
+      return {
+        translationKey: 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING',
+        url: 'https://asf.alaska.edu/information/palsar-rtc-dem-information/',
+      };
+    } else {
+      return null;
+    }
+  });
+
   private subs = new SubSink();
 
   ngOnInit() {
@@ -146,7 +175,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
             this.validJobTypesByProduct[product.id] =
               this.hyp3.getValidJobTypes([product]);
           });
-          this.showDemWarning = this.demWarning(products);
         }),
     );
 
@@ -155,46 +183,10 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         (ids) => (this.queuedProductIds = Array.from(ids)),
       ),
     );
-
-    this.subs.add(
-      this.store$
-        .select(userStore.getIsUserLoggedIn)
-        .subscribe((isLoggedIn) => (this.isUserLoggedIn = isLoggedIn)),
-    );
-    this.subs.add(
-      this.store$
-        .select(userStore.getHasRestrictedDataAccess)
-        .subscribe((hasAccess) => (this.hasAccessToRestrictedData = hasAccess)),
-    );
-    this.subs.add(
-      this.store$
-        .select(hyp3Store.getSubmittingJobName)
-        .subscribe((jobName) => (this.loadingHyp3JobName = jobName)),
-    );
   }
 
   public onToggleQueueProduct(product: models.CMRProduct): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
-  }
-
-  public demWarning(products): boolean {
-    let warn = false;
-
-    if (!products) {
-      return false;
-    }
-
-    products.forEach((product) => {
-      if (
-        product.dataset === 'ALOS' &&
-        product.metadata.productType &&
-        product.metadata.productType.includes('RTC_')
-      ) {
-        warn = true;
-      }
-    });
-
-    return warn;
   }
 
   public onQueueHyp3Job(job: models.QueuedHyp3Job) {
@@ -241,10 +233,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
     distinctUntilChanged((prev, curr) => prev?.id === curr?.id),
     withLatestFrom(this.store$.select(filterStore.getUseCalibrationData)),
     map(([scene, useCalibrationData]) => {
-      return (
-        this.operaSubqueryCriteria(scene, useCalibrationData) ||
-        this.nisarSubqueryCriteria(scene)
-      );
+      return this.operaSubqueryCriteria(scene, useCalibrationData);
+      // || this.nisarSubqueryCriteria(scene)
     }),
   );
 
@@ -259,6 +249,11 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       scene?.id.startsWith('OPERA')
     );
   }
+
+  /*
+   * Removed because this is yeilding the wrong orbit files and there isn't a
+   * well defined way of which orbits to show for each product
+   *
   private nisarSubqueryCriteria(scene: models.CMRProduct) {
     const isNisar = !!scene && scene.id?.startsWith('NISAR');
     const processingLevel = scene?.metadata?.productType ?? '';
@@ -278,6 +273,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       ].includes(processingLevel)
     );
   }
+  */
+
   public dynamicallySearchedProduct$ = combineLatest([
     this.store$.select(scenesStore.getSelectedScene),
     this.nisarOrbitEphemera$,

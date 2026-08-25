@@ -25,7 +25,7 @@
         <button
           mat-icon-button
           class="group-cart"
-          matTooltip="{{ 'ADD_ALL_GROUP_FILES' | translate }}"
+          [matTooltip]="'ADD_ALL_GROUP_FILES' | translate"
           (click)="onQueueGroup($event, group)"
         >
           <mat-icon>add_shopping_cart</mat-icon>

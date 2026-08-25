@@ -1,4 +1,11 @@
-import { Component, OnInit, inject, Pipe, PipeTransform } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  Pipe,
+  PipeTransform,
+  Signal,
+} from '@angular/core';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -77,7 +84,9 @@ export class ConfirmationComponent implements OnInit {
   public allJobs: models.QueuedHyp3Job[] = [];
   public jobTypesWithQueued: models.JobTypesWithQueued[] = [];
   public processingOptions: models.Hyp3ProcessingOptions;
-  public projectName: string;
+  public projectName: Signal<string> = this.store$.selectSignal(
+    hyp3Store.getProcessingProjectName,
+  );
   public validateOnly: boolean;
 
   public isQueueSubmitProcessing = false;
@@ -93,10 +102,6 @@ export class ConfirmationComponent implements OnInit {
       return total;
     }, []);
     this.store$.dispatch(new hyp3Store.SetProcessingProjectName(null));
-
-    this.store$.select(hyp3Store.getProcessingProjectName).subscribe((name) => {
-      this.projectName = name;
-    });
   }
 
   public onToggleJobType(tabQueue: models.JobTypesWithQueued): void {
@@ -136,7 +141,7 @@ export class ConfirmationComponent implements OnInit {
     const jobTypesWithQueued = this.jobTypesWithQueued;
 
     const hyp3JobsBatch = this.hyp3JobService.formatJobs(jobTypesWithQueued, {
-      projectName: this.projectName,
+      projectName: this.projectName(),
       processingOptions: this.processingOptions,
     });
 

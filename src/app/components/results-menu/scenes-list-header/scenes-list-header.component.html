@@ -2,7 +2,7 @@
   @if (breakpoint$ | async; as breakpoint) {
     <div
       [className]="
-        searchType === SearchTypes.BASELINE && breakpoint > breakpoints.MOBILE
+        searchType() === SearchTypes.BASELINE && breakpoint > breakpoints.MOBILE
           ? 'files-header-baseline'
           : 'files-header mobile-size'
       "
@@ -10,12 +10,13 @@
       <div
         class="header-row-left"
         [ngClass]="{
-          'sbas-header-row-left': searchType === SearchTypes.SBAS,
+          'sbas-header-row-left': searchType() === SearchTypes.SBAS,
           'mobile-size': breakpoint <= breakpoints.SMALL,
         }"
       >
         @if (
-          searchType === SearchTypes.DATASET || searchType === SearchTypes.LIST
+          searchType() === SearchTypes.DATASET ||
+          searchType() === SearchTypes.LIST
         ) {
           <div class="mr-10 scene-count">
             {{ numberOfScenes$ | async }}
@@ -43,7 +44,7 @@
             }
           </div>
         }
-        @if (searchType === SearchTypes.SBAS) {
+        @if (searchType() === SearchTypes.SBAS) {
           <div class="mr-10 pair-count-offset">
             {{ numPairs$ | async }}
             {{
@@ -69,7 +70,7 @@
             }
           </div>
         }
-        @if (searchType === SearchTypes.BASELINE) {
+        @if (searchType() === SearchTypes.BASELINE) {
           <div class="mr-10">
             {{ numBaselineScenes$ | async }} {{ 'OF' | translate }}
             {{ numUnfilteredBaselineScenes$ | async }}
@@ -80,9 +81,10 @@
             }}
           </div>
         }
-        @if (searchType === SearchTypes.CUSTOM_PRODUCTS) {
+        @if (searchType() === SearchTypes.CUSTOM_PRODUCTS) {
           <div class="mr-10">
-            {{ numBaselineScenes$ | async }}{{ moreHyp3JobsToLoad ? '+' : '' }}
+            {{ numBaselineScenes$ | async
+            }}{{ moreHyp3JobsToLoad() ? '+' : '' }}
             {{
               (numBaselineScenes$ | async) === 1
                 ? ('PRODUCT' | translate)
@@ -118,7 +120,7 @@
                       >
                         <mat-icon
                           class="list-icon"
-                          [class.material-icons-outlined]="showS1RawData"
+                          [class.material-icons-outlined]="showS1RawData()"
                         >
                           remove_red_eye
                         </mat-icon>
@@ -151,7 +153,7 @@
                       >
                         <mat-icon
                           class="list-icon"
-                          [class.material-icons-outlined]="showExpiredData"
+                          [class.material-icons-outlined]="showExpiredData()"
                         >
                           remove_red_eye
                         </mat-icon>
@@ -161,7 +163,7 @@
                 </div>
               </div>
             }
-            @if (searchType !== SearchTypes.DISPLACEMENT) {
+            @if (searchType() !== SearchTypes.DISPLACEMENT) {
               <div class="fx-empty list-button-group">
                 <div class="fx-row-center button-group-label">
                   <label>{{ 'ZOOM' | translate }}</label>
@@ -177,7 +179,7 @@
                         [disabled]="(numOfScenesWithPolygon$ | async) === 0"
                         (click)="onZoomToResults()"
                         class="control-mat-button-toggle clickable noselect"
-                        matTooltip="{{ 'ZOOM_TO_RESULTS' | translate }}"
+                        [matTooltip]="'ZOOM_TO_RESULTS' | translate"
                       >
                         <mat-icon class="list-icon">
                           settings_overscan
@@ -188,7 +190,7 @@
                 </div>
               </div>
             }
-            @if (searchType !== SearchTypes.DISPLACEMENT) {
+            @if (searchType() !== SearchTypes.DISPLACEMENT) {
               <div class="fx-empty list-button-group">
                 <div class="fx-row-center button-group-label">
                   <label>{{ 'QUEUE' | translate }}</label>
@@ -203,9 +205,9 @@
                       <mat-button-toggle
                         class="control-mat-button-toggle"
                         [matMenuTriggerFor]="addAllProducts"
-                        matTooltip="{{
+                        [matTooltip]="
                           'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate
-                        }}"
+                        "
                       >
                         <mat-icon class="list-icon">
                           add_shopping_cart
@@ -217,7 +219,7 @@
               </div>
             }
             @if (
-              searchType !== SearchTypes.CUSTOM_PRODUCTS && hyp3able.total > 0
+              searchType() !== SearchTypes.CUSTOM_PRODUCTS && hyp3able.total > 0
             ) {
               <div class="fx-empty list-button-group">
                 <div class="fx-row-center button-group-label">
@@ -234,9 +236,9 @@
                         class="control-mat-button-toggle clickable noselect"
                         [matMenuTriggerFor]="listAdd.addMenu"
                         [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
-                        matTooltip="{{
+                        [matTooltip]="
                           'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate
-                        }}"
+                        "
                         [aria-label]="
                           'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate
                         "
@@ -249,7 +251,7 @@
                 </div>
               </div>
             }
-            @if (searchType === SearchTypes.CUSTOM_PRODUCTS) {
+            @if (searchType() === SearchTypes.CUSTOM_PRODUCTS) {
               <div class="fx-empty list-button-group">
                 <div class="fx-row-center button-group-label">
                   <label> {{ 'EXPORT' | translate }}</label>
@@ -264,9 +266,9 @@
                       <mat-button-toggle
                         class="control-mat-button-toggle clickable noselect"
                         [matMenuTriggerFor]="OnDemandCodeExport"
-                        matTooltip="{{
+                        [matTooltip]="
                           'SDK_PYTHON_CODE_EXPORT_TOOLTIP' | translate
-                        }}"
+                        "
                       >
                         <mat-icon class="list-icon"> get_app </mat-icon>
                       </mat-button-toggle>
@@ -317,7 +319,7 @@
                 </div>
               </mat-menu>
             }
-            @if (searchType === SearchTypes.BASELINE) {
+            @if (searchType() === SearchTypes.BASELINE) {
               <div class="fx-empty list-button-group">
                 <div class="fx-row-center button-group-label">
                   <label> {{ 'EXPORT' | translate }}</label>
@@ -332,9 +334,7 @@
                       <mat-button-toggle
                         class="control-mat-button-toggle clickable noselect"
                         [matMenuTriggerFor]="ExportAll"
-                        matTooltip="{{
-                          'DOWNLOAD_DATA_METADATA_AS' | translate
-                        }}"
+                        [matTooltip]="'DOWNLOAD_DATA_METADATA_AS' | translate"
                       >
                         <mat-icon class="list-icon"> get_app </mat-icon>
                       </mat-button-toggle>
@@ -343,7 +343,7 @@
                 </div>
               </div>
             }
-            @if (searchType === SearchTypes.SBAS) {
+            @if (searchType() === SearchTypes.SBAS) {
               <div class="fx-empty list-button-group">
                 <div class="fx-row-center button-group-label">
                   <label>{{ 'PAIRS' | translate }}</label>
@@ -358,7 +358,7 @@
                       <mat-button-toggle
                         (click)="onDownloadPairCSV()"
                         class="control-mat-button-toggle clickable noselect"
-                        matTooltip="{{ 'DOWNLOAD_PAIR_CSV' | translate }}"
+                        [matTooltip]="'DOWNLOAD_PAIR_CSV' | translate"
                       >
                         <mat-icon class="list-icon"> get_app </mat-icon>
                       </mat-button-toggle>
@@ -369,11 +369,11 @@
             }
             <mat-menu #addAllProducts="matMenu">
               @if (
-                searchType !== SearchTypes.SBAS &&
+                searchType() !== SearchTypes.SBAS &&
                 !(isBurstStack$ | async) &&
                 !(
                   currentDatasetID() === 'SENTINEL-1 BURSTS' &&
-                  searchType === SearchTypes.DATASET
+                  searchType() === SearchTypes.DATASET
                 )
               ) {
                 <button
@@ -390,7 +390,7 @@
                 </button>
               }
               @if (
-                searchType === SearchTypes.SBAS && !(isBurstStack$ | async)
+                searchType() === SearchTypes.SBAS && !(isBurstStack$ | async)
               ) {
                 <button (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
                   {{ 'ADD' | translate }} {{ sbasProducts.length }}
@@ -404,7 +404,7 @@
               }
               @if (
                 (currentDatasetID() === 'SENTINEL-1 BURSTS' &&
-                  searchType === SearchTypes.DATASET) ||
+                  searchType() === SearchTypes.DATASET) ||
                 (isBurstStack$ | async)
               ) {
                 <button
@@ -412,17 +412,17 @@
                   [matMenuTriggerFor]="addAllBurstProducts"
                   [matMenuTriggerData]="{
                     burstData:
-                      searchType === SearchTypes.SBAS
+                      searchType() === SearchTypes.SBAS
                         ? (SBASburstDataProducts$ | async)
                         : (burstDataProducts$ | async),
                     burstMetadata:
-                      searchType === SearchTypes.SBAS
+                      searchType() === SearchTypes.SBAS
                         ? (SBASburstMetadataProducts$ | async)
                         : (burstMetadataProducts$ | async),
                   }"
                 >
                   {{
-                    searchType !== SearchTypes.SBAS
+                    searchType() !== SearchTypes.SBAS
                       ? downloadableProds.length
                       : (SBASBurstProductsLength$ | async)
                   }}
@@ -434,7 +434,7 @@
                   }}
                 </button>
               }
-              @if (searchType === SearchTypes.DATASET && datasetGroups()) {
+              @if (searchType() === SearchTypes.DATASET && datasetGroups()) {
                 <button
                   mat-menu-item
                   [matMenuTriggerFor]="addAllProductsOfGroup"
@@ -446,7 +446,7 @@
                 </button>
               }
               @if (
-                searchType === SearchTypes.DATASET &&
+                searchType() === SearchTypes.DATASET &&
                 (currentDatasetID() === 'OPERA-S1' ||
                   currentDatasetID() === 'NISAR' ||
                   currentDatasetID() === 'SEASAT')
@@ -568,7 +568,7 @@
           </div>
         }
       </mat-menu>
-      @if (searchType === SearchTypes.BASELINE) {
+      @if (searchType() === SearchTypes.BASELINE) {
         @if (breakpoint > breakpoints.MOBILE) {
           <div class="header-row-right">
             <div
@@ -576,15 +576,15 @@
               class="header-column noselect clickable"
             >
               {{ 'METERS' | translate }}
-              @if (perpendicularSort === SortDirection.NONE) {
+              @if (perpendicularSort() === SortDirection.NONE) {
                 <mat-icon class="sort-icon">unfold_more</mat-icon>
               }
-              @if (perpendicularSort === SortDirection.INCREASING) {
+              @if (perpendicularSort() === SortDirection.INCREASING) {
                 <mat-icon class="sort-icon sort-active"
                   >keyboard_arrow_up</mat-icon
                 >
               }
-              @if (perpendicularSort === SortDirection.DECREASING) {
+              @if (perpendicularSort() === SortDirection.DECREASING) {
                 <mat-icon class="sort-icon sort-active"
                   >keyboard_arrow_down</mat-icon
                 >
@@ -595,15 +595,15 @@
               class="header-column clickable noselect"
             >
               {{ 'DAYS' | translate }}
-              @if (temporalSort === SortDirection.NONE) {
+              @if (temporalSort() === SortDirection.NONE) {
                 <mat-icon class="sort-icon">unfold_more</mat-icon>
               }
-              @if (temporalSort === SortDirection.INCREASING) {
+              @if (temporalSort() === SortDirection.INCREASING) {
                 <mat-icon class="sort-icon sort-active"
                   >keyboard_arrow_up</mat-icon
                 >
               }
-              @if (temporalSort === SortDirection.DECREASING) {
+              @if (temporalSort() === SortDirection.DECREASING) {
                 <mat-icon class="sort-icon sort-active"
                   >keyboard_arrow_down</mat-icon
                 >
