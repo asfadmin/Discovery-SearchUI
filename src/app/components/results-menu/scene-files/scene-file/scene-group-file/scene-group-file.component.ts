@@ -23,6 +23,8 @@ import { SceneFileGdalDropdownComponent } from '../../scene-group-files/scene-fi
 import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-menu/gdal-customize-menu.component';
 import { GdalService } from '@services/gdal/gdal.service';
 import { NgTemplateOutlet } from '@angular/common';
+import { ScreenSizeService } from '@services';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-scene-group-file',
@@ -47,6 +49,10 @@ import { NgTemplateOutlet } from '@angular/common';
   ],
 })
 export class SceneGroupFileComponent {
+  screenSize = inject(ScreenSizeService);
+  breakpoint = toSignal(this.screenSize.breakpoint$);
+  breakpoints = models.Breakpoints;
+
   gdalService = inject(GdalService);
   product = input.required<models.CMRProduct>();
   isQueued = input(false);
@@ -55,7 +61,8 @@ export class SceneGroupFileComponent {
   isGdalable = computed(
     () =>
       this.isScienceData() &&
-      this.gdalService.getProductDatasets(this.product()).length !== 0,
+      this.gdalService.getProductDatasets(this.product()).length !== 0 &&
+      this.breakpoint() !== this.breakpoints.MOBILE,
   );
 
   toggle = output<void>();
