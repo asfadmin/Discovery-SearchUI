@@ -215,10 +215,6 @@ print("Done!")
   }
 
   public isCropToAOIAvailable(): boolean {
-    if (this.searchPolygon() === null || this.searchPolygon() === undefined) {
-      return false;
-    }
-
-    return this.searchPolygon().includes('POLYGON');
+    return this.searchPolygon()?.includes('POLYGON') ?? false;
   }
 }
