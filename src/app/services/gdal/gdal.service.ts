@@ -167,7 +167,7 @@ export class GdalService {
   }
 
   public generateGDALCommand(options: GdalOptions): string {
-    return `${this.generateGDALTranslateArguments(options).join(`${options.os && options.os == 'Windows' ? '^' : '\\'}\r\n        `)}`;
+    return `${this.generateGDALTranslateArguments(options).join(` ${options.os && options.os == 'Windows' ? '^' : '\\'}\r\n        `)}`;
   }
 
   public generateQGISScript(options: GdalOptions): string {
