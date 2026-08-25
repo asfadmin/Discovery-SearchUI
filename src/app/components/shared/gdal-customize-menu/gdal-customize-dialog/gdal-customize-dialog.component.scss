@@ -126,3 +126,9 @@ h1 {
   flex-direction: column;
   gap: 1em;
 }
+
+.filename {
+  max-width: 100%;
+  min-width: 80%;
+  flex-grow: 1;
+}
