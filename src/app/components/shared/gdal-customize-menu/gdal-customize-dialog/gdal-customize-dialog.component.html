@@ -103,7 +103,7 @@
         </span>
         <span class="option checkbox">
           <mat-checkbox
-            [disabled]="!gdalService.isCropToAOIAvailable"
+            [disabled]="!gdalService.isCropToAOIAvailable()"
             disabledInteractive
             [(ngModel)]="cropToAOI"
             [matTooltip]="
