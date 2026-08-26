@@ -1,4 +1,11 @@
-import { Component, inject, input, computed } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  computed,
+  EnvironmentInjector,
+  createComponent,
+} from '@angular/core';
 import { GdalProductInfo, GdalService } from '@services/gdal/gdal.service';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { MatInputModule } from '@angular/material/input';
@@ -8,6 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SceneFileGdalDropdownDatasetComponent } from './scene-file-gdal-dropdown-dataset/scene-file-gdal-dropdown-dataset.component';
 
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-menu/gdal-customize-menu.component';
 
 @Component({
   selector: 'app-scene-file-gdal-dropdown',
@@ -29,4 +37,14 @@ export class SceneFileGdalDropdownComponent {
   datasets = computed(() =>
     this.gdalService.getProductDatasets(this.product()),
   );
+  private injector = inject(EnvironmentInjector);
+
+  openGdalDialog() {
+    const componentRef = createComponent(GdalCustomizeMenuComponent, {
+      environmentInjector: this.injector,
+    });
+
+    componentRef.setInput('product', this.product());
+    componentRef.instance.openDialog();
+  }
 }

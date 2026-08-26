@@ -1,3 +1,6 @@
+@use '@angular/material' as mat;
+@use 'asf-theme-variables' as *;
+
 .dataset-list {
   display: flex;
   flex-direction: column;
@@ -7,6 +10,8 @@
 
 .gdal-dataset-header {
   display: flex;
+  padding: 6px;
+  border-radius: 5px;
 }
 
 .gdal-dataset-header-title {
@@ -16,4 +21,10 @@
 
 .gdal-dataset-header-documentation {
   font-style: italic;
+}
+
+.gdal-dataset-header:hover {
+  @include themify($themes) {
+    background-color: themed('dark-focused');
+  }
 }

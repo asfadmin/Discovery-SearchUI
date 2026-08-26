@@ -1,7 +1,13 @@
 <div class="gdal-dropdown-wrapper">
   <div class="dataset-list">
-    <div class="gdal-dataset-header">
-      <span class="gdal-dataset-header-title">
+    <div
+      class="gdal-dataset-header clickable"
+      (click)="$event.target === $event.currentTarget && openGdalDialog()"
+    >
+      <span
+        class="gdal-dataset-header-title"
+        (click)="$event.target === $event.currentTarget && openGdalDialog()"
+      >
         {{ 'EXPORT_GDAL_DATASET' | translate }}
       </span>
       <span class="gdal-dataset-header-documentation">
