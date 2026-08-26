@@ -16,6 +16,7 @@
 .gdal-export-wrapper {
   padding: 1em;
   overflow-x: scroll;
+  overflow-y: hidden;
   height: 100%;
 }
 
@@ -71,6 +72,10 @@ h1 {
   font-size: 0.75rem;
   flex-shrink: 1;
   min-width: 0;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .flex-grow {
