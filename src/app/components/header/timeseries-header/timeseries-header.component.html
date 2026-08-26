@@ -10,18 +10,17 @@
         <app-timeseries-chart-flight-direction-toggle></app-timeseries-chart-flight-direction-toggle>
         <span class="sat-legend">
           <span class="azimuth-icon">
-            @if (!flightDesc()) {
+            @if (flightDesc()) {
               <img
-                ngSrc="assets/satellite-graphics/sat-2.png"
+                ngSrc="assets/satellite-graphics/sat-2-desc.png"
                 class="invert-icon"
                 alt="Azimuth"
                 height="65"
                 width="65"
               />
-            }
-            @if (flightDesc()) {
+            } @else {
               <img
-                ngSrc="assets/satellite-graphics/sat-2-desc.png"
+                ngSrc="assets/satellite-graphics/sat-2.png"
                 class="invert-icon"
                 alt="Azimuth"
                 height="65"
@@ -31,11 +30,10 @@
           </span>
           <span class="legend-text">
             {{ 'RADAR_LOOK_DIRECTION' | translate }}:
-            @if (!flightDesc()) {
-              <span>78°</span>
-            }
             @if (flightDesc()) {
               <span>283°</span>
+            } @else {
+              <span>78°</span>
             }
           </span>
         </span>
