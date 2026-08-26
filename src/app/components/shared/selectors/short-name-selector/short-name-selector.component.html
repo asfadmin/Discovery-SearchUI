@@ -1,11 +1,11 @@
 <mat-form-field class="short-name-form">
+  <mat-label>{{ 'SHORT_NAME' | translate }}</mat-label>
   <mat-select
     class="short-name-dropdown"
     [(value)]="shortNamesList"
     (selectionChange)="onNewShortNames($event)"
     [disabled]="selectableShortNames.length === 0"
     panelClass="short-name-selector"
-    [placeholder]="'SHORT_NAME' | translate"
     multiple
   >
     @for (type of selectableShortNames(); track type) {

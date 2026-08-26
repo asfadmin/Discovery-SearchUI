@@ -8,8 +8,8 @@ test('S1 Burst path filter returns matching results', async ({ page }) => {
   await page.getByRole('menuitem', { name: 'S1 Burst' }).click();
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  await page.getByPlaceholder('Path Start').fill('86');
-  await page.getByPlaceholder('Path End').fill('86');
+  await page.getByLabel('Path Start').fill('86');
+  await page.getByLabel('Path End').fill('86');
 
   const responsePromise = waitForASFAPIResponse(page);
   await page

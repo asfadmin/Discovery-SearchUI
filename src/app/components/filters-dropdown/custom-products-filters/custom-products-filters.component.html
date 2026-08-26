@@ -18,14 +18,11 @@
       <app-search-type-selector class="selector-spacing-right">
       </app-search-type-selector>
 
-      <app-on-demand-user-selector
-        class="selector-top-offset"
-      ></app-on-demand-user-selector>
+      <app-on-demand-user-selector></app-on-demand-user-selector>
 
       <app-job-id-selector
         [jobIds]="hyp3JobIds()"
         (newJobIds)="onNewHyp3JobIds($event)"
-        class="selector-top-offset"
       ></app-job-id-selector>
     </div>
   </mat-expansion-panel>

@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
 import { MatFormField, MatInput } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -12,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-on-demand-user-selector',
   templateUrl: './on-demand-user-selector.component.html',
   styleUrls: ['./on-demand-user-selector.component.scss'],
-  imports: [MatFormField, MatInput, FormsModule, TranslateModule],
+  imports: [MatFormField, MatLabel, MatInput, FormsModule, TranslateModule],
 })
 export class OnDemandUserSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

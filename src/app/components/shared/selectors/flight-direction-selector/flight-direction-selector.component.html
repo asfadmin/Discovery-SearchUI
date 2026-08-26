@@ -1,4 +1,5 @@
 <mat-form-field>
+  <mat-label>{{ 'DIRECTION' | translate }}</mat-label>
   <mat-select
     (selectionChange)="
       onNewFlightDirectionsSelected(multiple ? $event.value : [$event.value])
@@ -6,7 +7,6 @@
     [value]="
       multiple ? (flightDirections$ | async) : (flightDirections$ | async)[0]
     "
-    [placeholder]="'DIRECTION' | translate"
     [multiple]="multiple"
   >
     @for (direction of flightDirectionTypes; track direction) {

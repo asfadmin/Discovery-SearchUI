@@ -15,7 +15,7 @@ test('ERS subtype E2 filter returns matching results', async ({ page }) => {
     '0/2 satellites selected',
   );
 
-  await page.getByText('Satellite', { exact: true }).click();
+  await page.getByRole('combobox', { name: 'Satellite' }).click();
   await page.getByRole('option', { name: 'ERS-2' }).click();
   await page.keyboard.press('Escape');
 
