@@ -3,6 +3,7 @@
     (click)="onCopyIconClicked($event)"
     class="clickable icon"
     [matTooltip]="display"
+    [aria-label]="display"
     matTooltipPosition="left"
     inline="true"
     [svgIcon]="svgIcon()"
@@ -18,6 +19,7 @@
     [matMenuTriggerFor]="promptMenu"
     class="clickable icon"
     [matTooltip]="display"
+    [aria-label]="display"
     matTooltipPosition="left"
     inline="true"
   >

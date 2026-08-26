@@ -8,6 +8,7 @@
     <app-copy-to-clipboard
       #clipboard
       class="compact"
+      [aria-label]="copyPrompt() | translate"
       [prompt]="copyPrompt() | translate"
       [value]="codeContent()"
       [message]="copyMessage() | translate"

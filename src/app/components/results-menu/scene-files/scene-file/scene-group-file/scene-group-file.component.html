@@ -137,12 +137,14 @@
       </app-cart-toggle>
 
       @if (isGdalable()) {
-        <mat-icon
-          class="chevron"
-          [class.clickable]="isGdalable()"
+        <button
+          matIconButton
+          class="compact"
           (click)="toggleExpanded()"
-          >expand_more</mat-icon
+          [aria-label]="'GDAL_DROPDOWN_EXPAND_BUTTON' | translate"
         >
+          <mat-icon class="chevron">expand_more</mat-icon>
+        </button>
       }
     </div>
   </div>

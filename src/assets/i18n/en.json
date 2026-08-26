@@ -1327,5 +1327,7 @@
   "EXPORTED_DATASET_LINK_CLIPBOARD": "Copied dataset link to clipboard.",
   "EXPORT_DATASET_PATH_CLIPBOARD": "Copy dataset path to clipboard.",
   "EXPORTED_DATASET_PATH_CLIPBOARD": "Copied dataset path to clipboard.",
-  "GDAL_313_ADMONITION": "GDAL 3.13 supports use of HDF5 driver for NISAR files instead of the NETCDF driver required by older versions."
+  "GDAL_313_ADMONITION": "GDAL 3.13 supports use of HDF5 driver for NISAR files instead of the NETCDF driver required by older versions.",
+  "SELECT": "Select",
+  "GDAL_DROPDOWN_EXPAND_BUTTON": "Expand GDAL datasets dialog."
 }

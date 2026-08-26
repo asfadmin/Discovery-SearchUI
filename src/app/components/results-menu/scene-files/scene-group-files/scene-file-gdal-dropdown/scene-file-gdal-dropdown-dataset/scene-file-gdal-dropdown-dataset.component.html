@@ -1,4 +1,4 @@
-<div class="gdal-dataset">
+<div class="gdal-dataset" [aria-label]="gdalDataset().name">
   <span class="gdal-dataset-name">
     {{ gdalDataset().name | translate }}
   </span>
@@ -17,6 +17,7 @@
     <app-copy-to-clipboard
       class="compact"
       [prompt]="'EXPORT_DATASET_LINK_CLIPBOARD' | translate"
+      [aria-label]="'EXPORT_DATASET_LINK_CLIPBOARD' | translate"
       [value]="downloadURL()"
       [message]="'EXPORTED_DATASET_LINK_CLIPBOARD' | translate"
       copyIcon="link"
@@ -24,12 +25,14 @@
     <app-copy-to-clipboard
       class="compact"
       [prompt]="'EXPORT_DATASET_PATH_CLIPBOARD' | translate"
+      [aria-label]="'EXPORT_DATASET_PATH_CLIPBOARD' | translate"
       [value]="gdalDataset().path"
       [message]="'EXPORTED_DATASET_PATH_CLIPBOARD' | translate"
     ></app-copy-to-clipboard>
     <app-copy-to-clipboard
       class="compact"
       [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
+      [aria-label]="'EXPORT_DATASET_PATH_CLIPBOARD' | translate"
       [value]="gdalCommand()"
       [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
       copyIcon="terminal_alt"

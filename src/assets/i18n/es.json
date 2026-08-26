@@ -1327,5 +1327,7 @@
   "EXPORTED_DATASET_LINK_CLIPBOARD": "Enlace del conjunto de datos copiado al portapapeles.",
   "EXPORT_DATASET_PATH_CLIPBOARD": "Copiar la ruta del conjunto de datos al portapapeles.",
   "EXPORTED_DATASET_PATH_CLIPBOARD": "Ruta del conjunto de datos copiada al portapapeles.",
-  "GDAL_313_ADMONITION": "GDAL 3.13 admite el controlador HDF5 para archivos NISAR, en lugar del controlador NETCDF que requieren las versiones anteriores."
+  "GDAL_313_ADMONITION": "GDAL 3.13 admite el controlador HDF5 para archivos NISAR, en lugar del controlador NETCDF que requieren las versiones anteriores.",
+  "SELECT": "Select",
+  "GDAL_DROPDOWN_EXPAND_BUTTON": "Expand GDAL datasets dialog."
 }

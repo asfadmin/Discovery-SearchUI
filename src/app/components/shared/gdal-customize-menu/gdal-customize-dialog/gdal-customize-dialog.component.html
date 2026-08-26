@@ -16,7 +16,7 @@
     <h2>1. {{ 'SELECT_A_DATASET' | translate }}</h2>
     <mat-radio-group [(ngModel)]="selectedDataset" class="dataset-list">
       @for (dataset of data.datasets; track dataset) {
-        <div class="gdal-dataset">
+        <div class="gdal-dataset" [aria-label]="dataset.name">
           <span class="gdal-dataset-name">
             {{ dataset.name }}
           </span>
@@ -34,7 +34,12 @@
           <span class="gdal-dataset-path">
             {{ dataset.path }}
           </span>
-          <mat-radio-button [value]="dataset.path"> </mat-radio-button>
+          <mat-radio-button
+            [value]="dataset.path"
+            [aria-label]="('SELECT' | translate) + ' ' + dataset.name"
+            [matTooltip]="('SELECT' | translate) + ' ' + dataset.name"
+          >
+          </mat-radio-button>
         </div>
       }
     </mat-radio-group>
