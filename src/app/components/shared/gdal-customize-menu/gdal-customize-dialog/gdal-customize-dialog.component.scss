@@ -177,14 +177,18 @@ h1 {
   height: 100%;
 
   @include themify($themes) {
-    background-color: themed('light-disabled-text');
+    background-color: color-mix(
+      in srgb,
+      themed('background-white') 30%,
+      transparent
+    );
   }
   backdrop-filter: blur(1px);
 }
 
 .footer {
   @include themify($themes) {
-    background-color: themed('light-white');
+    background-color: themed('background-white');
   }
   box-shadow: 0 -10px 10px -5px rgb(0, 0, 0, 0.15);
   padding: 1em;
