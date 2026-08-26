@@ -8,56 +8,60 @@
       <div class="displacement-header-menu">
         <app-draw-selector></app-draw-selector>
         <app-timeseries-chart-flight-direction-toggle></app-timeseries-chart-flight-direction-toggle>
-        <span class="azimuth-icon">
-          @if (!flightDesc()) {
-            <img
-              ngSrc="assets/satellite-graphics/sat-2.png"
-              class="invert-icon"
-              alt="Azimuth"
-              height="65"
-              width="65"
-            />
-          }
-          @if (flightDesc()) {
-            <img
-              ngSrc="assets/satellite-graphics/sat-2-desc.png"
-              class="invert-icon"
-              alt="Azimuth"
-              height="65"
-              width="65"
-            />
-          }
+        <span class="sat-legend">
+          <span class="azimuth-icon">
+            @if (!flightDesc()) {
+              <img
+                ngSrc="assets/satellite-graphics/sat-2.png"
+                class="invert-icon"
+                alt="Azimuth"
+                height="65"
+                width="65"
+              />
+            }
+            @if (flightDesc()) {
+              <img
+                ngSrc="assets/satellite-graphics/sat-2-desc.png"
+                class="invert-icon"
+                alt="Azimuth"
+                height="65"
+                width="65"
+              />
+            }
+          </span>
+          <span class="legend-text">
+            {{ 'RADAR_LOOK_DIRECTION' | translate }}:
+            @if (!flightDesc()) {
+              <span>78°</span>
+            }
+            @if (flightDesc()) {
+              <span>283°</span>
+            }
+          </span>
         </span>
-        <span class="azimuth-icon-text">
-          {{ 'RADAR_LOOK_DIRECTION' | translate }}:
-          @if (!flightDesc()) {
-            <span>78°</span>
-          }
-          @if (flightDesc()) {
-            <span>283°</span>
-          }
-        </span>
-        <span class="line-of-site-icon">
-          @if (isDarkMode$ | async) {
-            <img
-              ngSrc="assets/satellite-graphics/sat-1-dark.png"
-              [class.flip-icon]="flightDesc()"
-              alt="Line of Site"
-              height="70"
-              width="84"
-            />
-          } @else {
-            <img
-              ngSrc="assets/satellite-graphics/sat-1.png"
-              [class.flip-icon]="flightDesc()"
-              alt="Line of Site"
-              height="70"
-              width="84"
-            />
-          }
-        </span>
-        <span class="line-of-site-icon-text">
-          {{ 'INCIDENCE_ANGLE' | translate }}: 29° &ndash; 46°
+        <span class="sat-legend">
+          <span class="line-of-site-icon">
+            @if (isDarkMode$ | async) {
+              <img
+                ngSrc="assets/satellite-graphics/sat-1-dark.png"
+                [class.flip-icon]="flightDesc()"
+                alt="Line of Site"
+                height="70"
+                width="84"
+              />
+            } @else {
+              <img
+                ngSrc="assets/satellite-graphics/sat-1.png"
+                [class.flip-icon]="flightDesc()"
+                alt="Line of Site"
+                height="70"
+                width="84"
+              />
+            }
+          </span>
+          <span class="legend-text">
+            {{ 'INCIDENCE_ANGLE' | translate }}: 29° &ndash; 46°
+          </span>
         </span>
       </div>
       <div class="icon-cluster">
