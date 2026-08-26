@@ -1,6 +1,10 @@
 <div class="gdal-export-wrapper">
   <span class="exit-button">
-    <button matIconButton (click)="dialogRef.close()">
+    <button
+      matIconButton
+      (click)="dialogRef.close()"
+      [aria-label]="'CLOSE' | translate"
+    >
       <mat-icon fontIcon="close"></mat-icon>
     </button>
   </span>
