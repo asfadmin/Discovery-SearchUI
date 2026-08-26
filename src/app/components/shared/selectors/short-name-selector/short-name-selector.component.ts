@@ -18,6 +18,7 @@ import {
   MatOption,
 } from '@angular/material/select';
 import { MatFormField, MatHint } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -27,6 +28,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './short-name-selector.component.scss',
   imports: [
     MatFormField,
+    MatLabel,
     MatSelect,
 
     MatOption,

@@ -33,7 +33,6 @@
         #meterInputField
         [(ngModel)]="perpendicular"
         matInput
-        [placeholder]="'METERS' | translate"
         type="number"
         pattern="[0-9]*"
         min="-999"
@@ -57,7 +56,6 @@
       <input
         [(ngModel)]="daysRange.start"
         matInput
-        [placeholder]="'MIN_DAYS' | translate"
         type="number"
         pattern="[0-9]*"
         min="0"
@@ -81,7 +79,6 @@
       <input
         [(ngModel)]="daysRange.end"
         matInput
-        [placeholder]="'MAX_DAYS' | translate"
         type="number"
         pattern="[0-9]*"
         min="0"

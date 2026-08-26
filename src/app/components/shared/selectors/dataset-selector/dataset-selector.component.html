@@ -33,6 +33,7 @@
             <input
               matInput
               [placeholder]="'SEARCH_DATASETS' | translate"
+              [attr.aria-label]="'SEARCH_DATASETS' | translate"
               [(ngModel)]="datasetFilter"
               name="dataset-options-filter"
               #datasetOptions

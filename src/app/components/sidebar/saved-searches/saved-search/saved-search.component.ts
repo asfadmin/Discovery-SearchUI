@@ -20,6 +20,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatInput } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { SearchFiltersComponent } from './search-filters/search-filters.component';
 import { GeographicFilterPipe, ListFilterPipe } from '@pipes/filter-type.pipe';
@@ -35,6 +36,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatTooltip,
     FormsModule,
     MatFormField,
+    MatLabel,
     MatInput,
     MatButton,
     SearchFiltersComponent,

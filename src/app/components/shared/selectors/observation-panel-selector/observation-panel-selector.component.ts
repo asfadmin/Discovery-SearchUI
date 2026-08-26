@@ -9,6 +9,7 @@ import { PropertyService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { MatFormField, MatHint } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import {
   MatSelect,
   MatSelectTrigger,
@@ -28,6 +29,7 @@ import { IsRelevantPipe } from '@pipes/relevant.pipe';
   styleUrl: './observation-panel-selector.component.scss',
   imports: [
     MatFormField,
+    MatLabel,
     MatSelect,
     FormsModule,
     MatSelectTrigger,

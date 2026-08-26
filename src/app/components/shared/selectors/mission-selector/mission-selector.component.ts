@@ -15,6 +15,7 @@ import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 import { MatFormField, MatInput } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatDivider, MatNavList, MatListItem } from '@angular/material/list';
@@ -44,6 +45,7 @@ export const _filter = (opt: string[], value: string): string[] => {
     FormsModule,
     ReactiveFormsModule,
     MatFormField,
+    MatLabel,
     MatInput,
 
     MatIcon,
