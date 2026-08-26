@@ -459,7 +459,7 @@ export const getNumberOfProducts = createSelector(
 export const getAllSceneProducts = createSelector(
   getScenesState,
   (state: ScenesState) => {
-    const allSceneProducts = {};
+    const allSceneProducts: Record<string, CMRProduct[]> = {};
 
     Object.entries(state.scenes).forEach(([sceneId, scene]) => {
       const products = scene.map((name) => state.products[name]);

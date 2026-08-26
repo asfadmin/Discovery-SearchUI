@@ -23,6 +23,7 @@ export enum Props {
   USE_PROCESSING_TYPE = 'Use Processing Type',
   USE_TRACK = 'Use Track for Path',
   FRAME_ORDERING = 'Allow ordering frames via SBAS tooling',
+  SINGLE_PRODUCT = 'Quick add only shows one product',
 }
 
 export const apiParamNames = {
