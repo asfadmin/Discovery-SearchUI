@@ -44,7 +44,7 @@ export class SceneFileGdalDropdownComponent {
       environmentInjector: this.injector,
     });
 
-    componentRef.setInput('product', this.gdalProduct());
+    componentRef.setInput('gdalProduct', this.gdalProduct());
     componentRef.instance.openDialog();
   }
 }
