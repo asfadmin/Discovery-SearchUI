@@ -40,7 +40,8 @@ import {
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { CodeBlockComponent } from '@components/shared/code-block/code-block.component';
 import { MatIcon } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
 
 @Component({
   selector: 'app-gdal-customize-dialog',
@@ -56,11 +57,13 @@ import { MatIconButton } from '@angular/material/button';
     MatSelect,
     MatOption,
     MatIconButton,
+    MatButton,
     MatInput,
     MatIcon,
     FormsModule,
     DocsModalComponent,
     CodeBlockComponent,
+    CopyToClipboardComponent,
   ],
   templateUrl: './gdal-customize-dialog.component.html',
   styleUrl: './gdal-customize-dialog.component.scss',

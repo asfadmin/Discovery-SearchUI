@@ -190,3 +190,19 @@
     }
   </div>
 </div>
+
+<div class="footer">
+  @if (selectedDataset()) {
+    <app-copy-to-clipboard
+      [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
+      [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
+      [value]="gdalCommand()"
+    >
+    </app-copy-to-clipboard>
+  } @else {
+    <div></div>
+  }
+  <button matButton (click)="dialogRef.close()">
+    <h2>{{ 'CLOSE' | translate }}</h2>
+  </button>
+</div>

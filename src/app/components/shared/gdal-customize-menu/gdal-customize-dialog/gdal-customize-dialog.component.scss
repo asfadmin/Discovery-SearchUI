@@ -6,8 +6,7 @@
     color: themed('light-black');
   }
   overflow-x: hidden;
-  max-width: 80em;
-  padding: 0;
+  overflow-y: auto;
 }
 
 .exit-button {
@@ -17,11 +16,9 @@
 }
 
 .gdal-export-wrapper {
-  padding: 1em;
-  margin: 0;
   overflow-x: hidden;
-  overflow-y: scroll;
   height: 100%;
+  padding: 1em;
 }
 
 h1 {
@@ -179,6 +176,21 @@ h1 {
   width: 100%;
   height: 100%;
 
-  background-color: rgba(255, 255, 255, 0.4);
+  @include themify($themes) {
+    background-color: themed('light-disabled-text');
+  }
   backdrop-filter: blur(1px);
+}
+
+.footer {
+  @include themify($themes) {
+    background-color: themed('light-white');
+  }
+  box-shadow: 0em -10px 10px -5px rgba(0, 0, 0, 0.15);
+  padding: 1em;
+  margin-top: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
