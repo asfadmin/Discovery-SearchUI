@@ -28,7 +28,7 @@ export interface GdalOptions {
   gdalVersion?: GdalVersion;
 }
 
-export const GDAL_COMMAND_PLACEHOLDER: string = `gdal_translate -of GTiff \\
+export const GDAL_COMMAND_PLACEHOLDER = `gdal_translate -of GTiff \\
                 "/vsicurl/https://<DOWNLOAD URL>":<VARIABLE PATH> <OUTPUT FILE>.tif \\
                 --config CPL_VSIL_CURL_CHUNK_SIZE 2097152 \\
                 --config CPL_VSIL_CURL_CACHE_SIZE 67108864 \\

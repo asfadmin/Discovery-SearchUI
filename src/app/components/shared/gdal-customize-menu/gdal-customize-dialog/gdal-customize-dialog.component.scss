@@ -186,7 +186,7 @@ h1 {
   @include themify($themes) {
     background-color: themed('light-white');
   }
-  box-shadow: 0em -10px 10px -5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 -10px 10px -5px rgb(0, 0, 0, 0.15);
   padding: 1em;
   margin-top: 1em;
   display: flex;
