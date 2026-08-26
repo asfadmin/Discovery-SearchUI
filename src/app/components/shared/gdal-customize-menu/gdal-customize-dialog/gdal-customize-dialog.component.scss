@@ -5,6 +5,9 @@
   @include themify($themes) {
     color: themed('light-black');
   }
+  overflow-x: hidden;
+  max-width: 80em;
+  padding: 0;
 }
 
 .exit-button {
@@ -15,8 +18,9 @@
 
 .gdal-export-wrapper {
   padding: 1em;
-  overflow-x: scroll;
-  overflow-y: hidden;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
   height: 100%;
 }
 

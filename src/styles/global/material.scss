@@ -1,6 +1,6 @@
-@use "@angular/material" as mat;
-@use "asf-theme-variables" as *;
-@use "asf-theme" as *;
+@use '@angular/material' as mat;
+@use 'asf-theme-variables' as *;
+@use 'asf-theme' as *;
 
 // Apply Angular Material theme styles ONCE here in the global stylesheet
 // Include base theme styles (typography and density) once
@@ -41,7 +41,7 @@ $config: mat.m2-define-legacy-typography-config();
   &:link,
   &:active,
   &:focus,
-  &[aria-disabled="true"] {
+  &[aria-disabled='true'] {
     @extend .mat-header-base;
 
     @include themify_non_host($themes) {
@@ -217,15 +217,24 @@ button,
 // Since SVG uses fill="currentColor", we need to set the color property
 
 // Target mat-button-toggle-appearance-standard specifically
-.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-icon,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-icon,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .list-icon,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .list-icon,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover
+  .mat-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused
+  .mat-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused
+  .mat-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover
+  .list-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused
+  .list-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused
+  .list-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover
+  .mat-icon-no-color,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused
+  .mat-icon-no-color,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused
+  .mat-icon-no-color,
 .mat-button-toggle-appearance-standard:hover .mat-icon,
 .mat-button-toggle-appearance-standard.cdk-focused .mat-icon,
 .mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon,
@@ -252,20 +261,24 @@ button,
   }
 }
 
-
 // Make internal button elements transparent
 .mat-button-toggle-appearance-standard:hover .mat-button-toggle-button,
 .mat-button-toggle-appearance-standard.cdk-focused .mat-button-toggle-button,
-.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-button-toggle-button,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-button-toggle-button,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-button-toggle-button,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-button-toggle-button {
+.mat-button-toggle-appearance-standard.cdk-mouse-focused
+  .mat-button-toggle-button,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover
+  .mat-button-toggle-button,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused
+  .mat-button-toggle-button,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused
+  .mat-button-toggle-button {
   background-color: transparent !important;
 }
 
 // Target the focus overlay and make it transparent
 .mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay {
+.control-mat-button-toggle.mat-button-toggle-appearance-standard
+  .mat-button-toggle-focus-overlay {
   background-color: transparent !important;
   opacity: 0 !important;
 }
@@ -273,8 +286,10 @@ button,
 // Hide ripple effects on button toggles
 .mat-button-toggle-appearance-standard .mat-button-toggle-ripple,
 .mat-button-toggle-appearance-standard .mat-ripple,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-button-toggle-ripple,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-ripple, .mdc-checkbox__ripple {
+.control-mat-button-toggle.mat-button-toggle-appearance-standard
+  .mat-button-toggle-ripple,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-ripple,
+.mdc-checkbox__ripple {
   display: none !important;
 }
 
@@ -285,4 +300,9 @@ button,
       color: themed('dark-secondary-text') !important;
     }
   }
+}
+
+// Only way to stop horizontal scroll bar on material dialog
+.mat-mdc-dialog-surface {
+  overflow-x: hidden;
 }
