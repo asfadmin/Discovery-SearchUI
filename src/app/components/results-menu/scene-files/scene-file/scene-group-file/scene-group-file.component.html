@@ -9,6 +9,7 @@
 <ng-template #file>
   <div
     class="group-file-wrapper parent"
+    [class.clickable]="isGdalable()"
     role="button"
     tabindex="0"
     [class.expanded]="expanded()"
@@ -20,6 +21,7 @@
     (keydown.space)="toggleExpanded()"
   >
     <div
+      [class.clickable]="isGdalable()"
       (click)="
         isGdalable() &&
           $event.target === $event.currentTarget &&
@@ -28,6 +30,7 @@
       class="group-file-row"
     >
       <span
+        [class.clickable]="isGdalable()"
         (click)="
           isGdalable() &&
             $event.target === $event.currentTarget &&
@@ -134,7 +137,10 @@
       </app-cart-toggle>
 
       @if (isGdalable()) {
-        <mat-icon class="chevron" (click)="toggleExpanded()"
+        <mat-icon
+          class="chevron"
+          [class.clickable]="isGdalable()"
+          (click)="toggleExpanded()"
           >expand_more</mat-icon
         >
       }

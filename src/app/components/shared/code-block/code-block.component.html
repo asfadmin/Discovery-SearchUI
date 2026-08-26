@@ -1,5 +1,8 @@
 <div class="code-wrapper">
-  <div class="code-header" (click)="clipboard.onCopyIconClicked($event)">
+  <div
+    class="code-header clickable"
+    (click)="clipboard.onCopyIconClicked($event)"
+  >
     <span class="code-header-description"> {{ codeDescription() }} </span>
     <span class="flex-grow"></span>
     <app-copy-to-clipboard
