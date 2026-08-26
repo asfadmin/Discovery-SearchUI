@@ -25,7 +25,7 @@ import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-me
     MatInputModule,
     CdkAccordionModule,
     TranslateModule,
-    SceneFileGdalDropdownDatasetComponent, // I apologize for this name
+    SceneFileGdalDropdownDatasetComponent,
     DocsModalComponent,
   ],
   templateUrl: './scene-file-gdal-dropdown.component.html',
