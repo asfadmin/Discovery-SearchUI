@@ -21,6 +21,7 @@ import {
 } from '@angular/material/select';
 import { combineLatest } from 'rxjs';
 import { MatFormField, MatHint } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import { MatTooltip } from '@angular/material/tooltip';
 
 import { MatIconModule } from '@angular/material/icon';
@@ -33,6 +34,7 @@ import { SearchService } from '@services';
   styleUrls: ['./product-type-selector.component.css'],
   imports: [
     MatFormField,
+    MatLabel,
     MatSelect,
     MatIconModule,
     MatOption,

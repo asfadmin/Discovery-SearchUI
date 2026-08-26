@@ -46,6 +46,7 @@
         <mat-form-field>
           <input
             matInput
+            [attr.aria-label]="'FILTER_SEARCHES' | translate"
             [(ngModel)]="searchFilter"
             (change)="onNewFilter($event)"
             (input)="onNewFilter($event)"

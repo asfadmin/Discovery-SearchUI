@@ -17,6 +17,7 @@ import { NotificationService } from '@services';
 import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatInput } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { GeographicSearchFiltersComponent } from '../../saved-searches/saved-search/search-filters/geographic-search-filters/geographic-search-filters.component';
 import { BaselineSearchFiltersComponent } from '../../saved-searches/saved-search/search-filters/baseline-search-filters/baseline-search-filters.component';
@@ -36,6 +37,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatIcon,
     FormsModule,
     MatFormField,
+    MatLabel,
     MatInput,
     MatButton,
     GeographicSearchFiltersComponent,

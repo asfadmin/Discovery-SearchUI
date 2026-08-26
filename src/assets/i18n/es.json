@@ -1221,6 +1221,7 @@
   "VELOCITY_OVERVIEW_OPACITY": "Opacidad de vista general de velocidad",
   "VERIFY_EARTHDATA_LOGIN_PROFILE": "Verifique la información de su perfil de Earthdata Login",
   "VERIFY_EARTHDATA_LOGIN_PROFILE_DESCRIPTION": "Por favor, revise la información de su perfil de Earthdata Login a continuación. Utilizaremos la dirección de correo electrónico indicada para notificarle sobre el estado de su aprobación. Si alguno de estos datos es incorrecto, actualice su perfil de Earthdata Login y luego actualice esta página para ver la información actualizada.",
+  "VERSION_NUMBER": "Número de versión",
   "VERTEX_CODE_REPOSITORY": "Repositorio de Código del Vertex",
   "VERTEX_USER_GUIDE": "Guía del usuario de Vertex",
   "VIDEO_LIBRARY": "biblioteca_de_videos",
