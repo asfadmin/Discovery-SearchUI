@@ -20,11 +20,11 @@
       </span>
     </div>
 
-    @for (dataset of datasets(); track dataset) {
+    @for (dataset of gdalDatasets(); track dataset) {
       @if (!dataset.ancillary) {
         <app-scene-file-gdal-dropdown-dataset
-          [dataset]="dataset"
-          [product]="product()"
+          [gdalDataset]="dataset"
+          [gdalProduct]="gdalProduct()"
         >
         </app-scene-file-gdal-dropdown-dataset>
       }

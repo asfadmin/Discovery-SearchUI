@@ -1,15 +1,15 @@
 <div class="gdal-dataset">
   <span class="gdal-dataset-name">
-    {{ dataset().name | translate }}
+    {{ gdalDataset().name | translate }}
   </span>
-  @if (dataset().unit) {
+  @if (gdalDataset().unit) {
     <span class="gdal-dataset-chip">
-      {{ dataset().unit }}
+      {{ gdalDataset().unit }}
     </span>
   }
-  @if (dataset().type) {
+  @if (gdalDataset().type) {
     <span class="gdal-dataset-chip">
-      {{ dataset().type }}
+      {{ gdalDataset().type }}
     </span>
   }
   <span class="flex-grow"></span>
@@ -24,7 +24,7 @@
     <app-copy-to-clipboard
       class="compact"
       [prompt]="'EXPORT_DATASET_PATH_CLIPBOARD' | translate"
-      [value]="dataset().path"
+      [value]="gdalDataset().path"
       [message]="'EXPORTED_DATASET_PATH_CLIPBOARD' | translate"
     ></app-copy-to-clipboard>
     <app-copy-to-clipboard

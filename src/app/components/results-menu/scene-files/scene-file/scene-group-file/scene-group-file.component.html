@@ -52,7 +52,7 @@
       @if (isGdalable()) {
         <app-gdal-customize-menu
           class="compact"
-          [product]="gdalProduct()"
+          [gdalProduct]="gdalProduct()"
         ></app-gdal-customize-menu>
       }
 
@@ -148,7 +148,7 @@
   </div>
 
   @if (expanded()) {
-    <app-scene-file-gdal-dropdown [product]="gdalProduct()">
+    <app-scene-file-gdal-dropdown [gdalProduct]="gdalProduct()">
     </app-scene-file-gdal-dropdown>
   }
 </ng-template>

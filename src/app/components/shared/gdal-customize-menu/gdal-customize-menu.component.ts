@@ -8,7 +8,6 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import * as models from '@models';
 import { GdalProductInfo, GdalService } from '@services/gdal/gdal.service';
-import { Overlay } from '@angular/cdk/overlay';
 
 export interface GdalCustomizeDialogData {
   product: GdalProductInfo;
@@ -23,11 +22,10 @@ export interface GdalCustomizeDialogData {
 })
 export class GdalCustomizeMenuComponent {
   gdalService = inject(GdalService);
-  constructor(private overlay: Overlay) {}
 
-  product = input<GdalProductInfo>();
+  gdalProduct = input<GdalProductInfo>();
   datasets = computed(() =>
-    this.gdalService.getProductDatasets(this.product()),
+    this.gdalService.getProductDatasets(this.gdalProduct()),
   );
 
   readonly dialog = inject(MatDialog);
@@ -35,14 +33,13 @@ export class GdalCustomizeMenuComponent {
   openDialog(): void {
     this.dialog.open(GdalCustomizeDialogComponent, {
       data: {
-        product: this.product(),
+        product: this.gdalProduct(),
         datasets: this.datasets(),
       },
       maxWidth: '80em',
       maxHeight: '95vh',
       height: '100%',
       width: '100%',
-      scrollStrategy: this.overlay.scrollStrategies.block(),
     });
   }
 }

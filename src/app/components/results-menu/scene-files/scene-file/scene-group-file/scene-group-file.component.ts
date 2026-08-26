@@ -23,7 +23,6 @@ import { SceneFileGdalDropdownComponent } from '../../scene-group-files/scene-fi
 import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-menu/gdal-customize-menu.component';
 import { GdalService } from '@services/gdal/gdal.service';
 import { NgTemplateOutlet } from '@angular/common';
-import { ScreenSizeService } from '@services';
 
 @Component({
   selector: 'app-scene-group-file',
@@ -48,8 +47,6 @@ import { ScreenSizeService } from '@services';
   ],
 })
 export class SceneGroupFileComponent {
-  screenSize = inject(ScreenSizeService);
-
   gdalService = inject(GdalService);
   product = input.required<models.CMRProduct>();
   isQueued = input(false);

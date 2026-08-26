@@ -33,9 +33,9 @@ import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-me
 })
 export class SceneFileGdalDropdownComponent {
   private gdalService = inject(GdalService);
-  product = input.required<GdalProductInfo>();
-  datasets = computed(() =>
-    this.gdalService.getProductDatasets(this.product()),
+  gdalProduct = input.required<GdalProductInfo>();
+  gdalDatasets = computed(() =>
+    this.gdalService.getProductDatasets(this.gdalProduct()),
   );
   private injector = inject(EnvironmentInjector);
 
@@ -44,7 +44,7 @@ export class SceneFileGdalDropdownComponent {
       environmentInjector: this.injector,
     });
 
-    componentRef.setInput('product', this.product());
+    componentRef.setInput('product', this.gdalProduct());
     componentRef.instance.openDialog();
   }
 }

@@ -14,12 +14,12 @@ import * as models from '@models';
 export class SceneFileGdalDropdownDatasetComponent {
   private gdalService = inject(GdalService);
 
-  dataset = input<models.GDALDataset>();
-  product = input<GdalProductInfo>();
+  gdalDataset = input<models.GDALDataset>();
+  gdalProduct = input<GdalProductInfo>();
   gdalOptions = computed(() => {
     return {
-      product: this.product(),
-      datasetPath: this.dataset().path,
+      product: this.gdalProduct(),
+      datasetPath: this.gdalDataset().path,
     };
   });
   gdalCommand = computed(() =>
@@ -30,6 +30,7 @@ export class SceneFileGdalDropdownDatasetComponent {
   );
 
   downloadURL = computed(
-    () => `/vsicurl/"${this.product().downloadUrl}":${this.dataset().path}`,
+    () =>
+      `/vsicurl/"${this.gdalProduct().downloadUrl}":${this.gdalDataset().path}`,
   );
 }
