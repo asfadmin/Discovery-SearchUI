@@ -45,7 +45,7 @@
     </mat-radio-group>
   </div>
 
-  @if (selectedDataset()) {
+  <div class="blur-overlay-container">
     <div class="options-list-card">
       <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
       <!-- <div class="output-type">
@@ -180,5 +180,13 @@
         </div>
       </div>
     }
-  }
+
+    @if (!selectedDataset()) {
+      <div
+        class="blur-overlay"
+        [matTooltip]="'SELECT_A_DATASET_TO_CONTINUE' | translate"
+        [aria-label]="'SELECT_A_DATASET_TO_CONTINUE' | translate"
+      ></div>
+    }
+  </div>
 </div>

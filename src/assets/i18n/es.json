@@ -1303,6 +1303,7 @@
   "GDAL_COMMAND_DESCRIPTION": "Comando GDAL para la línea de comandos",
   "CUSTOMIZE_PRODUCT": "Personalizar con GDAL",
   "SELECT_A_DATASET": "Seleccione un conjunto de datos para exportar.",
+  "SELECT_A_DATASET_TO_CONTINUE": "Select a dataset to continue.",
   "CONFIGURE_GDAL_OPTIONS": "Configure las opciones de salida.",
   "RUN_GDAL_SNIPPET": "Copie el fragmento de código GDAL.",
   "CROP_TO_AOI": "Recortar al Área de Interés actual",

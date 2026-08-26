@@ -1303,6 +1303,7 @@
   "GDAL_COMMAND_DESCRIPTION": "GDAL shell command",
   "CUSTOMIZE_PRODUCT": "Customize with GDAL",
   "SELECT_A_DATASET": "Select a dataset to export.",
+  "SELECT_A_DATASET_TO_CONTINUE": "Select a dataset to continue.",
   "CONFIGURE_GDAL_OPTIONS": "Configure output options.",
   "RUN_GDAL_SNIPPET": "Copy GDAL snippet.",
   "CROP_TO_AOI": "Crop to current AOI",

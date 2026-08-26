@@ -28,6 +28,21 @@ export interface GdalOptions {
   gdalVersion?: GdalVersion;
 }
 
+export const GDAL_COMMAND_PLACEHOLDER: string = `gdal_translate -of GTiff \\
+                "/vsicurl/https://<DOWNLOAD URL>":<VARIABLE PATH> <OUTPUT FILE>.tif \\
+                --config CPL_VSIL_CURL_CHUNK_SIZE 2097152 \\
+                --config CPL_VSIL_CURL_CACHE_SIZE 67108864 \\
+                --config GDAL_CACHEMAX 64000000 \\
+                --config GDAL_DISABLE_READDIR_ON_OPEN=TRUE \\
+                --config GDAL_HTTP_MERGE_CONSECUTIVE_RANGES=YES \\
+                --config GDAL_HTTP_MULTIPLEX=YES \\
+                --config GDAL_NUM_THREADS=ALL_CPUS \\
+                --config CPL_VSIL_CURL_CACHE_SIZE=1GB \\
+                --config GDAL_HTTP_NETRC=YES \\
+                --config GDAL_HTTP_COOKIEFILE=/tmp/gdal_cookies.txt \\
+                --config GDAL_HTTP_COOKIEJAR=/tmp/gdal_cookies.txt
+`;
+
 export const GDAL_VERSIONS = ['≥3.13', '<3.13'];
 export type GdalVersion = (typeof GDAL_VERSIONS)[number];
 

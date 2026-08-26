@@ -168,3 +168,17 @@ h1 {
 .short {
   width: 15ch;
 }
+
+.blur-overlay-container {
+  position: relative;
+}
+
+.blur-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(1px);
+}

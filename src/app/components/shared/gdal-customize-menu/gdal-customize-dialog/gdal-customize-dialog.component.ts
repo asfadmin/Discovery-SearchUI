@@ -30,6 +30,7 @@ import {
   GDAL_FORMATS,
   GDAL_OS,
   GDAL_VERSIONS,
+  GDAL_COMMAND_PLACEHOLDER,
 } from '@services/gdal/gdal.service';
 
 import {
@@ -109,11 +110,19 @@ export class GdalCustomizeDialogComponent {
     };
   });
   gdalCommand = computed(() =>
-    this.gdalService.generateGDALCommand(this.gdalOptions()),
+    this.selectedDataset()
+      ? this.gdalService.generateGDALCommand(this.gdalOptions())
+      : GDAL_COMMAND_PLACEHOLDER,
   );
-  gdalRC = computed(() => this.gdalService.generateGdalrc(this.gdalOptions()));
+  gdalRC = computed(() =>
+    this.selectedDataset()
+      ? this.gdalService.generateGdalrc(this.gdalOptions())
+      : '',
+  );
   qgisCommand = computed(() =>
-    this.gdalService.generateQGISScript(this.gdalOptions()),
+    this.selectedDataset()
+      ? this.gdalService.generateQGISScript(this.gdalOptions())
+      : '',
   );
   homeDirectory = computed(() =>
     this.outputOS() == 'Windows' ? '%USERPROFILE%' : '~',
