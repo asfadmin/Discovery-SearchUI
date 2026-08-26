@@ -136,8 +136,8 @@
       <app-code-block
         [codeDescription]="`${homeDirectory()}/.netrc`"
         [codeContent]="netrcContent"
-        [copyPrompt]="'EXPORT_NETRC_CLIPBOARD' | translate"
-        [copyMessage]="'EXPORTED_NETRC_CLIPBOARD' | translate"
+        copyPrompt="EXPORT_NETRC_CLIPBOARD"
+        copyMessage="EXPORTED_NETRC_CLIPBOARD"
         language="bash"
       >
       </app-code-block>
@@ -156,8 +156,8 @@
           <app-code-block
             [codeDescription]="'GDAL_COMMAND_DESCRIPTION' | translate"
             [codeContent]="gdalCommand()"
-            [copyPrompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
-            [copyMessage]="'EXPORTED_GDAL_CLIPBOARD' | translate"
+            copyPrompt="EXPORT_GDAL_CLIPBOARD"
+            copyMessage="EXPORTED_GDAL_CLIPBOARD"
             [isCommand]="true"
             language="bash"
           >
@@ -166,8 +166,8 @@
             <app-code-block
               [codeDescription]="`${homeDirectory()}/.gdal/gdalrc`"
               [codeContent]="gdalRC()"
-              [copyPrompt]="'EXPORT_GDALRC_CLIPBOARD' | translate"
-              [copyMessage]="'EXPORTED_GDALRC_CLIPBOARD' | translate"
+              copyPrompt="EXPORT_GDALRC_CLIPBOARD"
+              copyMessage="EXPORTED_GDALRC_CLIPBOARD"
               language="bash"
             >
             </app-code-block>

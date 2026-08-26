@@ -1,7 +1,7 @@
 import { Component, input, inject, computed } from '@angular/core';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { GdalService } from '@services/gdal/gdal.service';
+import { GdalProductInfo, GdalService } from '@services/gdal/gdal.service';
 
 import * as models from '@models';
 
@@ -15,13 +15,10 @@ export class SceneFileGdalDropdownDatasetComponent {
   private gdalService = inject(GdalService);
 
   dataset = input<models.GDALDataset>();
-  product = input<models.CMRProduct>();
-  gdalProduct = computed(() =>
-    this.gdalService.cmrProductToGDALProductInfo(this.product()),
-  );
+  product = input<GdalProductInfo>();
   gdalOptions = computed(() => {
     return {
-      product: this.gdalProduct(),
+      product: this.product(),
       datasetPath: this.dataset().path,
     };
   });

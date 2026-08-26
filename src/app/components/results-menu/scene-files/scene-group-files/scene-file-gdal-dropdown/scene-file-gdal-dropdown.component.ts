@@ -1,5 +1,5 @@
 import { Component, inject, input, computed } from '@angular/core';
-import { GdalService } from '@services/gdal/gdal.service';
+import { GdalProductInfo, GdalService } from '@services/gdal/gdal.service';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { SceneFileGdalDropdownDatasetComponent } from './scene-file-gdal-dropdown-dataset/scene-file-gdal-dropdown-dataset.component';
 
-import * as models from '@models';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 
 @Component({
@@ -26,10 +25,8 @@ import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.com
 })
 export class SceneFileGdalDropdownComponent {
   private gdalService = inject(GdalService);
-  product = input.required<models.CMRProduct>();
+  product = input.required<GdalProductInfo>();
   datasets = computed(() =>
-    this.gdalService.getProductDatasets(
-      this.gdalService.cmrProductToGDALProductInfo(this.product()),
-    ),
+    this.gdalService.getProductDatasets(this.product()),
   );
 }

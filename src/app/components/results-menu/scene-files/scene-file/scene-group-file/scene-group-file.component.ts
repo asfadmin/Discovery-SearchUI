@@ -57,13 +57,15 @@ export class SceneGroupFileComponent {
   product = input.required<models.CMRProduct>();
   isQueued = input(false);
   validHyp3JobTypes = input<models.Hyp3JobType[]>([]);
+
   isScienceData = input(false);
+  gdalProduct = computed(() =>
+    this.gdalService.cmrProductToGDALProductInfo(this.product()),
+  );
   isGdalable = computed(
     () =>
       this.isScienceData() &&
-      this.gdalService.getProductDatasets(
-        this.gdalService.cmrProductToGDALProductInfo(this.product()),
-      ).length !== 0 &&
+      this.gdalService.getProductDatasets(this.gdalProduct()).length !== 0 &&
       this.breakpoint() !== this.breakpoints.MOBILE,
   );
 

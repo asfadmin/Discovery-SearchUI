@@ -5,9 +5,9 @@
     <app-copy-to-clipboard
       #clipboard
       class="compact"
-      [prompt]="copyPrompt()"
+      [prompt]="copyPrompt() | translate"
       [value]="codeContent()"
-      [message]="copyMessage()"
+      [message]="copyMessage() | translate"
     ></app-copy-to-clipboard>
   </div>
   <code>

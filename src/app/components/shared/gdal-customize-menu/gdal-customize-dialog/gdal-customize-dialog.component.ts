@@ -69,7 +69,7 @@ export class GdalCustomizeDialogComponent {
   readonly data = inject<GdalCustomizeDialogData>(MAT_DIALOG_DATA);
   datasets = this.data.datasets;
   gdalService = inject(GdalService);
-  selectedDataset = signal<string>(null);
+  selectedDataset = signal<string | null>(null);
   selectedProjection = signal<string>('');
   outputFormats = GDAL_FORMATS;
   outputFormat = signal<GdalFormats>('GTiff');
@@ -94,7 +94,7 @@ export class GdalCustomizeDialogComponent {
   gdalVersion = signal<GdalVersion>(this.gdalVersions[0]);
   gdalOptions: Signal<GdalOptions> = computed(() => {
     return {
-      product: this.gdalService.cmrProductToGDALProductInfo(this.data.product),
+      product: this.data.product,
       datasetPath: this.selectedDataset(),
       projection: this.selectedProjection(),
       outputType: {

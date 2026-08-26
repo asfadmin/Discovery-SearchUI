@@ -7,10 +7,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 
 import * as models from '@models';
-import { GdalService } from '@services/gdal/gdal.service';
+import { GdalProductInfo, GdalService } from '@services/gdal/gdal.service';
 
 export interface GdalCustomizeDialogData {
-  product: models.CMRProduct;
+  product: GdalProductInfo;
   datasets: models.GDALDataset[];
 }
 
@@ -23,18 +23,19 @@ export interface GdalCustomizeDialogData {
 export class GdalCustomizeMenuComponent {
   gdalService = inject(GdalService);
 
-  product = input<models.CMRProduct>();
+  product = input<GdalProductInfo>();
   datasets = computed(() =>
-    this.gdalService.getProductDatasets(
-      this.gdalService.cmrProductToGDALProductInfo(this.product()),
-    ),
+    this.gdalService.getProductDatasets(this.product()),
   );
 
   readonly dialog = inject(MatDialog);
 
   openDialog(): void {
     this.dialog.open(GdalCustomizeDialogComponent, {
-      data: { product: this.product(), datasets: this.datasets() },
+      data: {
+        product: this.product(),
+        datasets: this.datasets(),
+      },
       maxWidth: '80em',
       maxHeight: '95vh',
       height: '100%',
