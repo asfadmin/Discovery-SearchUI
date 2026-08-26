@@ -110,7 +110,7 @@
           {{ 'JOINT_OBSERVATION_ONLY' | translate }}
         </span>
       }
-      @if (dataset().id === 'NISAR') {
+      @if (searchType() === searchTypes.DATASET && dataset().id === 'NISAR') {
         @if (scienceProducts().length) {
           <span>
             <b>{{ 'SCIENCE_PRODUCT' | translate }}:</b>
