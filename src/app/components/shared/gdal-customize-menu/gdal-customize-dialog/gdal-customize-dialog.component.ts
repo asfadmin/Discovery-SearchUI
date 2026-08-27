@@ -6,27 +6,27 @@ import {
   computed,
   effect,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { MatTooltip } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { CodeBlockComponent } from '@components/shared/code-block/code-block.component';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import {
   GdalFormats,
   GdalOptions,
   GdalOs,
   GdalService,
   GdalVersion,
-} from '@services/gdal/gdal.service';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { MatFormField } from '@angular/material/input';
-import { MatLabel } from '@angular/material/input';
-import { MatSelect } from '@angular/material/select';
-import { MatOption } from '@angular/material/select';
-import { MatInput } from '@angular/material/input';
-import { MatTooltip } from '@angular/material/tooltip';
-import { FormsModule } from '@angular/forms';
-
-import {
   GDAL_FORMATS,
   GDAL_OS,
   GDAL_VERSIONS,
@@ -37,11 +37,6 @@ import {
   GdalCustomizeMenuComponent,
   GdalCustomizeDialogData,
 } from '../gdal-customize-menu.component';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
-import { CodeBlockComponent } from '@components/shared/code-block/code-block.component';
-import { MatIcon } from '@angular/material/icon';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
 
 @Component({
   selector: 'app-gdal-customize-dialog',

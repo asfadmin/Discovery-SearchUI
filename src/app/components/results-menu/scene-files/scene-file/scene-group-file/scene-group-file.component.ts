@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   input,
@@ -6,27 +7,22 @@ import {
   inject,
   computed,
 } from '@angular/core';
-
-import * as models from '@models';
-
-import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
+import { MatNestedTreeNode } from '@angular/material/tree';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { CartToggleComponent } from '@components/shared/cart-toggle/cart-toggle.component';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
+import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-menu/gdal-customize-menu.component';
 import * as models from '@models';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatNestedTreeNode } from '@angular/material/tree';
-import { SceneFileGdalDropdownComponent } from '../../scene-group-files/scene-file-gdal-dropdown/scene-file-gdal-dropdown.component';
-import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-menu/gdal-customize-menu.component';
 import { GdalService } from '@services/gdal/gdal.service';
-import { NgTemplateOutlet } from '@angular/common';
+
+import { SceneFileGdalDropdownComponent } from '../../scene-group-files/scene-file-gdal-dropdown/scene-file-gdal-dropdown.component';
 
 @Component({
   selector: 'app-scene-group-file',
