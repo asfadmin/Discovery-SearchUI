@@ -82,18 +82,41 @@ export class FiltersEffects {
       ofType(
         filtersAction.FiltersActionType.CLEAR_DATASET_FILTERS,
         filtersAction.FiltersActionType.SET_SELECTED_DATASET,
-        SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE,
       ),
+      withLatestFrom(this.store$.select(getSelectedDataset)),
+      filter(([_, dataset]) => !!dataset),
+      map(([_, dataset]) => {
+        const defaults = dataset.defaultFilters;
+        if (!defaults) {
+          return null;
+        }
+
+        return new filtersAction.ApplyDatasetDefaults(defaults);
+      }),
+      filter((a) => a !== null),
+    ),
+  );
+
+  public clearDefaultFiltersOnSearchTypeChange = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
       withLatestFrom(
         this.store$.select(getSelectedDataset),
         this.store$.select(getSearchType),
       ),
-      filter(([_, dataset]) => !!dataset?.defaultFilters),
-      map(([_, dataset, searchType]) =>
-        searchType === SearchType.DATASET
-          ? new filtersAction.ApplyDatasetDefaults(dataset.defaultFilters)
-          : new filtersAction.setProductionConfig([]),
+      filter(
+        ([_, dataset, searchType]) =>
+          searchType !== SearchType.DATASET && !!dataset?.defaultFilters,
       ),
+      map(([_, dataset]) => {
+        const cleared = Object.fromEntries(
+          Object.entries(dataset.defaultFilters).map(([key, value]) => [
+            key,
+            Array.isArray(value) ? [] : null,
+          ]),
+        );
+        return new filtersAction.ApplyDatasetDefaults(cleared);
+      }),
     ),
   );
 }
