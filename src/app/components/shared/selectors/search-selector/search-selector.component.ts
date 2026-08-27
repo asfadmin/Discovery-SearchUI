@@ -1,10 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { MatCard } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider, MatList, MatListItem } from '@angular/material/list';
+import { TranslateModule } from '@ngx-translate/core';
 
 import * as models from '@models';
-import { MatCard } from '@angular/material/card';
-import { MatDivider, MatList, MatListItem } from '@angular/material/list';
-import { MatIcon } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search-selector',

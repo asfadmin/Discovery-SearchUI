@@ -1,35 +1,33 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { SubSink } from 'subsink';
-import { Store } from '@ngrx/store';
-
-import { AppState } from '@store';
-import * as mapStore from '@store/map';
-import * as searchStore from '@store/search';
-import * as sceneStore from '@store/scenes';
-
-import * as models from '@models';
-import * as services from '@services';
-
-import { LonLat } from '@models';
-import { combineLatest, Observable } from 'rxjs';
-
-import { filter, map, startWith, tap } from 'rxjs/operators';
-import { ToggleBrowseOverlay } from '@store/map';
 import { NgClass, AsyncPipe, DecimalPipe } from '@angular/common';
-import { ViewSelectorComponent } from './view-selector/view-selector.component';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import {
   MatButtonToggleGroup,
   MatButtonToggle,
 } from '@angular/material/button-toggle';
-import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
-import { LayerSelectorComponent } from './layer-selector/layer-selector.component';
-import { InteractionSelectorComponent } from '@components/shared/aoi-options/interaction-selector/interaction-selector.component';
-import { MatButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu } from '@angular/material/menu';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
-import { MapInfoComponent } from './map-info/map-info.component';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, map, startWith, tap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import { InteractionSelectorComponent } from '@components/shared/aoi-options/interaction-selector/interaction-selector.component';
+import * as models from '@models';
+import { LonLat } from '@models';
+import * as services from '@services';
+import { AppState } from '@store';
+import * as mapStore from '@store/map';
+import { ToggleBrowseOverlay } from '@store/map';
+import * as sceneStore from '@store/scenes';
+import * as searchStore from '@store/search';
+
+import { LayerSelectorComponent } from './layer-selector/layer-selector.component';
+import { MapInfoComponent } from './map-info/map-info.component';
+import { ViewSelectorComponent } from './view-selector/view-selector.component';
 
 @Component({
   selector: 'app-map-controls',

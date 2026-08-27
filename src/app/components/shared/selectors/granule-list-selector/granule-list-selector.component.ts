@@ -7,9 +7,10 @@ import {
   MatInput,
   MatLabel,
 } from '@angular/material/input';
-import * as filtersStore from '@store/filters';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
+import * as filtersStore from '@store/filters';
 
 @Component({
   selector: 'app-granule-list-selector',

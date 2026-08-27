@@ -6,26 +6,26 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { Observable, combineLatest, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as queueStore from '@store/queue';
-import * as models from '@models';
-import { NotificationService } from '@services';
-
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatTooltip } from '@angular/material/tooltip';
 import {
   MatTree,
   MatNestedTreeNode,
   MatTreeNodeDef,
 } from '@angular/material/tree';
-import { MatIcon } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Observable, combineLatest, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+import * as models from '@models';
+import { NotificationService } from '@services';
+import { AppState } from '@store';
+import * as queueStore from '@store/queue';
+
 import { SceneGroupFileComponent } from '../scene-file/scene-group-file/scene-group-file.component';
 
 interface FileGroup {

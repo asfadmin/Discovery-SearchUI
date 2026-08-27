@@ -1,6 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import * as chartActions from './charts.action';
+
 import * as models from '@models';
+
+import * as chartActions from './charts.action';
 
 export interface ChartsState {
   showLines: boolean;

@@ -1,3 +1,4 @@
+import { NgTemplateOutlet, AsyncPipe, KeyValuePipe } from '@angular/common';
 import {
   Component,
   computed,
@@ -10,6 +11,25 @@ import {
   inject,
   DOCUMENT,
 } from '@angular/core';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatButtonToggle } from '@angular/material/button-toggle';
+import { MatCard, MatCardSubtitle } from '@angular/material/card';
+import { MatCheckbox } from '@angular/material/checkbox';
+import {
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { ResizeEvent, ResizableModule } from 'angular-resizable-element';
+import { Geometry } from 'ol/geom';
 import {
   distinctUntilChanged,
   filter,
@@ -19,13 +39,11 @@ import {
   Subject,
   withLatestFrom,
 } from 'rxjs';
-import { ResizeEvent, ResizableModule } from 'angular-resizable-element';
+import { SubSink } from 'subsink';
 
-import { AppState } from '@store';
-import * as searchStore from '@store/search';
-import * as chartStore from '@store/charts';
-import { getTimeseriesChartStates } from '@store/charts';
-
+import * as models from '@models';
+import { Breakpoints } from '@models';
+import { AoiIconPipe } from '@pipes/aoi-icon.pipe';
 import {
   DisplacementDisclaimerService,
   DrawService,
@@ -34,38 +52,17 @@ import {
   ScreenSizeService,
   WktService,
 } from '@services';
-import * as models from '@models';
-import { Breakpoints } from '@models';
-
-import { SubSink } from 'subsink';
-
-import { Geometry } from 'ol/geom';
-import * as filtersStore from '@store/filters';
-import * as uiStore from '@store/ui';
-import { Store } from '@ngrx/store';
-import {
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-} from '@angular/material/dialog';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { PointHistoryState } from '@services/point-history.service';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-
 import { AsfLanguageService } from '@services/asf-language.service';
-import { NgTemplateOutlet, AsyncPipe, KeyValuePipe } from '@angular/common';
-import { MatCard, MatCardSubtitle } from '@angular/material/card';
-import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatButtonToggle } from '@angular/material/button-toggle';
+import { PointHistoryState } from '@services/point-history.service';
+import { AppState } from '@store';
+import * as chartStore from '@store/charts';
+import { getTimeseriesChartStates } from '@store/charts';
+import * as filtersStore from '@store/filters';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+
 import { TimeseriesChartComponent } from '../../timeseries-chart/timeseries-chart.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { AoiIconPipe } from '@pipes/aoi-icon.pipe';
+import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 
 export interface Task {
   aoi: string;

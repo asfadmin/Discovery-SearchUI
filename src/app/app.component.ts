@@ -1,3 +1,4 @@
+import { NgClass, AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -10,21 +11,25 @@ import {
   Injector,
   Signal,
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  NativeDateAdapter,
+} from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconRegistry } from '@angular/material/icon';
 import {
   MatSidenav,
   MatSidenavContainer,
   MatSidenavContent,
 } from '@angular/material/sidenav';
-import { MatIconRegistry } from '@angular/material/icon';
+import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { DomSanitizer, Title } from '@angular/platform-browser';
-import { MatDialog } from '@angular/material/dialog';
-import { SubSink } from 'subsink';
-import { QueueComponent } from '@components/header/queue';
-import { ProcessingQueueComponent } from '@components/header/processing-queue';
-
-import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
+import { Store, ActionsSubject } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { of, combineLatest } from 'rxjs';
 import {
   skip,
@@ -39,36 +44,29 @@ import {
   distinctUntilChanged,
   first,
 } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
-import { NgcCookieConsentService } from 'ngx-cookieconsent';
-
+import { ProcessingQueueComponent } from '@components/header/processing-queue';
+import { QueueComponent } from '@components/header/queue';
+import * as services from '@services';
 import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
 import * as chartsStore from '@store/charts';
-import * as searchStore from '@store/search';
-import * as uiStore from '@store/ui';
+import * as filtersStore from '@store/filters';
+import * as hyp3Store from '@store/hyp3';
 import * as mapStore from '@store/map';
 import * as queueStore from '@store/queue';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
 import * as userStore from '@store/user';
-import * as hyp3Store from '@store/hyp3';
-import * as filtersStore from '@store/filters';
 
-import * as services from '@services';
-import * as models from './models';
-import { SearchType } from './models';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-  NativeDateAdapter,
-} from '@angular/material/core';
-import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
-import { NgClass, AsyncPipe } from '@angular/common';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MapComponent } from './components/map/map.component';
 import { ResultsMenuComponent } from './components/results-menu/results-menu.component';
 import { EventSearchDeprecationComponent } from './components/shared/event-search-deprecation/event-search-deprecation.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import * as models from './models';
+import { SearchType } from './models';
 
 @Component({
   selector: 'app-root',

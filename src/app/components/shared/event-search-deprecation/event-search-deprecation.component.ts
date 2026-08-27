@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -6,7 +7,6 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-event-search-deprecation',

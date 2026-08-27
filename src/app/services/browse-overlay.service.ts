@@ -1,31 +1,15 @@
 import { Injectable, inject } from '@angular/core';
-import { WktService } from '@services';
+import { Store } from '@ngrx/store';
+import { Coordinate, rotate } from 'ol/coordinate';
 import { Extent, getCenter } from 'ol/extent';
 import Feature from 'ol/Feature';
+import { Point } from 'ol/geom';
 import Geometry from 'ol/geom/Geometry';
+import MultiPolygon from 'ol/geom/MultiPolygon';
 import Polygon from 'ol/geom/Polygon';
 import ImageLayer from 'ol/layer/Image';
-import Static from 'ol/source/ImageStatic';
-// import * as olExtent from 'ol/extent';
-import { Coordinate, rotate } from 'ol/coordinate';
-import MultiPolygon from 'ol/geom/MultiPolygon';
-import { combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
-import * as models from '@models';
-import * as searchStore from '@store/search';
-import * as sceneStore from '@store/scenes';
-import * as filtersStore from '@store/filters';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import GeoTIFFSource from 'ol/source/GeoTIFF';
-import TileLayer from 'ol/layer/WebGLTile.js';
-import ImageSource from 'ol/source/Image';
 import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-// import { Overlay } from 'ol';
-import { Icon, Stroke, Style } from 'ol/style';
-import { Point } from 'ol/geom';
+import TileLayer from 'ol/layer/WebGLTile.js';
 import {
   Projection,
   addCoordinateTransforms,
@@ -33,10 +17,22 @@ import {
   get as getProjection,
   transform,
 } from 'ol/proj';
-import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
+import GeoTIFFSource from 'ol/source/GeoTIFF';
+import ImageSource from 'ol/source/Image';
+import Static from 'ol/source/ImageStatic';
+import VectorSource from 'ol/source/Vector';
+import { Icon, Stroke, Style } from 'ol/style';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-// import { HttpClient } from '@angular/common/http';
-// import { CustomProjection } from './map/views';
+import * as models from '@models';
+import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
+import { WktService } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as sceneStore from '@store/scenes';
+import * as searchStore from '@store/search';
+
 @Injectable({
   providedIn: 'root',
 })

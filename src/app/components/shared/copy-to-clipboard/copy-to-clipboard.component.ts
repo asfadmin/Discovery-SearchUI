@@ -7,15 +7,15 @@ import {
   input,
   effect,
 } from '@angular/core';
-import { SubSink } from 'subsink';
-
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
+import { ClipboardService } from 'ngx-clipboard';
 import { of } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
-import { ClipboardService } from 'ngx-clipboard';
+import { SubSink } from 'subsink';
+
 import { NotificationService } from '@services/notification.service';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-copy-to-clipboard',

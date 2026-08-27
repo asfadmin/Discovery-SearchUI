@@ -53,6 +53,8 @@
     "core-js": "^3.12.1",
     "d3": "^7.4.4",
     "deep-extend": "^0.6.0",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-import": "^2.32.0",
     "file-saver": "^2.0.5",
     "flex-layout-sass": "^1.0.8",
     "glob": "^13.0.6",

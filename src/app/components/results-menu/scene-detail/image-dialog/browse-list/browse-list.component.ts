@@ -1,4 +1,10 @@
 import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualForOf,
+} from '@angular/cdk/scrolling';
+import { AsyncPipe } from '@angular/common';
+import {
   Component,
   OnInit,
   AfterViewInit,
@@ -7,26 +13,18 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
-import {
-  CdkVirtualScrollViewport,
-  CdkFixedSizeVirtualScroll,
-  CdkVirtualForOf,
-} from '@angular/cdk/scrolling';
-import { SubSink } from 'subsink';
-
+import { MatBadge } from '@angular/material/badge';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, filter, withLatestFrom, tap, switchMap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
-import { Store } from '@ngrx/store';
+import * as models from '@models';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
+import { ScenesService } from '@services';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
-
-import * as models from '@models';
-import { ScenesService } from '@services';
-import { AsyncPipe } from '@angular/common';
-import { MatBadge } from '@angular/material/badge';
-import { ShortDatePipe } from '@pipes/short-date.pipe';
 
 @Component({
   selector: 'app-browse-list',

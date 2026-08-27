@@ -6,10 +6,10 @@ import {
   MatDialogContent,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
-
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
+
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 @Component({
   selector: 'app-disp-disclaimer-dialog',
   template: `

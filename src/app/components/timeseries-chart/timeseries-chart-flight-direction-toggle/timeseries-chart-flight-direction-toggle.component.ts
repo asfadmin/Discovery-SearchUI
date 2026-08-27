@@ -1,20 +1,21 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import { SubSink } from 'subsink';
-import * as filtersStore from '@store/filters';
-import * as models from '@models';
-import { map } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { map } from 'rxjs';
+import { SubSink } from 'subsink';
+
+import * as models from '@models';
 import { Breakpoints } from '@models';
 import { ScreenSizeService } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 @Component({
   selector: 'app-timeseries-chart-flight-direction-toggle',

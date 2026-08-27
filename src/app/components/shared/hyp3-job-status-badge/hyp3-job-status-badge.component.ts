@@ -1,25 +1,24 @@
 import { Component, OnInit, input, inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { MatChip } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { combineLatest } from 'rxjs';
 
-import { Hyp3ApiService, ScenesService, Hyp3JobStatusService } from '@services';
+import { ConfirmationComponent } from '@components/header/processing-queue/confirmation/confirmation.component';
 import {
   Hyp3Job,
   hyp3JobTypes,
   QueuedHyp3Job,
   Hyp3ProcessingOptions,
 } from '@models';
-import { ConfirmationComponent } from '@components/header/processing-queue/confirmation/confirmation.component';
-import { MatDialog } from '@angular/material/dialog';
-import { AppState } from '@store';
-import { Store } from '@ngrx/store';
-
 import * as models from '@models';
+import { Hyp3ApiService, ScenesService, Hyp3JobStatusService } from '@services';
+import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
 import * as queueStore from '@store/queue';
-import { MatChip } from '@angular/material/chips';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-hyp3-job-status-badge',

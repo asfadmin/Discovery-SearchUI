@@ -1,9 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import * as chartActions from './charts.action';
-import { NetcdfService } from '@services';
-import { filter, map, tap } from 'rxjs';
 import * as d3 from 'd3';
+import { filter, map, tap } from 'rxjs';
+
+import { NetcdfService } from '@services';
+
+import * as chartActions from './charts.action';
 
 @Injectable()
 export class ChartsEffects {

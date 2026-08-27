@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -8,33 +9,19 @@ import {
   inject,
   effect,
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { tap, delay, map } from 'rxjs/operators';
-import moment from 'moment';
-import { SubSink } from 'subsink';
 import {
   UntypedFormGroup,
   UntypedFormControl,
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { DateAdapter } from '@angular/material/core';
 import {
   MatDatepickerInputEvent,
   MatDatepickerInput,
   MatDatepickerToggle,
   MatDatepicker,
 } from '@angular/material/datepicker';
-import { DateAdapter } from '@angular/material/core';
-import {
-  AsfLanguageService,
-  NotificationService,
-  ScreenSizeService,
-} from '@services';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as uiStore from '@store/ui';
-import * as models from '@models';
-import { NgClass } from '@angular/common';
 import {
   MatFormField,
   MatLabel,
@@ -42,7 +29,21 @@ import {
   MatHint,
   MatSuffix,
 } from '@angular/material/input';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import moment from 'moment';
+import { Subject } from 'rxjs';
+import { tap, delay, map } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import * as models from '@models';
+import {
+  AsfLanguageService,
+  NotificationService,
+  ScreenSizeService,
+} from '@services';
+import { AppState } from '@store';
+import * as uiStore from '@store/ui';
 
 @Component({
   selector: 'app-date-range',

@@ -1,16 +1,15 @@
 import { Component, input, output } from '@angular/core';
-
-import * as models from '@models';
-
-import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { CartToggleComponent } from '@components/shared/cart-toggle/cart-toggle.component';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
-import { CartToggleComponent } from '@components/shared/cart-toggle/cart-toggle.component';
+import * as models from '@models';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-scene-group-file',

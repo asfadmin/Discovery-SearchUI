@@ -1,12 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-import { SearchType } from '@models';
-
-import * as models from '@models';
-
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
+
+import { SearchType } from '@models';
+import * as models from '@models';
 import { MapService } from '@services';
 import { AppState } from '@store';
+import { getSelectedDataset } from '@store/filters';
 import { getAreResultsLoaded, getProducts } from '@store/scenes';
 import {
   ScenesActionType,
@@ -19,12 +20,13 @@ import {
   SetSearchOutOfDate,
   SetSearchType,
 } from '@store/search';
-import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
-import { MapActionType, SetBrowseOverlayOpacity } from '.';
-import { getSelectedDataset } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
-import { ClearBrowseOverlays, SetCoherenceOverlayOpacity } from './map.action';
 import { getIsUserLoggedIn } from '@store/user';
+
+import { ClearBrowseOverlays, SetCoherenceOverlayOpacity } from './map.action';
+
+import { MapActionType, SetBrowseOverlayOpacity } from '.';
+
 @Injectable()
 export class MapEffects {
   private actions$ = inject(Actions);

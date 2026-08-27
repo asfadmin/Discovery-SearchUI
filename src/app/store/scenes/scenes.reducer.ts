@@ -1,7 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { ScenesActionType, ScenesActions } from './scenes.action';
-
 import {
   CMRProduct,
   ColumnSortDirection,
@@ -9,6 +7,8 @@ import {
   CMRProductsById,
 } from '@models';
 import { createSceneArraySelector } from '@store/selectors';
+
+import { ScenesActionType, ScenesActions } from './scenes.action';
 
 export interface ScenesState {
   ids: string[];

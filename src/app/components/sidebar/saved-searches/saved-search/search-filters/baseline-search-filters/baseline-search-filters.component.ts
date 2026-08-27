@@ -1,8 +1,8 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { BaselineFiltersType } from '@models';
 import { ShortDatePipe } from '@pipes/short-date.pipe';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-baseline-search-filters',

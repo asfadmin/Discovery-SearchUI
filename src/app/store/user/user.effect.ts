@@ -1,18 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-
 import { combineLatest } from 'rxjs';
 import { withLatestFrom, switchMap, map, filter, delay } from 'rxjs/operators';
 
-import { AppState } from '../app.reducer';
-import * as userActions from './user.action';
-import * as userReducer from './user.reducer';
-import * as hyp3Store from '../hyp3/hyp3.action';
-import * as filterStore from '@store/filters';
-import * as searchStore from '@store/search';
-import { UserDataService } from '@services/user-data.service';
 import * as models from '@models';
 import {
   BaselineFiltersType,
@@ -21,6 +12,14 @@ import {
   TimeseriesFiltersType,
   SearchType,
 } from '@models';
+import { UserDataService } from '@services/user-data.service';
+import * as filterStore from '@store/filters';
+import * as searchStore from '@store/search';
+
+import { AppState } from '../app.reducer';
+import * as userActions from './user.action';
+import * as userReducer from './user.reducer';
+import * as hyp3Store from '../hyp3/hyp3.action';
 
 @Injectable()
 export class UserEffects {

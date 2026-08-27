@@ -1,19 +1,21 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
+import { MatProgressBar } from '@angular/material/progress-bar';
 import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as searchStore from '@store/search';
+import { TranslateService } from '@ngx-translate/core';
+
 import * as models from '@models/index';
 import * as services from '@services';
-import { TranslateService } from '@ngx-translate/core';
-import { AsyncPipe } from '@angular/common';
-import { LogoComponent } from './logo/logo.component';
-import { DatasetHeaderComponent } from './dataset-header/dataset-header.component';
-import { TimeseriesHeaderComponent } from './timeseries-header/timeseries-header.component';
-import { ListHeaderComponent } from './list-header/list-header.component';
+import { AppState } from '@store';
+import * as searchStore from '@store/search';
+
 import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
+import { DatasetHeaderComponent } from './dataset-header/dataset-header.component';
 import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 import { InfoBarComponent } from './info-bar/info-bar.component';
-import { MatProgressBar } from '@angular/material/progress-bar';
+import { ListHeaderComponent } from './list-header/list-header.component';
+import { LogoComponent } from './logo/logo.component';
+import { TimeseriesHeaderComponent } from './timeseries-header/timeseries-header.component';
 
 @Component({
   selector: 'app-header',

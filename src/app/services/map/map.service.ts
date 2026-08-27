@@ -1,32 +1,25 @@
-import { Injectable, OnDestroy, inject } from '@angular/core';
-
-import { BehaviorSubject, Subject } from 'rxjs';
-import { first, map, sampleTime, tap } from 'rxjs/operators';
-import { SubSink } from 'subsink';
-
-import { Collection, Feature, Map, Overlay, View } from 'ol';
-import { Layer, Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource, XYZ } from 'ol/source';
-import * as proj from 'ol/proj';
-import Point from 'ol/geom/Point';
-import { OverviewMap, ScaleLine } from 'ol/control';
-
-import { click, pointerMove } from 'ol/events/condition';
-import Select, { SelectEvent } from 'ol/interaction/Select';
-
-import { WktService } from '../wkt.service';
-import { DrawService } from './draw.service';
-import { LayerService } from './layer.service';
-import { LegacyAreaFormatService } from '../legacy-area-format.service';
-import * as models from '@models';
 import { HttpClient } from '@angular/common/http';
-
-import * as polygonStyle from './polygon.style';
-// import * as tileStyle from 'ol/style'
-import * as views from './views';
-import { EventEmitter } from '@angular/core';
+import { Injectable, OnDestroy, inject, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '@store';
+import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
+import intersect from '@turf/intersect';
+import lineIntersect from '@turf/line-intersect';
+import { Collection, Feature, Map, Overlay, View } from 'ol';
+import { OverviewMap, ScaleLine } from 'ol/control';
+import { click, pointerMove } from 'ol/events/condition';
+import { Extent, isEmpty } from 'ol/extent';
+import GeoJSON from 'ol/format/GeoJSON.js';
+import Geometry, { Type as GeometryType } from 'ol/geom/Geometry';
+import LineString from 'ol/geom/LineString';
+import Point from 'ol/geom/Point';
+import Polygon from 'ol/geom/Polygon';
+import Select, { SelectEvent } from 'ol/interaction/Select';
+import { Layer, Vector as VectorLayer } from 'ol/layer';
+import LayerGroup from 'ol/layer/Group';
+import VectorImageLayer from 'ol/layer/VectorImage';
+import TileLayer from 'ol/layer/WebGLTile.js';
+import * as proj from 'ol/proj';
+import { Vector as VectorSource, XYZ } from 'ol/source';
 import {
   Circle as CircleStyle,
   Fill,
@@ -34,24 +27,25 @@ import {
   Style,
   Text as olText,
 } from 'ol/style';
-import Geometry from 'ol/geom/Geometry';
-import LayerGroup from 'ol/layer/Group';
-import { BrowseOverlayService, PointHistoryService } from '@services';
 import { ViewOptions } from 'ol/View';
-import { Type as GeometryType } from 'ol/geom/Geometry';
-import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-import intersect from '@turf/intersect';
-import lineIntersect from '@turf/line-intersect';
-import Polygon from 'ol/geom/Polygon';
-import LineString from 'ol/geom/LineString';
-import TileLayer from 'ol/layer/WebGLTile.js';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { first, map, sampleTime, tap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
+import * as models from '@models';
+import { BrowseOverlayService, PointHistoryService } from '@services';
+import { AppState } from '@store';
 import { SetGeocode } from '@store/filters';
-import { Extent, isEmpty } from 'ol/extent';
-import GeoJSON from 'ol/format/GeoJSON.js';
-import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
-import VectorImageLayer from 'ol/layer/VectorImage';
+import * as uiStore from '@store/ui';
+
+import { WktService } from '../wkt.service';
+import { DrawService } from './draw.service';
+import { LayerService } from './layer.service';
+import { LegacyAreaFormatService } from '../legacy-area-format.service';
+import * as polygonStyle from './polygon.style';
+// import * as tileStyle from 'ol/style'
+import * as views from './views';
 
 @Injectable({
   providedIn: 'root',

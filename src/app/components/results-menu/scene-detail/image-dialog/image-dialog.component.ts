@@ -1,3 +1,4 @@
+import { NgClass, AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -5,37 +6,34 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { SubSink } from 'subsink';
-
-import { filter, map, tap, debounceTime } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-
-import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
-import * as queueStore from '@store/queue';
-import * as uiStore from '@store/ui';
-import * as searchStore from '@store/search';
-
-import * as models from '@models';
-import { BrowseMapService, DatasetForProductService } from '@services';
-import * as services from '@services/index';
-
-import { NgClass, AsyncPipe } from '@angular/common';
-import { MatTooltip } from '@angular/material/tooltip';
 import { MatIconButton, MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 import { MatCardSmImage } from '@angular/material/card';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
 import { MatActionList, MatListItem } from '@angular/material/list';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { filter, map, tap, debounceTime } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
-import { BrowseListComponent } from './browse-list/browse-list.component';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
+import * as models from '@models';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { ShortDateTimePipe, FullDatePipe } from '@pipes/short-date.pipe';
-import { TranslateModule } from '@ngx-translate/core';
+import { BrowseMapService, DatasetForProductService } from '@services';
+import * as services from '@services/index';
+import { AppState } from '@store';
+import * as queueStore from '@store/queue';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+
+import { BrowseListComponent } from './browse-list/browse-list.component';
 
 @Component({
   selector: 'app-image-dialog',

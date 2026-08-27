@@ -1,13 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import { SubSink } from 'subsink';
-import * as filtersStore from '@store/filters';
-import { SBASOverlap, SBASOverlapTranslation } from '@models';
+import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { SubSink } from 'subsink';
+
+import { SBASOverlap, SBASOverlapTranslation } from '@models';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 @Component({
   selector: 'app-sbas-overlap-selector',
