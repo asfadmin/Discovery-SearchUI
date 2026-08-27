@@ -1,0 +1,212 @@
+<div class="gdal-export-wrapper">
+  <span class="exit-button">
+    <button
+      matIconButton
+      (click)="dialogRef.close()"
+      [aria-label]="'CLOSE' | translate"
+    >
+      <mat-icon fontIcon="close"></mat-icon>
+    </button>
+  </span>
+  <h1>{{ 'EXPORT_GDAL' | translate }}</h1>
+  <span class="subtitle">
+    <app-docs-modal
+      class="subtitle"
+      text="DOCUMENTATION"
+      url="https://nisar-docs.asf.alaska.edu/gdal/"
+    ></app-docs-modal>
+  </span>
+  <div class="dataset-list-card">
+    <h2>1. {{ 'SELECT_A_DATASET' | translate }}</h2>
+    <mat-radio-group [(ngModel)]="selectedDataset" class="dataset-list">
+      @for (dataset of data.datasets; track dataset) {
+        <div class="gdal-dataset" [aria-label]="dataset.name">
+          <span class="gdal-dataset-name">
+            {{ dataset.name }}
+          </span>
+          @if (dataset.type) {
+            <span class="gdal-dataset-chip">
+              {{ dataset.type }}
+            </span>
+          }
+          @if (dataset.unit) {
+            <span class="gdal-dataset-chip">
+              {{ dataset.unit }}
+            </span>
+          }
+          <span class="flex-grow"></span>
+          <span class="gdal-dataset-path">
+            {{ dataset.path }}
+          </span>
+          <mat-radio-button
+            [value]="dataset.path"
+            [aria-label]="('SELECT' | translate) + ' ' + dataset.name"
+            [matTooltip]="('SELECT' | translate) + ' ' + dataset.name"
+          >
+          </mat-radio-button>
+        </div>
+      }
+    </mat-radio-group>
+  </div>
+
+  <div class="blur-overlay-container">
+    <div class="options-list-card">
+      <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
+      <!-- <div class="output-type">
+      <mat-button-toggle-group
+        [(ngModel)]="outputType"
+        class="mat-elevation-z2"
+      >
+        <mat-button-toggle value="gdal">
+          {{ 'GDAL_OUTPUT' | translate }}
+        </mat-button-toggle>
+        <mat-button-toggle value="qgis">
+          {{ 'QGIS_OUTPUT' | translate }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div> -->
+      <div class="options-list">
+        <span class="option short">
+          <mat-form-field>
+            <mat-label> {{ 'GDAL_VERSION' | translate }}</mat-label>
+            <mat-select
+              [(ngModel)]="gdalVersion"
+              [matTooltip]="'GDAL_313_ADMONITION' | translate"
+            >
+              @for (version of gdalVersions; track version) {
+                <mat-option [value]="version"> {{ version }} </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </span>
+        <span class="option short">
+          <mat-form-field>
+            <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
+            <mat-select [(ngModel)]="outputFormat">
+              @for (format of outputFormats; track format) {
+                <mat-option [value]="format"> {{ format }} </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </span>
+        <span class="option">
+          <mat-form-field>
+            <mat-label> {{ 'OUTPUT_OS' | translate }}</mat-label>
+            <mat-select [(ngModel)]="outputOS">
+              @for (os of outputOSList; track os) {
+                <mat-option [value]="os"> {{ os }} </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </span>
+        <span class="option reproject">
+          <mat-form-field>
+            <mat-label> {{ 'REPROJECT' | translate }}</mat-label>
+            <input
+              class="reproject"
+              matInput
+              [matTooltip]="'REPROJECT_TOOLTIP' | translate"
+              [(ngModel)]="selectedProjection"
+            />
+          </mat-form-field>
+        </span>
+        <span class="option checkbox">
+          <mat-checkbox
+            [disabled]="!gdalService.isCropToAOIAvailable()"
+            disabledInteractive
+            [(ngModel)]="cropToAOI"
+            [matTooltip]="
+              !gdalService.isCropToAOIAvailable()
+                ? ('CROP_TO_AOI_DISABLED' | translate)
+                : null
+            "
+            >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
+          >
+        </span>
+        <span class="option checkbox">
+          <mat-checkbox [(ngModel)]="minimalCommand">{{
+            'MINIMAL_COMMAND' | translate
+          }}</mat-checkbox>
+        </span>
+        <span class="option filename">
+          <mat-form-field>
+            <mat-label class="filename">
+              {{ 'OUTPUT_FILENAME' | translate }}</mat-label
+            >
+            <input matInput [(ngModel)]="outputFilename" />
+          </mat-form-field>
+        </span>
+      </div>
+    </div>
+
+    <div class="gdal-configure-card">
+      <h2>3. {{ 'CONFIGURE_ENVIRONMENT' | translate }}</h2>
+      <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
+      <app-code-block
+        [codeDescription]="`${homeDirectory()}/.netrc`"
+        [codeContent]="netrcContent"
+        copyPrompt="EXPORT_NETRC_CLIPBOARD"
+        copyMessage="EXPORTED_NETRC_CLIPBOARD"
+        language="bash"
+      >
+      </app-code-block>
+      <div><br /></div>
+      <app-docs-modal
+        class="info-text"
+        text="EXPORT_GDAL_HELP_LINK"
+        url="https://nisar-docs.asf.alaska.edu/gdal/"
+      ></app-docs-modal>
+    </div>
+
+    @if (outputType() === 'gdal') {
+      <div class="gdal-output-card">
+        <h2>4. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
+        <div class="gdal-output-list">
+          <app-code-block
+            [codeDescription]="'GDAL_COMMAND_DESCRIPTION' | translate"
+            [codeContent]="gdalCommand()"
+            copyPrompt="EXPORT_GDAL_CLIPBOARD"
+            copyMessage="EXPORTED_GDAL_CLIPBOARD"
+            [isCommand]="true"
+            language="bash"
+          >
+          </app-code-block>
+          @if (minimalCommand()) {
+            <app-code-block
+              [codeDescription]="`${homeDirectory()}/.gdal/gdalrc`"
+              [codeContent]="gdalRC()"
+              copyPrompt="EXPORT_GDALRC_CLIPBOARD"
+              copyMessage="EXPORTED_GDALRC_CLIPBOARD"
+              language="bash"
+            >
+            </app-code-block>
+          }
+        </div>
+      </div>
+    }
+
+    @if (!selectedDataset()) {
+      <div
+        class="blur-overlay"
+        [matTooltip]="'SELECT_A_DATASET_TO_CONTINUE' | translate"
+        [aria-label]="'SELECT_A_DATASET_TO_CONTINUE' | translate"
+      ></div>
+    }
+  </div>
+</div>
+
+<div class="footer">
+  @if (selectedDataset()) {
+    <app-copy-to-clipboard
+      [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
+      [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
+      [value]="gdalCommand()"
+    >
+    </app-copy-to-clipboard>
+  } @else {
+    <div></div>
+  }
+  <button matButton (click)="dialogRef.close()">
+    <h2>{{ 'CLOSE' | translate }}</h2>
+  </button>
+</div>

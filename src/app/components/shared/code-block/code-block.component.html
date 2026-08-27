@@ -1,0 +1,25 @@
+<div class="code-wrapper">
+  <div
+    class="code-header clickable"
+    (click)="clipboard.onCopyIconClicked($event)"
+  >
+    <span class="code-header-description"> {{ codeDescription() }} </span>
+    <span class="flex-grow"></span>
+    <app-copy-to-clipboard
+      #clipboard
+      class="compact"
+      [aria-label]="copyPrompt() | translate"
+      [prompt]="copyPrompt() | translate"
+      [value]="codeContent()"
+      [message]="copyMessage() | translate"
+    ></app-copy-to-clipboard>
+  </div>
+  <code>
+    <pre
+      #codeBlock
+      class="code"
+      [class.sh]="isCommand()"
+      [class.file]="!isCommand()"
+    ></pre>
+  </code>
+</div>
