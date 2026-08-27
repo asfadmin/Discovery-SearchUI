@@ -13,7 +13,7 @@ import * as models from '@models';
 import { AppState } from '@store/app.reducer';
 import { Store } from '@ngrx/store';
 
-import { getSearchType } from '@store/search';
+import { getSearchType, SearchActionType } from '@store/search';
 import { LoadFiltersPreset } from '@store/user';
 import { ResetMaxHyp3ResultsHit } from '@store/hyp3';
 import { SearchType } from '@models';
@@ -82,18 +82,18 @@ export class FiltersEffects {
       ofType(
         filtersAction.FiltersActionType.CLEAR_DATASET_FILTERS,
         filtersAction.FiltersActionType.SET_SELECTED_DATASET,
+        SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE,
       ),
-      withLatestFrom(this.store$.select(getSelectedDataset)),
-      filter(([_, dataset]) => !!dataset),
-      map(([_, dataset]) => {
-        const defaults = dataset.defaultFilters;
-        if (!defaults) {
-          return null;
-        }
-
-        return new filtersAction.ApplyDatasetDefaults(defaults);
-      }),
-      filter((a) => a !== null),
+      withLatestFrom(
+        this.store$.select(getSelectedDataset),
+        this.store$.select(getSearchType),
+      ),
+      filter(([_, dataset]) => !!dataset?.defaultFilters),
+      map(([_, dataset, searchType]) =>
+        searchType === SearchType.DATASET
+          ? new filtersAction.ApplyDatasetDefaults(dataset.defaultFilters)
+          : new filtersAction.setProductionConfig([]),
+      ),
     ),
   );
 }
