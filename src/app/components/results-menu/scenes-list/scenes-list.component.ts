@@ -282,7 +282,7 @@ export class ScenesListComponent
 
     const queueScenes$ = combineLatest([
       this.store$.select(queueStore.getQueuedProducts),
-      this.store$.select(scenesStore.getAllSceneProducts),
+      this.store$.select(scenesStore.getAllSceneProductsFiltered),
     ]).pipe(
       debounceTime(0),
       map(([queueProducts, searchScenes]) => {
@@ -300,11 +300,7 @@ export class ScenesListComponent
         Object.entries(searchScenes).map(([sceneName, products]) => {
           numberOfQueuedProducts[sceneName] = [
             (queuedProductGroups[sceneName] || []).length,
-            models.datasets[products[0].dataset].properties.includes(
-              models.Props.SINGLE_PRODUCT,
-            )
-              ? 1
-              : products.length,
+            products.length,
           ];
         });
 

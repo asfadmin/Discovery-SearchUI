@@ -131,25 +131,13 @@ export class QueueEffects {
     { dispatch: false },
   );
 
-  private filterOutSingleProductDataset = (
-    sceneProducts: models.CMRProduct[],
-  ) => {
-    if (
-      models.datasets[sceneProducts[0]?.dataset].properties.includes(
-        models.Props.SINGLE_PRODUCT,
-      )
-    ) {
-      return [sceneProducts[0]]; // find the ungrouped scenes instead?
-    }
-    return sceneProducts;
-  };
-
   public queueScene = createEffect(() =>
     this.actions$.pipe(
       ofType<QueueScene>(QueueActionType.QUEUE_SCENE),
-      withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
+      withLatestFrom(
+        this.store$.select(scenesStore.getAllSceneProductsFiltered),
+      ),
       map(([action, sceneProducts]) => sceneProducts[action.payload]),
-      map((sceneProducts) => this.filterOutSingleProductDataset(sceneProducts)),
       map((products) => new AddItems(products)),
     ),
   );
@@ -240,9 +228,10 @@ export class QueueEffects {
   public removeScene = createEffect(() =>
     this.actions$.pipe(
       ofType<RemoveSceneFromQueue>(QueueActionType.REMOVE_SCENE_FROM_QUEUE),
-      withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
+      withLatestFrom(
+        this.store$.select(scenesStore.getAllSceneProductsFiltered),
+      ),
       map(([action, sceneProducts]) => sceneProducts[action.payload]),
-      map((sceneProducts) => this.filterOutSingleProductDataset(sceneProducts)),
       tap((products) =>
         this.notificationService.downloadQueue(false, products.length),
       ),
