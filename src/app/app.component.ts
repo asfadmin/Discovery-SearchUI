@@ -507,6 +507,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       'unpin',
       'hgrip',
       'vgrip',
+      'qgis',
     ];
 
     matIcons.forEach((iconName) => {

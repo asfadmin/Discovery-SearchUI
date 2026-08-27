@@ -34,6 +34,7 @@ export class CopyToClipboardComponent implements OnDestroy {
   notification = input<string>('Copied');
   toast = input<boolean>(true);
   copyIcon = input<string>('file_copy');
+  svgIcon = input<string | undefined>(undefined);
 
   @ViewChild('copyTooltip', { static: true }) copyTooltip: ElementRef;
 
