@@ -1,6 +1,8 @@
-import { test, expect } from 'e2e/fixtures';
 import * as fs from 'fs';
+
 import { parse } from 'csv-parse/sync';
+
+import { test, expect } from 'e2e/fixtures';
 import { sentinel1Page } from 'e2e/helpers';
 
 test('SBAS Download Pair CSV', { tag: '@visual' }, async ({ page }) => {
