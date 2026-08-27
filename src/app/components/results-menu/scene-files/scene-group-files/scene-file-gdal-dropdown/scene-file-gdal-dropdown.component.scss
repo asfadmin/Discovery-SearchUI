@@ -1,0 +1,30 @@
+@use '@angular/material' as mat;
+@use 'asf-theme-variables' as *;
+
+.dataset-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 55px 0 48px;
+}
+
+.gdal-dataset-header {
+  display: flex;
+  padding: 6px;
+  border-radius: 5px;
+}
+
+.gdal-dataset-header-title {
+  font-weight: bold;
+  flex-grow: 1;
+}
+
+.gdal-dataset-header-documentation {
+  font-style: italic;
+}
+
+.gdal-dataset-header:hover {
+  @include themify($themes) {
+    background-color: themed('dark-focused');
+  }
+}

@@ -49,6 +49,7 @@
             [product]="product"
             [isQueued]="queuedProductIds()?.has(product.id) ?? false"
             [validHyp3JobTypes]="validJobTypesByProduct()[product.id] ?? []"
+            [isScienceData]="group.labelKey === 'SCIENCE_DATA'"
             (toggle)="toggleProduct.emit(product)"
             (queueHyp3Job)="queueHyp3Job.emit($event)"
           >
