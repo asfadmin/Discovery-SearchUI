@@ -60,6 +60,8 @@ module.exports = tseslint.config(
       ],
       'import/no-duplicates': 'error',
       '@angular-eslint/no-uncalled-signals': 'error',
+      'import/no-unresolved': 'off',
+      'import/no-named-as-default-member': 'off',
     },
     settings: {
       'import/resolver': 'typescript',
