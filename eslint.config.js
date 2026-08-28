@@ -4,7 +4,6 @@ const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 const prettierRecommended = require('eslint-plugin-prettier/recommended');
 const importPlugin = require('eslint-plugin-import');
-import css from '@eslint/css';
 
 module.exports = tseslint.config(
   {
