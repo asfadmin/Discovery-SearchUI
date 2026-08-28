@@ -1,9 +1,9 @@
-export interface bannerapiresponse {
+export interface BannerApiResponse {
   banners: Banner[];
   systime: string;
 }
 
-export interface banner {
+export interface Banner {
   id: string;
   text: string;
   name: string;

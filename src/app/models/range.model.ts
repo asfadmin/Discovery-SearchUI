@@ -1,4 +1,4 @@
-export interface range<t> {
+export interface Range<T> {
   start: T;
   end: T;
 }
