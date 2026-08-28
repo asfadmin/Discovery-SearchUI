@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint -c eslint.config.js src e2e",
-    "lint:cs": "stylelint -c stylelint.config.mjs \"**/*.scss\"",
+    "lint:css": "stylelint -c stylelint.config.mjs \"**/*.scss\"",
     "e2e": "ng e2e",
     "check_keys": "node scripts/check-keys.js"
   },
