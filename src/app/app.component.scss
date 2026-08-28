@@ -4,12 +4,12 @@
 }
 
 .container {
+  z-index: 1;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: 100vw;
   height: calc(100vh - 32px);
-  z-index: 1;
-  box-sizing: border-box;
   overflow: hidden;
 }
 
@@ -19,9 +19,9 @@
 }
 
 .app-sidenav-mobile {
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
   width: 100%;
 }
 

@@ -9,15 +9,14 @@ $bottom-offset: 10px;
 }
 
 [mat-dialog-title] {
+  color: $light-primary-text;
+  text-align: center;
+  cursor: move;
   background: #369; // TODO: check this
 
   @include themify($themes) {
     color: themed('light-primary-text');
   }
-
-  color: $light-primary-text;
-  cursor: move;
-  text-align: center;
 }
 
 .processing-queue {
@@ -26,15 +25,15 @@ $bottom-offset: 10px;
     background-color: themed('primary-light');
   }
 
-  min-width: 350px;
-  height: 100%;
-  min-height: 500px;
-  margin: 0;
-  padding: 0;
   position: relative;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+  min-width: 350px;
+  height: 100%;
+  min-height: 500px;
+  padding: 0;
+  margin: 0;
   font-size: 25px;
   font-weight: bold;
 }
@@ -46,15 +45,15 @@ $bottom-offset: 10px;
     header-bottom-color: themed('primary-dark');
   }
 
-  padding: 10px 0 0;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  width: 100%;
-  height: $header-height;
   position: absolute;
   top: 0;
   flex: 1 1 auto;
+  width: 100%;
+  height: $header-height;
+  padding: 10px 0 0;
   text-align: left;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
 }
 
 .jobs-dialog {
@@ -76,17 +75,17 @@ $bottom-offset: 10px;
 }
 
 .mini-button {
-  font-size: 12px !important;
-  padding: 0 4px !important;
-  line-height: 24px !important;
   min-width: 1% !important;
+  padding: 0 4px !important;
+  font-size: 12px !important;
+  line-height: 24px !important;
 }
 
 .no-job-selected {
-  font-size: 18px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  font-size: 18px;
 }
 
 .list-filter {
@@ -94,32 +93,32 @@ $bottom-offset: 10px;
     background-color: themed('background-white');
   }
 
-  border-bottom: solid grey 1px;
   height: 60px;
+  border-bottom: solid grey 1px;
 }
 
 .loading-div {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  justify-content: center;
-  align-items: center;
 }
 
 .loading-text {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding-left: 20px;
   font-size: 28px;
 }
 
 .on-demand-branding {
   display: inline-block;
-  vertical-align: middle;
-  margin-left: 5px;
   margin-bottom: -5px;
+  margin-left: 5px;
+  vertical-align: middle;
 }
 
 .on-demand-icon {
@@ -131,16 +130,16 @@ $bottom-offset: 10px;
 }
 
 .on-demand-text {
-  vertical-align: middle;
   margin-top: -16px;
+  vertical-align: middle;
 }
 
 .close-x {
   position: absolute;
   top: 10px;
   right: 16px;
-  text-align: right;
   float: right;
+  text-align: right;
   cursor: pointer;
 }
 
@@ -150,14 +149,14 @@ $bottom-offset: 10px;
 
 .project-name {
   display: inline-block;
-  font-size: 14px;
   margin-top: 10px;
   margin-left: 20px;
+  font-size: 14px;
 }
 
 .project-name-mobile {
-  transform: scale(0.75);
   margin-left: 4px;
+  transform: scale(0.75);
 }
 
 .dataset-menu {
@@ -165,18 +164,18 @@ $bottom-offset: 10px;
     background-color: adjust-color(themed('primary-light'), $lightness: +7%);
   }
 
-  display: block;
   position: absolute;
   top: 84px;
-  height: 36px;
+  display: block;
   width: 100%;
+  height: 36px;
   text-align: left;
   border-top: 1px solid #3d3e38; // TODO: check this
 }
 
 .processing-type-text {
-  font-size: 16px;
   margin: 0 10px;
+  font-size: 16px;
 }
 
 .processing-type-count {
@@ -190,12 +189,12 @@ $bottom-offset: 10px;
     border-bottom-color: themed('primary-dark');
   }
 
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
   z-index: 10;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
 }
 
 .mobile-tab-selector {
@@ -219,16 +218,16 @@ $bottom-offset: 10px;
 }
 
 .docs-div {
-  cursor: pointer;
   flex: 0 1 auto;
-  margin-right: 20px;
   margin-top: 2px;
+  margin-right: 20px;
+  cursor: pointer;
 }
 
 .feedback-div {
-  cursor: pointer;
   flex: 0 1 auto;
   width: 133px;
+  cursor: pointer;
 }
 
 .header-link {
@@ -247,8 +246,8 @@ $bottom-offset: 10px;
   position: absolute;
   top: 53px;
   right: 130px;
-  text-align: right;
   float: right;
+  text-align: right;
   cursor: pointer;
 }
 
@@ -257,8 +256,8 @@ $bottom-offset: 10px;
     color: themed('dark-secondary-text');
   }
 
-  font-style: italic;
   font-size: 14px;
+  font-style: italic;
   line-height: 12px;
 }
 
@@ -268,15 +267,15 @@ $bottom-offset: 10px;
   }
 
   position: absolute;
-  display: block;
   top: $header-height;
+  display: block;
+  width: 100%;
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
-  width: 100%;
-  overflow-y: auto !important;
-  overflow-x: hidden;
   padding: 0;
   margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto !important;
 
   /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
   .mat-dialog-content-2 {
@@ -306,15 +305,15 @@ $bottom-offset: 10px;
 .content-top-area {
   display: flex;
   flex-flow: row wrap;
+  height: 100%;
   padding: 10px 16px;
   border-bottom: solid 2px grey;
-  height: 100%;
 }
 
 .top-item {
   flex: 1 0 auto;
-  height: 100%;
   min-width: 200px;
+  height: 100%;
 }
 
 .content-bottom-area {
@@ -330,8 +329,8 @@ $bottom-offset: 10px;
 }
 
 .bottom-item {
-  height: 100%;
   width: 100%;
+  height: 100%;
 }
 
 .mat-mdc-dialog-actions {
@@ -340,12 +339,12 @@ $bottom-offset: 10px;
   }
 
   position: absolute;
+  bottom: $bottom-offset;
   display: flex;
   width: 100%;
   height: $footer-height;
-  bottom: $bottom-offset;
-  margin-bottom: 0;
   padding: 0;
+  margin-bottom: 0;
 }
 
 .hyp3-footer {
@@ -382,9 +381,9 @@ $bottom-offset: 10px;
   }
 
   flex: none;
+  align-self: center;
   margin-right: 10px;
   margin-left: 10px;
-  align-self: center;
   font-size: 14px;
 }
 
@@ -413,18 +412,18 @@ $bottom-offset: 10px;
   justify-content: center;
   width: 100%;
   min-height: 300px;
-  border-style: solid;
   font-size: 25px;
   font-weight: bold;
   background-color: grey;
+  border-style: solid;
 }
 
 .resize-handle-top,
 .resize-handle-bottom {
   position: absolute;
+  width: 100%;
   height: 5px;
   cursor: row-resize;
-  width: 100%;
 }
 
 .resize-handle-top {
@@ -438,9 +437,9 @@ $bottom-offset: 10px;
 .resize-handle-left,
 .resize-handle-right {
   position: absolute;
+  width: 5px;
   height: 100%;
   cursor: col-resize;
-  width: 5px;
 }
 
 .resize-handle-left {
@@ -461,8 +460,8 @@ $bottom-offset: 10px;
   }
 
   height: 32px;
-  font-size: 12px;
   margin: -4px 0 6px;
+  font-size: 12px;
 }
 
 .hyp3-url-mobile {

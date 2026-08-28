@@ -15,8 +15,8 @@
 $theme-map: null;
 
 body {
-  overflow: hidden;
   position: fixed;
+  overflow: hidden;
 }
 
 * {
@@ -31,14 +31,14 @@ body {
   }
 
   position: relative;
-  margin: 0;
+  width: 80vw;
+  min-width: 350px;
+  height: 86vh;
+  min-height: 500px;
   padding: 0;
+  margin: 0;
   overflow: hidden;
   resize: both;
-  width: 80vw;
-  height: 86vh;
-  min-width: 350px;
-  min-height: 500px;
 }
 
 #processingQueueDialog {
@@ -48,23 +48,23 @@ body {
   }
 
   position: relative;
-  margin: 0;
+  width: 80vw;
+  min-width: 360px;
+  height: 86vh;
+  min-height: 600px;
   padding: 0 0 10px !important;
   padding-right: 0 !important;
+  margin: 0;
   overflow: hidden;
   resize: both;
-  width: 80vw;
-  height: 86vh;
-  min-width: 360px;
-  min-height: 600px;
 }
 
 #preferencesDialog {
   width: 80vw;
-  max-width: 100vw;
-  max-height: 100vh;
   min-width: 350px;
+  max-width: 100vw;
   min-height: 500px;
+  max-height: 100vh;
 }
 
 $d-height: 550px;
@@ -74,8 +74,8 @@ $d-height: 550px;
     background: themed('primary-light') !important;
   }
 
-  resize: none;
-  overflow: hidden;
   height: $d-height !important;
   max-height: $d-height !important;
+  overflow: hidden;
+  resize: none;
 }

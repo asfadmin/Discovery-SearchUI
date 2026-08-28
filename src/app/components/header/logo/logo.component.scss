@@ -3,8 +3,8 @@
 
 %card-base {
   @include themify($themes) {
-    background-color: themed('primary');
     color: themed('dark-primary-text');
+    background-color: themed('primary');
   }
 
   border-radius: 0;
@@ -26,28 +26,28 @@
 
 .logo-card {
   @include themify($themes) {
-    background-color: themed('primary-light');
     color: themed('background-white');
+    background-color: themed('primary-light');
   }
 
-  padding: 0 8px 0 0 !important;
-  flex: 1 1 0%;
   box-sizing: border-box;
+  flex: 1 1 0%;
+  padding: 0 8px 0 0 !important;
 
   .header {
-    font-size: 20px;
-    line-height: 33px;
-    font-weight: 400;
-    letter-spacing: 0.02em;
     margin-top: -10px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 33px;
+    letter-spacing: 0.02em;
   }
 
   .subhead {
-    font-size: 14px;
-    line-height: 15px;
-    font-weight: 400;
-    letter-spacing: 0.1em;
     margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0.1em;
   }
 
   p {
@@ -66,18 +66,18 @@ $icon-size: 36px;
 
 .menu-toggle-button {
   @include themify($themes) {
-    background-color: themed('primary');
     color: themed('dark-primary-text');
+    background-color: themed('primary');
   }
 
-  box-shadow: none !important;
-  cursor: pointer;
-  border: none;
-  text-align: center;
-  vertical-align: center;
-  border-right: 1px solid transparent;
   margin-top: 19px;
   margin-left: 8px;
+  vertical-align: center;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  border-right: 1px solid transparent;
+  box-shadow: none !important;
 }
 
 .toggle-icon {
@@ -85,23 +85,23 @@ $icon-size: 36px;
 }
 
 .toggle-text {
-  line-height: 0;
   width: 100%;
+  line-height: 0;
 }
 
 .banner-area {
-  overflow: hidden;
   position: relative;
   height: 100%;
+  overflow: hidden;
 }
 
 .banner-image {
-  width: calc(100% - 228px);
-  height: auto;
   position: absolute;
   top: 0;
   bottom: calc(100% - 120px);
   left: 0;
+  width: calc(100% - 228px);
+  height: auto;
   margin: auto;
   mix-blend-mode: multiply;
 }
@@ -118,12 +118,12 @@ $icon-size: 36px;
 }
 
 .branding-block {
+  box-sizing: border-box;
+  flex: 1 1 130px;
+  min-width: 130px;
+  max-width: 130px;
   padding-top: 0;
   margin-left: 10px;
-  flex: 1 1 130px;
-  box-sizing: border-box;
-  max-width: 130px;
-  min-width: 130px;
 }
 
 .mat-mdc-card {

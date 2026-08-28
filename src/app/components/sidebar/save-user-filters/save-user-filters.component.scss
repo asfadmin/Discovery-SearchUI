@@ -1,19 +1,19 @@
 @use "asf-theme-variables" as *;
 
 .saved-filters {
-  left: 0;
   position: static;
   top: 32px;
+  left: 0;
   min-width: 600px;
   max-width: 900px;
 }
 
 .saved-filters-presets-mobile {
   position: static;
-  height: 100%;
-  left: 0;
   top: 32px;
+  left: 0;
   width: 100%;
+  height: 100%;
 }
 
 .saved-filters-presets__header,
@@ -44,9 +44,9 @@
     background-color: themed('background-white');
   }
 
+  width: 100%;
   max-height: 100%;
   overflow-y: auto;
-  width: 100%;
 }
 
 .saved-filters-presets-row:nth-child(even) {
@@ -60,30 +60,30 @@
     border-bottom-color: themed('primary');
   }
 
-  height: 70px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  height: 70px;
   padding-top: 0;
-  padding-left: 15px;
   padding-right: 15px;
+  padding-left: 15px;
   border-bottom-style: solid;
   border-bottom-width: 1px;
 }
 
 .saved-filters-presets__header-title {
-  font-size: 24px;
   display: flex;
   flex: 1 1 100%;
   max-width: 50%;
+  font-size: 24px;
 }
 
 .saved-filters-presets__header-actions {
   display: flex;
   justify-content: space-between;
-  padding-top: 15px;
   height: 100%;
+  padding-top: 15px;
 }
 
 .saved-filters-presets__subhead {
@@ -93,11 +93,11 @@
 
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding-top: 15px;
-  padding-left: 15px;
   padding-right: 15px;
+  padding-left: 15px;
 }
 
 .saved-filters-presets__filter-form {
@@ -115,10 +115,11 @@
 .saved-filters-presets__footer,
 .saved-filters-presets__footer-mobile {
   @include themify($themes) {
-    border-top-color: themed('primary');
     background-color: themed('primary-light');
+    border-top-color: themed('primary');
   }
 
+  z-index: 1;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -126,12 +127,11 @@
   height: 60px;
   border-top-style: solid;
   border-top-width: 1px;
-  z-index: 1;
 }
 
 .saved-filters-presets__footer-mobile {
-  bottom: 0;
   position: absolute;
+  bottom: 0;
 }
 
 .close-icon {
@@ -152,8 +152,8 @@
   }
 
   display: flex;
-  margin-right: 15px;
   height: fit-content;
+  margin-right: 15px;
 }
 
 .content-wrapper {
@@ -169,32 +169,32 @@
 }
 
 .header-view {
-  padding: 10px 10px 10px 60px;
-  height: 100px;
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
+  justify-content: space-between;
+  height: 100px;
+  padding: 10px 10px 10px 60px;
   word-break: break-all;
 }
 
 .filter-expansion-panel {
-  width: 75%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  width: 75%;
 }
 
 .filter-apply-button {
   width: 25%;
-  margin-right: 25px;
   margin-top: 10px;
+  margin-right: 25px;
 }
 
 .saved-filter {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 7px 10px;
   margin: 0;
 }
@@ -207,8 +207,8 @@
 }
 
 .expand-arrow {
-  margin-right: 20px;
   margin-top: -2px;
+  margin-right: 20px;
 }
 
 .expand-arrow--icon {

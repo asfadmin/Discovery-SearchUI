@@ -35,9 +35,9 @@ hr {
 }
 
 .mat-mdc-icon-button {
+  min-width: 60px;
   height: 36px;
   line-height: 36px;
-  min-width: 60px;
 }
 
 .mat-mdc-list-item {
@@ -52,9 +52,9 @@ hr {
     background-color: themed('primary-dark');
   }
 
+  height: 1px;
   background-image: none;
   border: none;
-  height: 1px;
   opacity: 1;
 }
 
@@ -71,8 +71,8 @@ hr {
     background-color: themed('background-white') !important;
   }
 
-  font-weight: 400;
   height: auto;
+  font-weight: 400;
 }
 
 .disabled {
@@ -86,8 +86,8 @@ hr {
 }
 
 .menu-item-content {
-  white-space: normal;
   flex: 7;
+  white-space: normal;
 }
 
 .item-content {
@@ -103,15 +103,15 @@ hr {
     color: themed('dark-primary-text');
   }
 
-  line-height: 22px;
-  font-size: 18px;
   margin-bottom: 12px;
+  font-size: 18px;
+  line-height: 22px;
 }
 
 .menu-item-aside {
   flex: 3;
-  text-align: center;
   align-items: center;
+  text-align: center;
 }
 
 .menu-item-icon {

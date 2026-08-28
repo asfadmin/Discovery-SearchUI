@@ -22,53 +22,53 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .header--layout {
+  width: 100%;
+  min-width: 100%;
   height: 100%;
   min-height: 100%;
-  min-width: 100%;
-  width: 100%;
 }
 
 .header-logo--layout {
-  flex: 1 1 auto;
   box-sizing: border-box;
+  flex: 1 1 auto;
 }
 
 .header-inner--layout {
+  width: 100%;
+  min-width: 100%;
   height: 100%;
   min-height: 100%;
-  min-width: 100%;
-  width: 100%;
 }
 
 .breadcrumb-filter {
-  width: 900px;
-  max-width: 100%;
-  min-width: 300px;
-  height: auto;
   position: fixed;
   top: 100px;
   z-index: 2;
-  margin: 0;
+  width: 900px;
+  min-width: 300px;
+  max-width: 100%;
+  height: auto;
   padding: 3px 16px 25px;
+  margin: 0;
 }
 
 .breadcrumb {
   @extend .mat-form-field !optional;
   @include fx-flex(auto);
 
-  padding-top: 15px;
-  margin-left: 5px;
-  margin-right: 5px;
   height: 70px;
+  padding-top: 15px;
+  margin-right: 5px;
+  margin-left: 5px;
   font-size: $asf-font-size;
   line-height: $asf-line-height;
 }
 
 .max-results {
-  text-align: left;
-  font-size: 14px;
   margin-top: -5px;
+  font-size: 14px;
   line-height: 28px;
+  text-align: left;
 }
 
 .additional-filters {
@@ -86,9 +86,9 @@ $config: mat.m2-define-legacy-typography-config();
     color: themed('dark-secondary-text');
   }
 
+  margin-top: 18px;
   margin-left: 0;
   line-height: 12px;
-  margin-top: 18px;
 }
 
 .selected {
@@ -111,14 +111,14 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .copy-icon {
-  font-size: 16px;
-  margin-left: 10px;
   padding: 0;
+  margin-left: 10px;
+  font-size: 16px;
 }
 
 .additional-aoi-toggle {
-  margin-left: 3px;
   padding: 0;
+  margin-left: 3px;
 }
 
 .search-dialog-button {
@@ -150,10 +150,10 @@ $config: mat.m2-define-legacy-typography-config();
     color: themed('primary-light');
   }
 
-  height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 50px;
 }
 
 .mobile-icon-cluster {
@@ -163,20 +163,19 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .langSelect-div {
-  display: inline-block;
   position: absolute;
   top: -3px;
   right: 25px;
+  display: inline-block;
 }
 
 .langSelect-select {
-  border: none;
   width: auto;
   font-size: 11px;
+  background-color: inherit;
+  border: none;
 
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
-
-  background-color: inherit;
 }

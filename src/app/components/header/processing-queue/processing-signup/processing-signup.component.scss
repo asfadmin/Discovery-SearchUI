@@ -7,14 +7,14 @@
 }
 
 .data-list b {
-  width: 120px;
   display: inline-block;
+  width: 120px;
 }
 
 .list-item {
-  overflow-wrap: break-word;
-  overflow: visible !important;
   height: auto !important;
+  overflow: visible !important;
+  overflow-wrap: break-word;
 }
 
 .list-item-content {
@@ -26,10 +26,10 @@
 
 .container {
   display: flex;
-  justify-content: space-around;
-  align-items: start;
-  height: 100%;
   flex-wrap: wrap;
+  align-items: start;
+  justify-content: space-around;
+  height: 100%;
 }
 
 .form-submit-button-container {

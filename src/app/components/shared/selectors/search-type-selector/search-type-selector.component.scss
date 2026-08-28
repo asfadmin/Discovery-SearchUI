@@ -8,10 +8,10 @@
 
 .menu-item-icon {
   @include themify($themes) {
-    color: themed("dark-primary-text");
-    font-size: 50px !important;
-    height: 50px !important;
     width: 50px !important;
+    height: 50px !important;
+    font-size: 50px !important;
+    color: themed("dark-primary-text");
   }
 
   @include md-icon-size(50px);
@@ -70,8 +70,8 @@
     color: themed("blue-link");
   }
 
-  font-weight: 400;
   font-style: italic;
+  font-weight: 400;
 }
 
 .limitTextHeight {
@@ -118,13 +118,13 @@
     color: themed("dark-primary-text");
   }
 
-  font-size: 16px;
-  font-weight: 400;
-  text-align: left;
-  font-style: normal;
   padding: 0;
   margin: 0;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
   line-height: 29px;
+  text-align: left;
 }
 
 .menu-button-wrapper {
@@ -137,26 +137,26 @@
 }
 
 .text-underline {
-  border: none;
   height: 1px;
   color: rgb(0 0 0 / 42%); /* old IE */
   background-color: rgb(0 0 0 / 42%); /* Modern Browsers */
+  border: none;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
 .mat-select-arrow {
+  display: inline-flex;
   width: 0;
   height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid;
   margin: 0 4px 3px 10px;
-  display: inline-flex;
+  border-top: 5px solid;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
 }
 
 .info-text {
-  font-style: italic;
   font-size: 14px;
+  font-style: italic;
 }
 
 .mat-mdc-card-actions {
@@ -168,9 +168,9 @@
 }
 
 .mobile-search-item {
-  margin: 0;
-  padding: 3px 10px;
   height: 40px;
+  padding: 3px 10px;
+  margin: 0;
   line-height: 30px;
 }
 
@@ -190,9 +190,9 @@
 
 :host {
   .mobile-button-wrapper {
-    transform: none !important;
-    margin-top: 0 !important;
     min-width: 112px;
+    margin-top: 0 !important;
+    transform: none !important;
   }
 }
 
@@ -212,15 +212,15 @@
 }
 
 ::ng-deep .enable-search-type-on-demand .icon-size {
-  opacity: 1;
-  color: black !important;
   font-weight: bold !important;
+  color: black !important;
+  opacity: 1;
 }
 
 .enable-search-type-on-demand .icon-size {
-  opacity: 1;
-  color: black;
   font-weight: bold;
+  color: black;
+  opacity: 1;
 }
 
 .login-prompt {
@@ -250,16 +250,16 @@
 }
 
 .disclaimer-link {
-  display: inline-block;
-  font-size: 12px;
-  font-style: italic;
-  color: grey;
-  cursor: pointer;
-  pointer-events: auto;
-  margin-left: 10px;
   position: relative;
   top: 2px;
   z-index: 10;
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 12px;
+  font-style: italic;
+  color: grey;
+  pointer-events: auto;
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;

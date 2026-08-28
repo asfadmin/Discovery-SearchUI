@@ -10,12 +10,12 @@
     background-color: themed('primary-light');
   }
 
-  padding: 10px 0 !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: move;
-  text-align: center;
+  padding: 10px 0 !important;
   font-size: x-large !important;
+  text-align: center;
+  cursor: move;
   border-bottom: 1px solid $asf-primary-dark;
 }

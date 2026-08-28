@@ -1,8 +1,8 @@
 @use 'asf-theme-variables' as *;
 
 .list-viewport {
-  overflow: hidden auto;
   height: 100%;
+  overflow: hidden auto;
 
   .cdk-virtual-scroll-content-wrapper {
     // position: relative;
@@ -36,21 +36,21 @@
 }
 
 .metric-flex-field {
-  flex: 1 0 60px;
   float: right;
+  flex: 1 0 60px;
   text-align: right;
 }
 
 .mobile-baseline.metric-flex-field {
-  flex: 1 0 45px;
   float: right;
+  flex: 1 0 45px;
   text-align: right;
 }
 
 .cart-flex-field {
-  margin-left: 5px;
-  flex: 1 0 auto;
   float: left;
+  flex: 1 0 auto;
+  margin-left: 5px;
   text-align: left;
 }
 
@@ -65,10 +65,10 @@
 }
 
 .date-time {
-  font-size: 14px !important;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 14px !important;
 }
 
 .mobile-size .mat-mdc-list-base .mat-mdc-list-item {

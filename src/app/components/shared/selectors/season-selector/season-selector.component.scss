@@ -19,16 +19,16 @@
 
 .buttons {
   display: flex;
-  justify-content: space-around;
   align-items: center;
+  justify-content: space-around;
 
   button {
-    border-radius: 4px !important;
-    min-width: 0;
     width: 42px;
-    line-height: 21px;
+    min-width: 0;
     padding: 5px;
     margin: 5px;
+    line-height: 21px;
+    border-radius: 4px !important;
   }
 }
 

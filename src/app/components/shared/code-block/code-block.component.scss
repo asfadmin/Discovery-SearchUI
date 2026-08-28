@@ -22,18 +22,18 @@
 }
 
 .code-header {
-  font-size: 16px;
-  font-style: italic;
   display: flex;
   align-items: center;
   padding-top: 1em;
   padding-bottom: 0.25em;
   margin-bottom: 0.4em;
+  font-size: 16px;
+  font-style: italic;
   border-radius: 5px;
 
   @include themify($themes) {
-    border-bottom-width: 1pt;
     border-bottom-style: solid;
+    border-bottom-width: 1pt;
     border-image: linear-gradient(
         to right,
         themed('dark-disabled-text'),

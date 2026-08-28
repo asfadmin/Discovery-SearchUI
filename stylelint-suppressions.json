@@ -244,9 +244,6 @@
     }
   },
   "src/app/components/shared/project-name-dialog/project-name-dialog.component.scss": {
-    "declaration-block-no-shorthand-property-overrides": {
-      "count": 1
-    },
     "selector-class-pattern": {
       "count": 1
     }

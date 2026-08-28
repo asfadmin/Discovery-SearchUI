@@ -5,14 +5,18 @@
 }
 
 .map-legend {
-  // position: absolute;
-  margin-bottom: 7px;
-  margin-left: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
   width: 170px;
   height: 20px;
   padding: 0;
-  color: white;
+
+  // position: absolute;
+  margin-bottom: 7px;
+  margin-left: 40px;
   font-size: 12px;
+  color: white;
   background-image: linear-gradient(to right,
         rgb(0 18 97),
         rgb(3 62 125),
@@ -26,16 +30,13 @@
         rgb(89 0 8),
   );
   border-radius: 4px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .layout {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 
   // margin: 0;
   // width: 100px;

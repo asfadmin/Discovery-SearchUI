@@ -5,8 +5,8 @@
 .saved-search {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 7px 10px;
   margin: 0;
 }
@@ -19,16 +19,16 @@
 }
 
 .expand-arrow {
-  margin-right: 20px;
   margin-top: -2px;
+  margin-right: 20px;
 }
 
 .expand-arrow--icon {
-  font-size: 38px;
   display: flex;
   place-content: center center;
-  height: 38px;
   width: 38px;
+  height: 38px;
+  font-size: 38px;
 }
 
 .edit-icon {
@@ -49,16 +49,16 @@
 }
 
 .search-action {
-  margin: 0 !important;
   padding: 0 !important;
+  margin: 0 !important;
   background-color: inherit;
 }
 
 .detailed-view {
-  padding: 0 10px 15px 60px;
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 10px 15px 60px;
   word-break: break-all;
 }
 

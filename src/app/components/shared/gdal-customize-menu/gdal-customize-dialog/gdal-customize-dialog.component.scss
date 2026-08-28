@@ -16,9 +16,9 @@
 }
 
 .gdal-export-wrapper {
-  overflow-x: hidden;
   height: 100%;
   padding: 1em;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -26,10 +26,10 @@ h1 {
 }
 
 .subtitle {
-  font-style: italic;
   display: flex;
   justify-content: center;
   width: 100%;
+  font-style: italic;
 }
 
 .gdal-dataset {
@@ -40,10 +40,10 @@ h1 {
 }
 
 .gdal-dataset-name {
-  white-space: nowrap;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
+  white-space: nowrap;
 }
 
 .gdal-dataset-chip {
@@ -51,18 +51,18 @@ h1 {
     color: themed('dark-primary-text');
   }
 
-  font-style: italic;
+  max-width: 100%;
+  height: fit-content;
+  padding: 0.4em;
+  text-overflow: ellipsis;
   font-size: 0.8rem;
+  font-style: italic;
+  white-space: nowrap;
   background: rgb(0 0 0 / 7.5%);
+  border-radius: 5px;
   box-shadow:
     0 2px 5px rgb(0 0 0 / 30%),
     0 -1px 2px rgb(0 0 0 / 15%);
-  height: fit-content;
-  padding: 0.4em;
-  border-radius: 5px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  max-width: 100%;
 }
 
 .gdal-dataset-path {
@@ -70,15 +70,15 @@ h1 {
     color: themed('dark-secondary-text');
   }
 
-  padding-left: 1em;
-  text-align: right;
-  font-size: 0.75rem;
   flex-shrink: 1;
   min-width: 0;
-  text-overflow: ellipsis;
   max-width: 100%;
-  white-space: nowrap;
+  padding-left: 1em;
   overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .flex-grow {
@@ -86,9 +86,9 @@ h1 {
 }
 
 .icon-row {
-  gap: 10px;
   display: flex;
   flex-direction: row;
+  gap: 10px;
   align-items: center;
 }
 
@@ -157,9 +157,9 @@ h1 {
 }
 
 .filename {
-  max-width: 100%;
-  min-width: 80%;
   flex-grow: 1;
+  min-width: 80%;
+  max-width: 100%;
 }
 
 .reproject {
@@ -192,11 +192,11 @@ h1 {
     background-color: themed('background-white');
   }
 
-  box-shadow: 0 -10px 10px -5px rgb(0 0 0 / 15%);
-  padding: 1em;
-  margin-top: 1em;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  padding: 1em;
+  margin-top: 1em;
+  box-shadow: 0 -10px 10px -5px rgb(0 0 0 / 15%);
 }

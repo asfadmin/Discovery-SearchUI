@@ -1,12 +1,12 @@
 .breadcrumb-filter {
-  max-width: 670px;
-  min-width: 500px;
-  height: auto;
   position: fixed;
   top: 100px;
   z-index: 1;
-  margin: 0;
+  min-width: 500px;
+  max-width: 670px;
+  height: auto;
   padding: 3px 16px 16px;
+  margin: 0;
 }
 
 .filter-view {
@@ -18,9 +18,9 @@
 }
 
 .options-clear-button {
-  border: none;
-  background: none;
   float: right;
+  background: none;
+  border: none;
 }
 
 .options-header {

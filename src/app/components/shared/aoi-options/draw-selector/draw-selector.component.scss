@@ -44,38 +44,38 @@
   }
 
   position: absolute;
-  bottom: -8px;
   right: -20px;
+  bottom: -8px;
   transform: rotate(-45deg);
 }
 
 .shape-select-button {
   @include themify($themes) {
-    background: themed('background-white');
-    color: themed('light-primary-text')
+    color: themed('light-primary-text');
+    background: themed('background-white')
 
   }
 
-  margin: 0;
-  padding: 0;
-  font-size: 18px !important;
-  line-height: 16px;
-  height: 27px !important;
-  width: 18px !important;
-  min-width: 53px !important;
-  border-radius: 4px !important;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 18px !important;
+  min-width: 53px !important;
+  height: 27px !important;
+  padding: 0;
+  margin: 0;
+  font-size: 18px !important;
+  line-height: 16px;
 
   // border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
+  border-radius: 4px !important;
 }
 
 .control-button {
   @include themify($themes) {
-    background: themed('background-white');
-    color: themed('light-primary-text')
+    color: themed('light-primary-text');
+    background: themed('background-white')
   }
 
   padding: 0 16px
@@ -88,8 +88,8 @@
 }
 
 .draw-toggle-wrapper {
-  margin: -2px 0 0 3px;
   display: block;
+  margin: -2px 0 0 3px;
   transform: scale(0.6);
 }
 

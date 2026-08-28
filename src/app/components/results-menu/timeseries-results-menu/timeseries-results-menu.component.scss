@@ -2,19 +2,19 @@
 @use "asf-theme-variables" as *;
 
 .ts-chart-row {
+  position: relative;
 	display: flex;
 	flex-direction: row;
 	height: calc(100%);
   margin-top: 12px;
   margin-right: 12px;
-  position: relative;
 }
 
 .ts-chart-card {
-	box-shadow: none;
-	height: 100%;
-	flex: 1 1 auto;
 	box-sizing: border-box;
+	flex: 1 1 auto;
+	height: 100%;
+	box-shadow: none;
 }
 
 #ts-chart-column {
@@ -29,14 +29,14 @@
 }
 
 .ts-criteria-button-toggle {
-	background: red;
 	font-size: 14px;
+	background: red;
 }
 
 .criteria-button-group {
-	outline: none;
 	width: auto;
 	line-height: 26px !important;
+	outline: none;
 }
 
 .ts-filter-row {
@@ -52,9 +52,10 @@
 }
 
 .ts-column-1 {
+	flex-grow: 0;
+
 	// flex-basis: 150px;
 	flex-shrink: 0;
-	flex-grow: 0;
 }
 
 .ts-column-2 {
@@ -62,9 +63,9 @@
 }
 
 .ts-list-card {
-	box-shadow: none !important;
 	box-sizing: border-box;
   flex: 1 1 0%;
+	box-shadow: none !important;
 }
 
 .ts-layer-list {
@@ -76,15 +77,15 @@
 .ts-layer-list-header {
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: flex-start;
+  justify-content: center;
 }
 
 .ts-scene-list-header {
-  justify-content: flex-start;
-  align-items: center;
-  flex-basis: 130px;
   flex-grow: 0;
+  flex-basis: 130px;
+  align-items: center;
+  justify-content: flex-start;
   max-height: 30px;
 
 //   max-width: 130px;
@@ -92,12 +93,12 @@
 
 .ts-metadata {
 	@include themify($themes) {
-		border-left: solid 1px themed('primary-light');
 		border-right: solid 2px themed('primary-light');
+		border-left: solid 1px themed('primary-light');
 	}
 
-	overflow: auto;
 	height: 100%;
+	overflow: auto;
 }
 
 .product-name {
@@ -119,19 +120,19 @@
 
 .chart-draggable-handle {
 	@include themify($themes) {
+		color: themed('primary-light');
 		background-color: themed('primary-light');
 		border-color: themed('primary-light');
-		color: themed('primary-light');
 	}
 
+	position: absolute;
+	top: 0;
+	left: 0;
 	display: flex;
 	align-items: center;
 	cursor: ew-resize;
 	border-style: solid;
 	border-radius: 5px;
-	position: absolute;
-	left: 0;
-	top: 0;
 }
 
 .ts-resize-handle-filler {
@@ -153,8 +154,8 @@
 
 .ts-header {
 	@include themify($themes) {
-		background-color: themed('primary-light');
-		color: themed('dark-primary-text')
+		color: themed('dark-primary-text');
+		background-color: themed('primary-light')
 	}
 
 	display: flex;
@@ -163,13 +164,13 @@
 	height: 50px;
 	padding-top: 0;
 	padding-bottom: 5px;
+	margin-top: -25px;
 	margin-bottom: 0;
 	font-family: Roboto,
 	sans-serif;
-	font-weight: 400;
 	font-size: 16px;
+	font-weight: 400;
 	text-align: center;
-	margin-top: -25px;
 	border-left: none;
 }
 
@@ -198,17 +199,17 @@
 }
 
 .toggle-group-wrapper--layout {
-	flex-direction: row;
 	box-sizing: border-box;
 	display: flex;
+	flex-direction: row;
 	place-content: stretch center;
 	align-items: stretch;
 }
 
 .ts-button-group {
-	max-width: fit-content;
-	flex: 1 1 0%;
 	box-sizing: border-box;
+	flex: 1 1 0%;
+	max-width: fit-content;
 }
 
 .ts-button-group-filler {
@@ -217,8 +218,8 @@
 }
 
 .ts-toggle-group {
-	flex: 1 1 0%;
 	box-sizing: border-box;
+	flex: 1 1 0%;
 }
 
 .button-group {
@@ -231,13 +232,13 @@
 		color: themed('dark-primary-text');
 	}
 
-	white-space: nowrap;
-	text-align: center;
-	flex-direction: row;
 	box-sizing: border-box;
 	display: flex;
+	flex-direction: row;
 	place-content: stretch center;
 	align-items: stretch;
+	text-align: center;
+	white-space: nowrap;
 }
 
 label {
@@ -245,8 +246,8 @@ label {
 }
 
 .info-icon {
-	margin-left: 10px;
 	margin-top: 4px;
+	margin-left: 10px;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
@@ -266,10 +267,10 @@ label {
 	position: relative;
 	top: 15%;
 	left: 90%;
-	border-radius: 50%;
 	display: grid;
 	place-items: center;
 	width: 30px;
+	border-radius: 50%;
 
 	@include themify($themes) {
 		background: darken(themed('background-white'), 15%);
@@ -281,13 +282,13 @@ label {
 }
 
 .ts-left-column-results {
-  overflow-x: auto;
   margin-left: 10px;
+  overflow-x: auto;
 }
 
 .ts-no-point-selected {
-  text-align: center;
   padding-top: 60px;
+  text-align: center;
 }
 
 .ts-wkt-icon {
@@ -295,16 +296,16 @@ label {
     color: darken(themed('dark-primary-text'), 25%);
   }
 
+  width: 18px;
+  margin: 0;
   font-size: 18px;
   line-height: 29px;
-  margin: 0;
-  width: 18px;
 }
 
 .ts-wkt-label {
-  margin-left: 5px;
   position: relative;
   top: -5px;
+  margin-left: 5px;
 }
 
 .ts-trash-can {
@@ -333,10 +334,10 @@ label {
 }
 
 .parent-checkbox-section {
-  margin: 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  margin: 0;
   overflow: hidden;
 }
 
@@ -366,10 +367,10 @@ span.parent-checkbox-section:hover .delete-all-btn2 {
 }
 
 ul {
-  list-style-type: none;
+  padding-left: 0;
   margin-top: 0;
   margin-bottom: 0;
-  padding-left: 0;
+  list-style-type: none;
 }
 
 // ::ng-deep .mdc-checkbox {
@@ -415,8 +416,8 @@ ul {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	overflow: hidden;
 	height: 45px;
+	overflow: hidden;
 }
 
 .loading-spinner {
@@ -451,16 +452,16 @@ ul {
 
 .data-credit {
   position: relative;
-  text-align: right;
   margin-top: -4px;
   font-size: 12px;
   font-style: italic;
   color: $asf-blue;
+  text-align: right;
 
   a {
-    cursor: pointer;
-    text-decoration: none;
     color: $asf-blue;
+    text-decoration: none;
+    cursor: pointer;
 
   }
 }
@@ -470,7 +471,7 @@ ul {
         color: themed('dark-primary-text');
     }
 
-  text-align: left;
   margin-bottom: 9px;
   margin-left: 20px;
+  text-align: left;
 }

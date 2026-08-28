@@ -5,14 +5,14 @@
 $config: mat.m2-define-legacy-typography-config();
 
 .mat-header-base {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border-width: 0 0 0.5px;
   border-style: solid;
+  border-width: 0 0 0.5px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 
   @include themify_non_host($themes) {
-    background-color: themed('primary-light');
     color: themed('dark-primary-text');
+    background-color: themed('primary-light');
     border-color: themed('primary');
   }
 }
@@ -30,16 +30,16 @@ $config: mat.m2-define-legacy-typography-config();
     @extend .mat-header-base;
 
     @include themify_non_host($themes) {
-      background-color: themed('primary-light');
       color: themed('dark-secondary-text');
+      background-color: themed('primary-light');
       border-color: themed('primary');
     }
   }
 }
 
 .mat-expansion-panel-header-title {
-  color: white;
   font-size: mat.m2-font-size($config, subheading-2);
+  color: white;
 }
 
 .mat-expansion-panel-header-description {

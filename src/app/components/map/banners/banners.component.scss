@@ -6,31 +6,31 @@
     background-color: themed("primary-light");
   }
 
-  pointer-events: auto;
   padding-top: 5px;
+  padding-right: 0;
   padding-bottom: 9px;
-  border-color: $asf-primary-dark;
-  border-width: 2px;
-  border-style: solid;
+  margin-bottom: 5px;
 
   // color: darken($asf-accent, 50%);
   margin-left: 0;
-  margin-bottom: 5px;
   line-height: 1.4;
-  padding-right: 0;
+  pointer-events: auto;
+  border-color: $asf-primary-dark;
+  border-style: solid;
+  border-width: 2px;
 }
 
 .banner-text {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  justify-content: space-between;
 }
 
 .inner-banner-text {
+  width: 100%;
+  height: fit-content;
   max-height: 67px;
   overflow-y: auto;
-  height: fit-content;
-  width: 100%;
 }
 
 .toastr-div {

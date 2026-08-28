@@ -39,23 +39,23 @@
     color: themed("dark-primary-text");
   }
 
-  font-size: 16px;
-  font-weight: 400;
-  text-align: left;
-  font-style: normal;
   padding: 0;
   margin: 0;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
   line-height: 29px;
+  text-align: left;
 }
 
 .mat-select-arrow {
+  display: inline-flex;
   width: 0;
   height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid;
   margin: 0 4px 3px 10px;
-  display: inline-flex;
+  border-top: 5px solid;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
 }
 
 .hr-wrapper {
@@ -64,10 +64,10 @@
 }
 
 .text-underline {
-  border: none;
   height: 1px;
   color: rgb(0 0 0 / 42%); /* old IE */
   background-color: rgb(0 0 0 / 42%); /* Modern Browsers */
+  border: none;
 }
 
 .option-description {
@@ -80,8 +80,8 @@
 }
 
 ::ng-deep .mat-mdc-menu-panel {
-  overflow: hidden;
   min-width: 130px;
+  overflow: hidden;
 }
 
 ::ng-deep .mat-mdc-menu-content {

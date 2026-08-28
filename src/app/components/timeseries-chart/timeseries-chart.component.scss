@@ -4,21 +4,21 @@ $chart-ctrl-top: 68px;
 $chart-ctrl-top-x: 70px;
 
 .chart-wrapper {
-  height: calc(100% - 50px);
-  width: 100%;
   display: flex;
+  width: 100%;
+  height: calc(100% - 50px);
 }
 
 #timeseriesChart {
-  height: 100%;
   width: 100%;
+  height: 100%;
 }
 
 .ts-chart-details {
   display: flex;
   flex-direction: row;
-  margin: 0 25px 0 45px;
   padding: 5px;
+  margin: 0 25px 0 45px;
   font-size: 14px;
   font-style: italic;
 }
@@ -35,8 +35,8 @@ $chart-ctrl-top-x: 70px;
 }
 
 .ts-best-fit-formulas .ts-best-fit-viewport {
-  height: 35px;
   width: 100%;
+  height: 35px;
   border: none;
 }
 
@@ -46,29 +46,28 @@ $chart-ctrl-top-x: 70px;
 }
 
 .ts-best-fit-item {
-  width: 343px;
-  height: 100%;
-
   // writing-mode: vertical-lr;
   display: flex;
   align-items: center;
-  margin-left: 10px;
+  width: 343px;
+  height: 100%;
   margin-right: 10px;
+  margin-left: 10px;
 }
 
 .ts-color-swatch {
   width: 15px;
   height: 15px;
   margin-right: 5px;
-  text-align: center;
-  color: black;
   font-weight: bolder;
+  color: black;
+  text-align: center;
 }
 
 ::ng-deep .cdk-virtual-scrollable {
+  contain: strict;
   overflow: auto clip;
   will-change: scroll-position;
-  contain: strict;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -86,9 +85,9 @@ $chart-ctrl-top-x: 70px;
 
 .ts-chart-label {
   @include themify_non_host($themes) {
-    fill: themed('dark-primary-text');
     overflow-x: visible;
     font-size: 14px;
+    fill: themed('dark-primary-text');
   }
 }
 
@@ -119,9 +118,9 @@ $chart-ctrl-top-x: 70px;
 .disp-spinner {
     position: absolute;
     display:grid;
-    height: 75%;
-    width: 100%;
     place-items: center;
+    width: 100%;
+    height: 75%;
 }
 
 .ts-chart-zoom {
@@ -135,31 +134,31 @@ $chart-ctrl-top-x: 70px;
 }
 
 .message-container{
-  text-align: center;
   padding-top: 50px;
   font-size: 18px;
+  text-align: center;
 }
 
 .icon-container {
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin: 20px auto;
-  padding: 10px;
+  justify-content: center;
   width: auto;
-  height: auto;
   max-width: 150px;
+  height: auto;
   max-height: 150px;
+  padding: 10px;
+  margin: 20px auto;
   border-radius: 10px;
 }
 
 .icon-container mat-icon {
-  font-size: 200px;
-  color: lightgray;
   width: auto;
   height: auto;
-  line-height: 1;
   overflow: visible;
+  font-size: 200px;
+  line-height: 1;
+  color: lightgray;
 }
 
 .no-data {

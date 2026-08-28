@@ -3,8 +3,8 @@
 @use 'deluxe-menu-2' as *;
 
 .dataset--layout {
-  white-space: normal;
   flex: 7;
+  white-space: normal;
 }
 
 .dataset-aside--layout {
@@ -21,8 +21,8 @@
 }
 
 .disclaimer {
-  font-size: large;
   margin-top: 10px;
+  font-size: large;
 }
 
 .item-content {

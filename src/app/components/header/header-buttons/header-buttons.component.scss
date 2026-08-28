@@ -36,11 +36,11 @@ $panel-shadow-padding: 6px; // Accommodates drawer-tab box-shadow
 }
 
 .external-link-icon {
-  font-size: 12px;
   width: 12px;
   height: 12px;
-  vertical-align: middle;
   margin-left: 2px;
+  font-size: 12px;
+  vertical-align: middle;
 }
 
 .storymap-icon {
@@ -76,8 +76,8 @@ $panel-shadow-padding: 6px; // Accommodates drawer-tab box-shadow
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-left: $panel-shadow-padding;
   padding-bottom: $panel-shadow-padding;
+  padding-left: $panel-shadow-padding;
   transform: translateX(calc(100% - #{$login-container-left-offset}));
   transition: transform 200ms ease-in-out;
   will-change: transform;
@@ -95,11 +95,11 @@ $panel-shadow-padding: 6px; // Accommodates drawer-tab box-shadow
   position: relative;
   left: $login-container-left-offset;
   z-index: 10;
-  height: $panel-button-height;
   display: flex;
   align-items: center;
-  margin-top: $panel-vertical-offset;
+  height: $panel-button-height;
   padding-right: $login-container-left-offset;
+  margin-top: $panel-vertical-offset;
 
   @include themify($themes) {
     background-color: themed('background-white');
@@ -124,16 +124,16 @@ $panel-shadow-padding: 6px; // Accommodates drawer-tab box-shadow
 .drawer-tab {
   position: relative;
   top: $drawer-tab-top-offset;
-  height: $drawer-tab-height;
-  width: $drawer-tab-width;
-  min-width: $drawer-tab-width;
-  padding: 0;
-  border-radius: 20px 0 0 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
+  width: $drawer-tab-width;
+  min-width: $drawer-tab-width;
+  height: $drawer-tab-height;
+  padding: 0;
   cursor: pointer;
+  border: none;
+  border-radius: 20px 0 0 20px;
   transition: background-color 0.15s ease;
 
   @include themify($themes) {
@@ -145,9 +145,9 @@ $panel-shadow-padding: 6px; // Accommodates drawer-tab box-shadow
     }
 
     .mat-icon {
-      font-size: $drawer-tab-width;
       width: $drawer-tab-width;
       height: $drawer-tab-width;
+      font-size: $drawer-tab-width;
       color: themed('dark-secondary-text');
     }
   }
