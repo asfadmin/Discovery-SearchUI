@@ -1,0 +1,893 @@
+{
+  "e2e/helpers.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 3
+    },
+    "no-useless-escape": {
+      "count": 4
+    }
+  },
+  "src/app/app.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/components/baseline-chart/baseline-chart.component.ts": {
+    "@typescript-eslint/no-this-alias": {
+      "count": 1
+    }
+  },
+  "src/app/components/filters-dropdown/baseline-filters/baseline-sliders/baseline-sliders.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/filters-dropdown/baseline-filters/baseline-sliders/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/filters-dropdown/baseline-filters/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/filters-dropdown/custom-products-filters/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/filters-dropdown/derived-datasets/derived-datasets.component.html": {
+    "@angular-eslint/template/alt-text": {
+      "count": 1
+    },
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/filters-dropdown/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/filters-dropdown/list-filters/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/filters-dropdown/list-filters/list-filters.component.ts": {
+    "no-prototype-builtins": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/dataset-header/dataset-header.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/header-buttons/header-buttons.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/header-buttons/header-buttons.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/components/header/header-buttons/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/header-buttons/preferences/preferences.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/logo/logo.component.html": {
+    "@angular-eslint/template/alt-text": {
+      "count": 2
+    },
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 2
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 2
+    }
+  },
+  "src/app/components/header/logo/logo.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/confirmation/confirmation.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/processing-options/dropdown-option/dropdown-option.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/processing-options/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/processing-options/processing-options.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/processing-queue-jobs/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/processing-queue-jobs/processing-queue-jobs.component.html": {
+    "@angular-eslint/template/alt-text": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/processing-queue.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 3
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 3
+    }
+  },
+  "src/app/components/header/processing-queue/processing-queue.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/components/header/processing-queue/processing-signup/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/queue/queue.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/queue/queue.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/components/map/banners/banners.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/map/displacement-layers/displacement-layers.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/components/map/displacement-layers/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/map/map-controls/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/map/map-controls/map-controls.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    },
+    "@angular-eslint/template/label-has-associated-control": {
+      "count": 5
+    },
+    "@angular-eslint/template/no-negated-async": {
+      "count": 3
+    }
+  },
+  "src/app/components/map/map-controls/map-controls.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 4
+    }
+  },
+  "src/app/components/map/map-controls/view-selector/view-selector.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/map/map.component.html": {
+    "@angular-eslint/template/alt-text": {
+      "count": 1
+    },
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 2
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 2
+    }
+  },
+  "src/app/components/map/map.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/baseline-results-menu/baseline-results-menu.component.html": {
+    "@angular-eslint/template/label-has-associated-control": {
+      "count": 4
+    }
+  },
+  "src/app/components/results-menu/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/results-menu.component.html": {
+    "@angular-eslint/template/no-negated-async": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/sbas-results-menu/sbas-results-menu.component.html": {
+    "@angular-eslint/template/label-has-associated-control": {
+      "count": 3
+    }
+  },
+  "src/app/components/results-menu/sbas-results-menu/sbas-sliders-two/sbas-sliders-two.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/sbas-results-menu/sbas-sliders/sbas-sliders.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scene-detail/image-dialog/browse-list/browse-list.component.html": {
+    "@angular-eslint/template/alt-text": {
+      "count": 1
+    },
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scene-detail/image-dialog/image-dialog.component.html": {
+    "@angular-eslint/template/alt-text": {
+      "count": 1
+    },
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scene-detail/image-dialog/image-dialog.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    },
+    "@typescript-eslint/no-this-alias": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scene-detail/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scene-detail/scene-detail.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 4
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 4
+    }
+  },
+  "src/app/components/results-menu/scene-files/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scene-files/scene-file/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scene-files/scene-file/scene-file.component.ts": {
+    "@angular-eslint/no-output-native": {
+      "count": 1
+    },
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scene-files/scene-file/scene-group-file/scene-group-file.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 2
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/scene-files/scene-file/scene-group-file/scene-group-file.component.ts": {
+    "@angular-eslint/no-output-native": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scene-files/scene-group-files/scene-file-gdal-dropdown/scene-file-gdal-dropdown.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 2
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/scenes-list-header/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scenes-list-header/scenes-list-header.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 2
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 2
+    },
+    "@angular-eslint/template/label-has-associated-control": {
+      "count": 9
+    },
+    "@angular-eslint/template/no-negated-async": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/scenes-list/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scenes-list/scene/baseline-scene-controls/baseline-scene-controls.component.ts": {
+    "@angular-eslint/no-output-on-prefix": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scenes-list/scene/scene-controls/scene-controls.component.ts": {
+    "@angular-eslint/no-output-on-prefix": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/scenes-list/scene/scene.component.html": {
+    "@angular-eslint/template/alt-text": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scenes-list/scenes-list.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 5
+    },
+    "no-prototype-builtins": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/timeseries-results-menu/timeseries-results-menu.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    },
+    "@angular-eslint/template/label-has-associated-control": {
+      "count": 1
+    },
+    "@angular-eslint/template/mouse-events-have-key-events": {
+      "count": 12
+    }
+  },
+  "src/app/components/results-menu/timeseries-results-menu/timeseries-results-menu.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 4
+    }
+  },
+  "src/app/components/sbas-chart/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/sbas-chart/sbas-chart.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 3
+    },
+    "@typescript-eslint/no-this-alias": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/aoi-options/aoi-options.component.ts": {
+    "@angular-eslint/no-output-native": {
+      "count": 1
+    },
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/aoi-options/file-upload/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/aoi-options/geocode-selector/geocode-selector.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/cart-toggle/cart-toggle.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/cart-toggle/cart-toggle.component.ts": {
+    "@angular-eslint/no-output-native": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/chart-modal/chart-modal.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/code-block/code-block.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/docs-modal/docs-modal.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 4
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 4
+    }
+  },
+  "src/app/components/shared/docs-modal/docs-modal.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/download-file-button/download-file-button.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 4
+    },
+    "no-prototype-builtins": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/max-results-selector/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/on-demand-add-menu/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/search-button/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/search-button/search-button.component.html": {
+    "@angular-eslint/template/no-negated-async": {
+      "count": 4
+    }
+  },
+  "src/app/components/shared/search-button/search-button.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/circle-slider/circle-slider.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 14
+    },
+    "@typescript-eslint/no-this-alias": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/dataset-selector/dataset-selector.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/dataset-selector/dataset/dataset.component.html": {
+    "@angular-eslint/template/alt-text": {
+      "count": 1
+    },
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/date-range/date-range.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/hyp3-job-type-selector/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/job-product-name-selector/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/job-status-selector/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/master-scene-selector/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/mission-selector/mission-selector.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/observation-panel-selector/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/product-type-selector/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/product-type-selector/product-type-selector.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 1
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/project-name-selector/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/sbas-overlap-selector/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/search-selector/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/search-type-selector/search-type-selector.component.html": {
+    "@angular-eslint/template/alt-text": {
+      "count": 3
+    },
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 2
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 2
+    }
+  },
+  "src/app/components/shared/selectors/search-type-selector/search-type-selector.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/short-name-selector/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/sidebar/save-user-filters/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/sidebar/save-user-filters/save-user-filter/save-user-filter.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 2
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 2
+    }
+  },
+  "src/app/components/sidebar/saved-searches/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/sidebar/saved-searches/saved-search/saved-search.component.html": {
+    "@angular-eslint/template/click-events-have-key-events": {
+      "count": 2
+    },
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 2
+    }
+  },
+  "src/app/components/sidebar/saved-searches/saved-search/search-filters/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/sidebar/sidebar.component.html": {
+    "@angular-eslint/template/interactive-supports-focus": {
+      "count": 1
+    }
+  },
+  "src/app/components/timeseries-chart/index.ts": {
+    "import/no-unresolved": {
+      "count": 1
+    }
+  },
+  "src/app/components/timeseries-chart/timeseries-chart-temporal-slider/timeseries-chart-temporal-slider.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 8
+    },
+    "@typescript-eslint/no-this-alias": {
+      "count": 1
+    }
+  },
+  "src/app/components/timeseries-chart/timeseries-chart.component.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 11
+    },
+    "@typescript-eslint/no-this-alias": {
+      "count": 1
+    }
+  },
+  "src/app/directives/context-menu.directive.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/directives/file-download.directive.ts": {
+    "no-useless-escape": {
+      "count": 2
+    }
+  },
+  "src/app/models/cmr-product.model.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/models/hyp3/hyp3-job-type.model.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/models/hyp3/hyp3.model.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/models/timeseries.model.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/models/url-parameter.model.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/pipes/dynamic-moment.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/pipes/join.pipe.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/pipes/polarization.pipe.ts": {
+    "no-prototype-builtins": {
+      "count": 1
+    }
+  },
+  "src/app/services/asf-api.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 6
+    }
+  },
+  "src/app/services/banner-api.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/services/download.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 3
+    }
+  },
+  "src/app/services/environment.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/services/gdal/gdal.service.ts": {
+    "no-useless-escape": {
+      "count": 1
+    }
+  },
+  "src/app/services/hyp3/hyp3-api.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 6
+    }
+  },
+  "src/app/services/hyp3/hyp3-job.service.spec.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/services/hyp3/hyp3-job.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 3
+    }
+  },
+  "src/app/services/map/draw.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/services/map/map.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 4
+    },
+    "@typescript-eslint/no-this-alias": {
+      "count": 1
+    }
+  },
+  "src/app/services/netcdf-service.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 3
+    },
+    "no-prototype-builtins": {
+      "count": 2
+    }
+  },
+  "src/app/services/notification.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/services/pair.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    },
+    "no-prototype-builtins": {
+      "count": 2
+    }
+  },
+  "src/app/services/product.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 4
+    },
+    "no-prototype-builtins": {
+      "count": 1
+    }
+  },
+  "src/app/services/property.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/services/saved-search.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/services/saver.provider.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 4
+    }
+  },
+  "src/app/services/search-params.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/services/user-data.service.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/store/charts/charts.action.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/store/charts/charts.reducer.ts": {
+    "no-prototype-builtins": {
+      "count": 1
+    }
+  },
+  "src/app/store/filters/filters.reducer.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/store/queue/queue.reducer.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/app/store/scenes/scenes.reducer.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 2
+    }
+  },
+  "src/app/store/search/search.effect.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 6
+    }
+  },
+  "src/app/store/selectors.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 8
+    }
+  },
+  "src/app/store/user/user.effect.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 3
+    }
+  },
+  "src/app/testing/product-factory.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  },
+  "src/polyfills.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    }
+  }
+}
