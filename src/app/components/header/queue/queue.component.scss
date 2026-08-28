@@ -29,6 +29,7 @@ $idk-pad: 21px;
   margin-right: -24px;
   margin-top: -44px;
   margin-top: 0;
+
   h1 {
     margin-top: 0;
   }
@@ -56,7 +57,6 @@ $idk-pad: 21px;
   padding-top: 0;
   border-top-style: solid;
   border-top-width: 1px;
-
   min-height: 100%;
   min-width: 100%;
   width: 100%;
@@ -211,9 +211,11 @@ button {
   margin-bottom: 0;
   padding: 0;
 }
+
 .mdc-dialog__title::before {
   display: none;
 }
+
 [mat-dialog-title] {
   padding: 18px 24px;
 
@@ -224,6 +226,7 @@ button {
 
   cursor: move;
   text-align: left;
+
   // height: $header-height;
 }
 
@@ -316,19 +319,24 @@ button {
   margin-top: 3px;
   margin-left: 16px;
 }
+
 .clipboard-button {
   margin-right: 15px !important;
   font-size: 16px !important;
+
   @include themify($themes) {
     color: themed("dark-primary-text");
   }
 }
+
 .download-button {
   margin: 0 !important;
 }
+
 .close-button {
   margin-left:0 !important;
   display: flex !important;
+
   @include themify($themes) {
     color: themed("dark-primary-text");
   }

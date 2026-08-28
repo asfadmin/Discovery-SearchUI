@@ -1,6 +1,7 @@
 @use "asf-theme-variables" as *;
 
 $light-grey: rgb(0 0 0 / 60%);
+
 .description-layout {
   display: flex;
 }
@@ -11,6 +12,7 @@ $light-grey: rgb(0 0 0 / 60%);
   font-size: 24px !important;
   height: 47px !important;
   margin-right: 0;
+
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
@@ -44,8 +46,10 @@ $light-grey: rgb(0 0 0 / 60%);
   @include themify_non_host($themes) {
     color: themed('blue');
   }
+
   font-weight: 400;
   font-style: italic;
+
   // color: $asf-blue;
 }
 
@@ -75,6 +79,7 @@ $light-grey: rgb(0 0 0 / 60%);
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+
   font-size: 14px;
   font-weight: 400;
   transform:
@@ -91,9 +96,11 @@ $light-grey: rgb(0 0 0 / 60%);
 .button-text {
   font-size: 16px;
   font-weight: 400;
+
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
+
   text-align: left;
   font-style: normal;
   padding: 0;
@@ -113,6 +120,7 @@ $light-grey: rgb(0 0 0 / 60%);
 .text-underline {
   border: none;
   height: 1px;
+
   @include themify($themes) {
     color: themed('dark-secondary-text');
     background-color: themed('dark-secondary-text');
@@ -151,8 +159,8 @@ $light-grey: rgb(0 0 0 / 60%);
 
 
 .mobile-button-wrapper {
-  //transform: scale(0.82);
-  //margin-top: -6px;
+  // transform: scale(0.82);
+  // margin-top: -6px;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version. */
@@ -191,6 +199,7 @@ $light-grey: rgb(0 0 0 / 60%);
   @include themify($themes) {
     color: themed('dark-disabled-text') !important;
   }
+
   font-weight: bold;
   line-height: 30px;
   font-size: 14px;
@@ -201,10 +210,12 @@ $light-grey: rgb(0 0 0 / 60%);
 .dataset-source {
   @include themify_non_host($themes) {
     color: themed('blue-link');
+
     a {
       color: themed('blue-link');
     }
   }
+
   padding-top: 22px;
   font-size: 12px;
 }

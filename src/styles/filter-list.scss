@@ -7,10 +7,7 @@ $config: mat.m2-define-legacy-typography-config();
 .mat-header-base {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  border-left-width: 0;
-  border-right-width: 0;
-  border-top-width: 0;
-  border-bottom-width: 0.5px;
+  border-width: 0 0 0.5px;
   border-style: solid;
 
   @include themify_non_host($themes) {
@@ -30,8 +27,8 @@ $config: mat.m2-define-legacy-typography-config();
   &:active,
   &:focus,
   &[aria-disabled="true"] {
-
     @extend .mat-header-base;
+
     @include themify_non_host($themes) {
       background-color: themed('primary-light');
       color: themed('dark-secondary-text');

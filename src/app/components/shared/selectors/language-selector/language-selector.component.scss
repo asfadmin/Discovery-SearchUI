@@ -1,5 +1,4 @@
 @use "@angular/material" as mat;
-
 @use "asf-theme-variables" as *;
 @use "flex-layout-sass/mixin" as *;
 
@@ -14,9 +13,11 @@
   border: none;
   width: auto;
   font-size: 11px;
+
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+
   background-color: inherit;
 }
 
@@ -32,7 +33,7 @@
 
   .mat-icon {
     font-size: 14px;
-    padding: 4px 0 0 0;
+    padding: 4px 0 0;
   }
 
   .icon-text {

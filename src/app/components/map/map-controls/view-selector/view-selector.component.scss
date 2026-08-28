@@ -6,6 +6,7 @@
       fill: themed('dark-primary-text');
     }
   }
+
   width: 19px;
   height: 19px;
   margin-right: 0;
@@ -26,6 +27,7 @@
     background: themed('background-white');
     color: themed('dark-primary-text');
   }
+
   margin: 0;
   font-size: 18px !important;
   height: 27px !important;
@@ -51,6 +53,7 @@
   @include themify($themes) {
     color: themed('primary');
   }
+
   position: absolute;
   bottom: -9px;
   right: -21px;

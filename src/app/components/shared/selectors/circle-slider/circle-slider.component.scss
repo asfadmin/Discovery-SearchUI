@@ -4,6 +4,7 @@
   @include themify($themes) {
     stroke: lighten(themed('primary'), 40%);
   }
+
   fill: none;
   stroke-width: 10px;
 }
@@ -12,6 +13,7 @@
   @include themify($themes) {
     stroke: themed('primary');
   }
+
   fill: none;
   stroke-width: 10px;
 }
@@ -42,6 +44,7 @@ figure {
   @include themify($themes) {
     stroke: lighten(themed('primary'), 40%);
   }
+
   stroke-width: 1px;
 }
 

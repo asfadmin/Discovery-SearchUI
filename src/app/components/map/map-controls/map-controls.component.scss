@@ -74,6 +74,7 @@ label {
 
 .control-icon {
   @include md-icon-size($asf-ribbon-icon-size);
+
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
@@ -87,6 +88,7 @@ label {
 .button-group-label {
   white-space: nowrap;
   text-align: center;
+
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }

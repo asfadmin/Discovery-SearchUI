@@ -48,7 +48,8 @@ $chart-ctrl-top-x: 70px;
 .ts-best-fit-item {
   width: 343px;
   height: 100%;
-  //writing-mode: vertical-lr;
+
+  // writing-mode: vertical-lr;
   display: flex;
   align-items: center;
   margin-left: 10px;
@@ -65,12 +66,12 @@ $chart-ctrl-top-x: 70px;
 }
 
 ::ng-deep .cdk-virtual-scrollable {
-  overflow-x: auto;
-  overflow-y: clip;
+  overflow: auto clip;
   will-change: scroll-position;
   contain: strict;
   -webkit-overflow-scrolling: touch;
 }
+
 ::ng-deep .timeseries-base {
   @include themify($themes) {
     fill: themed('blue-link');
@@ -111,8 +112,10 @@ $chart-ctrl-top-x: 70px;
 	@include themify($themes) {
 	  fill: lighten(themed('dark-secondary-text'),20%);
 	}
-	fill-opacity: 40%;
+
+	fill-opacity: 0.4;
 }
+
 .disp-spinner {
     position: absolute;
     display:grid;
@@ -120,11 +123,13 @@ $chart-ctrl-top-x: 70px;
     width: 100%;
     place-items: center;
 }
+
 .ts-chart-zoom {
   position: absolute;
   top: $chart-ctrl-top;
   right: 95px;
 }
+
 :host ::ng-deep .ts-reference-point {
   fill: red !important;
 }

@@ -16,6 +16,7 @@
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
   border-left: 1px #e0e0e0;
 }
 

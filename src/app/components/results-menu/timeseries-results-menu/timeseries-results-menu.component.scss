@@ -1,5 +1,4 @@
 @use "@angular/material" as mat;
-
 @use "asf-theme-variables" as *;
 
 .ts-chart-row {
@@ -19,7 +18,7 @@
 }
 
 #ts-chart-column {
-  //flex: 1 1 auto;
+  // flex: 1 1 auto;
   width: 100%;
   margin-left: 30px;
 }
@@ -53,7 +52,7 @@
 }
 
 .ts-column-1 {
-	//flex-basis: 150px;
+	// flex-basis: 150px;
 	flex-shrink: 0;
 	flex-grow: 0;
 }
@@ -69,9 +68,9 @@
 }
 
 .ts-layer-list {
-   //flex: 1 1 500px;
-  //flex-basis: 650px;
-  //flex-grow: 0;
+   // flex: 1 1 500px;
+  // flex-basis: 650px;
+  // flex-grow: 0;
 }
 
 .ts-layer-list-header {
@@ -87,6 +86,7 @@
   flex-basis: 130px;
   flex-grow: 0;
   max-height: 30px;
+
 //   max-width: 130px;
 }
 
@@ -372,13 +372,13 @@ ul {
   padding-left: 0;
 }
 
-//::ng-deep .mdc-checkbox {
+// ::ng-deep .mdc-checkbox {
 //  height: 7px;
-//}
+// }
 //
-//::ng-deep .mat-mdc-checkbox .mdc-checkbox__background {
+// ::ng-deep .mat-mdc-checkbox .mdc-checkbox__background {
 //  top: 4px
-//}
+// }
 
 // Fix for black circle appearing around checkbox
 ::ng-deep .mat-mdc-checkbox .mdc-checkbox__ripple,
@@ -469,6 +469,7 @@ ul {
     @include themify($themes) {
         color: themed('dark-primary-text');
     }
+
   text-align: left;
   margin-bottom: 9px;
   margin-left: 20px;

@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @use "asf-theme-variables" as *;
+
 $config: mat.m2-define-legacy-typography-config();
 
 #result-div {

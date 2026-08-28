@@ -1,4 +1,4 @@
-export interface AnalyticsEvent {
+export interface analyticsevent {
   name: string;
   value: string | boolean;
 }

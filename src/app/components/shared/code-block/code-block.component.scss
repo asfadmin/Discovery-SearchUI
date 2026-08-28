@@ -3,13 +3,13 @@
 
 .code-wrapper {
   position: relative;
-  padding: 0 1em 0 1em;
+  padding: 0 1em;
   border-radius: 15px;
-  box-shadow: 0 0 15px rgb(0, 0, 0, 0.3);
+  box-shadow: 0 0 15px rgb(0 0 0 / 30%);
 }
 
 .code {
-  padding: 0 0 0.5em 0;
+  padding: 0 0 0.5em;
   margin: 0;
   overflow-x: auto;
 }
@@ -30,6 +30,7 @@
   padding-bottom: 0.25em;
   margin-bottom: 0.4em;
   border-radius: 5px;
+
   @include themify($themes) {
     border-bottom-width: 1pt;
     border-bottom-style: solid;

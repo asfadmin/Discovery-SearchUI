@@ -10,6 +10,7 @@ $bottom-offset: 10px;
 
 [mat-dialog-title] {
   background: #369; // TODO: check this
+
   @include themify($themes) {
     color: themed('light-primary-text');
   }
@@ -45,7 +46,7 @@ $bottom-offset: 10px;
     header-bottom-color: themed('primary-dark');
   }
 
-  padding: 10px 0 0 0;
+  padding: 10px 0 0;
   border-bottom-style: solid;
   border-bottom-width: 1px;
   width: 100%;
@@ -123,6 +124,7 @@ $bottom-offset: 10px;
 
 .on-demand-icon {
   @include md-icon-size(72px);
+
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
@@ -169,9 +171,7 @@ $bottom-offset: 10px;
   height: 36px;
   width: 100%;
   text-align: left;
-  border-top-color: #3d3e38; // TODO: check this
-  border-top-width: 1px;
-  border-top-style: solid;
+  border-top: 1px solid #3d3e38; // TODO: check this
 }
 
 .processing-type-text {
@@ -236,6 +236,7 @@ $bottom-offset: 10px;
 
   a {
     text-decoration: underline;
+
     @include themify($themes) {
       color: themed('blue-link');
     }
@@ -304,8 +305,7 @@ $bottom-offset: 10px;
 
 .content-top-area {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   padding: 10px 16px;
   border-bottom: solid 2px grey;
   height: 100%;
@@ -321,7 +321,8 @@ $bottom-offset: 10px;
   display: flex;
   flex-direction: row;
   height: 100%;
-  //overflow-y: auto;
+
+  // overflow-y: auto;
 }
 
 .content-bottom-area-mobile {
@@ -461,11 +462,11 @@ $bottom-offset: 10px;
 
   height: 32px;
   font-size: 12px;
-  margin: -4px 0 6px 0;
+  margin: -4px 0 6px;
 }
 
 .hyp3-url-mobile {
-  margin: 17px 0 0 0;
+  margin: 17px 0 0;
 }
 
 .branding-block {

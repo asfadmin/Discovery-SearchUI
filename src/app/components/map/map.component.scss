@@ -8,10 +8,10 @@
 .on-demand-popup-menu {
     position: absolute;
     background-color: white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 4px rgb(0 0 0 / 20%);
     padding: 15px;
     border-radius: 10px;
-    border: 1px solid #cccccc;
+    border: 1px solid #ccc;
     bottom: 12px;
     left: -50px;
     min-width: 200px;
@@ -74,7 +74,6 @@ button {
 .ol-popup {
   position: absolute;
   filter: drop-shadow(0 1px 4px rgb(0 0 0 / 20%));
-  filter: drop-shadow(0 1px 4px rgb(0 0 0 / 20%));
   bottom: 12px;
   left: -50px;
 }
@@ -125,10 +124,7 @@ button {
 
 .mobile-map-controls-full {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -140,10 +136,7 @@ button {
 
 .mobile-controls-background {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   background: rgb(0 0 0 / 25%);
@@ -198,10 +191,7 @@ button {
 }
 
 ::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) button {
-  bottom: auto;
-  left: auto;
-  right: 1px;
-  top: 1px;
+  inset: 1px 1px auto auto;
 }
 
 .disclaimer-chip {
@@ -213,7 +203,7 @@ button {
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgb(0 0 0 / 25%);
   color: white;
   border-radius: 16px;
   font-size: 13px;
@@ -223,7 +213,7 @@ button {
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgb(0 0 0 / 90%);
   }
 
   .disclaimer-icon {

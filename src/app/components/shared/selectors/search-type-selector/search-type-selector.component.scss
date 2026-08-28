@@ -42,11 +42,11 @@
 }
 
 .menu-item-content {
-  //min-width: 400px;
+  // min-width: 400px;
 }
 
 .menu-item-aside {
-  //min-width: 130px;
+  // min-width: 130px;
 }
 
 .menu-item-aside--right {
@@ -178,12 +178,13 @@
   @include themify_non_host($themes) {
     color: themed("blue-link");
   }
+
   // color: $uaf-primary-blue;
 }
 
 .mobile-button-wrapper {
-  //transform: scale(0.82);
-  //margin-top: -6px;
+  // transform: scale(0.82);
+  // margin-top: -6px;
 
 }
 
@@ -241,6 +242,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);

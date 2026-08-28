@@ -34,6 +34,7 @@
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
   max-height: calc(100vh - 350px);
   overflow-y: auto;
 }
@@ -42,6 +43,7 @@
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
   max-height: calc(100vh - 350px);
   overflow-y: auto;
   width: 100%;
@@ -49,7 +51,7 @@
 
 .saved-searches-row:nth-child(odd) {
   @include themify($themes) {
-    background-color: lighten(themed('primary-light'), 15%) !important;//themed('background-white');
+    background-color: lighten(themed('primary-light'), 15%) !important;// themed('background-white');
   }
 }
 
@@ -57,6 +59,7 @@
   @include themify($themes){
     border-bottom-color: themed('primary');
   }
+
   height: 70px;
   display: flex;
   flex-direction: row;
@@ -72,9 +75,7 @@
 .saved-searches__header-title {
   font-size: 24px;
   display: flex;
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 100%;
+  flex: 1 1 100%;
   max-width: 50%;
 }
 
@@ -89,6 +90,7 @@
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -116,6 +118,7 @@
     background: themed('primary-light');
     border-top-color: themed('primary');
   }
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -138,6 +141,7 @@
   @include themify($themes) {
     color: themed('primary-light');
   }
+
   display: flex;
   margin: 6px;
 }
@@ -146,6 +150,7 @@
   @include themify($themes) {
     color: themed('primary-light');
   }
+
   display: flex;
   margin-right: 15px;
   height: fit-content;
@@ -160,5 +165,6 @@
   @include themify($themes) {
     color: themed('primary-light');
   }
+
   padding-left: 15px;
 }

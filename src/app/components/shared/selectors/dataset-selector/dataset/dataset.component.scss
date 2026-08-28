@@ -19,21 +19,26 @@
 .increase-right-margin {
   margin-right: 15px;
 }
+
 .disclaimer {
   font-size: large;
   margin-top: 10px;
 }
+
 .item-content {
   @include themify($themes) {
     color: themed('dark-primary-text') !important;
   }
+
   line-height: 18px;
 }
+
 .faint-text {
   @include themify_non_host($themes) {
     color: themed('dark-secondary-text');
   }
 }
+
 .menu-item-icon {
   img {
     @include themify($themes) {

@@ -5,6 +5,7 @@
     background: themed('background-white');
     color: themed('dark-primary-text');
   }
+
   margin: 0;
   padding: 0 0 0 3px;
   font-size: 18px !important;
@@ -17,6 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   span {
     height: 26px;
   }
@@ -35,6 +37,7 @@
   @include themify($themes) {
     color: themed('primary');
   }
+
   position: absolute;
   bottom: -13px;
   right: -19px;

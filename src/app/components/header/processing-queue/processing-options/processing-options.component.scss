@@ -4,6 +4,7 @@
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
   margin-top: 10px;
 }
 
@@ -42,7 +43,7 @@
 }
 
 .toggle-options {
-  //margin-right: 20px;
+  // margin-right: 20px;
 }
 
 .toggle-list,

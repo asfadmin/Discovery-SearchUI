@@ -6,6 +6,7 @@
     background-color: themed('primary');
     color: themed('dark-primary-text');
   }
+
   border-radius: 0;
 }
 
@@ -68,14 +69,13 @@ $icon-size: 36px;
     background-color: themed('primary');
     color: themed('dark-primary-text');
   }
+
   box-shadow: none !important;
   cursor: pointer;
   border: none;
   text-align: center;
   vertical-align: center;
-  border-right-color: transparent;
-  border-right-style: solid;
-  border-right-width: 1px;
+  border-right: 1px solid transparent;
   margin-top: 19px;
   margin-left: 8px;
 }

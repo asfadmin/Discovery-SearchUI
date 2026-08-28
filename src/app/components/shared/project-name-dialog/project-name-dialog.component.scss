@@ -14,7 +14,7 @@ app-project-name-dialog {
   }
 
   .dialog-subtitle {
-    margin: 4px 0 0 0;
+    margin: 4px 0 0;
     opacity: 0.7;
     font-size: 14px;
 
@@ -57,7 +57,7 @@ app-project-name-dialog {
   }
 
   .projects-label {
-    margin: 16px 0 8px 0;
+    margin: 16px 0 8px;
     opacity: 0.7;
     font-size: 14px;
 
@@ -68,7 +68,7 @@ app-project-name-dialog {
   }
 
   .projects-table-wrapper {
-    border: 1px solid rgb(0, 0, 0, 0.12);
+    border: 1px solid rgb(0 0 0 / 12%);
     border-radius: 4px;
     margin-bottom: 8px;
     overflow: hidden;
@@ -87,6 +87,7 @@ app-project-name-dialog {
       position: sticky;
       top: 0;
       z-index: 1;
+
       // Default light theme background
       background-color: white;
 
@@ -138,7 +139,7 @@ app-project-name-dialog {
     }
 
     .estimated-time {
-      margin: 8px 0 0 0;
+      margin: 8px 0 0;
       font-size: 13px;
       opacity: 0.7;
     }
@@ -183,7 +184,7 @@ app-project-name-dialog {
       margin: 0;
       padding-left: 20px;
       font-size: 13px;
-      border: 1px solid rgb(0, 0, 0, 0.12);
+      border: 1px solid rgb(0 0 0 / 12%);
       border-radius: 4px;
       padding: 8px 8px 8px 28px;
 

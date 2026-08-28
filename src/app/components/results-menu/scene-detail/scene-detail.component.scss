@@ -25,9 +25,11 @@ a {
 
   overflow-x: hidden !important;
 }
+
 .detail-card-info-mobile {
   height: auto;
 }
+
 .scrollable {
   overflow: auto;
 }
@@ -70,10 +72,11 @@ a {
       color: themed("dark-primary-text");
     }
   }
-  margin-left: -16px;
 
+  margin-left: -16px;
   width: calc(100% + 32px);
-  //box-shadow: #00000038 0 7px 18px;
+
+  // box-shadow: #00000038 0 7px 18px;
 
   mat-icon {
     margin-top: 4px;
@@ -144,7 +147,6 @@ a {
   flex-direction: row;
   box-sizing: border-box;
   display: flex;
-
   margin-bottom: 16px; // Add margin space for toolbar
 }
 

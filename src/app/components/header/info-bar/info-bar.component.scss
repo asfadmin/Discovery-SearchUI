@@ -1,5 +1,4 @@
 @use '@angular/material' as mat;
-
 @use 'asf-theme-variables' as *;
 
 $config: mat.m2-define-legacy-typography-config();
@@ -26,6 +25,7 @@ div span {
     background-color: themed('primary-light');
     border-top-color: themed('primary');
   }
+
   border-top-style: solid;
   border-top-width: 1px;
   line-height: 30px;
@@ -48,9 +48,11 @@ div span {
 
 .new-stuff {
   cursor: pointer;
+
   @include themify($themes) {
     color: themed('blue-link');
   }
+
   font-weight: bold;
   margin-right: 10px;
 }

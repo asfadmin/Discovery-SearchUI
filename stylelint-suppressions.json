@@ -1,0 +1,413 @@
+{
+  "src/app/components/baseline-chart/baseline-chart.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 4
+    }
+  },
+  "src/app/components/filters-dropdown/list-filters/list-filters.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 2
+    }
+  },
+  "src/app/components/header/dataset-header/dataset-header.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/header/header-buttons/preferences/preferences.component.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/header.component.scss": {
+    "scss/at-extend-no-missing-placeholder": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 5
+    }
+  },
+  "src/app/components/header/hyp3-header/hyp3-header.component.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/info-bar/info-bar.component.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    },
+    "selector-id-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/confirmation/confirmation.component.scss": {
+    "block-no-empty": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/processing-options/checkbox-option/checkbox-option.component.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/processing-options/dropdown-option/dropdown-option.component.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/processing-options/processing-options.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/header/processing-queue/processing-options/range-option/range-option.component.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/processing-options/toggle-option/toggle-option.component.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/header/processing-queue/processing-queue-jobs/processing-queue-jobs.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/header/processing-queue/processing-queue.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 1
+    },
+    "scss/operator-no-unspaced": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 3
+    }
+  },
+  "src/app/components/header/queue/queue.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/map/attributions/attributions.component.scss": {
+    "scss/at-extend-no-missing-placeholder": {
+      "count": 1
+    },
+    "scss/no-global-function-names": {
+      "count": 1
+    }
+  },
+  "src/app/components/map/displacement-layers/displacement-layers.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/map/map-controls/map-controls.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/map/map-controls/map-info/map-info.component.scss": {
+    "selector-class-pattern": {
+      "count": 3
+    }
+  },
+  "src/app/components/results-menu/baseline-results-menu/baseline-results-menu.component.scss": {
+    "selector-class-pattern": {
+      "count": 7
+    }
+  },
+  "src/app/components/results-menu/mobile-results-menu/mobile-results-menu.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/results-menu.component.scss": {
+    "selector-class-pattern": {
+      "count": 3
+    }
+  },
+  "src/app/components/results-menu/sbas-results-menu/sbas-results-menu.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 2
+    },
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/sbas-results-menu/sbas-sliders/sbas-sliders.component.scss": {
+    "selector-class-pattern": {
+      "count": 3
+    }
+  },
+  "src/app/components/results-menu/scene-detail/image-dialog/browse-list/browse-list.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/scene-detail/image-dialog/image-dialog.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 1
+    },
+    "declaration-property-value-keyword-no-deprecated": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 5
+    }
+  },
+  "src/app/components/results-menu/scene-detail/scene-detail.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/scene-files/scene-file/scene-file.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/scene-files/scene-files.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scene-search-toolbar/scene-search-toolbar.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 2
+    }
+  },
+  "src/app/components/results-menu/scenes-list-header/scenes-list-header.component.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/scenes-list/scene/baseline-scene-controls/baseline-scene-controls.component.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/results-menu/timeseries-results-menu/timeseries-results-menu.component.scss": {
+    "scss/comment-no-empty": {
+      "count": 1
+    },
+    "scss/no-global-function-names": {
+      "count": 6
+    },
+    "block-no-empty": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 5
+    }
+  },
+  "src/app/components/sbas-chart/sbas-chart.component.scss": {
+    "selector-id-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/aoi-options/aoi-options.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/shared/aoi-options/draw-selector/draw-selector.component.scss": {
+    "block-no-empty": {
+      "count": 2
+    }
+  },
+  "src/app/components/shared/aoi-options/file-upload/file-upload-dialog/file-upload-dialog.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 2
+    },
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/shared/chart-modal/chart-modal.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/shared/code-export/code-export.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 2
+    }
+  },
+  "src/app/components/shared/max-results-selector/api-link-dialog/api-link-dialog.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 2
+    }
+  },
+  "src/app/components/shared/project-name-dialog/project-name-dialog.component.scss": {
+    "declaration-block-no-shorthand-property-overrides": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/circle-slider/circle-slider.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 4
+    }
+  },
+  "src/app/components/shared/selectors/dataset-selector/dataset/dataset.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/shared/selectors/language-selector/language-selector.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/shared/selectors/path-selector/path-selector.component.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/product-science-selector/product-science-selector.component.scss": {
+    "block-no-empty": {
+      "count": 1
+    }
+  },
+  "src/app/components/shared/selectors/search-type-selector/search-type-selector.component.scss": {
+    "block-no-empty": {
+      "count": 1
+    },
+    "keyframes-name-pattern": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 5
+    }
+  },
+  "src/app/components/sidebar/save-user-filters/save-user-filter/save-user-filter.component.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/sidebar/save-user-filters/save-user-filters.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 21
+    }
+  },
+  "src/app/components/sidebar/saved-searches/saved-search/saved-search.component.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "src/app/components/sidebar/saved-searches/saved-searches.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 20
+    }
+  },
+  "src/app/components/timeseries-chart/timeseries-chart-export/timeseries-chart-export.component.scss": {
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/app/components/timeseries-chart/timeseries-chart-temporal-slider/timeseries-chart-temporal-slider.component.scss": {
+    "selector-class-pattern": {
+      "count": 6
+    }
+  },
+  "src/app/components/timeseries-chart/timeseries-chart.component.scss": {
+    "scss/no-global-function-names": {
+      "count": 1
+    },
+    "selector-id-pattern": {
+      "count": 1
+    }
+  },
+  "src/styles.scss": {
+    "selector-id-pattern": {
+      "count": 4
+    }
+  },
+  "src/styles/_color-utils.scss": {
+    "scss/at-if-no-null": {
+      "count": 7
+    },
+    "scss/no-global-function-names": {
+      "count": 3
+    },
+    "scss/operator-no-unspaced": {
+      "count": 1
+    }
+  },
+  "src/styles/asf-help.scss": {
+    "scss/no-global-function-names": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 2
+    }
+  },
+  "src/styles/asf-theme-variables.scss": {
+    "scss/at-mixin-pattern": {
+      "count": 1
+    },
+    "scss/no-global-function-names": {
+      "count": 9
+    }
+  },
+  "src/styles/deluxe-menu-2.scss": {
+    "block-no-empty": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 5
+    }
+  },
+  "src/styles/filter-list.scss": {
+    "scss/at-extend-no-missing-placeholder": {
+      "count": 2
+    }
+  },
+  "src/styles/global/material.scss": {
+    "scss/at-extend-no-missing-placeholder": {
+      "count": 2
+    },
+    "selector-class-pattern": {
+      "count": 12
+    }
+  },
+  "src/styles/global/noui.scss": {
+    "selector-class-pattern": {
+      "count": 3
+    }
+  },
+  "src/styles/global/shortcuts.scss": {
+    "property-no-unknown": {
+      "count": 1
+    }
+  },
+  "src/styles/global/targeted.scss": {
+    "scss/no-global-function-names": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 35
+    },
+    "selector-id-pattern": {
+      "count": 2
+    }
+  },
+  "src/styles/global/toast.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  }
+}

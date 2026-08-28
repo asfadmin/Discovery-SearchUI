@@ -61,6 +61,7 @@
   font-size: 18px;
   font-weight: bold;
   text-align: center;
+
   @include themify($themes) {
     color: lighten(themed('dark-primary-text'), 20%);
   }
@@ -72,6 +73,7 @@
 
   .dd-bottom-text {
     margin-bottom: 10px;
+
     .dd-text-2 {
       font-size: 12px;
     }
@@ -82,7 +84,7 @@
   margin-top: 25%;
   margin-right: 15%;
   margin-left: 20%;
-  color: rgba(0, 0, 0, 0.54);
+  color: rgb(0 0 0 / 54%);
   font-weight: 400;
 }
 
@@ -101,6 +103,7 @@
   @include themify($themes) {
     color: themed('dark-secondary-text')
   }
+
   display: inline-block;
   line-height: 0;
 

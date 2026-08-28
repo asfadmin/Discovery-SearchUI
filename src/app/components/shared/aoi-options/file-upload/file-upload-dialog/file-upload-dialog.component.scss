@@ -47,6 +47,7 @@
   font-size: 18px;
   font-weight: bold;
   text-align: center;
+
   @include themify($themes) {
     color: lighten(themed('dark-primary-text'), 20%);
   }
@@ -78,6 +79,7 @@
     color: themed('warn');
     outline-color: themed('warn');
   }
+
   animation: shake 0.82s;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
