@@ -1,8 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
 
-import { sentinel1Page } from 'e2e/helpers';
+import { accessibilityScan, sentinel1Page } from 'e2e/helpers';
 
-test('test', { tag: '@visual' }, async ({ page }) => {
+test('test', { tag: ['@visual', '@a11y'] }, async ({ page }) => {
   await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
@@ -20,4 +20,5 @@ test('test', { tag: '@visual' }, async ({ page }) => {
   await seasonEnd.getByRole('button', { name: '-1' }).click();
   await expect(page.locator('app-info-bar')).toContainText('Season: 3 - 177');
   await expect(page).toHaveScreenshot();
+  expect(await accessibilityScan(page)).toMatchSnapshot();
 });

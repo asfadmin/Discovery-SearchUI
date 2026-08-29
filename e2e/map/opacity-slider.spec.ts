@@ -1,9 +1,13 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
+import {
+  waitForASFAPIResponse,
+  sentinel1Page,
+  accessibilityScan,
+} from 'e2e/helpers';
 
 test(
   'Map: opacity slider changes browse image opacity',
-  { tag: '@visual' },
+  { tag: ['@visual', '@a11y'] },
   async ({ page }) => {
     await sentinel1Page(page);
 
@@ -41,5 +45,6 @@ test(
 
     await expect.poll(() => slider.inputValue()).not.toBe(initialValue);
     await expect(page).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
   },
 );

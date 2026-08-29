@@ -1,9 +1,13 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse, loggedInSentinel1Page } from 'e2e/helpers';
+import {
+  waitForASFAPIResponse,
+  loggedInSentinel1Page,
+  accessibilityScan,
+} from 'e2e/helpers';
 
 test(
   'Baseline: Search History',
-  { tag: ['@auth', '@visual'] },
+  { tag: ['@auth', '@visual', '@a11y'] },
   async ({ page }) => {
     const loggedInPage = await loggedInSentinel1Page(page);
 
@@ -39,5 +43,6 @@ test(
       'Reference: S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C',
     );
     await expect(loggedInPage).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
   },
 );

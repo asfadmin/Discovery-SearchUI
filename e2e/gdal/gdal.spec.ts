@@ -1,9 +1,13 @@
 import { test, expect } from 'e2e/fixtures';
-import { nisarPage, waitForASFAPIResponse } from 'e2e/helpers';
+import {
+  accessibilityScan,
+  nisarPage,
+  waitForASFAPIResponse,
+} from 'e2e/helpers';
 
 test(
   'Test GDAL Dropdown',
-  { tag: '@visual' },
+  { tag: ['@visual', '@a11y'] },
   async ({ page, context, browserName }) => {
     const contextOptions =
       browserName === 'chromium' ? ['clipboard-read', 'clipboard-write'] : [];
@@ -44,6 +48,8 @@ test(
       'Copied GDAL snippet to clipboard.',
     );
     await expect(page).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
+
     const clipboardText = await page.evaluate(() =>
       navigator.clipboard.readText(),
     );
@@ -68,7 +74,7 @@ test(
   },
 );
 
-test('Test GDAL Dialog', { tag: '@visual' }, async ({ page }) => {
+test('Test GDAL Dialog', { tag: ['@visual', '@a11y'] }, async ({ page }) => {
   await nisarPage(page);
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
@@ -100,6 +106,7 @@ test('Test GDAL Dialog', { tag: '@visual' }, async ({ page }) => {
     'gdal_translate \\ NETCDF:"/vsicurl/https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_128_D_076_4005_DHDH_A_20260822T021004_20260822T021029_P05023_N_P_J_001/NISAR_L2_PR_GCOV_028_128_D_076_4005_DHDH_A_20260822T021004_20260822T021029_P05023_N_P_J_001.h5"://science/LSAR/GCOV/grids/frequencyA/HHHH \\ -of GTiff "NISAR_L2_PR_GCOV_028_128_D_076_4005_DHDH_A_20260822T021004_20260822T021029_P05023_N_P_J_001__science_LSAR_GCOV_grids_frequencyA_HHHH.tif" \\ --config CPL_VSIL_CURL_CHUNK_SIZE 2097152 \\ --config CPL_VSIL_CURL_CACHE_SIZE 67108864 \\ --config GDAL_CACHEMAX 64000000 \\ --config GDAL_DISABLE_READDIR_ON_OPEN TRUE \\ --config GDAL_HTTP_MERGE_CONSECUTIVE_RANGES YES \\ --config GDAL_HTTP_MULTIPLEX YES \\ --config GDAL_NUM_THREADS ALL_CPUS \\ --config CPL_VSIL_CURL_CACHE_SIZE 1GB \\ --config GDAL_HTTP_NETRC YES \\ --config GDAL_HTTP_COOKIEFILE /tmp/gdal_cookies.txt \\ --config GDAL_HTTP_COOKIEJAR /tmp/gdal_cookies.txt',
   );
   await expect(page).toHaveScreenshot();
+  expect(await accessibilityScan(page)).toMatchSnapshot();
 
   await page.getByText('GDAL Version').click();
   await page.getByRole('option', { name: '<' }).click();

@@ -1,9 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
-import { loggedInSentinel1Page } from 'e2e/helpers';
+import { accessibilityScan, loggedInSentinel1Page } from 'e2e/helpers';
 
 test(
   'Baseline: Saved filters',
-  { tag: ['@auth', '@visual'] },
+  { tag: ['@auth', '@visual', '@a11y'] },
   async ({ page }) => {
     const loggedInPage = await loggedInSentinel1Page(page);
 
@@ -43,5 +43,6 @@ test(
       'Season: 1 to 180',
     );
     await expect(loggedInPage).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
   },
 );

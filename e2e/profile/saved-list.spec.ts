@@ -1,9 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
-import { loggedInSentinel1Page } from 'e2e/helpers';
+import { accessibilityScan, loggedInSentinel1Page } from 'e2e/helpers';
 
 test(
   'Profile: List save scenes',
-  { tag: ['@auth', '@visual'] },
+  { tag: ['@auth', '@visual', '@a11y'] },
   async ({ page }) => {
     const loggedInPage = await loggedInSentinel1Page(page);
 
@@ -36,6 +36,7 @@ test(
       '4 Scenes',
     );
     await expect(loggedInPage).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
     await expect(loggedInPage.locator('app-list-search-filters')).toContainText(
       'List Type: Scene S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906 S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1 ALPSRP111041130S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906 ALPSRP111041130',
     );
@@ -44,7 +45,7 @@ test(
 
 test(
   'Profile: List save files',
-  { tag: ['@auth', '@visual'] },
+  { tag: ['@auth', '@visual', '@a11y'] },
   async ({ page }) => {
     const loggedInPage = await loggedInSentinel1Page(page);
 
@@ -80,6 +81,7 @@ test(
       '4 Products',
     );
     await expect(loggedInPage).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
     await expect(loggedInPage.locator('app-list-search-filters')).toContainText(
       'List Type: Product S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906-GRD_HD S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1-unwrappedPhase ALPSRP111041130-RTC_HI_RESS1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906-GRD_HD ALPSRP111041130-RTC_HI_RES',
     );

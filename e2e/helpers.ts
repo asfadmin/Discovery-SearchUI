@@ -1,4 +1,6 @@
+import AxeBuilder from '@axe-core/playwright';
 import { Page } from '@playwright/test';
+import { AxeResults } from 'axe-core';
 
 const userServiceMock = async (
   page: Page,
@@ -341,4 +343,22 @@ export function sanitize(input: string): string {
     .replace(windowsReservedRe, '');
   sanitized = replaceTrailingDotsAndSpaces(sanitized, '');
   return sanitized.slice(0, 255);
+}
+
+export async function accessibilityScan(page: Page) {
+  return violationFingerprints(await new AxeBuilder({ page }).analyze());
+}
+
+function violationFingerprints(accessibilityScanResults: AxeResults) {
+  const violationFingerprints = accessibilityScanResults.violations.map(
+    (violation) => ({
+      rule: violation.id,
+      description: violation.description,
+      // These are CSS selectors which uniquely identify each element with
+      // a violation of the rule in question.
+      targets: violation.nodes.map((node) => node.target),
+    }),
+  );
+
+  return JSON.stringify(violationFingerprints, null, 2);
 }

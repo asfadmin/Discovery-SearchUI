@@ -1,37 +1,43 @@
 import { test, expect } from 'e2e/fixtures';
-import { sentinel1Page } from 'e2e/helpers';
+import { accessibilityScan, sentinel1Page } from 'e2e/helpers';
 
-test('Set Start and End Date', { tag: '@visual' }, async ({ page }) => {
-  await sentinel1Page(page);
+test(
+  'Set Start and End Date',
+  { tag: ['@visual', '@a11y'] },
+  async ({ page }) => {
+    await sentinel1Page(page);
 
-  await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  const filtersDropdown = page.locator('app-filters-dropdown');
-  const startDate = filtersDropdown.getByRole('textbox', {
-    name: 'Start Date',
-  });
-  const endDate = filtersDropdown.getByRole('textbox', { name: 'End Date' });
-  const openStartDateCalendar = filtersDropdown.getByLabel(
-    'Open start date calendar',
-  );
-  const openEndDateCalendar = filtersDropdown.getByLabel(
-    'Open end date calendar',
-  );
-  await expect(page).toHaveScreenshot();
+    await page.getByRole('button', { name: 'Filters', exact: true }).click();
+    const filtersDropdown = page.locator('app-filters-dropdown');
+    const startDate = filtersDropdown.getByRole('textbox', {
+      name: 'Start Date',
+    });
+    const endDate = filtersDropdown.getByRole('textbox', { name: 'End Date' });
+    const openStartDateCalendar = filtersDropdown.getByLabel(
+      'Open start date calendar',
+    );
+    const openEndDateCalendar = filtersDropdown.getByLabel(
+      'Open end date calendar',
+    );
+    await expect(page).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
 
-  await openStartDateCalendar.click();
-  await page.getByRole('button', { name: '2015' }).click();
-  await page.getByRole('button', { name: '1/1/2015', exact: true }).click();
-  await page.getByRole('button', { name: '/1/2015' }).click();
+    await openStartDateCalendar.click();
+    await page.getByRole('button', { name: '2015' }).click();
+    await page.getByRole('button', { name: '1/1/2015', exact: true }).click();
+    await page.getByRole('button', { name: '/1/2015' }).click();
 
-  await openEndDateCalendar.click();
-  await page.getByRole('button', { name: '2015' }).click();
-  await page.getByRole('button', { name: '1/1/2015', exact: true }).click();
-  await page.getByRole('button', { name: '/31/2015' }).click();
-  await expect(page).toHaveScreenshot();
+    await openEndDateCalendar.click();
+    await page.getByRole('button', { name: '2015' }).click();
+    await page.getByRole('button', { name: '1/1/2015', exact: true }).click();
+    await page.getByRole('button', { name: '/31/2015' }).click();
+    await expect(page).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
 
-  await expect(startDate).toHaveValue('1/1/2015');
-  await expect(endDate).toHaveValue('1/31/2015');
-});
+    await expect(startDate).toHaveValue('1/1/2015');
+    await expect(endDate).toHaveValue('1/31/2015');
+  },
+);
 
 test('Clamp End Date to Start', async ({ page }) => {
   await sentinel1Page(page);

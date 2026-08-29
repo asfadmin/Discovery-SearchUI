@@ -1,9 +1,13 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
+import {
+  waitForASFAPIResponse,
+  sentinel1Page,
+  accessibilityScan,
+} from 'e2e/helpers';
 
 test(
   'List Search: searching by file IDs returns scenes',
-  { tag: '@visual' },
+  { tag: ['@visual', '@a11y'] },
   async ({ page }) => {
     await sentinel1Page(page);
 
@@ -12,6 +16,7 @@ test(
       .locator('button.button-menu-trigger')
       .click();
     await expect(page).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
 
     await page.getByText('List', { exact: true }).click();
 
@@ -25,6 +30,7 @@ test(
       .getByRole('radio', { name: 'File', exact: true })
       .click();
     await expect(page).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
 
     await page
       .getByRole('textbox', { name: 'List of File IDs' })

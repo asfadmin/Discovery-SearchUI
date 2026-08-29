@@ -1,14 +1,15 @@
 import { test, expect } from 'e2e/fixtures';
-import { sentinel1Page } from 'e2e/helpers';
+import { accessibilityScan, sentinel1Page } from 'e2e/helpers';
 
 test(
   'Map: Overview Map toggle shows overview map',
-  { tag: '@visual' },
+  { tag: ['@visual', '@a11y'] },
   async ({ page }) => {
     await sentinel1Page(page);
 
     await page.getByRole('button', { name: 'layer selector' }).click();
     await expect(page).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
 
     await page.getByRole('menuitem', { name: 'Overview Map' }).click();
 
@@ -30,6 +31,7 @@ test(
     await layerButton.click();
     await gridlinesItem.click();
     await expect(page).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
 
     await layerButton.click();
     await expect(gridlinesItem.locator('input[type="checkbox"]')).toBeChecked();
@@ -38,7 +40,7 @@ test(
 
 test(
   'Map: Coherence Layer activates when a month range is selected',
-  { tag: '@visual' },
+  { tag: ['@visual', '@a11y'] },
   async ({ page }) => {
     await sentinel1Page(page);
 
@@ -50,6 +52,7 @@ test(
     await layerButton.click();
     await coherenceItem.click();
     await expect(page).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
 
     await page.getByRole('menuitem', { name: 'Mar, Apr, May' }).click();
 

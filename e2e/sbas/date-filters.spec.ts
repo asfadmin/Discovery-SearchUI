@@ -1,38 +1,44 @@
 import { test, expect } from 'e2e/fixtures';
-import { sentinel1Page } from 'e2e/helpers';
+import { accessibilityScan, sentinel1Page } from 'e2e/helpers';
 
-test('SBAS Start & End Date Filters', { tag: '@visual' }, async ({ page }) => {
-  await sentinel1Page(page);
+test(
+  'SBAS Start & End Date Filters',
+  { tag: ['@visual', '@a11y'] },
+  async ({ page }) => {
+    await sentinel1Page(page);
 
-  await page.getByRole('button', { name: 'Geographic Search' }).click();
-  await page
-    .getByRole('menuitem', { name: 'SBAS SBAS search provides' })
-    .click();
-  await page
-    .getByRole('region', { name: 'Scene' })
-    .getByLabel('Scene')
-    .fill(
-      'S1A_IW_SLC__1SDV_20180616T210817_20180616T210845_022387_026C91_EDAA',
+    await page.getByRole('button', { name: 'Geographic Search' }).click();
+    await page
+      .getByRole('menuitem', { name: 'SBAS SBAS search provides' })
+      .click();
+    await page
+      .getByRole('region', { name: 'Scene' })
+      .getByLabel('Scene')
+      .fill(
+        'S1A_IW_SLC__1SDV_20180616T210817_20180616T210845_022387_026C91_EDAA',
+      );
+    await page
+      .locator('app-filters-dropdown')
+      .getByRole('button', { name: 'Filters panel search button' })
+      .click();
+
+    const sbasFiltersButton = page
+      .locator('mat-button-toggle')
+      .filter({ hasText: 'SBAS Filters' });
+    await sbasFiltersButton.click();
+
+    await page.getByRole('textbox', { name: 'Start Date' }).fill('9/1/2018');
+    await expect(page).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
+
+    await page.getByRole('textbox', { name: 'End Date' }).fill('11/1/2020');
+    await expect(page).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
+
+    await page.keyboard.press('Tab');
+
+    await expect(page.locator('app-scenes-list-header')).toContainText(
+      '67 Pairs',
     );
-  await page
-    .locator('app-filters-dropdown')
-    .getByRole('button', { name: 'Filters panel search button' })
-    .click();
-
-  const sbasFiltersButton = page
-    .locator('mat-button-toggle')
-    .filter({ hasText: 'SBAS Filters' });
-  await sbasFiltersButton.click();
-
-  await page.getByRole('textbox', { name: 'Start Date' }).fill('9/1/2018');
-  await expect(page).toHaveScreenshot();
-
-  await page.getByRole('textbox', { name: 'End Date' }).fill('11/1/2020');
-  await expect(page).toHaveScreenshot();
-
-  await page.keyboard.press('Tab');
-
-  await expect(page.locator('app-scenes-list-header')).toContainText(
-    '67 Pairs',
-  );
-});
+  },
+);

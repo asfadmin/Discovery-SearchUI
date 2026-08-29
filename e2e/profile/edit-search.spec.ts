@@ -1,9 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
-import { loggedInSentinel1Page } from 'e2e/helpers';
+import { accessibilityScan, loggedInSentinel1Page } from 'e2e/helpers';
 
 test(
   'Profile: Edit saved search',
-  { tag: ['@auth', '@visual'] },
+  { tag: ['@auth', '@visual', '@a11y'] },
   async ({ page }) => {
     const loggedInPage = await loggedInSentinel1Page(page);
 
@@ -22,9 +22,11 @@ test(
       .click();
     await loggedInPage.getByRole('menuitem', { name: 'Save Search' }).click();
     await expect(loggedInPage).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
 
     await loggedInPage.getByRole('button', { name: 'Save Search' }).click();
     await expect(loggedInPage).toHaveScreenshot();
+    expect(await accessibilityScan(page)).toMatchSnapshot();
 
     await loggedInPage.locator('app-saved-search').getByText('edit').click();
     await loggedInPage.getByRole('textbox', { name: 'Search Name' }).click();
