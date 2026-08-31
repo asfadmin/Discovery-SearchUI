@@ -1,4 +1,11 @@
-import { Component, inject, input, output, ViewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+  ViewChild,
+} from '@angular/core';
 
 import { Dataset } from '@models';
 import { provisionalIssuesUrl } from '@models/datasets/nisar';
@@ -39,6 +46,10 @@ export class DatasetComponent {
 
   public provisionalIssuesUrl = provisionalIssuesUrl;
   public isReadMore = true;
+
+  public isDeprecated = computed(() => {
+    return this.dataset().properties.includes(models.Props.DEPRECATED);
+  });
 
   public onOpenHelp() {
     window.open(this.dataset().infoUrl);

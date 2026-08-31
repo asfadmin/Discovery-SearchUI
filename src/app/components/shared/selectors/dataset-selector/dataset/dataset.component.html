@@ -1,5 +1,11 @@
 @let breakpoint = breakpoint$ | async;
-<div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset().id)">
+<div
+  class="menu-item mat-menu-item"
+  (click)="onSelectionChange(dataset().id)"
+  [ngClass]="{
+    'dataset--deprecated': isDeprecated(),
+  }"
+>
   <div class="menu-item-inner">
     <div class="dataset--layout menu-item-content">
       <div class="item-title">
@@ -29,6 +35,16 @@
           @if (dataset().subName) {
             <div class="dataset__subName faint-text">
               {{ dataset().subName }}
+            </div>
+          }
+          @if (isDeprecated()) {
+            <div class="deprecation-notice">
+              {{ 'DATASET_DEPRECATION_NOTICE' | translate }}
+
+              <br />
+              <a class="link" href="https://asf.alaska.edu/" target="_blank"
+                >{{ 'LEARN_MORE' | translate }}
+              </a>
             </div>
           }
         </span>

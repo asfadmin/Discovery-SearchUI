@@ -7,6 +7,24 @@
   flex: 7;
 }
 
+.dataset--deprecated {
+  @include themify($themes) {
+    background: lighten(themed('warn'), 20%) !important;
+  }
+}
+.deprecation-notice {
+  font-weight: 800;
+  @include themify($themes) {
+    color: themed('err');
+  }
+}
+.link {
+  @include themify($themes) {
+    color: themed('blue-link') !important;
+  }
+  text-decoration: underline;
+}
+
 .dataset-aside--layout {
   flex: 3;
   text-align: center;

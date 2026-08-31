@@ -14,6 +14,7 @@ export const seasat = {
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
     Props.USE_BEAM_MODE,
+    Props.DEPRECATED,
   ],
   apiValue: { dataset: 'SEASAT' },
   date: {

@@ -252,6 +252,7 @@
   "DATA_TYPE": "Data Type",
   "DATASET": "Dataset",
   "DATASET_ACTIVE": "Active",
+  "DATASET_DEPRECATION_NOTICE": "This dataset is scheduled to be removed from searchable interfaces",
   "DATASET_INACTIVE": "Inactive",
   "DATASET_INFO": "Dataset Info",
   "DATASET_LINKED": "dataset_linked",

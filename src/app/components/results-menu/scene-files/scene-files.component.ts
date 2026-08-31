@@ -156,6 +156,15 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         translationKey: 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING',
         url: 'https://asf.alaska.edu/information/palsar-rtc-dem-information/',
       };
+    } else if (
+      models.datasets[this.scene()?.dataset]?.properties.includes(
+        models.Props.DEPRECATED,
+      )
+    ) {
+      return {
+        translationKey: 'DATASET_DEPRECATION_NOTICE',
+        url: 'https://asf.alaska.edu/',
+      };
     } else {
       return null;
     }

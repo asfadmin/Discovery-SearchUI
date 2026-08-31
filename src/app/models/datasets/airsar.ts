@@ -10,6 +10,7 @@ export const airsar = {
     Props.BEAM_MODE,
     Props.MISSION_NAME,
     Props.FARADAY_ROTATION,
+    Props.DEPRECATED,
   ],
   apiValue: { dataset: 'AIRSAR' },
   date: {

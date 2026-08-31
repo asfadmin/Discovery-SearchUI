@@ -252,6 +252,7 @@
   "DATA_TYPE": "Tipo de Dato",
   "DATASET": "Conjunto de Datos",
   "DATASET_ACTIVE": "Activos",
+  "DATASET_DEPRECATION_NOTICE": "This dataset is scheduled to be removed from searchable interfaces",
   "DATASET_INACTIVE": "Inactivos",
   "DATASET_INFO": "Información del conjunto de datos",
   "DATASET_LINKED": "conjunto_de_datos_vinculado",
