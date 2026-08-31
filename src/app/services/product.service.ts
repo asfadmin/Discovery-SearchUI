@@ -568,7 +568,7 @@ export class ProductService {
       ? 'end'
       : this.getUAVSARFileTypeExtension(product.downloadUrl);
     product.productTypeDisplay =
-      models.uavsar.productTypeDisplays[file_extension];
+      models.uavsar.productTypeDisplays.displays[file_extension];
 
     let polarization = this.getUAVSARURLPolarization(
       product.downloadUrl,
@@ -612,8 +612,9 @@ export class ProductService {
         : this.getUAVSARFileTypeExtension(p);
 
       let productTypeDisplay =
-        models.uavsar.productTypeDisplays[file_extension.toLowerCase()] ??
-        'Missing Display';
+        models.uavsar.productTypeDisplays.displays[
+          file_extension.toLowerCase()
+        ] ?? 'Missing Display';
       polarization = this.getUAVSARURLPolarization(
         p,
         product.metadata.polarization,
