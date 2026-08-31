@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, inject, input, output, ViewChild } from '@angular/core';
 
 import { Dataset } from '@models';
 import { provisionalIssuesUrl } from '@models/datasets/nisar';
@@ -36,9 +29,8 @@ import { PrettyDateRangePipe } from '@pipes/pretty-date.pipe';
   ],
 })
 export class DatasetComponent {
-  @Input() dataset: Dataset;
-  @Input() isSelected: boolean;
-  @Output() selected: EventEmitter<string> = new EventEmitter<string>();
+  dataset = input<Dataset>();
+  selected = output<string>();
   private screenSize = inject(ScreenSizeService);
 
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -46,15 +38,16 @@ export class DatasetComponent {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
 
   public provisionalIssuesUrl = provisionalIssuesUrl;
-
   public isReadMore = true;
+
   public onOpenHelp() {
-    window.open(this.dataset.infoUrl);
+    window.open(this.dataset().infoUrl);
   }
 
   public onInfoClicked(e: Event): void {
     e.stopPropagation();
   }
+
   public onOpenDocs(event, dataset: string) {
     this.trigger.closeMenu();
     this.onSelectionChange(dataset);

@@ -1,22 +1,23 @@
 @let breakpoint = breakpoint$ | async;
-<div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)">
+<div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset().id)">
   <div class="menu-item-inner">
     <div class="dataset--layout menu-item-content">
       <div class="item-title">
-        {{ dataset.name }}
+        {{ dataset().name }}
         <span class="dataset-light-text">
           @if (
-            dataset.id === 'SENTINEL-1' || dataset.id === 'SENTINEL-1 BURSTS'
+            dataset().id === 'SENTINEL-1' ||
+            dataset().id === 'SENTINEL-1 BURSTS'
           ) {
             <span [matTooltip]="'HYP3_AVAILABLE' | translate">
               <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
             </span>
           }
-          @if (dataset.beta) {
+          @if (dataset().beta) {
             <span><em> (beta) </em></span>
           }
 
-          @if (dataset.id === 'NISAR') {
+          @if (dataset().id === 'NISAR') {
             <span>
               <app-docs-modal
                 class="info-text"
@@ -25,9 +26,9 @@
               ></app-docs-modal
             ></span>
           }
-          @if (dataset.subName) {
+          @if (dataset().subName) {
             <div class="dataset__subName faint-text">
-              {{ dataset.subName }}
+              {{ dataset().subName }}
             </div>
           }
         </span>
@@ -37,13 +38,13 @@
         [ngClass]="{ limitTextHeight: isReadMore }"
         [class.smaller-font]="breakpoint === breakpoints.MOBILE"
       >
-        {{ dataset.description | translate }}
+        {{ dataset().description | translate }}
       </div>
-      <mat-card-actions (click)="onOpenDocs($event, dataset.id)">
+      <mat-card-actions (click)="onOpenDocs($event, dataset().id)">
         <app-docs-modal
           class="info-text"
           [text]="'MORE_INFO' | translate"
-          [url]="dataset.infoUrl"
+          [url]="dataset().infoUrl"
         >
         </app-docs-modal>
       </mat-card-actions>
@@ -53,15 +54,15 @@
       [class.increase-right-margin]="breakpoint === breakpoints.MOBILE"
     >
       <div class="dataset-date-range faint-text">
-        {{ dataset.date | prettyDateRange }}
+        {{ dataset().date | prettyDateRange }}
       </div>
       <div class="material-icons-outlined menu-item-icon">
-        <img [src]="dataset.icon" width="53" height="53" />
+        <img [src]="dataset().icon" width="53" height="53" />
       </div>
-      @if (dataset.source !== null) {
+      @if (dataset().source !== null) {
         <div class="dataset-source">
-          <a [href]="dataset.source.url" target="_blank" class="blue-link">
-            {{ dataset.source.name }}
+          <a [href]="dataset().source.url" target="_blank" class="blue-link">
+            {{ dataset().source.name }}
           </a>
         </div>
       }
