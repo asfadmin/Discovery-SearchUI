@@ -1,12 +1,14 @@
-import { test, expect } from 'e2e/pages/auth.page';
-import { mockGeocoding } from 'e2e/helpers';
+import { test, expect } from 'e2e/fixtures';
+import { mockGeocoding, loggedInSentinel1Page } from 'e2e/helpers';
 
 test(
   'Geographic: Save with geocoded area',
   { tag: '@auth' },
-  async ({ loggedInPage }) => {
+  async ({ page }) => {
+    const loggedInPage = await loggedInSentinel1Page(page);
+
     await mockGeocoding(loggedInPage);
-    await loggedInPage.goto('/?maxResults=1');
+    await loggedInPage.goto('/?dataset=SENTINEL-1&maxResults=1');
     await loggedInPage
       .locator('app-aoi-filter')
       .getByText('arrow_drop_down')
@@ -17,7 +19,9 @@ test(
       .getByLabel('Search for a location')
       .fill('f');
     await loggedInPage.getByText('Tibet Autonomous Region, China').click();
-    await loggedInPage.locator('#mat-button-toggle-9').click();
+    await loggedInPage
+      .locator('app-dataset-header app-search-button .arrow-button-toggle')
+      .click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();

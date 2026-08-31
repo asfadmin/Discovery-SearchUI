@@ -22,12 +22,12 @@
             <span>
               <form class="name-edit-form" #nameEditForm="ngForm">
                 <mat-form-field>
+                  <mat-label>{{ 'FILTER_PRESET_NAME' | translate }}</mat-label>
                   <input
                     matInput
                     [(ngModel)]="editName"
                     (change)="onNewName($event)"
                     name="editNameInput"
-                    placeholder="{{ 'FILTER_PRESET_NAME' | translate }}"
                     #nameEditInput
                   />
                 </mat-form-field>
@@ -38,7 +38,7 @@
           {{ searchTranslation[filterPreset.searchType] | translate }}
         </div>
 
-        <div style="margin-top: 5px">
+        <div class="filter-detail-spacing">
           @if (filterPreset.searchType === SearchType.DATASET) {
             <span>
               {{ (filterPreset.filters | geographicFilter).selectedDataset }}

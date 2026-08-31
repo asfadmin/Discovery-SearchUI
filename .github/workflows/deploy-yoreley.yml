@@ -1,4 +1,4 @@
-name: Deploy yoreley SearchUI
+name: Deploy Yoreley SearchUI
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: build
         uses: ./.github/workflows/search-ui-deploy-composite

@@ -16,8 +16,7 @@
           {{ productsByJobType.jobType.name }}
           <mat-icon
             (click)="onOpenHelp(productsByJobType.jobType.infoUrl)"
-            class="clickable"
-            style="margin-left: 10px"
+            class="clickable info-icon"
           >
             info
           </mat-icon>
@@ -33,9 +32,13 @@
       @if (prodType.products.length !== 0) {
         <button
           (click)="
-            queueAllOnDemand(prodType.products, byJobType.jobType, isFrameBased)
+            queueAllOnDemand(
+              prodType.products,
+              byJobType.jobType,
+              isFrameBased()
+            )
           "
-          [disabled]=""
+          [disabled]="false"
           mat-menu-item
         >
           {{ 'ADD' | translate }}

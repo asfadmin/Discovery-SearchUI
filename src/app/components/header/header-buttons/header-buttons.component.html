@@ -7,7 +7,7 @@
             [matMenuTriggerFor]="onDemandQueue"
             class="spacing nav-icon-buttons"
             color="basic"
-            matTooltip="{{ 'ON_DEMAND_QUEUE' | translate }}"
+            [matTooltip]="'ON_DEMAND_QUEUE' | translate"
             mat-button
           >
             <mat-icon
@@ -16,7 +16,7 @@
               svgIcon="hyp3"
               [matBadge]="queuedCustomProducts.length"
               [matBadgeColor]="
-                this.queuedProducts.length > 0
+                this.queuedCustomProducts.length > 0
                   ? this.accentPalette
                   : this.primaryPalette
               "
@@ -36,7 +36,7 @@
             <button
               mat-menu-item
               (click)="onSetSearchTypeOnDemand()"
-              [disabled]="!isLoggedIn"
+              [disabled]="!isLoggedIn()"
             >
               {{ 'SUBMITTED_PRODUCTS' | translate }}
             </button>
@@ -48,7 +48,7 @@
             (click)="onOpenDownloadQueue()"
             class="spacing nav-icon-buttons"
             color="basic"
-            matTooltip="{{ 'DOWNLOADS' | translate }}"
+            [matTooltip]="'DOWNLOADS' | translate"
             mat-button
           >
             <mat-icon
@@ -91,10 +91,10 @@
                 (isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL')
                   | translate
               "
-              matTooltip="{{
+              [matTooltip]="
                 (isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL')
                   | translate
-              }}"
+              "
             >
               <mat-icon>{{
                 isHeaderExpanded ? 'chevron_right' : 'chevron_left'
@@ -107,7 +107,7 @@
                 class="spacing nav-icon-buttons nav-icon-buttons-raised panel-storymap-button"
                 color="basic"
                 mat-button
-                matTooltip="{{ 'STORYMAP' | translate }}"
+                [matTooltip]="'STORYMAP' | translate"
                 (click)="onOpenStoryMap()"
               >
                 <img
@@ -124,7 +124,7 @@
                 class="spacing nav-icon-buttons nav-icon-buttons-raised panel-info-button"
                 color="basic"
                 mat-button
-                matTooltip="{{ 'DATASET_INFO' | translate }}"
+                [matTooltip]="'DATASET_INFO' | translate"
                 (click)="onOpenOperaInfo()"
               >
                 <mat-icon class="material-symbols-outlined large-icon"
@@ -137,7 +137,7 @@
               </button>
               <button
                 [matMenuTriggerFor]="helpMenu"
-                matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+                [matTooltip]="'HELP_AND_INFORMATION' | translate"
                 class="spacing nav-icon-buttons"
                 color="basic"
                 mat-button
@@ -149,7 +149,7 @@
               </button>
               <button
                 [matMenuTriggerFor]="languageMenu"
-                matTooltip="{{ 'LANGUAGE' | translate }}"
+                [matTooltip]="'LANGUAGE' | translate"
                 class="spacing nav-icon-buttons disp-translate-button"
                 color="basic"
                 mat-button
@@ -163,12 +163,12 @@
           </div>
           <!-- Login/Profile always visible -->
           <div #loginContainer class="login-button-container">
-            @if (!isLoggedIn) {
+            @if (!isLoggedIn()) {
               <button
                 (click)="onAccountButtonClicked()"
                 class="spacing nav-icon-buttons"
                 color="basic"
-                matTooltip="{{ 'LOGIN' | translate }}"
+                [matTooltip]="'LOGIN' | translate"
                 mat-button
               >
                 <mat-icon class="large-icon">account_circle</mat-icon>
@@ -181,11 +181,13 @@
                 [matMenuTriggerFor]="profileMenu"
                 class="spacing nav-icon-buttons"
                 color="basic"
-                matTooltip="{{ 'PROFILE' | translate }}"
+                [matTooltip]="'PROFILE' | translate"
                 mat-button
               >
                 <mat-icon class="large-icon">account_circle</mat-icon>
-                <div class="text-under faint-text">{{ this.userAuth?.id }}</div>
+                <div class="text-under faint-text">
+                  {{ this.userAuth()?.id }}
+                </div>
               </button>
             }
           </div>
@@ -200,7 +202,7 @@
             class="spacing nav-icon-buttons disp-icon-adjust panel-storymap-button"
             color="basic"
             mat-button
-            matTooltip="{{ 'STORYMAP' | translate }}"
+            [matTooltip]="'STORYMAP' | translate"
             (click)="onOpenStoryMap()"
           >
             <img
@@ -217,7 +219,7 @@
             class="spacing nav-icon-buttons disp-icon-adjust panel-info-button"
             color="basic"
             mat-button
-            matTooltip="{{ 'DATASET_INFO' | translate }}"
+            [matTooltip]="'DATASET_INFO' | translate"
             (click)="onOpenOperaInfo()"
           >
             <mat-icon class="material-symbols-outlined large-icon"
@@ -236,7 +238,7 @@
           <!-- Help, Language, Login for non-Displacement OR Displacement with larger breakpoints -->
           <button
             [matMenuTriggerFor]="helpMenu"
-            matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+            [matTooltip]="'HELP_AND_INFORMATION' | translate"
             class="spacing nav-icon-buttons"
             color="basic"
             mat-button
@@ -246,7 +248,7 @@
           </button>
           <button
             [matMenuTriggerFor]="languageMenu"
-            matTooltip="{{ 'LANGUAGE' | translate }}"
+            [matTooltip]="'LANGUAGE' | translate"
             class="spacing nav-icon-buttons"
             [class.disp-translate-button]="
               searchType === searchTypes.DISPLACEMENT
@@ -257,12 +259,12 @@
             <mat-icon class="large-icon">translate</mat-icon>
             <div class="text-under faint-text">{{ language.getName() }}</div>
           </button>
-          @if (!isLoggedIn) {
+          @if (!isLoggedIn()) {
             <button
               (click)="onAccountButtonClicked()"
               class="spacing nav-icon-buttons"
               color="basic"
-              matTooltip="{{ 'LOGIN' | translate }}"
+              [matTooltip]="'LOGIN' | translate"
               mat-button
             >
               <mat-icon class="large-icon">account_circle</mat-icon>
@@ -275,11 +277,11 @@
               [matMenuTriggerFor]="profileMenu"
               class="spacing nav-icon-buttons"
               color="basic"
-              matTooltip="{{ 'PROFILE' | translate }}"
+              [matTooltip]="'PROFILE' | translate"
               mat-button
             >
               <mat-icon class="large-icon">account_circle</mat-icon>
-              <div class="text-under faint-text">{{ this.userAuth?.id }}</div>
+              <div class="text-under faint-text">{{ this.userAuth()?.id }}</div>
             </button>
           }
         }
@@ -289,7 +291,7 @@
       <mat-icon
         [matMenuTriggerFor]="onDemandQueue"
         class="mobile-icon-spacing"
-        matTooltip="{{ 'ON_DEMAND_QUEUE' | translate }}"
+        [matTooltip]="'ON_DEMAND_QUEUE' | translate"
         svgIcon="hyp3"
         [matBadge]="queuedCustomProducts.length"
         [matBadgeColor]="
@@ -309,7 +311,7 @@
         <button
           mat-menu-item
           (click)="onSetSearchTypeOnDemand()"
-          [disabled]="!isLoggedIn"
+          [disabled]="!isLoggedIn()"
         >
           {{ 'SUBMITTED_PRODUCTS' | translate }}
         </button>
@@ -338,7 +340,7 @@
       <mat-icon [matMenuTriggerFor]="languageMenu" class="mobile-icon-spacing">
         translate
       </mat-icon>
-      @if (!isLoggedIn) {
+      @if (!isLoggedIn()) {
         <mat-icon
           class="mobile-icon-spacing"
           fontSet="material-icons-outlined"
@@ -384,32 +386,6 @@
 </mat-menu>
 
 <mat-menu #helpMenu="matMenu">
-  <button mat-menu-item matSuffix (click)="onOpenHelp('toc')">
-    @if ((breakpoint$ | async) === breakpoints.MOBILE) {
-      <div>
-        <mat-icon>video_library</mat-icon>
-        {{ 'VIDEO_TUTORIALS' | translate }}
-      </div>
-    } @else {
-      <div class="menu-item">
-        <div class="menu-item-content">
-          <div class="item-title">{{ 'WATCH_OUR_TUTORIALS' | translate }}</div>
-          <div class="item-content">
-            {{
-              'WE_HAVE_A_COLLECTION_OF_VIDEOS_TO_HELP_YOU_LEARN_AND_USE_VERTEX_TO_MAXIMUM_ADVANTAGE'
-                | translate
-            }}
-          </div>
-        </div>
-        <div class="menu-item-aside">
-          <mat-icon class="menu-item-icon">video_library</mat-icon>
-        </div>
-      </div>
-    }
-  </button>
-
-  <hr />
-
   <button mat-menu-item matSuffix (click)="onOpenUserGuide()">
     @if ((breakpoint$ | async) === breakpoints.MOBILE) {
       <div>

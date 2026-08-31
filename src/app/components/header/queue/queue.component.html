@@ -17,7 +17,7 @@
     <mat-progress-bar
       class="global-progress"
       mode="determinate"
-      value="{{ dlQueueProgress }}"
+      [value]="dlQueueProgress"
     ></mat-progress-bar>
   </div>
 
@@ -85,9 +85,14 @@
     showDemWarning && breakpoint === breakpoints.MOBILE
   "
 >
-  <mat-list id="matListProducts" role="list" class="dl-list">
-    @if (products$ | async; as products) {
-      @for (product of products; track product) {
+  @if ((products$ | async).length > 0) {
+    <cdk-virtual-scroll-viewport itemSize="50" class="queue-scroll-viewport">
+      <mat-list
+        *cdkVirtualFor="let product of products$"
+        id="matListProducts"
+        role="list"
+        class="dl-list"
+      >
         <mat-list-item role="listitem">
           <div
             matListItemTitle
@@ -112,6 +117,7 @@
                   (breakpoint !== breakpoints.MOBILE ? 50 : 10)
                 ) {
                   @if (
+                    product.dataset === 'Sentinel-1D' ||
                     product.dataset === 'Sentinel-1C' ||
                     product.dataset === 'Sentinel-1B' ||
                     product.dataset === 'Sentinel-1A'
@@ -144,13 +150,10 @@
           >
             {{ product.productTypeDisplay }}
           </div>
-          @if (
-            !product.isUnzippedFile &&
-            !product.metadata.job &&
-            product.groupId !== 'SARViews'
-          ) {
+          @if (!product.metadata.job) {
             <app-copy-to-clipboard
-              prompt="{{ 'COPY_FILE_ID' | translate }}"
+              [prompt]="'COPY_FILE_ID' | translate"
+              [message]="'COPIED_FILE_ID' | translate"
               [value]="
                 product.metadata.productType === 'BURST_XML'
                   ? product.id?.split('-XML')[0]
@@ -174,22 +177,22 @@
           <button
             class="close-button"
             (click)="onRemoveProduct(product)"
-            matTooltip="{{ 'REMOVE_FILE' | translate }}"
+            [matTooltip]="'REMOVE_FILE' | translate"
             mat-icon-button
             matListItemMeta
           >
             <mat-icon>close</mat-icon>
           </button>
         </mat-list-item>
-      }
-    }
-    @if ((products$ | async).length < 1) {
-      <div class="dl-empty-message">
-        <br /><br />
-        {{ 'YOUR_DOWNLOAD_QUEUE_IS_EMPTY' | translate }}
-      </div>
-    }
-  </mat-list>
+      </mat-list>
+    </cdk-virtual-scroll-viewport>
+  }
+  @if ((products$ | async).length < 1) {
+    <div class="dl-empty-message">
+      <br /><br />
+      {{ 'YOUR_DOWNLOAD_QUEUE_IS_EMPTY' | translate }}
+    </div>
+  }
 </mat-dialog-content>
 
 <mat-dialog-actions class="dl-mat-dialog-actions">
@@ -199,7 +202,7 @@
         <div class="dl-clear-button btn-primary">
           @if (previousQueue === null) {
             <button (click)="onClearQueue(products)" mat-button>
-              <mat-icon style="margin-right: 5px">delete</mat-icon>
+              <mat-icon class="dl-action-icon">delete</mat-icon>
               @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
                 <span>{{ 'CLEAR' | translate }}</span>
               }
@@ -207,7 +210,7 @@
           }
           @if (previousQueue !== null) {
             <button (click)="onRestoreQueue(previousQueue)" mat-button>
-              <mat-icon style="margin-right: 5px">undo</mat-icon>
+              <mat-icon class="dl-action-icon">undo</mat-icon>
               <span>{{ 'RESTORE' | translate }}</span>
             </button>
           }
@@ -223,10 +226,13 @@
                 [class.button-clipboard-mobile]="
                   breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin
                 "
-                matTooltip="{{ 'COPY_FILE_ID_TO_CLIPBOARD' | translate }}"
+                [matTooltip]="'COPY_FILE_ID_TO_CLIPBOARD' | translate"
                 [matTooltipPosition]="'above'"
               >
-                <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
+                <mat-icon
+                  style="margin-left: 5px"
+                  fontIcon="file_copy"
+                ></mat-icon>
                 &nbsp;
                 @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
                   <span>{{ 'COPY_FILE_IDS' | translate }}</span>
@@ -243,10 +249,13 @@
                   [class.button-clipboard-mobile]="
                     breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin
                   "
-                  matTooltip="{{ 'COPY_FILE_URLS_TO_CLIPBOARD' | translate }}"
+                  [matTooltip]="'COPY_FILE_URLS_TO_CLIPBOARD' | translate"
                   [matTooltipPosition]="'above'"
                 >
-                  <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
+                  <mat-icon
+                    style="margin-left: 5px"
+                    fontIcon="file_copy"
+                  ></mat-icon>
                   &nbsp;
                   <span>
                     @if (
@@ -268,10 +277,13 @@
                   [class.button-clipboard-mobile]="
                     breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin
                   "
-                  matTooltip="{{ 'COPY_FILE_URLS_TO_CLIPBOARD' | translate }}"
+                  [matTooltip]="'COPY_FILE_URLS_TO_CLIPBOARD' | translate"
                   [matTooltipPosition]="'above'"
                 >
-                  <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
+                  <mat-icon
+                    style="margin-left: 5px"
+                    fontIcon="file_copy"
+                  ></mat-icon>
                   &nbsp;
                   <span>
                     @if (
@@ -293,11 +305,9 @@
                 </button>
               </mat-menu>
               @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
-                @if (
-                  queueHasOnDemandProducts || queueHasEventMonitoringProducts
-                ) {
+                @if (queueHasOnDemandProducts) {
                   <span class="on-demand-warning">
-                    {{ limitedExportString() }}
+                    {{ 'On Demand products in queue - limited export options' }}
                   </span>
                 }
                 <button
@@ -350,19 +360,18 @@
                 </mat-menu>
               }
               <mat-menu #dataMenu="matMenu" yPosition="above">
-                <app-download-all
+                <!-- TODO: Reenable when CORS figured out for data -->
+                <!-- <app-download-all
                   (dlAllEvent)="downloadAllFiles()"
                   [disabled]="!(isLoggedIn$ | async)"
                 >
-                </app-download-all>
+                </app-download-all> -->
                 <button mat-menu-item (click)="onMakeDownloadScript()">
                   {{ 'DOWNLOAD_PYTHON_SCRIPT_PY' | translate }}
                 </button>
                 <button
                   mat-menu-item
-                  [disabled]="
-                    queueHasOnDemandProducts || queueHasEventMonitoringProducts
-                  "
+                  [disabled]="queueHasOnDemandProducts"
                   (click)="onMetalinkDownload()"
                 >
                   {{ 'METADATA_METALINK' | translate }}
@@ -371,27 +380,21 @@
               <mat-menu #metadataMenu="matMenu" yPosition="above">
                 <button
                   mat-menu-item
-                  [disabled]="
-                    queueHasOnDemandProducts || queueHasEventMonitoringProducts
-                  "
+                  [disabled]="queueHasOnDemandProducts"
                   (click)="onCsvDownload()"
                 >
                   {{ 'METADATA_CSV' | translate }}
                 </button>
                 <button
                   mat-menu-item
-                  [disabled]="
-                    queueHasOnDemandProducts || queueHasEventMonitoringProducts
-                  "
+                  [disabled]="queueHasOnDemandProducts"
                   (click)="onKmlDownload()"
                 >
                   {{ 'METADATA_KML' | translate }}
                 </button>
                 <button
                   mat-menu-item
-                  [disabled]="
-                    queueHasOnDemandProducts || queueHasEventMonitoringProducts
-                  "
+                  [disabled]="queueHasOnDemandProducts"
                   (click)="onGeojsonDownload()"
                 >
                   {{ 'METADATA_GEOJSON' | translate }}

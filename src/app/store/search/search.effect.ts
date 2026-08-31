@@ -23,7 +23,6 @@ import {
   SetSearchType,
   SetNextJobsUrl,
   Hyp3BatchResponse,
-  SarviewsEventsResponse,
   SetSearchOutOfDate,
   TimeseriesSearchResponse,
   setSearchKioskMode,
@@ -57,11 +56,9 @@ import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorSource from 'ol/source/Vector';
 import {
-  ClearScenes,
   getAreResultsLoaded,
   getScenes,
   ScenesActionType,
-  SetSarviewsEvents,
 } from '@store/scenes';
 import { SearchType } from '@models';
 import { Feature } from 'ol';
@@ -69,6 +66,7 @@ import Geometry from 'ol/geom/Geometry';
 import { FiltersActionType } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 import * as searchStore from '@store/search';
+
 @Injectable()
 export class SearchEffects {
   private actions$ = inject(Actions);
@@ -78,7 +76,6 @@ export class SearchEffects {
   private productService = inject(services.ProductService);
   private hyp3Service = inject(services.Hyp3ApiService);
   private hyp3JobService = inject(services.Hyp3JobService);
-  private sarviewsService = inject(services.SarviewsEventsService);
   private http = inject(HttpClient);
   private notificationService = inject(services.NotificationService);
 
@@ -138,7 +135,6 @@ export class SearchEffects {
         withLatestFrom(this.store$.select(getSearchType)),
         filter(
           ([_, searchType]) =>
-            searchType !== SearchType.SARVIEWS_EVENTS &&
             searchType !== SearchType.CUSTOM_PRODUCTS &&
             searchType !== SearchType.BASELINE &&
             searchType !== SearchType.SBAS,
@@ -166,53 +162,44 @@ export class SearchEffects {
     { dispatch: false },
   );
 
-  public setEventSearchProductsOnClear = createEffect(() =>
-    this.actions$.pipe(
-      ofType<ClearScenes>(ScenesActionType.CLEAR),
-      withLatestFrom(this.store$.select(getSearchType)),
-      switchMap(([_, searchType]) => {
-        if (searchType === SearchType.SARVIEWS_EVENTS) {
-          return this.sarviewsService.getSarviewsEvents$;
-        } else {
-          return of([]);
-        }
-      }),
-      map((events) => new SetSarviewsEvents({ events })),
-    ),
-  );
-
   public makeSearches = createEffect(() =>
     this.actions$.pipe(
       ofType(SearchActionType.MAKE_SEARCH),
       withLatestFrom(this.store$.select(getSearchType)),
       switchMap(([_, searchType]) => {
-        if (searchType === SearchType.SARVIEWS_EVENTS) {
-          return this.sarviewsEventsQuery$();
-        } else if (
+        let searchRequest$: Observable<
+          SearchResponse | TimeseriesSearchResponse | Action<string>
+        >;
+
+        if (
           searchType === SearchType.BASELINE ||
           searchType === SearchType.SBAS
         ) {
           this.logCountries();
-          return this.asfApiBaselineQuery$();
+          searchRequest$ = this.asfApiBaselineQuery$();
         } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
-          return this.customProductsQuery$();
+          searchRequest$ = this.customProductsQuery$();
         } else if (searchType === SearchType.DISPLACEMENT) {
-          return this.timeseriesQuery$();
+          searchRequest$ = this.timeseriesQuery$();
         } else {
           this.logCountries();
-          return this.asfApiQuery$;
-        }
-      }),
-      catchError((err: HttpErrorResponse) => {
-        const errorMsg = err?.error?.error?.report;
-        if (errorMsg) {
-          return of(new SearchError(errorMsg));
-        }
-        if (err.status !== 400) {
-          return of(new SearchError('Unknown Error'));
+          searchRequest$ = this.asfApiQuery$;
         }
 
-        return of(new SearchError('Error loading search results'));
+        return searchRequest$.pipe(
+          catchError((err: HttpErrorResponse) => {
+            const errorMsg = err?.error?.error?.report;
+            if (errorMsg) {
+              return of(new SearchError(errorMsg));
+            }
+            if (err.status !== 400) {
+              console.log(err);
+              return of(new SearchError('Unknown Error'));
+            }
+
+            return of(new SearchError('Error loading search results'));
+          }),
+        );
       }),
     ),
   );
@@ -380,20 +367,6 @@ export class SearchEffects {
     ),
   );
 
-  public sarviewsSearchResponse = createEffect(() =>
-    this.actions$.pipe(
-      ofType<SarviewsEventsResponse>(SearchActionType.SARVIEWS_SEARCH_RESPONSE),
-      withLatestFrom(this.store$.select(getSearchType)),
-      filter(([_, searchType]) => searchType === SearchType.SARVIEWS_EVENTS),
-      switchMap(([action, _]) => [
-        new scenesStore.SetSarviewsEvents({
-          events: action.payload.events,
-        }),
-        new SetSearchAmount(action.payload.events.length),
-      ]),
-    ),
-  );
-
   public timeseriesSearchResponse = createEffect(() =>
     this.actions$.pipe(
       ofType<TimeseriesSearchResponse>(
@@ -408,6 +381,7 @@ export class SearchEffects {
               {
                 name: '20221107_20221213.unw.nc',
                 productTypeDisplay: '20221107_20221213.unw.nc',
+                productTypeGroup: '',
                 file: '20221107_20221213.unw.nc',
                 id: '20221107_20221213.unw.nc',
                 downloadUrl: '',
@@ -416,7 +390,6 @@ export class SearchEffects {
                 thumbnail: 'string',
                 dataset: 'sentinel-1',
                 groupId: 'string',
-                isUnzippedFile: false,
                 isDummyProduct: false,
                 metadata: {
                   date: moment2(),
@@ -464,13 +437,6 @@ export class SearchEffects {
   public showResultsMenuOnSearchResponse = createEffect(() =>
     this.actions$.pipe(
       ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-      map((_) => new uiStore.OpenResultsMenu()),
-    ),
-  );
-
-  public showSarviewsEventResultsMenuOnSearchResponse = createEffect(() =>
-    this.actions$.pipe(
-      ofType<SarviewsEventsResponse>(SearchActionType.SARVIEWS_SEARCH_RESPONSE),
       map((_) => new uiStore.OpenResultsMenu()),
     ),
   );
@@ -693,13 +659,6 @@ export class SearchEffects {
           }),
         );
       }),
-    );
-  }
-
-  private sarviewsEventsQuery$() {
-    return this.sarviewsService.getSarviewsEvents$.pipe(
-      filter((events) => !!events),
-      map((events) => new SarviewsEventsResponse({ events })),
     );
   }
 

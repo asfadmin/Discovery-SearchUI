@@ -1,7 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
-test('SBAS Manually Add Point', async ({ page }) => {
-  await page.goto('/');
+test('SBAS Manually Add Point', async ({ page: page }) => {
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'SBAS SBAS search provides' })

@@ -1,45 +1,33 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Bounding Boxes Return Results in Mercator Projection', async ({
   page,
 }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page.getByRole('menuitem', { name: 'Sentinel-1 Sentinel-1' }).click();
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  await page
-    .getByRole('region', { name: 'Area of Interest Options' })
-    .getByLabel('Area of Interest • WKT')
-    .click();
-  await page
-    .getByRole('region', { name: 'Area of Interest Options' })
+  const aoiOptions = page.getByRole('region', {
+    name: 'Area of Interest Options',
+  });
+  const dateFilters = page.getByRole('region', {
+    name: 'Date Filters Documentation',
+  });
+
+  await aoiOptions
     .getByLabel('Area of Interest • WKT')
     .fill(
       'POLYGON((150.2848 62.3432,262.0137 62.3432,262.0137 65.8193,150.2848 65.8193,150.2848 62.3432))',
     );
-  await page
-    .getByLabel('Date Filters Documentation')
-    .getByText('Start Date')
-    .click();
-  await page
-    .getByRole('region', { name: 'Date Filters Documentation' })
-    .getByLabel('Start Date')
-    .fill('1/1/22');
-  await page
-    .getByRole('region', { name: 'Date Filters Documentation' })
-    .getByLabel('End Date')
-    .click();
-  await page
-    .getByRole('region', { name: 'Date Filters Documentation' })
-    .getByLabel('End Date')
-    .click();
-  await page
-    .getByRole('region', { name: 'Date Filters Documentation' })
-    .getByLabel('End Date')
+  await dateFilters.getByRole('textbox', { name: 'Start Date' }).fill('1/1/22');
+  await dateFilters
+    .getByRole('textbox', { name: 'End Date' })
     .fill('8/25/2022');
   await page
-    .locator('#mat-button-toggle-6-button')
-    .getByRole('button', { name: 'SEARCH' })
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
     .click();
   await page
     .getByRole('button', {

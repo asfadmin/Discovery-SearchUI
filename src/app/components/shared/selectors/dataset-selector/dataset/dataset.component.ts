@@ -7,9 +7,8 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-
 import { Dataset } from '@models';
+import { provisionalIssuesUrl } from '@models/datasets/nisar';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -42,11 +41,11 @@ export class DatasetComponent {
   @Output() selected: EventEmitter<string> = new EventEmitter<string>();
   private screenSize = inject(ScreenSizeService);
 
-  public detailedDatasetInfoIcon = faInfoCircle;
-
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
+
+  public provisionalIssuesUrl = provisionalIssuesUrl;
 
   public isReadMore = true;
   public onOpenHelp() {

@@ -1,11 +1,13 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
-import { mockGeocoding } from 'e2e/helpers';
-test('Place name is geocoded to WKT AOI and returns search results', async ({
-  page,
-}) => {
+import {
+  waitForASFAPIResponse,
+  sentinel1Page,
+  mockGeocoding,
+} from 'e2e/helpers';
+
+test('Place name is geocoded to WKT AOI', async ({ page }) => {
   await mockGeocoding(page);
-  await page.goto('/');
+  await sentinel1Page(page);
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page.getByRole('menuitem', { name: 'S1 Burst' }).click();
 
@@ -16,28 +18,21 @@ test('Place name is geocoded to WKT AOI and returns search results', async ({
     .locator('app-geocode-selector')
     .getByLabel('Search for a location');
   await geocodeInput.fill('Tibet');
-  await page.getByRole('option').first().click();
+  await page
+    .getByRole('option', { name: 'Tibet Autonomous Region, China' })
+    .click();
 
   await expect(aoiFilter.locator('input[name="searchPolygon"]')).toHaveValue(
     /POINT\(88\.0439 31\.5534\)/,
   );
   await expect(geocodeInput).toHaveValue(/Tibet Autonomous Region.*China/);
-
-  const responsePromise = waitForASFAPIResponse(page);
-  await page
-    .locator('#mat-button-toggle-8-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
-  await responsePromise;
-
-  await expect(page.locator('mat-card-header').first()).toBeVisible();
 });
 
 test('Place name geocode pans the map to the entered location', async ({
   page,
 }) => {
   await mockGeocoding(page);
-  await page.goto('/');
+  await sentinel1Page(page);
 
   const aoiFilter = page.locator('app-aoi-filter');
   await aoiFilter.locator('.additional-aoi-toggle').click();
@@ -46,7 +41,11 @@ test('Place name geocode pans the map to the entered location', async ({
     .locator('app-geocode-selector')
     .getByLabel('Search for a location');
   await geocodeInput.fill('Big Bear Lake');
-  await page.getByRole('option').first().click();
+  await page
+    .getByRole('option', {
+      name: 'Big Bear Lake, California, United States',
+    })
+    .click();
 
   await expect(aoiFilter.locator('input[name="searchPolygon"]')).toHaveValue(
     /POINT\(-116\.9115 34\.2437\)/,
@@ -62,7 +61,8 @@ test('Geocoded place name is cleared when AOI is manually updated', async ({
   page,
 }) => {
   await mockGeocoding(page);
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page.getByRole('menuitem', { name: 'S1 Burst' }).click();
 
@@ -73,7 +73,11 @@ test('Geocoded place name is cleared when AOI is manually updated', async ({
     .locator('app-geocode-selector')
     .getByLabel('Search for a location');
   await geocodeInput.fill('Sierra Le');
-  await page.getByRole('option').nth(1).click();
+  await page
+    .getByRole('option', {
+      name: 'Sierra Leone Avenue, Nassau, New Providence, Bahamas',
+    })
+    .click();
 
   await expect(aoiFilter.locator('input[name="searchPolygon"]')).toHaveValue(
     /POINT\(-77\.3788 25\.0113\)/,
@@ -88,7 +92,8 @@ test('Geocoded place name is cleared when AOI is manually updated', async ({
 
   const responsePromise = waitForASFAPIResponse(page);
   await page
-    .locator('#mat-button-toggle-8-button')
+    .locator('app-dataset-header')
+    .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await responsePromise;

@@ -6,10 +6,10 @@
 >
   <div class="saved-searches__header">
     <div class="saved-searches__header-title">
-      @if (sidebarType === SidebarType.SAVED_SEARCHES) {
+      @if (sidebarType() === SidebarType.SAVED_SEARCHES) {
         <span>{{ 'SAVED_SEARCHES' | translate }}</span>
       }
-      @if (sidebarType === SidebarType.SEARCH_HISTORY) {
+      @if (sidebarType() === SidebarType.SEARCH_HISTORY) {
         <span>{{ 'SEARCH_HISTORY' | translate }}</span>
       }
     </div>
@@ -19,7 +19,7 @@
           [hideSingleSelectionIndicator]="true"
           [hideMultipleSelectionIndicator]="true"
           (change)="onSidebarTypeChange($event.value)"
-          [value]="sidebarType"
+          [value]="sidebarType()"
           name="SavedSearchType"
           [attr.aria-label]="'SAVED_SEARCH_TYPE' | translate"
           [hideSingleSelectionIndicator]="true"
@@ -46,12 +46,13 @@
         <mat-form-field>
           <input
             matInput
+            [attr.aria-label]="'FILTER_SEARCHES' | translate"
             [(ngModel)]="searchFilter"
             (change)="onNewFilter($event)"
             (input)="onNewFilter($event)"
             (keyup.enter)="unfocusFilter()"
             name="filterSearches"
-            placeholder="{{ 'FILTER_SEARCHES' | translate }}"
+            [placeholder]="'FILTER_SEARCHES' | translate"
           />
         </mat-form-field>
       </form>
@@ -59,7 +60,7 @@
 
     <div class="saved-searches__save-button">
       @if (
-        sidebarType === SidebarType.SAVED_SEARCHES &&
+        sidebarType() === SidebarType.SAVED_SEARCHES &&
         (searchType$ | async) !== SearchType.CUSTOM_PRODUCTS
       ) {
         <button (click)="saveCurrentSearch()" mat-raised-button color="accent">
@@ -89,7 +90,7 @@
                       [isExpanded]="search.id === expandedSearchId"
                       [isNew]="search.id === newSearchId"
                       [isSavedSearch]="
-                        sidebarType === SidebarType.SAVED_SEARCHES
+                        sidebarType() === SidebarType.SAVED_SEARCHES
                       "
                       [lockedFocus]="lockedFocus"
                       (unlockFocus)="onUnlockFocus()"

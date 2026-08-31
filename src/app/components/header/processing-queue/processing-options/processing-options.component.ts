@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, Input, inject, Signal } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -26,38 +26,30 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
   ],
 })
-export class ProcessingOptionsComponent implements OnInit {
+export class ProcessingOptionsComponent {
   private store$ = inject<Store<AppState>>(Store);
 
   @Input() selectedJobType: models.Hyp3JobType;
 
-  public jobs: models.QueuedHyp3Job[];
   public JobTypesList = models.hyp3JobTypesList;
 
-  public optionValues = {};
-  public costs: models.Hyp3Costs;
+  public jobs: Signal<models.QueuedHyp3Job[]> = this.store$.selectSignal(
+    queueStore.getQueuedJobs,
+  );
+  public optionValues: Signal<models.Hyp3ProcessingOptions> =
+    this.store$.selectSignal(hyp3Store.getProcessingOptions);
 
-  ngOnInit() {
-    this.store$.select(queueStore.getQueuedJobs).subscribe((jobs) => {
-      this.jobs = jobs;
-    });
-
-    this.store$.select(hyp3Store.getProcessingOptions).subscribe((options) => {
-      this.optionValues = options;
-    });
-
-    this.store$.select(hyp3Store.getCosts).subscribe((costs) => {
-      this.costs = costs;
-    });
-  }
+  public costs: Signal<models.Hyp3Costs> = this.store$.selectSignal(
+    hyp3Store.getCosts,
+  );
 
   public hasJobType(jobType: models.Hyp3JobType): boolean {
-    return this.jobs.some((job) => job.job_type.id === jobType.id);
+    return this.jobs().some((job) => job.job_type.id === jobType.id);
   }
 
   public onSetOptionValue(apiName: string, value: any) {
     const newOptions = {
-      ...this.optionValues[this.selectedJobType.id],
+      ...this.optionValues()[this.selectedJobType.id],
       [apiName]: value,
     };
 
@@ -77,7 +69,7 @@ export class ProcessingOptionsComponent implements OnInit {
     }, {});
 
     const newOptions = {
-      ...this.optionValues[this.selectedJobType.id],
+      ...this.optionValues()[this.selectedJobType.id],
       ...optionSubset,
     };
 

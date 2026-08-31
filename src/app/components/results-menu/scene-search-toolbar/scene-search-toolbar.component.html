@@ -1,0 +1,68 @@
+@let breakpoint = breakpoint$ | async;
+
+<div
+  class="tool-menu"
+  [ngStyle]="{
+    bottom: 0,
+  }"
+  [ngClass]="{
+    'menu-override':
+      searchType() === searchTypes.BASELINE && breakpoint === breakpoints.FULL,
+  }"
+>
+  <div class="search-button-label">{{ 'SEARCH' | translate | uppercase }}:</div>
+  <div
+    [matTooltip]="
+      hasBaseline()
+        ? ('USE_THIS_SCENE_IN_THE_BASELINE_TOOL_FOR_INTERFEROMETRY' | translate)
+        : ('NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL' | translate)
+    "
+  >
+    <button
+      mat-stroked-button
+      color="primary"
+      [disabled]="!hasBaseline()"
+      (click)="makeBaselineSearch()"
+      class="mini-toggle-button search-button"
+      target="_blank"
+    >
+      {{ 'BASELINE' | translate }}
+    </button>
+  </div>
+
+  <div
+    [matTooltip]="
+      hasBaseline()
+        ? ('USE_THIS_SCENE_IN_THE_SBAS_TOOL_TO_MAKE_PRODUCT_PAIRS_FOR_INTERFEROMETRY'
+          | translate)
+        : ('NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL' | translate)
+    "
+  >
+    <button
+      mat-stroked-button
+      color="primary"
+      [disabled]="!hasBaseline()"
+      (click)="makeSBASSearch()"
+      class="mini-toggle-button search-button"
+      target="_blank"
+    >
+      {{ 'SBAS' | translate }}
+    </button>
+  </div>
+
+  <div [matTooltip]="moreLikeThisTooltipKey() | translate">
+    <button
+      mat-stroked-button
+      color="primary"
+      [disabled]="moreLikeThisDisabled()"
+      (click)="moreLikeThis()"
+      class="mini-toggle-button search-button"
+    >
+      @if (breakpoint === breakpoints.MOBILE) {
+        <span>{{ 'MORE' | translate }}</span>
+      } @else {
+        <span>{{ moreLikeThisLabelKey() | translate }}</span>
+      }
+    </button>
+  </div>
+</div>

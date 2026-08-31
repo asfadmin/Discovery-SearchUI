@@ -30,7 +30,7 @@
           <app-map-controls></app-map-controls>
         </div>
         @if (
-          searchType === searchTypes.DISPLACEMENT &&
+          searchType() === searchTypes.DISPLACEMENT &&
           breakpoint > breakpoints.MOBILE
         ) {
           <div class="disp-layers">
@@ -48,13 +48,13 @@
 
     @if (breakpoint === breakpoints.MOBILE) {
       <div
-        [class.after-load]="isResultsMenuOpen"
-        [class.before-load]="!isResultsMenuOpen"
+        [class.after-load]="isResultsMenuOpen()"
+        [class.before-load]="!isResultsMenuOpen()"
         class="mobile-map-controls"
       >
         <button
           (click)="openMapControl()"
-          style="margin: 4px"
+          class="map-control-fab"
           color="white"
           mat-fab
         >
@@ -76,9 +76,6 @@
             <app-interaction-selector></app-interaction-selector>
           </div>
           <div class="mobile-control-group">
-            @if (searchType !== searchTypes.SARVIEWS_EVENTS) {
-              <app-view-selector style="margin-right: 5px"> </app-view-selector>
-            }
             @if ((view$ | async) === viewTypes.EQUATORIAL) {
               <app-layer-selector> </app-layer-selector>
             }
@@ -94,7 +91,7 @@
 }
 
 @if (
-  breakpoint > breakpoints.MOBILE && searchType === searchTypes.DISPLACEMENT
+  breakpoint > breakpoints.MOBILE && searchType() === searchTypes.DISPLACEMENT
 ) {
   <a
     href="https://www.jpl.nasa.gov/go/opera/products/disp-product-suite/"
@@ -114,7 +111,7 @@
 
 <app-filters-dropdown></app-filters-dropdown>
 
-@if (searchType === searchTypes.DATASET) {
+@if (searchType() === searchTypes.DATASET) {
   <app-file-upload
     (dialogClose)="onFileUploadDialogClosed($event)"
     (newSearchPolygon)="onNewSearchPolygon($event)"

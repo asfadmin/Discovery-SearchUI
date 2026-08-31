@@ -36,10 +36,6 @@ import {
 import { AsyncPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
-import {
-  FaIconLibrary,
-  FontAwesomeModule,
-} from '@fortawesome/angular-fontawesome';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
@@ -55,7 +51,6 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { FullDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-scene-file',
@@ -67,7 +62,6 @@ import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
     MatListItemIcon,
     MatIcon,
     MatTooltip,
-    FontAwesomeModule,
     MatListItemTitle,
     CopyToClipboardComponent,
     MatIconButton,
@@ -96,7 +90,6 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   @Input() product: models.CMRProduct;
   @Input() isQueued: boolean;
-  @Input() isUnzipLoading: boolean;
   @Input() isOpen: boolean;
   @Input() isUserLoggedIn: boolean;
   @Input() validHyp3JobTypes: models.Hyp3JobType[];
@@ -105,7 +98,6 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   @Input() isSearchableProduct = false;
 
   @Output() toggle = new EventEmitter<void>();
-  @Output() unzip = new EventEmitter<models.CMRProduct>();
   @Output() closeProduct = new EventEmitter<models.CMRProduct>();
   @Output() queueHyp3Job = new EventEmitter<models.QueuedHyp3Job>();
   @Output() renameJobProjectName = new EventEmitter<string>();
@@ -114,15 +106,9 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public searchTypes = SearchType;
   public isHovered = false;
   public paramsList = [];
-  public copyIcons = models.CopyIcons;
 
   private subs = new SubSink();
-  constructor() {
-    const library = inject(FaIconLibrary);
 
-    library.addIconPacks(fas);
-    library.addIcons(faSpinner);
-  }
   ngOnInit() {
     this.subs.add(
       of(this.product)
@@ -141,46 +127,8 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     this.toggle.emit();
   }
 
-  public onLoadUnzippedProduct(): void {
-    if (!this.isUserLoggedIn) {
-      return;
-    }
-
-    this.unzip.emit(this.product);
-  }
-
   public onCloseProduct(): void {
     this.closeProduct.emit(this.product);
-  }
-
-  public isUnzipDisabled(isLoggedIn: boolean, hasAccess: boolean): boolean {
-    return !isLoggedIn || (this.isRestrictedDataset() && !hasAccess);
-  }
-
-  private isRestrictedDataset(): boolean {
-    return this.product.dataset.includes('JERS-1');
-  }
-
-  public unzipTooltip(isLoggedIn: boolean, hasAccess: boolean): string {
-    if (!isLoggedIn) {
-      return 'Login to view contents';
-    }
-
-    if (this.isRestrictedDataset() && !hasAccess) {
-      return 'Cannot view restricted dataset';
-    }
-
-    return 'View file contents';
-  }
-
-  public canUnzip(product: models.CMRProduct): boolean {
-    const dataset = product.dataset.toLowerCase();
-
-    return (
-      (!dataset.includes('sentinel') ||
-        dataset === 'sentinel-1 interferogram (beta)') &&
-      product.downloadUrl.endsWith('.zip')
-    );
   }
 
   public expirationBadge(expiration_time: moment.Moment): string {
@@ -275,7 +223,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
         new filterStore.ClearDatasetFilters(),
         new filterStore.SetSelectedDataset(models.opera_s1.apiValue.dataset),
         new filterStore.SetProductTypes([productType]),
-        new filterStore.setOperaBurstID([operaburstid]),
+        new filterStore.setOperaBurstIDs([operaburstid]),
         new searchStore.MakeSearch(),
       ].forEach((action) => this.store$.dispatch(action));
     }

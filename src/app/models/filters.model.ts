@@ -12,7 +12,7 @@ export enum Props {
   FARADAY_ROTATION = 'Faraday Rotation',
   STACK_SIZE = 'Stack Size',
   BASELINE_TOOL = 'Baseline Tool',
-  SUBTYPE = 'Subtype',
+  PLATFORM = 'Platform',
   INSTRUMENT = 'Instrument',
   POINTING_ANGLE = 'Pointing Angle',
   COVERAGE_ANGLE = 'Coverage Angle',
@@ -23,6 +23,7 @@ export enum Props {
   USE_PROCESSING_TYPE = 'Use Processing Type',
   USE_TRACK = 'Use Track for Path',
   FRAME_ORDERING = 'Allow ordering frames via SBAS tooling',
+  SINGLE_PRODUCT = 'Scene list toggle button only adds/removes base product',
 }
 
 export const apiParamNames = {

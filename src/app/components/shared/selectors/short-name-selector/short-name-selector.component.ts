@@ -5,6 +5,7 @@ import {
   EventEmitter,
   OnDestroy,
   inject,
+  computed,
 } from '@angular/core';
 import * as models from '@models';
 import * as filtersStore from '@store/filters';
@@ -17,6 +18,7 @@ import {
   MatOption,
 } from '@angular/material/select';
 import { MatFormField, MatHint } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -26,6 +28,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './short-name-selector.component.scss',
   imports: [
     MatFormField,
+    MatLabel,
     MatSelect,
 
     MatOption,
@@ -39,21 +42,15 @@ export class ShortNameSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
 
   @Output() shortNamesChange = new EventEmitter<models.DatasetShortName>();
-  public dataset: models.Dataset;
+  public dataset = this.store$.selectSignal(filtersStore.getSelectedDataset);
   public shortNamesList: string[] = [];
-  public selectableShortNames: models.ShortName[] = [];
-
-  private dataset$ = this.store$.select(filtersStore.getSelectedDataset);
+  public selectableShortNames = computed(() => {
+    return this.dataset()?.shortNames ?? [];
+  });
 
   private subs = new SubSink();
 
   ngOnInit(): void {
-    this.subs.add(
-      this.dataset$.subscribe((dataset) => {
-        this.dataset = dataset;
-        this.selectableShortNames = dataset?.shortNames ?? [];
-      }),
-    );
     this.subs.add(
       this.store$
         .select(filtersStore.getShortNames)
@@ -74,7 +71,7 @@ export class ShortNameSelectorComponent implements OnInit, OnDestroy {
   }
 
   public emitShortNames(shortNameAPIValues: string[]): void {
-    const shortNames = this.dataset?.shortNames ?? [];
+    const shortNames = this.dataset()?.shortNames ?? [];
     const output = shortNameAPIValues.map((shortName) =>
       shortNames.find((datasetType) => datasetType.apiValue === shortName),
     );

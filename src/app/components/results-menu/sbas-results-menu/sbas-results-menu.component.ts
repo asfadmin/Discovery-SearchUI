@@ -16,7 +16,7 @@ import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 
-import { Breakpoints, CMRProductPair, SearchType } from '@models';
+import { Breakpoints, CMRProductPair } from '@models';
 import { ScreenSizeService, DatasetForProductService } from '@services';
 
 import { SubSink } from 'subsink';
@@ -77,10 +77,12 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   @ViewChild('chartCard', { read: ElementRef }) chartCardView: ElementRef;
 
   @Input() resize$: Observable<void>;
-  public searchType: SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
 
   public pair: CMRProductPair;
-  public isAddingCustomPoint: boolean;
+  public isAddingCustomPoint = this.store$.selectSignal(
+    uiStore.getIsAddingCustomPoint,
+  );
 
   public view = CardViews.LIST;
   public Views = CardViews;
@@ -91,7 +93,9 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
-  public isSelectedPairCustom: boolean;
+  public isSelectedPairCustom = this.store$.selectSignal(
+    scenesStore.getIsSelectedPairCustom,
+  );
   private subs = new SubSink();
 
   public zoomInChart$ = new Subject<void>();
@@ -105,29 +109,6 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
       this.screenSize.breakpoint$.subscribe(
         (point) => (this.breakpoint = point),
       ),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getIsSelectedPairCustom)
-        .subscribe(
-          (isPairCustom: boolean) => (this.isSelectedPairCustom = isPairCustom),
-        ),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(uiStore.getIsAddingCustomPoint)
-        .subscribe(
-          (isAddingCustomPoint) =>
-            (this.isAddingCustomPoint = isAddingCustomPoint),
-        ),
     );
 
     this.subs.add(

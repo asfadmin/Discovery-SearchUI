@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { SubSink } from 'subsink';
+import { Component, inject, Signal, computed } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
@@ -18,6 +17,7 @@ import { DrawSelectorComponent } from '@components/shared/aoi-options/draw-selec
 import { TimeseriesChartFlightDirectionToggleComponent } from '../../timeseries-chart/timeseries-chart-flight-direction-toggle/timeseries-chart-flight-direction-toggle.component';
 import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-timeseries-header',
@@ -33,41 +33,24 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
   ],
 })
-export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
+export class TimeseriesHeaderComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
   private themingService = inject(ThemingService);
 
-  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoint = toSignal(this.screenSize.breakpoint$);
+  public breakpoints = models.Breakpoints;
   public isDarkMode$ = this.themingService.theme$.pipe(
     map((theme) => theme === 'dark'),
   );
-  public breakpoints = models.Breakpoints;
-  public isDrawing = false;
-  public flightDirections: models.FlightDirection[];
-  public flightDesc = false;
-
-  private subs = new SubSink();
-
-  ngOnInit() {
-    this.flightDesc = false;
-    this.subs.add(
-      this.store$
-        .select(filtersStore.getFlightDirections)
-        .subscribe((flightDirs) => {
-          this.flightDirections = flightDirs;
-          this.flightDesc = this.flightDirections.toString() == 'DESCENDING';
-        }),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(mapStore.getMapInteractionMode)
-        .subscribe(
-          (mode) => (this.isDrawing = mode === MapInteractionModeType.DRAW),
-        ),
-    );
-  }
+  public isKioskMode: Signal<boolean> = this.store$.selectSignal(
+    searchStore.getKioskMode,
+  );
+  public flightDirections: Signal<models.FlightDirection[]> =
+    this.store$.selectSignal(filtersStore.getFlightDirections);
+  public flightDesc = computed(() => {
+    return this.flightDirections().toString() == 'DESCENDING';
+  });
 
   public onAddPointsMode(): void {
     this.store$.dispatch(
@@ -84,11 +67,5 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());
-  }
-
-  public isKioskMode$ = this.store$.select(searchStore.getKioskMode);
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 }

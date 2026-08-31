@@ -8,6 +8,7 @@ export type CMRProductsById = Record<string, CMRProduct>;
 export interface CMRProduct {
   name: string;
   productTypeDisplay: string;
+  productTypeGroup: string | null;
   file: string;
   id: string;
   downloadUrl: string;
@@ -16,7 +17,6 @@ export interface CMRProduct {
   thumbnail: string;
   dataset: string;
   groupId: string;
-  isUnzippedFile: boolean;
   isDummyProduct: boolean;
   virtual?: boolean;
 
@@ -118,8 +118,8 @@ export interface NISARMetadata {
   s3Urls: string[];
   frameCoverage: string;
   jointObservation: string;
-  sideBandPolarization: string;
-  mainBandPolarization: string;
+  sideBandPolarization: string[];
+  mainBandPolarization: string[];
   crid: string | null;
   rangeBandwidth: string;
   sizeMB?: Record<string, { bytes: number; format: string }>;

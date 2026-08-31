@@ -1,18 +1,20 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 test('S1 Burst path filter returns matching results', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page.getByRole('menuitem', { name: 'S1 Burst' }).click();
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  await page.getByPlaceholder('Path Start').fill('86');
-  await page.getByPlaceholder('Path End').fill('86');
+  await page.getByLabel('Path Start').fill('86');
+  await page.getByLabel('Path End').fill('86');
 
   const responsePromise = waitForASFAPIResponse(page);
   await page
-    .locator('#mat-button-toggle-6-button')
+    .locator('app-filters-dropdown')
+    .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await responsePromise;

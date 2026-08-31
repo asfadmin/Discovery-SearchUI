@@ -1,51 +1,67 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
-test('Map: Overview Map toggle shows overview map', async ({ page }) => {
-  await page.goto('/');
+test(
+  'Map: Overview Map toggle shows overview map',
+  { tag: '@visual' },
+  async ({ page }) => {
+    await sentinel1Page(page);
 
-  await page.getByRole('button', { name: 'layer selector' }).click();
-  await page.getByRole('menuitem', { name: 'Overview Map' }).click();
+    await page.getByRole('button', { name: 'layer selector' }).click();
+    await expect(page).toHaveScreenshot();
 
-  await expect(page.locator('.ol-overviewmap')).toBeVisible();
-});
+    await page.getByRole('menuitem', { name: 'Overview Map' }).click();
 
-test('Map: Gridlines Overlay toggle updates checkbox state', async ({
-  page,
-}) => {
-  await page.goto('/');
+    await expect(page.locator('.ol-overviewmap')).toBeVisible();
+  },
+);
 
-  const layerButton = page.getByRole('button', { name: 'layer selector' });
-  const gridlinesItem = page.getByRole('menuitem', {
-    name: 'Gridlines Overlay',
-  });
+test(
+  'Map: Gridlines Overlay toggle updates checkbox state',
+  { tag: '@visual' },
+  async ({ page }) => {
+    await sentinel1Page(page);
 
-  await layerButton.click();
-  await gridlinesItem.click();
+    const layerButton = page.getByRole('button', { name: 'layer selector' });
+    const gridlinesItem = page.getByRole('menuitem', {
+      name: 'Gridlines Overlay',
+    });
 
-  await layerButton.click();
-  await expect(gridlinesItem.locator('input[type="checkbox"]')).toBeChecked();
-});
+    await layerButton.click();
+    await gridlinesItem.click();
+    await expect(page).toHaveScreenshot();
 
-test('Map: Coherence Layer activates when a month range is selected', async ({
-  page,
-}) => {
-  await page.goto('/');
+    await layerButton.click();
+    await expect(gridlinesItem.locator('input[type="checkbox"]')).toBeChecked();
+  },
+);
 
-  const layerButton = page.getByRole('button', { name: 'layer selector' });
-  const coherenceItem = page.getByRole('menuitem', { name: 'Coherence Layer' });
+test(
+  'Map: Coherence Layer activates when a month range is selected',
+  { tag: '@visual' },
+  async ({ page }) => {
+    await sentinel1Page(page);
 
-  await layerButton.click();
-  await coherenceItem.click();
-  await page.getByRole('menuitem', { name: 'Mar, Apr, May' }).click();
+    const layerButton = page.getByRole('button', { name: 'layer selector' });
+    const coherenceItem = page.getByRole('menuitem', {
+      name: 'Coherence Layer',
+    });
 
-  await layerButton.click();
-  await expect(coherenceItem.locator('input[type="checkbox"]')).toBeChecked();
-});
+    await layerButton.click();
+    await coherenceItem.click();
+    await expect(page).toHaveScreenshot();
+
+    await page.getByRole('menuitem', { name: 'Mar, Apr, May' }).click();
+
+    await layerButton.click();
+    await expect(coherenceItem.locator('input[type="checkbox"]')).toBeChecked();
+  },
+);
 
 test('Map: switch base layer between Satellite and Street', async ({
   page,
 }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
 
   const layerButton = page.getByRole('button', { name: 'layer selector' });
   const layerIcon = layerButton.locator('mat-icon.control-icon');

@@ -26,7 +26,7 @@ export default defineConfig({
   },
   expect: {
     toHaveScreenshot: {
-      maxDiffPixelRatio: 0.2,
+      maxDiffPixelRatio: 0.05,
     },
     timeout: 30_000,
   },
@@ -51,6 +51,7 @@ export default defineConfig({
         timezoneId: 'America/New_York',
         bypassCSP: true,
       },
+      grepInvert: /@webgl/, // firefox has WebGL disabled in the github runner, for tests that use this skip
     },
 
     // {

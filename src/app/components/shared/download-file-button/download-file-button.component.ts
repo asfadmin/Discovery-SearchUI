@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { DownloadService } from '@services/download.service';
 import { CMRProduct, DownloadStatus } from '@models';
-import { UAParser } from 'ua-parser-js';
 import {
   Observable,
   Subscription,
@@ -179,16 +178,15 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const userAgent = new UAParser().getResult();
-
-    if (userAgent.browser.name !== 'Chrome') {
-      if (isBurstProduct) {
-        this.burstFunctionality(this.product);
-      } else {
-        this.classicDownload(this.url);
-      }
-      return;
+    // if (userAgent.browser.name !== 'Chrome') {
+    if (isBurstProduct) {
+      this.burstFunctionality(this.product);
+    } else {
+      this.classicDownload(this.url);
     }
+    // }
+    // TODO: Reenable when CORS figured out for data
+    return;
 
     if (!this.isUserLoggedIn) {
       this.getHandle(dir).then((handle) => {
@@ -272,10 +270,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
   private isBurstDone(resp, _product): boolean {
-    if (
-      resp.type === HttpEventType.DownloadProgress ||
-      resp.type === HttpEventType.DownloadProgress
-    ) {
+    if (resp.type === HttpEventType.DownloadProgress) {
       return resp.loaded > 1000;
     }
     return false;

@@ -2,7 +2,7 @@
   class="action-buttons--container"
   [ngClass]="{ 'mobile-padding': breakpoint === breakpoints.MOBILE }"
 >
-  <div style="display: flex; justify-content: space-evenly">
+  <div class="metrics-row">
     <div
       [ngClass]="{
         'mobile-baseline': breakpoint <= breakpoints.SMALL,
@@ -33,9 +33,8 @@
       }
       @if (hyp3ableByJobType.total < 1) {
         <mat-icon
-          class="noselect list-icon"
-          style="margin-left: 10px; opacity: 0.5"
-          matTooltip="{{ 'ONLY_CO-POLARIZED_BURSTS' | translate }}"
+          class="noselect list-icon icon-margin icon-disabled"
+          [matTooltip]="'ONLY_CO_POLARIZED_BURSTS' | translate"
           svgIcon="hyp3"
           matListItemMeta
         >
@@ -45,11 +44,11 @@
         <mat-icon
           (click)="onToggle()"
           class="icon-margin"
-          matTooltip="{{
+          [matTooltip]="
             isQueued
               ? ('REMOVE_SCENE_FILES_FROM_DOWNLOADS' | translate)
               : ('ADD_SCENE_FILES_TO_DOWNLOADS' | translate)
-          }}"
+          "
         >
           {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
         </mat-icon>

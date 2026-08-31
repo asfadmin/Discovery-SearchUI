@@ -1,40 +1,35 @@
 <form [formGroup]="stateForm">
   <mat-form-field>
-    <input
-      type="text"
-      matInput
-      placeholder="{{ 'FILTER_CAMPAIGN' | translate }}"
-      formControlName="missionFilter"
-    />
+    <mat-label>{{ 'FILTER_CAMPAIGN' | translate }}</mat-label>
+    <input type="text" matInput formControlName="missionFilter" />
   </mat-form-field>
 </form>
 
-@if (!!selectedMission) {
-  <div class="selected" style="padding-top: 12px">
-    <div style="display: flex; justify-content: space-between">
+@if (!!selectedMission()) {
+  <div class="selected">
+    <div class="selected-row">
       <div>
-        <span style="margin-left: 20px" class="v-mid">
+        <span class="v-mid selected-label">
           <b>{{ 'SELECTED' | translate }}</b> <span> • </span>
-          {{ selectedMission }}
+          {{ selectedMission() }}
         </span>
       </div>
       <div>
         <mat-icon
           (click)="setMission(null)"
-          style="margin-right: 10px"
-          class="clickable v-mid"
+          class="clickable v-mid clear-mission-icon"
           mat-list-icon
-          matTooltip="{{ 'CLEAR_SELECTED_MISSION' | translate }}"
-          >{{ 'CLEAR' | translate }}</mat-icon
+          [matTooltip]="'CLEAR_SELECTED_MISSION' | translate"
+          >clear</mat-icon
         >
       </div>
     </div>
-    <mat-divider style="margin-top: 12px" [inset]="true"></mat-divider>
+    <mat-divider class="selected-divider" [inset]="true"></mat-divider>
   </div>
 }
 
 <cdk-virtual-scroll-viewport
-  style="height: 250px"
+  class="mission-list-viewport"
   minBufferPx="500"
   maxBufferPx="600"
   itemSize="48"

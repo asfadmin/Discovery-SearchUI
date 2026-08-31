@@ -28,6 +28,7 @@ import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
+import * as filtersStore from '@store/filters';
 
 import {
   CdkVirtualScrollViewport,
@@ -37,13 +38,12 @@ import {
 
 import * as services from '@services';
 import * as models from '@models';
-import { CMRProduct, QueuedHyp3Job, SarviewsEvent } from '@models';
+import { CMRProduct, QueuedHyp3Job } from '@models';
 import { ActiveToast } from 'ngx-toastr';
 import { MatActionList, MatListItem } from '@angular/material/list';
 import { NgClass, AsyncPipe, SlicePipe } from '@angular/common';
 import { SceneComponent } from './scene/scene.component';
 import { MatButton } from '@angular/material/button';
-import { SarviewsEventComponent } from './sarview-event/sarviews-event.component';
 import { PairComponent } from './pair/pair.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -64,7 +64,6 @@ const INFINITY = 2e10;
     SceneComponent,
     MatListItem,
     MatButton,
-    SarviewsEventComponent,
     PairComponent,
     AsyncPipe,
     SlicePipe,
@@ -75,14 +74,12 @@ export class ScenesListComponent
   implements OnInit, OnDestroy, AfterContentInit
 {
   private store$ = inject<Store<AppState>>(Store);
-  private mapService = inject(services.MapService);
   private screenSize = inject(services.ScreenSizeService);
   private keyboardService = inject(services.KeyboardService);
   private scenesService = inject(services.ScenesService);
   private pairService = inject(services.PairService);
   private hyp3 = inject(services.Hyp3ApiService);
   private hyp3JobPolling = inject(services.Hyp3JobPollingService);
-  private eventMonitoringService = inject(services.SarviewsEventsService);
   private notificationService = inject(services.NotificationService);
 
   @ViewChild(CdkVirtualScrollViewport, { static: true })
@@ -90,22 +87,20 @@ export class ScenesListComponent
   @Input() resize$: Observable<void>;
   private pairs$ = this.pairService.pairs$;
 
-  public scenes: CMRProduct[];
+  public scenes: CMRProduct[] = [];
   public pairs: {
     pair: models.CMRProductPair;
     hyp3able: {
       byJobType: models.Hyp3ableProductByJobType[];
       total: number;
     };
-  }[];
-  public sarviewsEvents: SarviewsEvent[];
+  }[] = [];
 
-  public numberOfQueue: Record<string, number>;
-  public allQueued: Record<string, boolean>;
-  public allJobNames: string[];
-  public queuedJobs: QueuedHyp3Job[];
+  public numberOfQueue: Record<string, number> = {};
+  public allQueued: Record<string, boolean> = {};
+  public allJobNames: string[] = [];
+  public queuedJobs: QueuedHyp3Job[] = [];
   public selected: string;
-  public selectedEvent: string;
 
   public hyp3ableByScene: Record<
     string,
@@ -113,7 +108,7 @@ export class ScenesListComponent
   > = {};
   public newHyp3JobNotification: ActiveToast<any> = null;
 
-  public offsets = { temporal: 0, perpendicular: 0 };
+  public offsets = this.store$.selectSignal(scenesStore.getMasterOffsets);
   public selectedFromList = false;
   public hoveredSceneName: string | null = null;
   public hoveredPairNames: string | null = null;
@@ -135,12 +130,6 @@ export class ScenesListComponent
 
   ngOnInit() {
     this.keyboardService.init();
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getMasterOffsets)
-        .subscribe((offsets) => (this.offsets = offsets)),
-    );
 
     this.store$.select(queueStore.getQueuedJobs).subscribe((jobs) => {
       const flattened: string[] = [];
@@ -226,58 +215,15 @@ export class ScenesListComponent
     );
 
     this.subs.add(
-      this.store$
-        .select(scenesStore.getSelectedSarviewsEvent)
-        .pipe(
-          withLatestFrom(this.eventMonitoringService.filteredSarviewsEvents$()),
-          delay(20),
-          filter(([selected, _]) => !!selected),
-          tap(([selected, _]) => (this.selectedEvent = selected.event_id)),
-          map(([selected, events]) => {
-            const sceneIdx = events.findIndex(
-              (event) => event.event_id === selected.event_id,
-            );
-            return Math.max(0, sceneIdx - 1);
-          }),
-        )
-        .subscribe((idx) => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
-          }
-
-          this.selectedFromList = false;
-        }),
-    );
-
-    this.subs.add(
-      this.eventMonitoringService
-        .filteredSarviewsEvents$()
-        .pipe(
-          filter((_) => this.searchType === this.SearchTypes.SARVIEWS_EVENTS),
-        )
-        .subscribe((events) => {
-          this.sarviewsEvents = events;
-
-          const eventIds = events.map((event) => event.event_id);
-          if (
-            !eventIds.includes(this.selectedEvent) &&
-            eventIds.length > 0 &&
-            !!this.selectedEvent
-          ) {
-            this.store$.dispatch(
-              new scenesStore.SetSelectedSarviewsEvent(eventIds[0]),
-            );
-          }
-        }),
-    );
-
-    this.subs.add(
-      this.pairs$.subscribe((pairs) => {
+      combineLatest([
+        this.pairs$,
+        this.store$.select(filtersStore.getShouldUseFramesForReference),
+      ]).subscribe(([pairs, isFrameMode]) => {
         this.pairs = [...pairs.pairs, ...pairs.custom].map((pair) => {
-          const hyp3able = this.hyp3.getHyp3ableProducts([
-            pair,
-            ...pair.map((p) => [p]),
-          ]);
+          const hyp3able = this.hyp3.getHyp3ableProducts(
+            [pair, ...pair.map((p) => [p])],
+            isFrameMode,
+          );
 
           return {
             pair,
@@ -307,10 +253,12 @@ export class ScenesListComponent
       }),
     );
 
-    this.store$
-      .select(scenesStore.getAllSceneProducts)
+    combineLatest([
+      this.store$.select(scenesStore.getAllSceneProducts),
+      this.store$.select(filtersStore.getShouldUseFramesForReference),
+    ])
       .pipe(withLatestFrom(baselineReference$))
-      .subscribe(([searchScenes, baselineReference]) => {
+      .subscribe(([[searchScenes, isFrameMode], baselineReference]) => {
         this.hyp3ableByScene = {};
 
         Object.entries(searchScenes).forEach(([groupId, products]) => {
@@ -323,7 +271,10 @@ export class ScenesListComponent
             }
           });
 
-          const hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
+          const hyp3able = this.hyp3.getHyp3ableProducts(
+            possibleJobs,
+            isFrameMode,
+          );
 
           this.hyp3ableByScene[groupId] = hyp3able;
         });
@@ -331,7 +282,7 @@ export class ScenesListComponent
 
     const queueScenes$ = combineLatest([
       this.store$.select(queueStore.getQueuedProducts),
-      this.store$.select(scenesStore.getAllSceneProducts),
+      this.store$.select(scenesStore.getAllSceneProductsFiltered),
     ]).pipe(
       debounceTime(0),
       map(([queueProducts, searchScenes]) => {
@@ -349,7 +300,7 @@ export class ScenesListComponent
         Object.entries(searchScenes).map(([sceneName, products]) => {
           numberOfQueuedProducts[sceneName] = [
             (queuedProductGroups[sceneName] || []).length,
-            (products as any[]).length,
+            products.length,
           ];
         });
 
@@ -377,7 +328,6 @@ export class ScenesListComponent
           map((scenes) =>
             Object.entries(scenes).reduce((total, [scene, amt]) => {
               total[scene] = amt[0] >= amt[1];
-
               return total;
             }, {}),
           ),
@@ -495,37 +445,6 @@ export class ScenesListComponent
   }
 
   ngAfterContentInit() {
-    this.subs.add(
-      this.eventMonitoringService
-        .filteredSarviewsEvents$()
-        .pipe(
-          filter((loaded) => !!loaded),
-          withLatestFrom(
-            this.store$.select(scenesStore.getSelectedSarviewsEvent),
-          ),
-          map(([events, selected]) => ({ selectedEvent: selected, events })),
-          delay(400),
-          filter((selected) => !!selected.selectedEvent),
-          tap((selected) => {
-            this.mapService.zoomToEvent(selected.selectedEvent);
-            this.selectedEvent = selected.selectedEvent.event_id;
-          }),
-          first(),
-          map((selected) => {
-            const sceneIdx = selected.events.findIndex(
-              (event) => event.event_id === selected.selectedEvent.event_id,
-            );
-
-            return Math.max(0, sceneIdx - 1);
-          }),
-        )
-        .subscribe((idx) => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
-          }
-        }),
-    );
-
     this.subs.add(
       this.pairs$
         .pipe(

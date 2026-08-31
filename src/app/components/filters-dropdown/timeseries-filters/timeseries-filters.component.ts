@@ -1,10 +1,5 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
-import { AppState } from '@store';
-import { Store } from '@ngrx/store';
-import * as scenesStore from '@store/scenes';
-
-import { SubSink } from 'subsink';
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
 import {
@@ -41,13 +36,11 @@ enum FilterPanel {
     TranslateModule,
   ],
 })
-export class TimeseriesFiltersComponent implements OnDestroy, OnInit {
-  private store$ = inject<Store<AppState>>(Store);
+export class TimeseriesFiltersComponent {
   private screenSize = inject(ScreenSizeService);
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-  public areResultsLoaded: boolean;
 
   selectedPanel: FilterPanel | null = null;
   panels = FilterPanel;
@@ -55,16 +48,6 @@ export class TimeseriesFiltersComponent implements OnDestroy, OnInit {
   panelIsDisabled = true;
   customCollapsedHeight = '30px';
   customExpandedHeight = '30px';
-
-  private subs = new SubSink();
-
-  ngOnInit(): void {
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getAreResultsLoaded)
-        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
-    );
-  }
 
   public isSelected(panel: FilterPanel): boolean {
     return this.selectedPanel === panel;
@@ -76,9 +59,5 @@ export class TimeseriesFiltersComponent implements OnDestroy, OnInit {
 
   public onOpenHelp(url: string): void {
     window.open(url);
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 }

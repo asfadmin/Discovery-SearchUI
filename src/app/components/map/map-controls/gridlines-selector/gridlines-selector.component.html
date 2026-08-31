@@ -1,8 +1,8 @@
 <mat-button-toggle
   class="control-mat-button-toggle"
   (click)="onToggleGridlines()"
-  matTooltip="{{ 'GRATICULE_OVERLAY' | translate }}"
-  value="active"
+  [matTooltip]="'GRATICULE_OVERLAY' | translate"
+  value="active()"
 >
   <mat-icon svgIcon="gridlines" class="control-icon" iconPositionEnd></mat-icon>
 </mat-button-toggle>

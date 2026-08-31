@@ -24,6 +24,7 @@ import { AsfLanguageService } from '@services/asf-language.service';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatInput, MatHint } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import { SearchFiltersComponent } from '../../sidebar/saved-searches/saved-search/search-filters/search-filters.component';
 import { MatButton } from '@angular/material/button';
 import { UpperCasePipe, TitleCasePipe } from '@angular/common';
@@ -39,6 +40,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatDialogContent,
     FormsModule,
     MatFormField,
+    MatLabel,
     MatInput,
     MatHint,
     SearchFiltersComponent,

@@ -1,7 +1,3 @@
-import '@formatjs/intl-displaynames/polyfill';
-import '@formatjs/intl-displaynames/locale-data/en';
-import '@formatjs/intl-displaynames/locale-data/es';
-
 import { Component, Input, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -15,7 +11,6 @@ import { DatasetHeaderComponent } from './dataset-header/dataset-header.componen
 import { TimeseriesHeaderComponent } from './timeseries-header/timeseries-header.component';
 import { ListHeaderComponent } from './list-header/list-header.component';
 import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
-import { SarviewsHeaderComponent } from './sarviews-header/sarviews-header.component';
 import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 import { InfoBarComponent } from './info-bar/info-bar.component';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -30,7 +25,6 @@ import { MatProgressBar } from '@angular/material/progress-bar';
     TimeseriesHeaderComponent,
     ListHeaderComponent,
     BaselineHeaderComponent,
-    SarviewsHeaderComponent,
     Hyp3HeaderComponent,
     InfoBarComponent,
     MatProgressBar,

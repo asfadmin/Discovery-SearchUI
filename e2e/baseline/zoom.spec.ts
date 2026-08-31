@@ -1,12 +1,14 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('Baseline zoom to results', async ({ page }) => {
+  await sentinel1Page(page);
+
   const getMapInfoText = async () =>
     ((await page.locator('app-map-info').textContent()) ?? '')
       .replace(/\s+/g, ' ')
       .trim();
 
-  await page.goto('/');
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'Baseline Baseline search' })
@@ -19,8 +21,8 @@ test('Baseline zoom to results', async ({ page }) => {
       'S1B_IW_SLC__1SDV_20210128T101605_20210128T101636_025353_030505_9FF1',
     );
   await page
-    .locator('#mat-button-toggle-6-button')
-    .getByRole('button', { name: 'SEARCH' })
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
     .click();
 
   const urlBeforeZoom = page.url();

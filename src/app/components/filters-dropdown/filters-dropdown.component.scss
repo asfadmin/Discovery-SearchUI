@@ -1,9 +1,5 @@
 @use "asf-theme-variables" as *;
 
-.hidden {
-  display: none;
-}
-
 .dataset-filters-div {
   /* autoprefixer: off */
   position: absolute;
@@ -13,20 +9,9 @@
   right: 0;
   margin: 0 auto;
   width: 900px;
-  height: -webkit-fill-available;
   max-width: 100vw;
-  //max-height: calc(100vh - 32px);
-  max-height: 100vh;
   overflow: hidden;
   z-index: 2020;
-}
-
-.no-pointer {
-  pointer-events: none;
-}
-
-.pointer {
-  pointer-events: auto;
 }
 
 .dataset-filters-card {
@@ -35,7 +20,11 @@
   }
   z-index: 1020;
   display: flex;
-  height: -webkit-fill-available;
+  height: 100%;
+
+  @media screen and (max-width: 800px) {
+    height: calc(100% - 32px);
+  }
   overflow: hidden;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -78,13 +67,7 @@
     flex-grow: 1;
     overflow: auto;
     min-height: 4em;
-    max-height: calc(100vh - 170px);
     padding: 10px;
-
-  }
-
-  .filters-list-mobile {
-    //max-height: calc(100vh - 300px);
   }
 
   .footer {
@@ -102,12 +85,16 @@
     z-index: 1020;
     padding: 10px;
     min-height: 30px;
-
   }
 }
 
 .filter-scroll {
   z-index: 1;
+}
+
+.max-results-spacing {
+  margin-right: 10px;
+  align-self: center;
 }
 
 h3 {
@@ -123,4 +110,16 @@ h3 {
   padding-left: 5px;
   flex-shrink: 0;
   margin-top: 6px;
+}
+
+.no-pointer {
+  pointer-events: none;
+}
+
+.pointer {
+  pointer-events: auto;
+}
+
+.hidden {
+  display: none;
 }

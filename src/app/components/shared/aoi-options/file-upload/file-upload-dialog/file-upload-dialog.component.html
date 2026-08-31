@@ -60,7 +60,7 @@
   </div>
 } @else {
   <mat-button-toggle
-    matTooltip="{{ 'UPLOAD_AOI_VIA_FILE' | translate }}"
+    [matTooltip]="'UPLOAD_AOI_VIA_FILE' | translate"
     class="control-mat-button-toggle mobile-upload-button"
     [disabled]="uploading"
     (click)="addFiles()"

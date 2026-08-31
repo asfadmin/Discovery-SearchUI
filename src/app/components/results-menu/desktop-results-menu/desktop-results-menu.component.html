@@ -19,16 +19,14 @@
 @if (breakpoint > breakpoints.SMALL) {
   <mat-card class="mp0 no-box-shadow scene-detail--layout no-padding">
     <mat-card-subtitle class="header">
-      {{
-        sarviewsEventsLength !== 0
-          ? ('EVENT' | translate)
-          : ('SCENE_DETAIL' | translate | titlecase)
-      }}
+      {{ 'SCENE_DETAIL' | translate | titlecase }}
     </mat-card-subtitle>
-    @if (scenesLength !== 0 || sarviewsEventsLength !== 0) {
+    @if (scenesLength !== 0) {
       <app-scene-detail></app-scene-detail>
+      <app-scene-search-toolbar />
     }
   </mat-card>
+
   <!-- FILE LIST -->
   <mat-card class="h100 mp0 no-left-border file-list--layout">
     <mat-card-subtitle class="header">
@@ -73,7 +71,7 @@
       </span>
     </mat-card-subtitle>
     <div class="app-scene-list scroll-y scroll-x">
-      @if (scenesLength !== 0 || sarviewsEventsLength !== 0) {
+      @if (scenesLength !== 0) {
         <app-scene-detail [isScrollable]="false"></app-scene-detail>
       }
       <hr />
@@ -81,5 +79,6 @@
         <app-scene-files></app-scene-files>
       }
     </div>
+    <app-scene-search-toolbar />
   </mat-card>
 }

@@ -1,10 +1,10 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 test('Geographic: Cancel restores filter changes after editing path range', async ({
   page,
 }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page
@@ -23,8 +23,8 @@ test('Geographic: Cancel restores filter changes after editing path range', asyn
   await initialSearch;
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  await page.getByPlaceholder('Path Start').fill('20');
-  await page.getByPlaceholder('Path End').fill('25');
+  await page.getByLabel('Path Start').fill('20');
+  await page.getByLabel('Path End').fill('25');
 
   await expect(page.locator('app-info-bar')).toContainText('Path : 20 - 25');
 
@@ -38,6 +38,6 @@ test('Geographic: Cancel restores filter changes after editing path range', asyn
   );
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  await expect(page.getByPlaceholder('Path Start')).toHaveValue('');
-  await expect(page.getByPlaceholder('Path End')).toHaveValue('');
+  await expect(page.getByLabel('Path Start')).toHaveValue('');
+  await expect(page.getByLabel('Path End')).toHaveValue('');
 });

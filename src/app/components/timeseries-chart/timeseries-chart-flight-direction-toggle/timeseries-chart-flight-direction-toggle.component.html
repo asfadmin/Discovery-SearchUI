@@ -5,7 +5,7 @@
       <button
         [matMenuTriggerFor]="flightDirectionMenu"
         color="basic"
-        matTooltip="{{ 'FLIGHT_DIRECTION' | translate }}"
+        [matTooltip]="'FLIGHT_DIRECTION' | translate"
         mat-button
       >
         <div class="button-text">
@@ -15,7 +15,7 @@
           @if (flightDirection === FlightDirections.DESCENDING) {
             <mat-icon class="fd-icon-button-text">south_west</mat-icon>
           }
-          {{ flightDirection.toString() | translate }}
+          {{ flightDirection | translate }}
           <span class="mat-select-arrow"></span>
         </div>
       </button>

@@ -22,7 +22,6 @@ export { DatasetForProductService } from './dataset-for-product.service';
 export { KeyboardService } from './keyboard.service';
 export { UserDataService } from './user-data.service';
 export { SavedSearchService } from './saved-search.service';
-export { UnzipApiService } from './unzip-api.service';
 export { ScenesService } from './scenes.service';
 export { SearchService } from './search.service';
 export {
@@ -36,7 +35,6 @@ export {
 export { PairService } from './pair.service';
 export { SceneSelectService } from './scene-select.service';
 export { NotificationService } from './notification.service';
-export { SarviewsEventsService } from './sarviews-events.service';
 export { BrowseOverlayService } from './browse-overlay.service';
 export { ThemingService } from './theming.service';
 export { ExportService } from './export.service';

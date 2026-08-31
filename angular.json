@@ -22,7 +22,7 @@
             },
             "index": "src/index.html",
             "polyfills": [
-              "src/polyfills.ts"
+              "src/polyfills.ts",
             ],
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
@@ -37,7 +37,8 @@
               "./node_modules/cookieconsent/build/cookieconsent.min.css",
               "./node_modules/tippy.js/dist/tippy.css",
               "./node_modules/tippy.js/dist/backdrop.css",
-              "./node_modules/tippy.js/animations/shift-away.css"
+              "./node_modules/tippy.js/animations/shift-away.css",
+              "node_modules/material-icons/iconfont/material-icons.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

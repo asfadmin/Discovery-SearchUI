@@ -7,9 +7,9 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import {
   getAllProducts,
+  getPerpendicularSortDirection,
   getScenes,
   getTemporalSortDirection,
-  getPerpendicularSortDirection,
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange,
@@ -128,6 +128,7 @@ export class ScenesService {
         if (
           !scenes.every(
             (scene) =>
+              scene.dataset === 'Sentinel-1D' ||
               scene.dataset === 'Sentinel-1C' ||
               scene.dataset === 'Sentinel-1B' ||
               scene.dataset === 'Sentinel-1A',

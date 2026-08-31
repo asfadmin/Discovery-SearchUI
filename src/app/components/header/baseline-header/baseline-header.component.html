@@ -5,13 +5,10 @@
         <div class="baseline-header-wrapper">
           <app-search-type-selector class="breadcrumb">
           </app-search-type-selector>
-          <div
-            class="breadcrumb"
-            style="display: flex; align-items: center; width: 90px"
-          >
+          <div class="breadcrumb reference-toggle-wrapper">
             <app-baseline-frame-reference-toggle></app-baseline-frame-reference-toggle>
           </div>
-          @if (shouldUseFramesForReference) {
+          @if (shouldUseFramesForReference()) {
             <div class="breadcrumb dataset-selector--layout">
               <app-dataset-selector
                 class="w100"
@@ -43,7 +40,7 @@
         <div class="mobile-nav-bar">
           <button
             (click)="onToggleFiltersMenu()"
-            style="margin-left: 2px; padding-left: 5px; padding-right: 5px"
+            class="mobile-filters-button"
             mat-flat-button
           >
             <mat-icon>edit</mat-icon>

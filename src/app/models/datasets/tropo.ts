@@ -36,12 +36,14 @@ export const tropo = {
   },
   beamModes: [],
   polarizations: [],
-  subtypes: [],
-  platformDesc: 'TROPO_DESC',
-  platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
+  platforms: [],
+  description: 'TROPO_DESC',
+  icon: '/assets/icons/satellite_alt_black_48dp.svg',
   productTypeDisplays: {
-    nc: 'Netcdf File',
-    xml: 'Metadata XML',
-    png: 'Browse Image PNG',
+    displays: {
+      nc: 'Netcdf File',
+      xml: 'Metadata XML',
+      png: 'Browse Image PNG',
+    },
   },
 };

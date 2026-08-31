@@ -1,20 +1,19 @@
 <mat-form-field
   appearance="fill"
-  matTooltip="{{ 'PRODUCTION_CONFIGURATION_TOOLTIP' | translate }}"
+  [matTooltip]="'PRODUCTION_CONFIGURATION_TOOLTIP' | translate"
 >
   <mat-label>{{ 'PRODUCTION_CONFIGURATION' | translate }}</mat-label>
   <mat-select
-    [formControl]="prodConfigControl"
+    [value]="selectedConfig()"
     multiple
-    [(ngModel)]="selectedConfig"
     class="sci-prod-select"
     (selectionChange)="onProductionConfigSelect($event.value)"
   >
-    @for (prodConfig of prodConfigs; track prodConfig) {
+    @for (prodConfig of prodConfigs; track prodConfig.value) {
       <mat-option [value]="prodConfig.value">{{
         prodConfig.viewValue | translate
       }}</mat-option>
     }
   </mat-select>
-  <mat-hint>{{ prodConfigControl.value }}</mat-hint>
+  <mat-hint>{{ selectedConfig() }}</mat-hint>
 </mat-form-field>

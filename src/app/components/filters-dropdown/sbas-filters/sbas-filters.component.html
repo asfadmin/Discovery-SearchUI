@@ -14,14 +14,13 @@
           {{ 'SEARCH_OPTIONS' | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div style="display: flex; margin-top: 25px">
-        <app-search-type-selector style="margin-right: 10px">
-        </app-search-type-selector>
+      <div class="search-options-row">
+        <app-search-type-selector> </app-search-type-selector>
       </div>
     </mat-expansion-panel>
   }
 
-  @if ((breakpoint$ | async) === breakpoints.MOBILE || !areResultsLoaded) {
+  @if ((breakpoint$ | async) === breakpoints.MOBILE || !areResultsLoaded()) {
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
@@ -36,13 +35,10 @@
           {{ panels.MASTER | uppercase | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div
-        class="breadcrumb"
-        style="display: flex; align-items: center; margin-top: 15px"
-      >
+      <div class="breadcrumb reference-toggle-row">
         <app-baseline-frame-reference-toggle></app-baseline-frame-reference-toggle>
       </div>
-      @if (shouldUseFramesForReference) {
+      @if (shouldUseFramesForReference()) {
         <div class="breadcrumb dataset-selector--layout">
           <app-dataset-selector
             class="w100"
@@ -52,7 +48,7 @@
           ></app-dataset-selector>
         </div>
       }
-      <div class="w100" style="display: flex; margin-top: 25px">
+      <div class="w100 search-options-row">
         <app-master-scene-selector class="w100"></app-master-scene-selector>
       </div>
       <div class="sbas-example">
@@ -60,8 +56,8 @@
         S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C
         <app-copy-to-clipboard
           value="S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C"
-          prompt="{{ 'COPY_NAME' | translate }}"
-          style="margin: 0 3px"
+          [prompt]="'COPY_NAME' | translate"
+          [message]="'COPIED_SCENE_NAME' | translate"
           class="clipboard-icon"
         >
         </app-copy-to-clipboard>
@@ -69,14 +65,14 @@
       <div>
         <app-docs-modal
           url="https://docs.asf.alaska.edu/vertex/sbas/"
-          text="{{ 'WHAT_IS_SBAS' | translate }}?"
+          [text]="('WHAT_IS_SBAS' | translate) + '?'"
         >
         </app-docs-modal>
       </div>
     </mat-expansion-panel>
   }
 
-  @if (areResultsLoaded) {
+  @if (areResultsLoaded()) {
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
@@ -87,7 +83,7 @@
         [collapsedHeight]="customCollapsedHeight"
         [expandedHeight]="customExpandedHeight"
       >
-        <mat-panel-title style="align-items: center">
+        <mat-panel-title class="panel-title">
           {{ 'DATE_FILTERS' | translate }}
           <app-docs-modal
             class="info-icon"
@@ -96,7 +92,7 @@
           </app-docs-modal>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div style="margin-top: 20px">
+      <div class="selector-card-spacing">
         <app-date-selector></app-date-selector>
         <app-season-selector></app-season-selector>
       </div>
@@ -118,7 +114,7 @@
   <!--  </div>-->
   <!--  </mat-expansion-panel>-->
 
-  @if (areResultsLoaded) {
+  @if (areResultsLoaded()) {
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
@@ -138,7 +134,7 @@
           </app-docs-modal>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div style="margin-top: 20px">
+      <div class="selector-card-spacing">
         <app-sbas-overlap-selector></app-sbas-overlap-selector>
       </div>
     </mat-expansion-panel>

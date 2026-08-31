@@ -1,13 +1,12 @@
 <form #projectNameForm="ngForm">
   <mat-form-field
-    style="width: 185px"
+    class="project-name-field"
     [class.invalid-input-animation]="isNameError"
   >
+    <mat-label>{{ 'PROJECT_NAME' | translate }}</mat-label>
     <input
       type="text"
       name="projectNameInput"
-      placeholder="{{ 'PROJECT_NAME' | translate }}"
-      aria-label="PROJECT_NAME"
       matInput
       (input)="onProjectNameInput($event)"
       (change)="onProjectNameChange($event)"

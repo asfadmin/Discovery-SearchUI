@@ -1,7 +1,15 @@
 @use "@angular/material" as mat;
-
 @use "asf-theme-variables" as *;
 $config: mat.m2-define-legacy-typography-config();
+
+#result-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.results-pane {
+  min-height: 0;
+}
 
 .medium-header {
   padding-bottom: 8px;
@@ -59,6 +67,7 @@ $config: mat.m2-define-legacy-typography-config();
   @include themify($themes) {
     background-color: themed('background-white') !important;
   }
+
   font-size: 14px;
 }
 
@@ -87,6 +96,7 @@ $config: mat.m2-define-legacy-typography-config();
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
   border: darkgrey 1px solid;
   color: inherit;
   padding: 0 0 0 5px;
@@ -116,6 +126,7 @@ $config: mat.m2-define-legacy-typography-config();
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+
   white-space: nowrap;
   text-align: center;
   font-size: 12px;
@@ -170,6 +181,11 @@ $config: mat.m2-define-legacy-typography-config();
     margin: auto
   }
 }
+
 .baseline-chart {
+  height: 100%;
+}
+
+.scene-detail-fill {
   height: 100%;
 }

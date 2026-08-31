@@ -1,8 +1,8 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 [
-  { menuSelector: 'NISAR (Uncalibrated) NISAR', expected: 'NISAR' },
+  { menuSelector: 'NISAR (Provisional) NISAR', expected: 'NISAR' },
   { menuSelector: 'S1 Burst', expected: 'S1 Burst' },
   { menuSelector: 'OPERA-S1 Sentinel-1 RTC', expected: 'OPERA-S1' },
   { menuSelector: 'TROPO The Troposphere Zenith', expected: 'TROPO' },
@@ -20,11 +20,13 @@ import { waitForASFAPIResponse } from 'e2e/helpers';
   { menuSelector: 'SEASAT', expected: 'SEASAT' },
 ].forEach(({ menuSelector, expected }) => {
   test(`Validate available dataset: ${expected}`, async ({ page }) => {
-    await page.goto('/?maxResults=1');
+    await sentinel1Page(page);
+
     await page.getByRole('button', { name: 'Sentinel-' }).click();
     await page.getByRole('menuitem', { name: menuSelector }).click();
     await page
-      .locator('#mat-button-toggle-8-button')
+      .locator('app-dataset-header')
+      .locator('app-search-button')
       .getByRole('button', { name: 'SEARCH' })
       .click();
     await waitForASFAPIResponse(page);

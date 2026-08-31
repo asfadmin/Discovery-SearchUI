@@ -7,6 +7,7 @@ import { Action, Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
+import * as filtersStore from '@store/filters';
 
 import {
   ScreenSizeService,
@@ -26,6 +27,7 @@ import { MatCard, MatCardSubtitle } from '@angular/material/card';
 import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 import { ScenesListComponent } from '../scenes-list/scenes-list.component';
 import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
+import { SceneSearchToolbarComponent } from '@components/results-menu/scene-search-toolbar/scene-search-toolbar.component';
 import {
   MatButtonToggleGroup,
   MatButtonToggle,
@@ -69,6 +71,7 @@ enum CardViews {
     BaselineChartComponent,
     AsyncPipe,
     TranslateModule,
+    SceneSearchToolbarComponent,
   ],
 })
 export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
@@ -100,7 +103,9 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   public searchType: models.SearchType;
   public SearchTypes = models.SearchType;
   public sbasProducts: models.CMRProduct[];
-  public queuedProducts: models.CMRProduct[];
+  public queuedProducts = this.store$.selectSignal(
+    queueStore.getQueuedProducts,
+  );
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -130,8 +135,14 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.possibleHyp3JobsService.possibleJobs$.subscribe((possibleJobs) => {
-        this.hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
+      combineLatest([
+        this.possibleHyp3JobsService.possibleJobs$,
+        this.store$.select(filtersStore.getShouldUseFramesForReference),
+      ]).subscribe(([possibleJobs, isFrameMode]) => {
+        this.hyp3able = this.hyp3.getHyp3ableProducts(
+          possibleJobs,
+          isFrameMode,
+        );
       }),
     );
 
@@ -145,12 +156,6 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       this.pairService.productsFromPairs$.subscribe(
         (products) => (this.sbasProducts = products),
       ),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(queueStore.getQueuedProducts)
-        .subscribe((products) => (this.queuedProducts = products)),
     );
   }
 
@@ -182,14 +187,14 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     products: models.CMRProduct[],
     format: models.AsfApiOutputFormat,
   ): void {
-    const currentQueue = this.queuedProducts;
+    const currentQueue = this.queuedProducts();
     const action = new queueStore.DownloadSearchtypeMetadata(format);
 
     this.clearDispatchRestoreQueue(action, products, currentQueue);
   }
 
   public onMakeDownloadScript(products: models.CMRProduct[]): void {
-    const currentQueue = this.queuedProducts;
+    const currentQueue = this.queuedProducts();
 
     this.clearDispatchRestoreQueue(
       new queueStore.MakeDownloadScript(),

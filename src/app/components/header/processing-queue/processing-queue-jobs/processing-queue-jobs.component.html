@@ -130,7 +130,7 @@
           <div class="button-remove-job" matListItemMeta>
             <button
               (click)="onRemoveJob(job)"
-              matTooltip="{{ 'REMOVE_JOB' | translate }}"
+              [matTooltip]="'REMOVE_JOB' | translate"
               mat-icon-button
             >
               <mat-icon>close</mat-icon>
@@ -167,7 +167,7 @@
       <div class="empty-queue--action-buttons">
         <div class="job-search--button">
           <button
-            [disabled]="!isLoggedIn"
+            [disabled]="!isLoggedIn()"
             (click)="viewCustomProducts($event)"
             color="primary"
             mat-flat-button
@@ -176,7 +176,7 @@
           </button>
         </div>
 
-        @if (!isLoggedIn) {
+        @if (!isLoggedIn()) {
           <p class="not-logged-in">
             {{ 'SIGN_IN_TO_VIEW_SUBMITTED_JOBS' | translate }}
           </p>

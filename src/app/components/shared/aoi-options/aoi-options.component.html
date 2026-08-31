@@ -3,17 +3,14 @@
     <div class="header-layout mb">
       <div class="header-layout">
         <b>{{ 'AOI_OPTIONS' | translate }}</b>
-        <mat-icon
-          (click)="onOpenHelp()"
-          class="clickable"
-          style="margin-left: 10px"
+        <mat-icon (click)="onOpenHelp()" class="clickable help-icon"
           >info</mat-icon
         >
       </div>
       <div>
         <button
           (click)="onClose()"
-          matTooltip="{{ 'HIDE_OPTIONS' | translate }}"
+          [matTooltip]="'HIDE_OPTIONS' | translate"
           mat-icon-button
         >
           <mat-icon>clear</mat-icon>
@@ -40,9 +37,8 @@
             [value]="polygon"
             [(ngModel)]="polygon"
             name="searchPolygonLarge"
+            rows="4"
             cdkTextareaAutosize
-            cdkAutosizeMinRows="7"
-            cdkAutosizeMaxRows="8"
             matInput
           >
           </textarea>
@@ -63,7 +59,7 @@
     </div>
 
     @if (breakpoint !== breakpoints.MOBILE) {
-      <app-file-upload-dialog style="width: 40%"></app-file-upload-dialog>
+      <app-file-upload-dialog class="upload-trigger"></app-file-upload-dialog>
     }
   </div>
 </div>

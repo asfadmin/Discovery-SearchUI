@@ -9,6 +9,7 @@ import { PropertyService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { MatFormField, MatHint } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import {
   MatSelect,
   MatSelectTrigger,
@@ -21,12 +22,14 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { JoinPipe } from '@pipes/join.pipe';
 import { PolarizationCountPipe } from '@pipes/polarization.pipe';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
 @Component({
   selector: 'app-observation-panel-selector',
   templateUrl: './observation-panel-selector.component.html',
   styleUrl: './observation-panel-selector.component.scss',
   imports: [
     MatFormField,
+    MatLabel,
     MatSelect,
     FormsModule,
     MatSelectTrigger,
@@ -40,6 +43,7 @@ import { PolarizationCountPipe } from '@pipes/polarization.pipe';
     TranslateModule,
     JoinPipe,
     PolarizationCountPipe,
+    IsRelevantPipe,
   ],
 })
 export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
@@ -52,7 +56,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
   beamModes: models.DatasetBeamModes;
   polarizations: models.DatasetPolarizations;
   sidePolarizations: models.DatasetPolarizations;
-  subtypes: models.DatasetSubtypes;
+  platforms: models.DatasetPlatforms;
   groupID: string;
   frameCoverage: string[];
   rangeBandwidth: string[];
@@ -72,7 +76,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
   );
   public polarizations$ = this.store$.select(filtersStore.getPolarizations);
   public selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
-  public subtypes$ = this.store$.select(filtersStore.getSubtypes);
+  public platforms$ = this.store$.select(filtersStore.getPlatforms);
   public groupID$ = this.store$.select(filtersStore.getGroupID);
   public frameCoverage$ = this.store$.select(filtersStore.getFrameCoverage);
   public jointObservation$ = this.store$.select(
@@ -126,7 +130,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
       ),
     );
     this.subs.add(
-      this.subtypes$.subscribe((subtypes) => (this.subtypes = subtypes)),
+      this.platforms$.subscribe((platforms) => (this.platforms = platforms)),
     );
     this.subs.add(
       this.groupID$.subscribe((groupID) => (this.groupID = groupID)),
@@ -183,9 +187,10 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
     this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 
-  public onNewSubtypeSelected(subtypes): void {
-    this.store$.dispatch(new filtersStore.SetSubtypes(subtypes));
+  public onNewPlatformSelected(platforms: models.DatasetPlatforms): void {
+    this.store$.dispatch(new filtersStore.SetPlatforms(platforms));
   }
+
   public onNewFrameCoverageSelected(coverage): void {
     this.store$.dispatch(new filtersStore.setFrameCoverage(coverage));
   }

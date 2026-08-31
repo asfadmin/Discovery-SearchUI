@@ -23,14 +23,14 @@
     } @else {
       @if (product.productTypeDisplay.length > 40) {
         <span>
-          <b style="font-size: 14px">{{ 'TYPE' | translate }}:</b>
+          <b class="file-type-label">{{ 'TYPE' | translate }}:</b>
           {{ product.productTypeDisplay | truncate: 36
           }}{{ product.productTypeDisplay | truncate: -4 : '' }}
         </span>
       }
       @if (product.productTypeDisplay.length <= 40) {
         <span>
-          <b style="font-size: 14px">{{ 'TYPE' | translate }}:</b>
+          <b class="file-type-label">{{ 'TYPE' | translate }}:</b>
           {{ product.productTypeDisplay }}
         </span>
       }
@@ -42,25 +42,44 @@
     }
 
     @if (!product.metadata.job) {
-      <a class="icon-margin">
+      <a class="icon-margin icon">
         <app-copy-to-clipboard
           [value]="
             product.metadata.productType === 'BURST_XML'
               ? product.id?.split('-XML')[0]
               : product.metadata.parentID || product.id
           "
-          prompt="{{ 'COPY_FILE_ID' | translate }}"
+          [message]="'COPIED_FILE_ID' | translate"
+          [prompt]="'COPY_FILE_ID' | translate"
         >
         </app-copy-to-clipboard>
-        <app-copy-to-clipboard
-          prompt="{{ 'COPY_URLS' | translate }}"
-          class="clipboard-icon"
-          [submenu]="[
-            ['Download URL', product.downloadUrl],
-            ['S3 URL', product.metadata?.s3URI],
-          ]"
-          [copyIcon]="copyIcons.LINK"
-        ></app-copy-to-clipboard>
+        @if (product.metadata?.s3URI !== null) {
+          <app-copy-to-clipboard
+            [prompt]="'COPY_URLS' | translate"
+            class="clipboard-icon"
+            [submenu]="[
+              {
+                prompt: 'COPY_URL' | translate,
+                message: 'COPIED_SCENE_DOWNLOAD_URL' | translate,
+                value: product.downloadUrl,
+              },
+              {
+                prompt: 'COPY_S3_URL' | translate,
+                message: 'COPIED_S3_URL' | translate,
+                value: product.metadata?.s3URI,
+              },
+            ]"
+            copyIcon="link_2"
+          ></app-copy-to-clipboard>
+        } @else {
+          <app-copy-to-clipboard
+            [prompt]="'COPY_DOWNLOAD_URL' | translate"
+            [message]="'COPIED_SCENE_DOWNLOAD_URL' | translate"
+            class="clipboard-icon"
+            [value]="product.downloadUrl"
+            copyIcon="link_2"
+          ></app-copy-to-clipboard>
+        }
       </a>
     }
   </div>
@@ -76,12 +95,9 @@
         <mat-icon
           svgIcon="hyp3"
           class="hype-icon-button"
-          matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
+          [matTooltip]="'ADD_TO_ON_DEMAND_QUEUE' | translate"
         >
         </mat-icon>
-      }
-      @if (loadingHyp3JobName === product.name) {
-        <fa-icon icon="spinner" animation="spin-pulse"></fa-icon>
       }
       <mat-menu #customJobTypes="matMenu">
         @for (jobType of validHyp3JobTypes; track jobType) {
@@ -89,8 +105,7 @@
             {{ 'ADD' | translate }} {{ jobType.name }} to On Demand
             <mat-icon
               (click)="onOpenHelp($event, jobType.infoUrl)"
-              class="clickable"
-              style="margin-left: 10px"
+              class="clickable info-icon"
               >info</mat-icon
             >
           </button>
@@ -145,7 +160,7 @@
         <div matListItemLine>
           <b>{{ 'JOB_ID' | translate }} </b>
           <app-copy-to-clipboard
-            prompt="{{ 'COPY_JOB_ID' | translate }}"
+            [prompt]="'COPY_JOB_ID' | translate"
             [value]="product.metadata.job.job_id"
           >
           </app-copy-to-clipboard>
@@ -190,11 +205,11 @@
           [matMenuTriggerFor]="expiredJobs"
           mat-icon-button
           matListItemMeta
-          style="margin-right: 10px"
+          class="expired-job-button"
         >
           <mat-icon
             class="hype-icon-button clickable"
-            matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
+            [matTooltip]="'ADD_TO_ON_DEMAND_QUEUE' | translate"
             svgIcon="hyp3"
           >
           </mat-icon>

@@ -1,11 +1,26 @@
 @use "asf-theme-variables" as *;
 
+.results-pane {
+  min-height: 0;
+}
+
 .rectangle-wrapper {
   @include themify($themes) {
     background: themed('background-white');
   }
 
+  display: flex;
   position: fixed;
+}
+
+#result-div {
+  z-index: 0;
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
+
+  display: flex;
+  flex-direction: column;
 }
 
 .results-menu--layout {
@@ -19,7 +34,8 @@
 }
 
 .mobile-menu-offset {
-  bottom: 117px;
+  position: relative;
+  bottom: 100px;
   z-index: 2000;
 }
 
@@ -58,8 +74,7 @@
 }
 
 .app-scene-list {
-  height: calc(100% - 36px);
-  //height: calc(100% - 36px);
+  height: 100%;
   width: 100%;
 }
 
@@ -147,9 +162,6 @@
   justify-content: center;
   width: 100%;
   height: 25px;
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
 
   z-index: 9;
 }
@@ -171,9 +183,21 @@
   }
 }
 
+.results-pane {
+  justify-content: center;
+}
+
 .no-products-actions {
   display: flex;
   flex-direction: column;
+}
+
+.no-jobs-message {
+  margin-bottom: 14px;
+}
+
+.action-link-spacing {
+  margin-bottom: 5px;
 }
 
 .mat-mdc-card-content {
@@ -196,4 +220,3 @@
 .visible {
   visibility: visible;
 }
-

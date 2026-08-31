@@ -1,82 +1,84 @@
 <form #pathForm="ngForm">
   <div class="flex-container">
     <div class="flex-item">
-      @if (prop.isRelevant(p.PATH)) {
+      @if (dataset() | isRelevant: p.PATH) {
         <mat-form-field
-          style="width: 160px"
-          class="date-item"
+          class="date-item path-field"
           [class.invalid-input-animation]="typeHasError(inputTypes.PATH_START)"
         >
+          <mat-label>
+            {{
+              selectedDatasetIsNISARFormat ||
+              (dataset() | isRelevant: p.USE_TRACK)
+                ? ('TRACK_START' | translate)
+                : ('PATH_START' | translate)
+            }}
+          </mat-label>
           <input
             matInput
             type="number"
             (input)="onValueChanged($event, inputTypes.PATH_START)"
             [(ngModel)]="pathStart"
             name="pathStart"
-            [placeholder]="
-              selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK)
-                ? ('TRACK_START' | translate)
-                : ('PATH_START' | translate)
-            "
           />
         </mat-form-field>
       }
 
-      @if (prop.isRelevant(p.PATH)) {
+      @if (dataset() | isRelevant: p.PATH) {
         <mat-form-field
-          style="width: 160px"
-          class="range-form-input"
+          class="range-form-input path-field"
           class="date-item"
           [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)"
         >
+          <mat-label>
+            {{
+              selectedDatasetIsNISARFormat ||
+              (dataset() | isRelevant: p.USE_TRACK)
+                ? ('TRACK_END' | translate)
+                : ('PATH_END' | translate)
+            }}
+          </mat-label>
           <input
             matInput
             type="number"
             (input)="onValueChanged($event, inputTypes.PATH_END)"
             [(ngModel)]="pathEnd"
             name="pathEnd"
-            [placeholder]="
-              selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK)
-                ? ('TRACK_END' | translate)
-                : ('PATH_END' | translate)
-            "
           />
         </mat-form-field>
       }
     </div>
 
     <div class="flex-item">
-      @if (prop.isRelevant(p.FRAME)) {
+      @if (dataset() | isRelevant: p.FRAME) {
         <mat-form-field
-          style="width: 150px"
-          class="date-item"
+          class="date-item frame-field"
           [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_START)"
         >
+          <mat-label>{{ 'FRAME_START' | translate }}</mat-label>
           <input
             matInput
             type="number"
             (input)="onValueChanged($event, inputTypes.FRAME_START)"
             [(ngModel)]="frameStart"
             name="frameStart"
-            placeholder="{{ 'FRAME_START' | translate }}"
           />
         </mat-form-field>
       }
 
-      @if (prop.isRelevant(p.FRAME)) {
+      @if (dataset() | isRelevant: p.FRAME) {
         <mat-form-field
-          style="width: 150px"
-          class="range-form-input"
+          class="range-form-input frame-field"
           class="date-item"
           [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_END)"
         >
+          <mat-label>{{ 'FRAME_END' | translate }}</mat-label>
           <input
             matInput
             type="number"
             (input)="onValueChanged($event, inputTypes.FRAME_END)"
             [(ngModel)]="frameEnd"
             name="frameEnd"
-            placeholder="{{ 'FRAME_END' | translate }}"
           />
         </mat-form-field>
       }
@@ -90,7 +92,9 @@
         mat-button
       >
         {{ 'CLEAR' | translate }}
-        @if (selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK)) {
+        @if (
+          selectedDatasetIsNISARFormat || (dataset() | isRelevant: p.USE_TRACK)
+        ) {
           {{ 'TRACK' | translate }} / {{ 'FRAME' | translate }}
         } @else {
           {{ 'PATH' | translate }} / {{ 'FRAME' | translate }}

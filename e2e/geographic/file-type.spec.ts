@@ -1,17 +1,23 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
-test('File Type Select Multiple', async ({ page }) => {
-  await page.goto('/');
+test('File Type Select Multiple', { tag: '@visual' }, async ({ page }) => {
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  await page
-    .locator('div')
-    .filter({ hasText: /^File Type$/ })
-    .first()
+  const productTypeSelector = page.locator('app-product-type-selector');
+  await productTypeSelector
+    .getByRole('combobox', { name: 'File Type' })
     .click();
-  await page.getByText('(SLC)').first().click();
-  await page.getByText('(GRD-HD)').first().click();
-  await page.locator('.cdk-overlay-backdrop').click();
+  await page
+    .getByRole('option', { name: 'L1 Single Look Complex (SLC)' })
+    .click();
+  await page
+    .getByRole('option', { name: 'L1 Detected High-Res Dual-Pol (GRD-HD)' })
+    .click();
+  await page.keyboard.press('Escape');
   await expect(page.locator('app-info-bar')).toContainText(
     'File Types: GRD_HD,SLC',
   );
+  await expect(page).toHaveScreenshot();
 });

@@ -14,6 +14,8 @@ import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-hea
 import { ScenesListComponent } from '../scenes-list/scenes-list.component';
 import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
 import { SceneFilesComponent } from '../scene-files/scene-files.component';
+import { SceneSearchToolbarComponent } from '@components/results-menu/scene-search-toolbar/scene-search-toolbar.component';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -35,6 +37,7 @@ import { TranslateModule } from '@ngx-translate/core';
     AsyncPipe,
     TitleCasePipe,
     TranslateModule,
+    SceneSearchToolbarComponent,
   ],
 })
 export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
@@ -48,10 +51,8 @@ export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
     scenesStore.getSelectedSceneProducts,
   );
   public scenesLength;
-  public sarviewsEventsLength;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
-  public sarviewsEvents$ = this.store$.select(scenesStore.getSarviewsEvents);
 
   private subs = new SubSink();
 
@@ -64,11 +65,6 @@ export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.scenesService.scenes$.subscribe(
         (scenes) => (this.scenesLength = scenes.length),
-      ),
-    );
-    this.subs.add(
-      this.sarviewsEvents$.subscribe(
-        (events) => (this.sarviewsEventsLength = events.length),
       ),
     );
   }

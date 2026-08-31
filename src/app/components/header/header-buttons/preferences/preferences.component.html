@@ -1,6 +1,6 @@
 <div class="dialog-header">
   <div mat-dialog-title class="dialog-title-overrides">
-    {{ 'PREFERENCES_FOR' | translate }} {{ userAuth?.id }}
+    {{ 'PREFERENCES_FOR' | translate }} {{ userAuth()?.id }}
   </div>
 
   <div class="dl-close-x" (click)="onCloseDownloadQueue()">
@@ -18,7 +18,7 @@
       <div class="preferences-group">
         <div
           class="section-heading"
-          [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL"
+          [class.section-heading-mobile]="breakpoint() <= breakpoints.SMALL"
         >
           {{ 'DEFAULT_LANGUAGE_AND_THEME' | translate }}
         </div>
@@ -59,18 +59,9 @@
       <div class="preferences-group">
         <div
           class="section-heading"
-          [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL"
+          [class.section-heading-mobile]="breakpoint() <= breakpoints.SMALL"
         >
           {{ 'DEFAULT_SEARCH_PRESETS' | translate }}
-        </div>
-        <div class="default-dataset">
-          <app-dataset-selector
-            class="mobile-button-wrapper"
-            [(selected)]="defaultDataset"
-            (selectedChange)="onDatasetSelectionChange($event)"
-            [datasets]="datasets"
-          >
-          </app-dataset-selector>
         </div>
 
         <mat-form-field class="default-max-result">
@@ -110,7 +101,7 @@
       <div class="preferences-group">
         <div
           class="section-heading"
-          [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL"
+          [class.section-heading-mobile]="breakpoint() <= breakpoints.SMALL"
         >
           {{ 'DEFAULT_SEARCH_FILTERS_PRESETS' | translate }}
         </div>
@@ -144,17 +135,29 @@
       <div class="preferences-group">
         <div
           class="section-heading"
-          [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL"
+          [class.section-heading-mobile]="breakpoint() <= breakpoints.SMALL"
         >
           {{ 'DEFAULT_ON_DEMAND_PRESETS' | translate }}
         </div>
 
-        <app-hyp3-url-selector
-          [hyp3BackendUrl]="hyp3BackendUrl"
-          [hyp3SavedUrls]="hyp3SavedUrls"
-          (newHyp3Url)="onSetHyp3Url($event)"
-        >
-        </app-hyp3-url-selector>
+        @if (!isHyp3PlusMode()) {
+          <app-hyp3-url-selector
+            [hyp3BackendUrl]="hyp3BackendUrl"
+            [hyp3SavedUrls]="hyp3SavedUrls"
+            (newHyp3Url)="onSetHyp3Url($event)"
+          >
+          </app-hyp3-url-selector>
+        } @else {
+          <mat-form-field class="hyp3-plus-url">
+            <mat-label>{{ 'HYP3_API_URL' | translate }}</mat-label>
+            <input
+              matInput
+              [value]="hyp3.apiUrl"
+              name="backendUrl"
+              [disabled]="true"
+            />
+          </mat-form-field>
+        }
 
         @if (!this.env.isProd) {
           <mat-form-field class="default-map">
@@ -190,7 +193,7 @@
       <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a
     >
   </div>
-  <div class="done-button">
+  <div class="done-button clickable">
     <button (click)="onClose()" color="primary" mat-flat-button>
       {{ 'DONE' | translate }}
     </button>

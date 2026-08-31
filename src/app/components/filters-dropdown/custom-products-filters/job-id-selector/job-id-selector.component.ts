@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { NotificationService } from '@services';
 import { MatFormField, MatInput } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,6 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './job-id-selector.component.scss',
   imports: [
     MatFormField,
+    MatLabel,
     MatInput,
     CdkTextareaAutosize,
     FormsModule,

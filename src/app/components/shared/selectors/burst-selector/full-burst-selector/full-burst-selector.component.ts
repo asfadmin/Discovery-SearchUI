@@ -16,6 +16,7 @@ import { SearchType } from '@models';
 import { AsyncPipe } from '@angular/common';
 import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
+import { JoinPipe } from '@pipes/join.pipe';
 @Component({
   selector: 'app-full-burst-selector',
   templateUrl: './full-burst-selector.component.html',
@@ -23,7 +24,14 @@ import { TranslateModule } from '@ngx-translate/core';
     './full-burst-selector.component.scss',
     '../burst-selector.component.scss',
   ],
-  imports: [MatFormField, MatLabel, MatInput, AsyncPipe, TranslateModule],
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatInput,
+    AsyncPipe,
+    TranslateModule,
+    JoinPipe,
+  ],
 })
 export class FullBurstSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -41,8 +49,7 @@ export class FullBurstSelectorComponent implements OnInit, OnDestroy {
         debounceTime(3.0),
         filter((ids) => ids !== null),
         map((ids) => {
-          const idsArray = ids.split(',').map((id) => id.trim());
-          return idsArray.filter((entry) => entry.length > 0);
+          return ids.split(/[\s,]+/).filter(Boolean);
         }),
         filter((ids) => ids !== this.fullBurstIDs),
       ).subscribe((ids) => this.updateIDs(ids)),
@@ -65,6 +72,6 @@ export class FullBurstSelectorComponent implements OnInit, OnDestroy {
   }
 
   private updateIDs(ids: string[]) {
-    this.store$.dispatch(new filtersStore.setFullBurst(ids));
+    this.store$.dispatch(new filtersStore.setFullBursts(ids));
   }
 }

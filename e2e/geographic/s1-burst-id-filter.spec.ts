@@ -1,8 +1,9 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 test('S1 Burst ID filter returns matching results', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page.getByRole('menuitem', { name: 'S1 Burst' }).click();
 
@@ -11,7 +12,8 @@ test('S1 Burst ID filter returns matching results', async ({ page }) => {
 
   const responsePromise = waitForASFAPIResponse(page);
   await page
-    .locator('#mat-button-toggle-6-button')
+    .locator('app-filters-dropdown')
+    .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await responsePromise;
@@ -19,5 +21,7 @@ test('S1 Burst ID filter returns matching results', async ({ page }) => {
   await expect(page.locator('app-info-bar')).toContainText(
     'Full Burst ID: 088_187244_IW3',
   );
-  await expect(page.locator('mat-card-header').first()).toBeVisible();
+  await expect(page.locator('mat-card-header').first()).toContainText(
+    'S1_187244_IW3_',
+  );
 });

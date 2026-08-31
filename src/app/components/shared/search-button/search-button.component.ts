@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { CustomizeEnvComponent } from '@components/header/header-buttons/customize-env/customize-env.component';
@@ -18,7 +18,6 @@ import * as services from '@services';
 import { ClipboardService } from 'ngx-clipboard';
 import { SidebarType, SearchType } from '@models';
 import { MatDialog } from '@angular/material/dialog';
-import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
 import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
 import {
@@ -77,6 +76,8 @@ declare global {
   ],
 })
 export class SearchButtonComponent implements OnInit, OnDestroy {
+  @Input() ariaLabel?: string;
+
   private store$ = inject<Store<AppState>>(Store);
   private actions$ = inject(ActionsSubject);
   env = inject(services.EnvironmentService);
@@ -87,7 +88,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   private exportService = inject(services.ExportService);
   private screenSize = inject(ScreenSizeService);
 
-  public searchType: SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = SearchType;
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(
@@ -105,7 +106,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     searchStore.getareResultsOutOfDate,
   );
 
-  public isLoggedIn = false;
+  public isLoggedIn = this.store$.selectSignal(userStore.getIsUserLoggedIn);
   public searchError$ = new Subject<searchStore.SearchError>();
   public isSearchError = false;
   public isFiltersOpen = false;
@@ -114,27 +115,11 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
   private stackReferenceScene: string;
   private latestReferenceScene: string;
-  private resultsMenuOpen = false;
+  private resultsMenuOpen = this.store$.selectSignal(
+    uiStore.getIsResultsMenuOpen,
+  );
 
   ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(userStore.getIsUserLoggedIn)
-        .subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(uiStore.getIsResultsMenuOpen)
-        .subscribe((isOpen) => (this.resultsMenuOpen = isOpen)),
-    );
-
     this.subs.add(
       this.actions$
         .pipe(
@@ -164,8 +149,8 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
         this.store$.select(uiStore.getIsFiltersMenuOpen),
       ]).subscribe(([latestFilter, isOpen]) => {
         if (
-          (isOpen && this.searchType === this.searchTypes.BASELINE) ||
-          this.searchType === this.searchTypes.SBAS
+          (isOpen && this.searchType() === this.searchTypes.BASELINE) ||
+          this.searchType() === this.searchTypes.SBAS
         ) {
           this.latestReferenceScene = latestFilter;
           if (this.stackReferenceScene == null || '') {
@@ -181,17 +166,17 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
   public onDoSearch(): void {
     if (
-      ((this.searchType === this.searchTypes.SBAS ||
-        this.searchType === this.searchTypes.BASELINE) &&
+      ((this.searchType() === this.searchTypes.SBAS ||
+        this.searchType() === this.searchTypes.BASELINE) &&
         this.isFiltersOpen &&
         (this.stackReferenceScene !== this.latestReferenceScene ||
-          !this.resultsMenuOpen)) ||
+          !this.resultsMenuOpen())) ||
       ((this.stackReferenceScene !== this.latestReferenceScene ||
         !this.isFiltersOpen) &&
-        (this.searchType === this.searchTypes.SBAS ||
-          this.searchType === this.searchTypes.BASELINE)) ||
-      (this.searchType !== this.searchTypes.SBAS &&
-        this.searchType !== this.searchTypes.BASELINE)
+        (this.searchType() === this.searchTypes.SBAS ||
+          this.searchType() === this.searchTypes.BASELINE)) ||
+      (this.searchType() !== this.searchTypes.SBAS &&
+        this.searchType() !== this.searchTypes.BASELINE)
     ) {
       this.store$.dispatch(new searchStore.MakeSearch());
 
@@ -211,7 +196,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.ClearListFilters());
     this.store$.dispatch(new searchStore.ClearSearch());
 
-    if (this.searchType === SearchType.CUSTOM_PRODUCTS) {
+    if (this.searchType() === SearchType.CUSTOM_PRODUCTS) {
       this.store$.dispatch(new hyp3Store.SetOnDemandUserID(null));
     }
   }
@@ -306,23 +291,6 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SEARCH_HISTORY));
   }
 
-  public onOpenHelp(helpTopic: string): void {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'open-help',
-      'open-help': helpTopic,
-    });
-
-    this.dialog.open(HelpComponent, {
-      panelClass: 'help-panel-config',
-      data: { helpTopic },
-      width: '80vw',
-      height: '80vh',
-      maxWidth: '100%',
-      maxHeight: '100%',
-    });
-  }
-
   public onCopy(): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -368,7 +336,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   }
 
   public exportPython(): void {
-    if (this.searchType !== SearchType.CUSTOM_PRODUCTS) {
+    if (this.searchType() !== SearchType.CUSTOM_PRODUCTS) {
       this.exportService.convertSearchAPIQueryToAsfSearch
         .pipe(take(1))
         .subscribe((data) => {

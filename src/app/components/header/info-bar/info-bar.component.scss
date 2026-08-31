@@ -1,6 +1,6 @@
-@use "@angular/material" as mat;
+@use '@angular/material' as mat;
 
-@use "asf-theme-variables" as *;
+@use 'asf-theme-variables' as *;
 
 $config: mat.m2-define-legacy-typography-config();
 
@@ -18,13 +18,6 @@ div span {
   flex: 0 1 65%;
   padding-left: 5px;
   height: 32px;
-}
-
-.last-info {
-  text-align: right;
-  margin-right: 25px;
-  flex: 1 1 0%;
-  box-sizing: border-box;
 }
 
 .info-bar {
@@ -60,12 +53,6 @@ div span {
   }
   font-weight: bold;
   margin-right: 10px;
-}
-
-.sarviews {
-  color: unset;
-  font-style: italic;
-  font-size: 10pt;
 }
 
 #ASF_SEARCH {

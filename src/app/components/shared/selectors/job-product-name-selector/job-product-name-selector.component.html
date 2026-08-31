@@ -13,7 +13,7 @@
             matInput
             placeholder="S1A..."
             (input)="onFilterProductName($event)"
-            [value]="productNameFilter"
+            [value]="productNameFilter()"
             [matAutocomplete]="jobNameSelector"
             [formControl]="myControl"
             [rows]="5"
@@ -25,7 +25,7 @@
             class="options-clear-button"
             (click)="onClearFilter()"
             mat-flat-button
-            matTooltip="{{ 'CLEAR_PRODUCT_NAME_FILTER' | translate }}"
+            [matTooltip]="'CLEAR_PRODUCT_NAME_FILTER' | translate"
           >
             <strong>{{ 'CLEAR' | translate }}</strong>
           </button>
@@ -37,7 +37,7 @@
         matInput
         placeholder="S1A..."
         (input)="onFilterProductName($event)"
-        [value]="productNameFilter"
+        [value]="productNameFilter()"
         [formControl]="myControl"
         [matAutocomplete]="jobNameSelector"
       />
@@ -45,8 +45,8 @@
     @if (headerView) {
       <mat-icon
         (click)="toggleJobFilterOptions()"
-        matTooltip="{{ 'MORE_OPTIONS' | translate }}"
-        style="vertical-align: middle"
+        [matTooltip]="'MORE_OPTIONS' | translate"
+        class="v-mid"
         matSuffix
       >
         {{ isJobFilterOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
@@ -72,24 +72,25 @@
 <form>
   @if (isJobFilterOptionsOpen) {
     <mat-card [@fadeTransition] class="breadcrumb-filter">
-      <mat-card-header style="display: block">
+      <mat-card-header class="options-header">
         <strong>{{ 'OPTIONS' | translate }}</strong>
         <button
           class="options-clear-button"
           (click)="onCloseOptions()"
-          matTooltip="{{ 'HIDE_OPTIONS' | translate }}"
+          [matTooltip]="'HIDE_OPTIONS' | translate"
           mat-icon-button
         >
           <mat-icon>clear</mat-icon>
         </button>
       </mat-card-header>
       <mat-card-content>
-        <mat-form-field style="width: 100%">
+        <mat-form-field class="w100">
+          <mat-label>{{ 'PRODUCT_SOURCE_SCENE' | translate }}</mat-label>
           <textarea
             matInput
             placeholder="S1A..."
             (input)="onFilterProductName($event)"
-            [value]="productNameFilter"
+            [value]="productNameFilter()"
             [matAutocomplete]="jobNameSelector"
             [formControl]="myControl"
             [rows]="5"
@@ -99,7 +100,7 @@
           class="options-clear-button"
           (click)="onClearFilter()"
           mat-flat-button
-          matTooltip="{{ 'CLEAR_PRODUCT_NAME_FILTER' | translate }}"
+          [matTooltip]="'CLEAR_PRODUCT_NAME_FILTER' | translate"
         >
           <strong>{{ 'CLEAR' | translate }}</strong>
         </button>

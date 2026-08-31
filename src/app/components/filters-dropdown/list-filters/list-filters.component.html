@@ -17,9 +17,8 @@
                 {{ 'SEARCH_OPTIONS' | translate }}
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <div style="display: flex; margin-top: 25px">
-              <app-search-type-selector style="margin-right: 10px">
-              </app-search-type-selector>
+            <div class="search-options-row">
+              <app-search-type-selector> </app-search-type-selector>
             </div>
           </mat-expansion-panel>
         }
@@ -45,16 +44,8 @@
           </mat-expansion-panel-header>
           <div>
             <div>
-              <div
-                style="
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: flex-start;
-                  align-items: center;
-                  margin-bottom: 10px;
-                "
-              >
-                <div style="margin-right: 15px">
+              <div class="list-type-row">
+                <div class="list-type-label">
                   <h4>
                     <span>{{ 'LIST_TYPE' | translate }} </span>
                   </h4>
@@ -67,35 +58,42 @@
                     <mat-button-toggle
                       (click)="onSceneModeSelected()"
                       [value]="types.SCENE"
-                      matTooltip="{{ 'SCENE_LIST_SEARCH' | translate }}"
+                      [matTooltip]="'SCENE_LIST_SEARCH' | translate"
                     >
                       {{ 'SCENE' | translate }}
                     </mat-button-toggle>
                     <mat-button-toggle
                       (click)="onProductModeSelected()"
                       [value]="types.PRODUCT"
-                      matTooltip="{{ 'FILE_LIST_SEARCH' | translate }}"
+                      [matTooltip]="'FILE_LIST_SEARCH' | translate"
                     >
                       {{ 'FILE' | translate }}
                     </mat-button-toggle>
                   </mat-button-toggle-group>
                 </div>
               </div>
+
               <div class="input-field-container">
-                <mat-form-field class="w100 file-list-container">
-                  <textarea
-                    matInput
-                    (input)="onTextInputChange($event)"
-                    [(ngModel)]="searchList"
-                    style="height: 150px"
-                    placeholder="{{ 'LIST_OF' | translate }} {{
+                <mat-form-field class="list-input">
+                  <mat-label>
+                    {{ 'LIST_OF' | translate }}
+                    {{
                       mode === types.SCENE
                         ? ('SCENE_NAMES' | translate)
                         : ('FILE_IDS' | translate)
-                    }}"
-                  >
-                  </textarea>
+                    }}
+                  </mat-label>
+                  <textarea
+                    matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="10"
+                    cdkAutosizeMaxRows="20"
+                    (input)="onTextInputChange($event)"
+                    [(ngModel)]="searchList"
+                  ></textarea>
                 </mat-form-field>
+
                 <div
                   class="drop-file-area file-upload-container"
                   [class.drop-file-area-scenes]="mode === types.SCENE"
@@ -133,7 +131,11 @@
                         ? ('COPY_SCENE_NAMES' | translate)
                         : ('COPY_FILE_IDS' | translate)
                     "
-                    style="margin: 0 3px"
+                    [message]="
+                      mode === types.SCENE
+                        ? ('COPIED_SCENE_NAMES' | translate)
+                        : ('COPIED_FILE_IDS' | translate)
+                    "
                     class="clipboard-icon"
                   >
                   </app-copy-to-clipboard>

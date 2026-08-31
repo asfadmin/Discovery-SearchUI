@@ -1,0 +1,23 @@
+<form>
+  <mat-form-field class="granule-field" subscriptSizing="dynamic">
+    <mat-label>{{ 'SCENE_PATTERN_LIST' | translate }}</mat-label>
+    <textarea
+      [formField]="granuleListForm.list"
+      matInput
+      class="granule-box"
+      placeholder="S1C*, *2025*, *202?*"
+    >
+    </textarea>
+    @if (
+      granuleListForm.list().invalid() && !granuleListForm.list().pending()
+    ) {
+      <mat-error>{{
+        granuleListForm.list().errors()[0].message | translate
+      }}</mat-error>
+    } @else {
+      <mat-hint class="granule-hint">{{
+        'SCENE_PATTERN_LIST_HINT' | translate
+      }}</mat-hint>
+    }
+  </mat-form-field>
+</form>

@@ -1,0 +1,92 @@
+@use '@angular/material' as mat;
+@use 'asf-theme-variables' as *;
+
+mat-tree {
+  background: transparent;
+}
+
+.file-group {
+  display: block;
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 24px 0 12px;
+  cursor: pointer;
+
+  &:hover,
+  &.expanded {
+    @include themify($themes) {
+      background-color: themed('dark-focused');
+    }
+  }
+}
+
+.group-title {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.group-cart {
+  @include mat.icon-button-overrides(
+    (
+      state-layer-size: 20px,
+      icon-size: 20px,
+      hover-state-layer-opacity: 0,
+      focus-state-layer-opacity: 0,
+      pressed-state-layer-opacity: 0,
+      ripple-color: transparent,
+    )
+  );
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  padding: 0;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+
+    @include themify($themes) {
+      color: themed('dark-primary-text');
+    }
+  }
+}
+
+.chevron {
+  margin-left: 10px;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  transition: transform 0.2s;
+
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
+}
+
+.group-header.expanded .chevron {
+  transform: rotate(180deg);
+}
+
+.loading-row {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.no-related {
+  padding: 12px 0 12px 24px;
+  font-weight: 600;
+}

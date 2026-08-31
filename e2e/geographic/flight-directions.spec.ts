@@ -1,26 +1,22 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('No direction selections available', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
     .getByRole('menuitem', { name: 'AIRSAR AIRSAR was an all-' })
     .click();
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  await expect(page.locator('#mat-mdc-hint-28')).toContainText(
-    'No flight directions to select',
-  );
+  await expect(page.getByText('No flight directions to select')).toBeVisible();
 });
 test('Two Directions available', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  await page
-    .locator('div')
-    .filter({ hasText: /^Direction$/ })
-    .first()
-    .click();
+  await page.getByRole('combobox', { name: 'Direction' }).click();
   await page.getByText('Descending').click();
-  await page.locator('.cdk-overlay-backdrop').click();
+  await page.keyboard.press('Escape');
   await expect(page.locator('app-info-bar')).toContainText(
     'Flight Dir: Descending',
   );

@@ -4,31 +4,22 @@ import { ScenesActionType, ScenesActions } from './scenes.action';
 
 import {
   CMRProduct,
-  UnzippedFolder,
   ColumnSortDirection,
-  SarviewsEvent,
-  SarviewsProduct,
   opera_s1,
   CMRProductsById,
+  Props,
+  datasets,
 } from '@models';
-import { PinnedProduct } from '@services/browse-map.service';
 import { createSceneArraySelector } from '@store/selectors';
 
 export interface ScenesState {
   ids: string[];
   products: CMRProductsById;
-  sarviewsEvents: SarviewsEvent[];
-  selectedSarviewsID: string;
-  selectedSarviewsProduct: SarviewsProduct;
-  selectedSarviewsEventProducts: SarviewsProduct[];
   customPairIds: string[][];
   selectedPair: string[] | null;
   areResultsLoaded: boolean;
   scenes: Record<string, string[]>;
   timeseriesResults: any;
-  unzipped: Record<string, UnzippedFolder[]>;
-  openUnzippedProduct: string | null;
-  productUnzipLoading: string | null;
   selected: string | null;
   master: string | null;
   filterMaster: string | null;
@@ -38,22 +29,13 @@ export interface ScenesState {
   };
   perpendicularSort: ColumnSortDirection;
   temporalSort: ColumnSortDirection;
-
-  pinnedProductBrowses: Record<string, PinnedProduct>;
 }
 
 export const initState: ScenesState = {
   ids: [],
   scenes: {},
   customPairIds: [],
-  sarviewsEvents: [],
-  selectedSarviewsID: null,
-  selectedSarviewsProduct: null,
-  selectedSarviewsEventProducts: [],
   selectedPair: null,
-  unzipped: {},
-  productUnzipLoading: null,
-  openUnzippedProduct: null,
   products: {},
   areResultsLoaded: false,
   timeseriesResults: {},
@@ -67,7 +49,6 @@ export const initState: ScenesState = {
   },
   perpendicularSort: ColumnSortDirection.NONE,
   temporalSort: ColumnSortDirection.NONE,
-  pinnedProductBrowses: {},
 };
 
 export function scenesReducer(
@@ -159,9 +140,6 @@ export function scenesReducer(
         areResultsLoaded: true,
         products,
         scenes,
-        unzipped: {},
-        productUnzipLoading: null,
-        openUnzippedProduct: null,
       };
     }
 
@@ -208,8 +186,6 @@ export function scenesReducer(
       return {
         ...state,
         selected: action.payload,
-        productUnzipLoading: null,
-        openUnzippedProduct: null,
       };
     }
 
@@ -217,15 +193,6 @@ export function scenesReducer(
       return {
         ...state,
         selectedPair: action.payload,
-        productUnzipLoading: null,
-        openUnzippedProduct: null,
-      };
-    }
-
-    case ScenesActionType.SET_SELECTED_SARVIEWS_EVENT: {
-      return {
-        ...state,
-        selectedSarviewsID: action.payload,
       };
     }
 
@@ -271,34 +238,6 @@ export function scenesReducer(
       };
     }
 
-    case ScenesActionType.OPEN_UNZIPPED_PRODUCT: {
-      return {
-        ...state,
-        openUnzippedProduct: action.payload.id,
-      };
-    }
-
-    case ScenesActionType.LOAD_UNZIPPED_PRODUCT: {
-      return {
-        ...state,
-        productUnzipLoading: action.payload.id,
-        openUnzippedProduct: action.payload.id,
-      };
-    }
-
-    case ScenesActionType.ADD_UNZIPPED_PRODUCT: {
-      const unzipped = { ...state.unzipped };
-      const product = action.payload.product;
-
-      unzipped[product.id] = action.payload.unzipped;
-
-      return {
-        ...state,
-        unzipped,
-        productUnzipLoading: null,
-      };
-    }
-
     case ScenesActionType.SET_PERPENDICULAR_SORT_DIRECTION: {
       return {
         ...state,
@@ -310,21 +249,6 @@ export function scenesReducer(
       return {
         ...state,
         temporalSort: action.payload,
-      };
-    }
-
-    case ScenesActionType.ERROR_LOADING_UNZIPPED: {
-      return {
-        ...state,
-        productUnzipLoading: null,
-        openUnzippedProduct: null,
-      };
-    }
-
-    case ScenesActionType.CLOSE_ZIP_CONTENTS: {
-      return {
-        ...state,
-        openUnzippedProduct: null,
       };
     }
 
@@ -364,34 +288,6 @@ export function scenesReducer(
 
     case ScenesActionType.CLEAR: {
       return initState;
-    }
-
-    case ScenesActionType.SET_SARVIEWS_EVENTS: {
-      return {
-        ...state,
-        sarviewsEvents: action.payload.events,
-      };
-    }
-
-    case ScenesActionType.SET_SARVIEWS_EVENT_PRODUCTS: {
-      return {
-        ...state,
-        selectedSarviewsEventProducts: [...action.payload],
-      };
-    }
-
-    case ScenesActionType.SET_SELECTED_SARVIEW_PRODUCT: {
-      return {
-        ...state,
-        selectedSarviewsProduct: action.payload,
-      };
-    }
-
-    case ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS: {
-      return {
-        ...state,
-        pinnedProductBrowses: action.payload,
-      };
     }
 
     default: {
@@ -506,34 +402,13 @@ export const getSelectedOnDemandProductSceneBrowses = createSelector(
   },
 );
 
-export const getSelectedSarviewsEventProductBrowses = createSelector(
-  getScenesState,
-  (state: ScenesState) => {
-    const selected = state.selectedSarviewsEventProducts;
-
-    if (!selected) {
-      return;
-    }
-
-    const browses = selected.reduce(
-      (acc: string[], curr) => [...acc, curr.files.browse_url],
-      [],
-    );
-
-    return browses;
-  },
-);
-
-const productsForScene = (selected, state) => {
+const productsForScene = (
+  selected: CMRProduct,
+  state: ScenesState,
+): CMRProduct[] => {
   if (!selected) {
     return;
   }
-
-  // const productTypes = Object.values(state.products).reduce((total, product: CMRProduct) => {
-  //   total[product.metadata.productType] = product;
-
-  //   return total;
-  // }, {});
 
   let products = [];
 
@@ -542,8 +417,7 @@ const productsForScene = (selected, state) => {
     { apiValue: 'BURST' },
     { apiValue: 'BURST_XML' },
   ].map((m) => m.apiValue);
-  // if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
-  //   products = state.scenes[selected.name] || [];
+
   if (
     ungrouped_product_types.includes(selected.metadata.productType) ||
     selected.dataset === 'NISAR'
@@ -561,7 +435,7 @@ const productsForScene = (selected, state) => {
     .reverse();
 };
 
-const isAlreadyLoaded = (product, oldProduct) => {
+const isAlreadyLoaded = (product: CMRProduct, oldProduct: CMRProduct) => {
   return !!oldProduct && !oldProduct.isDummyProduct && product.isDummyProduct;
 };
 
@@ -587,7 +461,7 @@ export const getNumberOfProducts = createSelector(
 export const getAllSceneProducts = createSelector(
   getScenesState,
   (state: ScenesState) => {
-    const allSceneProducts = {};
+    const allSceneProducts: Record<string, CMRProduct[]> = {};
 
     Object.entries(state.scenes).forEach(([sceneId, scene]) => {
       const products = scene.map((name) => state.products[name]);
@@ -599,43 +473,32 @@ export const getAllSceneProducts = createSelector(
   },
 );
 
+export const getAllSceneProductsFiltered = createSelector(
+  getScenesState,
+  (state: ScenesState) => {
+    const allSceneProducts: Record<string, CMRProduct[]> = {};
+
+    Object.entries(state.scenes).forEach(([sceneId, scene]) => {
+      if (
+        datasets[state.products[sceneId]?.dataset]?.properties.includes(
+          Props.SINGLE_PRODUCT,
+        )
+      ) {
+        allSceneProducts[sceneId] = [state.products[sceneId]];
+      } else {
+        const products = scene.map((name) => state.products[name]);
+
+        allSceneProducts[sceneId] = products;
+      }
+    });
+
+    return allSceneProducts;
+  },
+);
+
 export const getSelectedScene = createSelector(
   getScenesState,
   (state: ScenesState) => state.products[state.selected] || null,
-);
-
-export const getSelectedSarviewsEvent = createSelector(
-  getScenesState,
-  (state: ScenesState) =>
-    state.sarviewsEvents.find(
-      (event) => event.event_id === state.selectedSarviewsID,
-    ) || null,
-);
-
-export const getSelectedSarviewsProduct = createSelector(
-  getScenesState,
-  (state: ScenesState) => state.selectedSarviewsProduct,
-);
-
-export const getUnzipLoading = createSelector(
-  getScenesState,
-  (state: ScenesState) => state.productUnzipLoading,
-);
-
-export const getUnzippedProducts = createSelector(
-  getScenesState,
-  (state: ScenesState) => state.unzipped,
-);
-
-export const getOpenUnzippedProduct = createSelector(
-  getScenesState,
-  (state: ScenesState) => state.products[state.openUnzippedProduct] || null,
-);
-
-export const getShowUnzippedProduct = createSelector(
-  getScenesState,
-  (state: ScenesState) =>
-    state.openUnzippedProduct && !state.productUnzipLoading,
 );
 
 export const getMasterName = createSelector(
@@ -731,61 +594,6 @@ export const getIsSelectedPairCustom = createSelector(
 
       return eqSet(ids, selectedPairIds);
     });
-  },
-);
-
-export const getSarviewsEvents = createSelector(
-  getScenesState,
-  (state) => state.sarviewsEvents,
-);
-
-export const getNumberOfSarviewsEvents = createSelector(
-  getSarviewsEvents,
-  (events) => events.length,
-);
-
-export const getSelectedSarviewsEventProducts = createSelector(
-  getScenesState,
-  (state) => {
-    if (state.selectedSarviewsEventProducts) {
-      const sorted = state.selectedSarviewsEventProducts.slice();
-      return sorted.sort((a, b) => {
-        if (a.granules[0].acquisition_date < b.granules[0].acquisition_date) {
-          return 1;
-        } else if (
-          a.granules[0].acquisition_date > b.granules[0].acquisition_date
-        ) {
-          return -1;
-        }
-        return 0;
-      });
-    }
-    return state.selectedSarviewsEventProducts;
-  },
-);
-
-export const getImageBrowseProducts = createSelector(
-  getScenesState,
-  (state) => {
-    const output: Record<string, PinnedProduct> = Object.keys(
-      state.pinnedProductBrowses,
-    ).reduce(
-      (out, product_id) => {
-        const temp = out;
-        temp[product_id] = { ...state.pinnedProductBrowses[product_id] };
-        return temp;
-      },
-      {} as Record<string, PinnedProduct>,
-    );
-
-    return output;
-  },
-);
-
-export const getPinnedEventBrowseIDs = createSelector(
-  getScenesState,
-  (state) => {
-    return Object.keys(state.pinnedProductBrowses);
   },
 );
 

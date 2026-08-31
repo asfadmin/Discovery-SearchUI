@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { SubSink } from 'subsink';
+import { Component, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -15,27 +14,13 @@ import { SaveUserFiltersComponent } from './save-user-filters/save-user-filters.
   styleUrls: ['./sidebar.component.scss'],
   imports: [SavedSearchesComponent, SaveUserFiltersComponent],
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent {
   private store$ = inject<Store<AppState>>(Store);
 
-  public sidebar: models.SidebarType;
+  public sidebar = this.store$.selectSignal(uiStore.getSidebar);
   public SidebarType = models.SidebarType;
-
-  private subs = new SubSink();
-
-  ngOnInit(): void {
-    this.subs.add(
-      this.store$.select(uiStore.getSidebar).subscribe((sidebar) => {
-        this.sidebar = sidebar;
-      }),
-    );
-  }
 
   public onCloseSidebar(): void {
     this.store$.dispatch(new uiStore.CloseSidebar());
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 }

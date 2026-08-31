@@ -150,12 +150,12 @@ export class SearchParamsService {
 
   private selectedDataset$ = combineLatest([
     this.store$.select(filterStore.getSelectedDataset),
-    this.store$.select(filterStore.getSubtypes),
+    this.store$.select(filterStore.getPlatforms),
   ]).pipe(
-    map(([dataset, subtypes]) => {
-      return subtypes.length > 0
+    map(([dataset, platforms]) => {
+      return platforms.length > 0
         ? {
-            platform: subtypes.map((subtype) => subtype.apiValue).join(','),
+            platform: platforms.map((platform) => platform.apiValue).join(','),
             ...Object.entries(dataset.apiValue).reduce((prev, curr) => {
               if (curr[0] !== 'platform') {
                 prev[curr[0]] = curr[1];
@@ -217,6 +217,16 @@ export class SearchParamsService {
     ),
   );
 
+  private granuleList$ = this.store$.select(filterStore.getGranuleList).pipe(
+    map((wildcard) => {
+      if (wildcard?.endsWith(',')) {
+        return wildcard.slice(0, -1);
+      }
+      return wildcard;
+    }),
+    map((wildcard) => ({ granule_list: wildcard })),
+  );
+
   private polarizations$ = this.store$
     .select(filterStore.getPolarizations)
     .pipe(
@@ -236,6 +246,10 @@ export class SearchParamsService {
   private productionConfig$ = this.store$
     .select(filterStore.getProductionConfig)
     .pipe(map((config) => ({ productionconfiguration: config.join(',') })));
+
+  private productMaturity$ = this.store$
+    .select(filterStore.getProductMaturity)
+    .pipe(map((config) => ({ dataMaturity: config.join(',') })));
 
   private sidePolarizations$ = this.store$
     .select(filterStore.getSidePolarizations)
@@ -308,6 +322,7 @@ export class SearchParamsService {
     this.polarizations$,
     this.sidePolarizations$,
     this.productionConfig$,
+    this.productMaturity$,
     this.frameCoverage$,
     this.jointObservation$,
     this.rangeBandwidth$,
@@ -321,6 +336,7 @@ export class SearchParamsService {
     this.groupID$,
     this.ariaVersion$,
     this.tileID$,
+    this.granuleList$,
   ]).pipe(
     map((params: any[]) =>
       params.reduce((total, param) => ({ ...total, ...param }), {}),

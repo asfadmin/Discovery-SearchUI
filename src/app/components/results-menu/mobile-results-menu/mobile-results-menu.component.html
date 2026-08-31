@@ -14,12 +14,13 @@
     >
       {{ 'SCENE_DETAIL' | translate }}
       @if (
-        searchType !== SearchTypes.BASELINE && searchType !== SearchTypes.SBAS
+        searchType() !== SearchTypes.BASELINE &&
+        searchType() !== SearchTypes.SBAS
       ) {
         {{ 'AND_FILES' | translate }}
       }
     </button>
-    @if (searchType === SearchTypes.BASELINE) {
+    @if (searchType() === SearchTypes.BASELINE) {
       <button
         (click)="onSelectChart()"
         [class.selected]="view === Views.CHART"
@@ -28,7 +29,7 @@
         {{ 'CHART' | translate }}
       </button>
     }
-    @if (searchType === SearchTypes.SBAS) {
+    @if (searchType() === SearchTypes.SBAS) {
       <button
         (click)="onSelectSBASChart()"
         [class.selected]="view === Views.SBAS"
@@ -60,8 +61,8 @@
         <mat-card-subtitle class="header mobile">
           {{ 'SCENE_DETAIL' | translate }}
           @if (
-            searchType !== SearchTypes.BASELINE &&
-            searchType !== SearchTypes.SBAS
+            searchType() !== SearchTypes.BASELINE &&
+            searchType() !== SearchTypes.SBAS
           ) {
             /
             @if (selectedProducts$ | async; as products) {
@@ -79,23 +80,23 @@
           }
         </mat-card-subtitle>
         <div class="app-scene-list scroll-y scroll-x">
-          @if (searchType !== SearchTypes.SBAS) {
+          @if (searchType() !== SearchTypes.SBAS) {
             <app-scene-detail [isScrollable]="false"></app-scene-detail>
           } @else {
-            <div style="overflow: auto; height: 100%" class="scrollable">
-              @if (pair) {
-                <div style="margin: 5px; padding-bottom: 36px">
-                  @for (product of pair; track product) {
+            <div class="scrollable pair-detail-scroll">
+              @if (pair()) {
+                <div class="pair-metadata">
+                  @for (product of pair(); track product) {
                     <div>
-                      <div style="margin-bottom: 4px">
+                      <div class="product-name-spacing">
                         <b class="product-name">{{ product.name }}</b>
                       </div>
                       @if (datasetForProduct.match(product); as dataset) {
-                        <div style="margin-bottom: 12px">
+                        <div class="dataset-link-spacing">
                           <a
                             [href]="dataset.infoUrl"
                             target="_blank"
-                            matTooltip="{{ 'DATASET' | translate }}"
+                            [matTooltip]="'DATASET' | translate"
                             class="faint-text"
                           >
                             {{ dataset.name | translate }}
@@ -109,7 +110,7 @@
                       <app-scene-metadata
                         [scene]="product"
                         [dataset]="datasetForProduct.match(product)"
-                        [searchType]="searchType"
+                        [searchType]="searchType()"
                       >
                       </app-scene-metadata>
                       <hr />
@@ -117,12 +118,9 @@
                   }
                 </div>
               }
-              @if (!pair) {
-                <div style="margin: 5px; padding-bottom: 36px">
-                  <div
-                    class="faint-text w100 h100"
-                    style="text-align: center; padding-top: 10px"
-                  >
+              @if (!pair()) {
+                <div class="pair-metadata">
+                  <div class="faint-text w100 h100 no-pair-message">
                     {{ 'NO_PAIR_SELECTED' | translate }}
                   </div>
                 </div>
@@ -131,13 +129,14 @@
           }
           <!--        For displaying both products within a pair in SBAS only-->
           @if (
-            searchType !== SearchTypes.BASELINE &&
-            searchType !== SearchTypes.SBAS
+            searchType() !== SearchTypes.BASELINE &&
+            searchType() !== SearchTypes.SBAS
           ) {
             <hr />
             <app-scene-files></app-scene-files>
           }
         </div>
+        <app-scene-search-toolbar />
       </mat-card>
     </div>
   }
@@ -187,14 +186,13 @@
             </mat-button-toggle-group>
             @if (this.isDisconnected) {
               <div
-                class="sbas-button-group gap-detected-area"
-                style="display: flex; place-items: center"
+                class="sbas-button-group gap-detected-area gap-detected-layout"
               >
                 <mat-icon class="warn-icon" fontSet="material-icons-outlined"
                   >error_outline</mat-icon
                 >
                 <app-docs-modal
-                  text="{{ 'GAPS_DETECTED' | translate }}"
+                  [text]="'GAPS_DETECTED' | translate"
                   url="https://docs.asf.alaska.edu/vertex/sbas/#gaps-detected-warning-message"
                 ></app-docs-modal>
               </div>

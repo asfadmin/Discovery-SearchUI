@@ -12,9 +12,11 @@ import * as filtersStore from '@store/filters';
 import { Props } from '@models';
 import { PropertyService } from '@services';
 import { MatFormField, MatInput } from '@angular/material/input';
+import { MatLabel } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { AoiClearComponent } from './aoi-clear/aoi-clear.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
 
 enum PathFormInputType {
   PATH_START = 'Path Start',
@@ -31,10 +33,12 @@ enum PathFormInputType {
     FormsModule,
 
     MatFormField,
+    MatLabel,
     MatInput,
     MatButton,
     AoiClearComponent,
     TranslateModule,
+    IsRelevantPipe,
   ],
 })
 export class PathSelectorComponent implements OnInit, OnDestroy {
@@ -52,6 +56,7 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
   public frameStart: number | null;
   public frameEnd: number | null;
   public selectedDataset: string | null = '';
+  public dataset = this.store$.selectSignal(filtersStore.getSelectedDataset);
 
   public selectedDatasetIsNISARFormat = false;
 

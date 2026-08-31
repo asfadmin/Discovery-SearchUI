@@ -1,13 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  Input,
-  ElementRef,
-  inject,
-} from '@angular/core';
-import { SubSink } from 'subsink';
+import { Component, ViewChild, Input, ElementRef, inject } from '@angular/core';
 
 import { MatMenu, MatMenuTrigger, MatMenuItem } from '@angular/material/menu';
 
@@ -55,7 +46,7 @@ declare global {
     TranslateModule,
   ],
 })
-export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
+export class SearchTypeSelectorComponent {
   translate = inject(TranslateService);
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
@@ -67,15 +58,14 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   @Input() selected: string;
   param = { value: ' world' };
 
-  public searchType: models.SearchType = models.SearchType.DATASET;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;
   public iconTypes = models.IconType;
   public searchTranslation = models.SearchTypeTranslation;
   public datasets = derivedDatasets;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
-  public isLoggedIn = false;
-  private subs = new SubSink();
+  public isLoggedIn = this.store$.selectSignal(userStore.getIsUserLoggedIn);
   public isReadMore = true;
 
   public isHyp3Plus = this.store$.selectSignal(searchStore.getHyp3PlusMode);
@@ -138,17 +128,6 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
         icon: 'track_changes',
         iconType: models.IconType.MATERIAL,
       },
-      {
-        searchType: models.SearchType.SARVIEWS_EVENTS,
-        nameKey: 'EVENT',
-        descriptionKeys: [
-          'EVENT_SEARCH_HARNESSES_THE_CAPABILITIES_OF_SAR_PROCESSING_TO_MONITOR_NATURAL_DISASTERS',
-        ],
-        helpUrl:
-          'https://docs.asf.alaska.edu/vertex/manual/#event-search-options',
-        icon: 'volcano',
-        iconType: models.IconType.MATERIAL,
-      },
     ],
 
     tools: [
@@ -191,20 +170,6 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
     ],
   };
 
-  ngOnInit() {
-    this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
-        this.searchType = searchType;
-      }),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(userStore.getIsUserLoggedIn)
-        .subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn)),
-    );
-  }
-
   public onSetSearchType(searchType: models.SearchType): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -241,9 +206,5 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   public onCloseMenu(event: Event) {
     this.trigger.closeMenu();
     event.stopPropagation();
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 }

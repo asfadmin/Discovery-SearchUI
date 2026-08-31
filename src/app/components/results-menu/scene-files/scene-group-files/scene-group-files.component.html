@@ -1,0 +1,61 @@
+<mat-tree
+  [dataSource]="fileGroups()"
+  [childrenAccessor]="childrenOf"
+  [trackBy]="trackGroup"
+>
+  <mat-nested-tree-node *matTreeNodeDef="let group" class="file-group">
+    <div
+      class="group-header"
+      role="button"
+      tabindex="0"
+      [class.expanded]="isExpanded(group)"
+      [attr.aria-expanded]="isExpanded(group)"
+      (click)="onToggleGroup(group)"
+      (keydown.enter)="onToggleGroup(group)"
+      (keydown.space)="onToggleGroup(group); $event.preventDefault()"
+    >
+      <span class="group-title">
+        {{ group.labelKey | translate }}
+        @if (!group.isRelatedData || subqueryLoaded()) {
+          ({{ group.products.length }}
+          {{ (group.products.length === 1 ? 'FILE' : 'FILES') | translate }})
+        }
+      </span>
+      @if (group.products.length > 0) {
+        <button
+          mat-icon-button
+          class="group-cart"
+          [matTooltip]="'ADD_ALL_GROUP_FILES' | translate"
+          (click)="onQueueGroup($event, group)"
+        >
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
+      }
+      <mat-icon class="chevron">expand_more</mat-icon>
+    </div>
+
+    @if (isExpanded(group)) {
+      @if (group.isRelatedData && !subqueryLoaded()) {
+        <div class="loading-row">
+          <mat-spinner diameter="20"></mat-spinner>
+        </div>
+      } @else if (group.isRelatedData && group.products.length === 0) {
+        <div class="no-related">
+          {{ 'NO_RELATED_DATA' | translate }}
+        </div>
+      } @else {
+        @for (product of group.products; track product.id) {
+          <app-scene-group-file
+            [product]="product"
+            [isQueued]="queuedProductIds()?.has(product.id) ?? false"
+            [validHyp3JobTypes]="validJobTypesByProduct()[product.id] ?? []"
+            [isScienceData]="group.labelKey === 'SCIENCE_DATA'"
+            (toggle)="toggleProduct.emit(product)"
+            (queueHyp3Job)="queueHyp3Job.emit($event)"
+          >
+          </app-scene-group-file>
+        }
+      }
+    }
+  </mat-nested-tree-node>
+</mat-tree>

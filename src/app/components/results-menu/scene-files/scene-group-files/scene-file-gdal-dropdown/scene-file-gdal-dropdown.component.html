@@ -1,0 +1,33 @@
+<div class="gdal-dropdown-wrapper">
+  <div class="dataset-list">
+    <div
+      class="gdal-dataset-header clickable"
+      (click)="$event.target === $event.currentTarget && openGdalDialog()"
+    >
+      <span
+        class="gdal-dataset-header-title"
+        (click)="$event.target === $event.currentTarget && openGdalDialog()"
+      >
+        {{ 'EXPORT_GDAL_DATASET' | translate }}
+      </span>
+      <span class="gdal-dataset-header-documentation">
+        <app-docs-modal
+          class="info-text"
+          text="DOCUMENTATION"
+          url="https://nisar-docs.asf.alaska.edu/gdal/"
+          >{{ 'DOCUMENTATION' | translate }}</app-docs-modal
+        >
+      </span>
+    </div>
+
+    @for (dataset of gdalDatasets(); track dataset) {
+      @if (!dataset.ancillary) {
+        <app-scene-file-gdal-dropdown-dataset
+          [gdalDataset]="dataset"
+          [gdalProduct]="gdalProduct()"
+        >
+        </app-scene-file-gdal-dropdown-dataset>
+      }
+    }
+  </div>
+</div>

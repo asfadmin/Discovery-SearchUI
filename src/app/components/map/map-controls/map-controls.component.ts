@@ -10,7 +10,7 @@ import * as sceneStore from '@store/scenes';
 import * as models from '@models';
 import * as services from '@services';
 
-import { LonLat, SarviewsProduct, SearchType } from '@models';
+import { LonLat } from '@models';
 import { combineLatest, Observable } from 'rxjs';
 
 import { filter, map, startWith, tap } from 'rxjs/operators';
@@ -60,32 +60,23 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   private mapService = inject(services.MapService);
   private browseOverlayService = inject(services.BrowseOverlayService);
-  private eventMonitoringService = inject(services.SarviewsEventsService);
 
   public view$ = this.store$.select(mapStore.getMapView);
-  public browseOverlayOpacity$ = this.store$.select(
-    mapStore.getBrowseOverlayOpacity,
-  );
-  public velocityOverlayOpacity$ = this.store$.select(
-    mapStore.getVelocityOverlayOpacity,
-  );
-  public pinnedProducts$ = this.store$.select(
-    sceneStore.getImageBrowseProducts,
-  );
 
   public currentBrowseID = '';
 
-  public searchType: models.SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;
   public viewTypes = models.MapViewType;
   public mousePos: LonLat;
-  public browseOverlayOpacity: number;
+  public browseOverlayOpacity = this.store$.selectSignal(
+    mapStore.getBrowseOverlayOpacity,
+  );
   public velocityOverlayOpacity: number;
   public showToolBar = true;
   public toolBarWidth = 571;
 
   private subs = new SubSink();
-  private selectedEventProducts: SarviewsProduct[] = [];
   private selectedScene: models.CMRProduct;
   private browseIndex = 0;
   private browseIndexingEnabled = false;
@@ -95,14 +86,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     filter((scene) => !!scene),
     startWith(null),
   );
-
-  public selectedEvent$ = this.store$
-    .select(sceneStore.getSelectedSarviewsProduct)
-    .pipe(
-      tap((_) => (this.browseIndex = 0)),
-      filter((event) => !!event),
-      startWith(null),
-    );
 
   public isBrowseOverlayEnabled$: Observable<boolean> =
     this.browseOverlayService.isBrowseOverlayEnabled$;
@@ -122,23 +105,9 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new mapStore.SetVelocityOverlayOpacity(0.8));
 
     this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
-    );
-
-    this.subs.add(
       this.mapService.mousePosition$.subscribe((mp) => (this.mousePos = mp)),
     );
 
-    this.subs.add(
-      this.store$
-        .select(mapStore.getBrowseOverlayOpacity)
-        .subscribe(
-          (browseOverlayOpacity) =>
-            (this.browseOverlayOpacity = browseOverlayOpacity),
-        ),
-    );
     this.subs.add(
       this.store$
         .select(mapStore.getVelocityOverlayOpacity)
@@ -148,28 +117,11 @@ export class MapControlsComponent implements OnInit, OnDestroy {
         ),
     );
     this.subs.add(
-      combineLatest([this.selectedScene$, this.selectedEvent$]).subscribe(
-        ([scene, event]) => {
-          if (this.searchType === SearchType.SARVIEWS_EVENTS) {
-            if (event) {
-              this.currentBrowseID = event.product_id;
-            }
-          } else {
-            if (scene) {
-              this.currentBrowseID = scene.id;
-            }
-          }
-        },
-      ),
-    );
-
-    this.subs.add(
-      this.eventMonitoringService
-        .filteredEventProducts$()
-        .pipe(filter((eventProducts) => !!eventProducts))
-        .subscribe(
-          (eventProducts) => (this.selectedEventProducts = eventProducts),
-        ),
+      this.selectedScene$.subscribe((scene) => {
+        if (scene) {
+          this.currentBrowseID = scene.id;
+        }
+      }),
     );
 
     this.subs.add(
@@ -255,16 +207,10 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     }
 
     this.browseIndex = newIndex;
-    const [url, wkt] =
-      this.searchType === SearchType.SARVIEWS_EVENTS
-        ? [
-            this.selectedEventProducts[this.browseIndex].files.browse_url,
-            this.selectedEventProducts[this.browseIndex].files.browse_url,
-          ]
-        : [
-            this.selectedScene.browses[this.browseIndex],
-            this.selectedScene.metadata.polygon,
-          ];
+    const [url, wkt] = [
+      this.selectedScene.browses[this.browseIndex],
+      this.selectedScene.metadata.polygon,
+    ];
 
     // for OPERA-S1 geotiffs
     // if(this.selectedScene?.id.startsWith('OPERA')) {
@@ -275,9 +221,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   }
 
   private getBrowseCount() {
-    return this.searchType === SearchType.SARVIEWS_EVENTS
-      ? this.selectedEventProducts.length
-      : this.selectedScene.browses.length;
+    return this.selectedScene.browses.length;
   }
 
   ngOnDestroy() {

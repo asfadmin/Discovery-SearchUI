@@ -26,9 +26,6 @@
           @if (searchType === searchTypes.SBAS) {
             <app-baseline-header> </app-baseline-header>
           }
-          @if (searchType === searchTypes.SARVIEWS_EVENTS) {
-            <app-sarviews-header> </app-sarviews-header>
-          }
           @if (searchType === searchTypes.CUSTOM_PRODUCTS) {
             <app-hyp3-header> </app-hyp3-header>
           }
@@ -39,10 +36,7 @@
       }
     </div>
     @if (isLoading) {
-      <mat-progress-bar
-        style="width: 100%"
-        mode="indeterminate"
-      ></mat-progress-bar>
+      <mat-progress-bar class="w100" mode="indeterminate"></mat-progress-bar>
     }
   </div>
 }

@@ -28,9 +28,9 @@ export const uavsar = {
   ],
   beamModes: [],
   polarizations: [],
-  subtypes: [],
-  platformDesc: 'UAVSAR_DESC',
-  platformIcon: '/assets/icons/flight_black_48dp.svg',
+  platforms: [],
+  description: 'UAVSAR_DESC',
+  icon: '/assets/icons/flight_black_48dp.svg',
   productTypeDisplays: {
     mlc: 'Multi-look Complex',
     grd: 'Ground Projected Complex',

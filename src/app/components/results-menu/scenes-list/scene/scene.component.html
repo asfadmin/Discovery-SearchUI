@@ -55,10 +55,11 @@
           >
           </app-file-name>
 
-          <span style="margin-left: 5px">
+          <span class="copy-name-wrapper">
             @if (hovered) {
               <app-copy-to-clipboard
-                prompt="{{ 'COPY_SCENE_NAME' | translate }}"
+                [prompt]="'COPY_SCENE_NAME' | translate"
+                [message]="'COPIED_SCENE_NAME' | translate"
                 [value]="
                   scene.metadata.fileName ||
                   scene.name ||
@@ -67,7 +68,11 @@
               >
               </app-copy-to-clipboard>
             } @else {
-              <fa-icon style="visibility: hidden" [icon]="copyIcon"> </fa-icon>
+              <mat-icon
+                style="visibility: hidden; font-size: 1.2rem"
+                inline="true"
+                >copy</mat-icon
+              >
             }
           </span>
         </div>
@@ -101,7 +106,7 @@
             searchType !== SearchTypes.BASELINE &&
             !scene.metadata?.opera?.validityStartDate
           ) {
-            <span matTooltip="{{ 'SCENE_START_TIME' | translate }}">
+            <span [matTooltip]="'SCENE_START_TIME' | translate">
               {{ scene.metadata.date | fullDate }}
             </span>
           }
@@ -110,7 +115,7 @@
             breakpoint === breakpoints.MOBILE ||
             searchType === SearchTypes.BASELINE
           ) {
-            <ng-container matTooltip="{{ 'SCENE_START_TIME' | translate }}">
+            <ng-container [matTooltip]="'SCENE_START_TIME' | translate">
               {{ scene.metadata.date | shortDate }}
             </ng-container>
           }
@@ -141,7 +146,7 @@
         [offsets]="offsets"
         [hyp3ableByJobType]="hyp3ableByJobType"
         [isQueued]="isQueued"
-        style="min-width: 200px"
+        class="baseline-controls-width"
       >
       </app-baseline-scene-controls>
     }

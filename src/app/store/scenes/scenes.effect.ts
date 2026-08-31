@@ -1,103 +1,27 @@
 import { Injectable, inject } from '@angular/core';
 
-import { of } from 'rxjs';
 import {
   map,
-  switchMap,
-  catchError,
   distinctUntilChanged,
   filter,
   withLatestFrom,
   debounceTime,
 } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { UnzipApiService } from '@services/unzip-api.service';
-import { NotificationService } from '@services/notification.service';
 
 import { CMRProduct, SearchType } from '@models';
-import {
-  ScenesActionType,
-  LoadUnzippedProduct,
-  AddUnzippedProduct,
-  ErrorLoadingUnzipped,
-  SetScenes,
-  SetSelectedScene,
-} from './scenes.action';
-import {
-  allScenesFrom,
-  getSelectedScene,
-  SetSarviewsEventProducts,
-  SetSelectedSarviewsEvent,
-} from '.';
-import { SarviewsEventsService, ScenesService } from '@services';
+import { ScenesActionType, SetScenes, SetSelectedScene } from './scenes.action';
+import { allScenesFrom, getSelectedScene } from '.';
+import { ScenesService } from '@services';
 import { AppState } from '@store/app.reducer';
 import { Store } from '@ngrx/store';
 import { HideS1RawData, UIActionType } from '@store/ui';
-import { getSearchType } from '@store/search';
 
 @Injectable()
 export class ScenesEffects {
   private actions$ = inject(Actions);
-  private unzipApi = inject(UnzipApiService);
-  private notificationService = inject(NotificationService);
-  private sarviewsService = inject(SarviewsEventsService);
   private store$ = inject<Store<AppState>>(Store);
   private sceneService = inject(ScenesService);
-
-  public loadUnzippedProductFiles = createEffect(() =>
-    this.actions$.pipe(
-      ofType<LoadUnzippedProduct>(ScenesActionType.LOAD_UNZIPPED_PRODUCT),
-      switchMap((action) =>
-        this.unzipApi.load$(action.payload.downloadUrl).pipe(
-          map((resp) => resp.response),
-          map((resp) =>
-            resp.length === 1 && resp[0].type === 'dir'
-              ? resp.pop().contents
-              : resp,
-          ),
-          map((resp) => ({
-            product: action.payload,
-            unzipped: resp,
-          })),
-          map((unzipped) => new AddUnzippedProduct(unzipped)),
-          catchError((_) => of(new ErrorLoadingUnzipped(action.payload))),
-        ),
-      ),
-    ),
-  );
-
-  public errorLoadingUnzip = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType<ErrorLoadingUnzipped>(ScenesActionType.ERROR_LOADING_UNZIPPED),
-        map((action) => this.showUnzipApiLoadError(action.payload)),
-      ),
-    { dispatch: false },
-  );
-
-  public loadSarviewsEventProductsOnSelect = createEffect(() =>
-    this.actions$.pipe(
-      ofType<SetSelectedSarviewsEvent>(
-        ScenesActionType.SET_SELECTED_SARVIEWS_EVENT,
-      ),
-      distinctUntilChanged(),
-      withLatestFrom(this.store$.select(getSearchType)),
-      filter(
-        ([action, searchType]) =>
-          searchType === SearchType.SARVIEWS_EVENTS && !!action.payload,
-      ),
-      switchMap(([action, _]) => {
-        return this.sarviewsService.getEventFeature(action.payload);
-      }),
-      filter((event) => !!event.products),
-      map(
-        (processedEvent) =>
-          new SetSarviewsEventProducts(
-            processedEvent.products ? processedEvent.products : [],
-          ),
-      ),
-    ),
-  );
 
   public setSelectedSceneOnLoad = createEffect(() =>
     this.actions$.pipe(
@@ -178,12 +102,4 @@ export class ScenesEffects {
       ),
     { dispatch: false },
   );
-
-  private showUnzipApiLoadError(product: CMRProduct): void {
-    this.notificationService.error(
-      `Error loading files for ${product.id}`,
-      'Error',
-      { timeOut: 5000 },
-    );
-  }
 }

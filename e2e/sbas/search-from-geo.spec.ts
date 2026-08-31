@@ -1,23 +1,25 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 test('SBAS: Search for a Scene from Geo Search', async ({ page }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page
     .getByRole('region', { name: 'Area of Interest Options' })
     .getByLabel('Area of Interest • WKT')
     .fill('POINT(-166.6953 53.8476)');
   await page
-    .locator('div')
-    .filter({ hasText: /^File Type$/ })
-    .first()
+    .locator('app-filters-dropdown')
+    .getByRole('combobox', { name: 'File Type' })
     .click();
-  await page.getByText('(SLC)').first().click();
+  await page
+    .getByRole('option', { name: 'L1 Single Look Complex (SLC)' })
+    .click();
   await page.locator('.cdk-overlay-backdrop').click();
   await page
-    .getByText('Cancel SEARCH arrow_drop_down')
-    .getByRole('button', { name: 'SEARCH' })
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
     .click();
 
   await page.locator('app-scene').first().click();

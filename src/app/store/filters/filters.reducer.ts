@@ -2,13 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { FiltersActionType, FiltersActions } from './filters.action';
 import * as models from '@models';
-import {
-  EventProductSort,
-  EventProductSortDirection,
-  EventProductSortType,
-  hyp3JobTypes,
-  SBASOverlap,
-} from '@models';
+import { hyp3JobTypes, SBASOverlap } from '@models';
 import { createSimpleArraySelector } from '../selectors';
 
 export interface FiltersState {
@@ -32,7 +26,7 @@ export interface FiltersState {
   polarizations: models.DatasetPolarizations;
   sidePolarizations: models.DatasetPolarizations;
   flightDirections: Set<models.FlightDirection>;
-  subtypes: models.DatasetSubtypes;
+  platforms: models.DatasetPlatforms;
   jobStatuses: models.Hyp3JobStatusCode[];
 
   missions: Record<string, string[]>;
@@ -47,13 +41,7 @@ export interface FiltersState {
   thresholdOverlap: boolean;
   sbasOverlapThreshold: SBASOverlap;
 
-  sarviewsEventTypes: models.SarviewsEventType[];
-  sarviewsEventNameFilter: string;
-  sarviewsEventActiveOnly: boolean;
-  sarviewsMagnitudeRange: models.Range<number>;
-
   hyp3ProductTypes: string[];
-  sarviewsEventProductSorting: EventProductSort;
 
   geocode: null | string;
 
@@ -65,6 +53,7 @@ export interface FiltersState {
   instrument: string[];
   scienceProduct: string[];
   productionConfig: string[];
+  productMaturity: string[];
 
   operaBurstIDs: null | string[];
   useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
@@ -73,6 +62,7 @@ export interface FiltersState {
   tileID: null | string;
 
   useFramesForReference: boolean;
+  granuleList: null | string;
   ariaVersion: string;
 }
 
@@ -112,7 +102,7 @@ export const initState: FiltersState = {
   beamModes: [],
   polarizations: [],
   sidePolarizations: [],
-  subtypes: [],
+  platforms: [],
   flightDirections: new Set<models.FlightDirection>([]),
   jobStatuses: [],
 
@@ -128,17 +118,6 @@ export const initState: FiltersState = {
   thresholdOverlap: false,
   sbasOverlapThreshold: SBASOverlap.HALF_OVERLAP,
 
-  sarviewsEventTypes: [],
-  sarviewsEventNameFilter: null,
-  sarviewsEventActiveOnly: false,
-  sarviewsMagnitudeRange: {
-    start: null,
-    end: null,
-  },
-  sarviewsEventProductSorting: {
-    sortType: EventProductSortType.DATE,
-    sortDirection: EventProductSortDirection.DESCENDING,
-  },
   hyp3ProductTypes: [],
 
   geocode: null,
@@ -153,11 +132,14 @@ export const initState: FiltersState = {
   rangeBandwidth: [],
   instrument: [],
   scienceProduct: [],
-  productionConfig: [],
+  productionConfig: ['PR'],
+  productMaturity: [],
 
   groupID: null,
   tileID: null,
   shortNames: [],
+
+  granuleList: null,
 
   useFramesForReference: false,
   ariaVersion: null,
@@ -179,9 +161,10 @@ export function filtersReducer(
         ...state,
         selectedDatasetId: selected,
         productTypes: [],
+        productMaturity: [],
         beamModes: [],
         polarizations: [],
-        subtypes: [],
+        platforms: [],
         fullBurstIDs: [],
         operaBurstIDs: [],
 
@@ -195,6 +178,7 @@ export function filtersReducer(
         flightDirections: new Set<models.FlightDirection>([]),
 
         groupID: null,
+        granuleList: null,
         tileID: null,
         shortNames: [],
         useCalibrationData: false,
@@ -460,7 +444,7 @@ export function filtersReducer(
         productTypes: [],
         beamModes: [],
         polarizations: [],
-        subtypes: [],
+        platforms: [],
         flightDirections: new Set<models.FlightDirection>([]),
         selectedMission: null,
         geocode: null,
@@ -473,10 +457,12 @@ export function filtersReducer(
         frameCoverage: [],
         sidePolarizations: [],
         jointObservation: false,
+        granuleList: null,
         instrument: [],
         rangeBandwidth: [],
         scienceProduct: [],
         productionConfig: [],
+        productMaturity: [],
         ariaVersion: null,
       };
     }
@@ -485,16 +471,6 @@ export function filtersReducer(
       return {
         ...state,
         searchList: [],
-      };
-    }
-
-    case FiltersActionType.CLEAR_EVENT_FILTERS: {
-      return {
-        ...state,
-        sarviewsMagnitudeRange: initState.sarviewsMagnitudeRange,
-        sarviewsEventActiveOnly: false,
-        sarviewsEventTypes: [],
-        hyp3ProductTypes: [],
       };
     }
 
@@ -595,10 +571,10 @@ export function filtersReducer(
         sidePolarizations: [...action.payload],
       };
     }
-    case FiltersActionType.SET_SUBTYPES: {
+    case FiltersActionType.SET_PLATFORMS: {
       return {
         ...state,
-        subtypes: [...action.payload],
+        platforms: [...action.payload],
       };
     }
 
@@ -695,30 +671,10 @@ export function filtersReducer(
           projectName: filters.projectName,
           productFilterName: filters.productFilterName,
         };
-      } else if (search.searchType === models.SearchType.SARVIEWS_EVENTS) {
-        const filters = search.filters as models.SarviewsFiltersType;
-
-        return {
-          ...state,
-          dateRange: filters.dateRange,
-          sarviewsEventTypes: filters.sarviewsEventTypes || [],
-          sarviewsEventNameFilter: filters.sarviewsEventNameFilter,
-          sarviewsEventActiveOnly: filters.activeOnly,
-          sarviewsMagnitudeRange: filters.magnitude || {
-            start: null,
-            end: null,
-          },
-          hyp3ProductTypes: filters.hyp3ProductTypes || [],
-          pathRange: filters.pathRange || {
-            start: null,
-            end: null,
-          },
-          frameRange: filters.frameRange || {
-            start: null,
-            end: null,
-          },
-        };
-      } else if (search.searchType === models.SearchType.DERIVED_DATASETS) {
+      } else if (
+        search.searchType === models.SearchType.DERIVED_DATASETS ||
+        search.searchType === models.SearchType.SARVIEWS_EVENTS
+      ) {
         // TODO: Don't make geosearch default case or handle no
         // savable searches better
         return { ...state };
@@ -737,12 +693,12 @@ export function filtersReducer(
           (d) => d.id === filters.selectedDataset,
         )[0];
 
-        const filterSubtypes = new Set(
-          (filters.subtypes || []).map((t) => t.apiValue),
+        const filterPlatforms = new Set(
+          (filters.platforms || []).map((t) => t.apiValue),
         );
 
-        const subtypes = dataset.subtypes.filter((subtype) =>
-          filterSubtypes.has(subtype.apiValue),
+        const platforms = dataset.platforms.filter((platform) =>
+          filterPlatforms.has(platform.apiValue),
         );
 
         const filterProductTypes = new Set(
@@ -774,7 +730,7 @@ export function filtersReducer(
           beamModes: filters.beamModes || [],
           polarizations: filters.polarizations || [],
           flightDirections: new Set(filters.flightDirections || []),
-          subtypes,
+          platforms,
           selectedMission: filters.selectedMission,
           fullBurstIDs: filters.fullBurstIDs || [],
           operaBurstIDs: filters.operaBurstIDs || [],
@@ -782,6 +738,8 @@ export function filtersReducer(
           shortNames: filters.shortNames || [],
           scienceProduct: filters.scienceProduct || [],
           productionConfig: filters.productionConfig || [],
+          productMaturity: filters.productMaturity || [],
+          granuleList: filters.granuleList || null,
           sidePolarizations: filters.sidePolarizations || [],
           frameCoverage: filters.frameCoverage || [],
           jointObservation: filters.jointObservation,
@@ -804,6 +762,12 @@ export function filtersReducer(
       return {
         ...state,
         productFilterName: action.payload,
+      };
+    }
+    case FiltersActionType.SET_PRODUCT_MATURITY: {
+      return {
+        ...state,
+        productMaturity: action.payload,
       };
     }
     case FiltersActionType.STORE_CURRENT_FILTERS: {
@@ -833,66 +797,7 @@ export function filtersReducer(
         sbasOverlapThreshold: action.payload,
       };
     }
-    case FiltersActionType.SET_SARVIEWS_EVENT_TYPES: {
-      return {
-        ...state,
-        sarviewsEventTypes: [...action.payload],
-      };
-    }
-    case FiltersActionType.SET_SARVIEWS_EVENT_NAME_FILTER: {
-      return {
-        ...state,
-        sarviewsEventNameFilter: action.payload,
-      };
-    }
-    case FiltersActionType.SET_SARVIEWS_EVENT_ACTIVE_FILTER: {
-      return {
-        ...state,
-        sarviewsEventActiveOnly: action.payload,
-      };
-    }
-    case FiltersActionType.SET_SARVIEWS_MAGNITUDE_START: {
-      return {
-        ...state,
-        sarviewsMagnitudeRange: {
-          ...state.sarviewsMagnitudeRange,
-          start: action.payload,
-        },
-      };
-    }
-    case FiltersActionType.SET_SARVIEWS_MAGNITUDE_END: {
-      return {
-        ...state,
-        sarviewsMagnitudeRange: {
-          ...state.sarviewsMagnitudeRange,
-          end: action.payload,
-        },
-      };
-    }
-    case FiltersActionType.SET_SARVIEWS_MAGNITUDE_RANGE: {
-      return {
-        ...state,
-        sarviewsMagnitudeRange: action.payload,
-      };
-    }
-    case FiltersActionType.CLEAR_SARVIEWS_MAGNITUDE_RANGE: {
-      return {
-        ...state,
-        sarviewsMagnitudeRange: initState.sarviewsMagnitudeRange,
-      };
-    }
-    case FiltersActionType.SET_HYP3_PRODUCT_TYPES: {
-      return {
-        ...state,
-        hyp3ProductTypes: [...action.payload],
-      };
-    }
-    case FiltersActionType.SET_EVENT_PRODUCT_SORT: {
-      return {
-        ...state,
-        sarviewsEventProductSorting: { ...action.payload },
-      };
-    }
+
     case FiltersActionType.SET_GEOCODE: {
       return {
         ...state,
@@ -905,16 +810,30 @@ export function filtersReducer(
         hyp3ProductTypes: [],
       };
     }
-    case FiltersActionType.SET_FULL_BURST: {
+    case FiltersActionType.SET_FULL_BURSTS: {
       return {
         ...state,
-        fullBurstIDs: action.payload,
+        fullBurstIDs: [...new Set(action.payload)],
       };
     }
-    case FiltersActionType.SET_OPERA_BURST_ID: {
+    case FiltersActionType.SET_OPERA_BURST_IDS: {
       return {
         ...state,
-        operaBurstIDs: action.payload,
+        operaBurstIDs: [...new Set(action.payload)],
+      };
+    }
+    case FiltersActionType.ADD_FULL_BURSTS: {
+      return {
+        ...state,
+        fullBurstIDs: [...new Set([...state.fullBurstIDs, ...action.payload])],
+      };
+    }
+    case FiltersActionType.ADD_OPERA_BURST_IDS: {
+      return {
+        ...state,
+        operaBurstIDs: [
+          ...new Set([...state.operaBurstIDs, ...action.payload]),
+        ],
       };
     }
     case FiltersActionType.SET_INCLUDE_CALIBRATION_DATA: {
@@ -981,6 +900,12 @@ export function filtersReducer(
       return {
         ...state,
         tileID: action.payload,
+      };
+    }
+    case FiltersActionType.SET_GRANULE_LIST: {
+      return {
+        ...state,
+        granuleList: action.payload,
       };
     }
     default: {
@@ -1111,9 +1036,9 @@ export const getSidePolarizations = createSelector(
   (state: FiltersState) => state.sidePolarizations,
 );
 
-export const getSubtypes = createSelector(
+export const getPlatforms = createSelector(
   getFiltersState,
-  (state: FiltersState) => state.subtypes,
+  (state: FiltersState) => state.platforms,
 );
 
 export const getFlightDirections = createSimpleArraySelector(
@@ -1164,7 +1089,7 @@ export const getGeographicSearch = createSelector(
     beamModes: state.beamModes,
     polarizations: state.polarizations,
     flightDirections: state.flightDirections,
-    subtypes: state.subtypes,
+    platforms: state.platforms,
     selectedMission: state.selectedMission,
     fullBurstIDs: state.fullBurstIDs,
     operaBurstIDs: state.operaBurstIDs,
@@ -1172,12 +1097,14 @@ export const getGeographicSearch = createSelector(
     shortNames: state.shortNames,
     scienceProduct: state.scienceProduct,
     productionConfig: state.productionConfig,
+    productMaturity: state.productMaturity,
     sidePolarizations: state.sidePolarizations,
     frameCoverage: state.frameCoverage,
     jointObservation: state.jointObservation,
     rangeBandwidth: state.rangeBandwidth,
     instrument: state.instrument,
     groupID: state.groupID,
+    granuleList: state.granuleList,
     tileID: state.tileID,
     ariaVersion: state.ariaVersion,
   }),
@@ -1251,35 +1178,10 @@ export const getSBASOverlapThreshold = createSelector(
   (state: FiltersState) => state.sbasOverlapThreshold,
 );
 
-export const getSarviewsEventTypes = createSelector(
-  getFiltersState,
-  (state: FiltersState) => state.sarviewsEventTypes,
-);
-
-export const getSarviewsEventNameFilter = createSelector(
-  getFiltersState,
-  (state: FiltersState) => state.sarviewsEventNameFilter,
-);
-
-export const getSarviewsEventActiveFilter = createSelector(
-  getFiltersState,
-  (state: FiltersState) => state.sarviewsEventActiveOnly,
-);
-
-export const getSarviewsMagnitudeRange = createSelector(
-  getFiltersState,
-  (state: FiltersState) => state.sarviewsMagnitudeRange,
-);
-
 export const getHyp3ProductTypes = createSelector(
   getFiltersState,
   (state: FiltersState) =>
     state.hyp3ProductTypes.map((productType) => hyp3JobTypes[productType]),
-);
-
-export const getSarviewsEventProductSorting = createSelector(
-  getFiltersState,
-  (state: FiltersState) => state.sarviewsEventProductSorting,
 );
 
 export const getGeocodeArea = createSelector(
@@ -1333,6 +1235,10 @@ export const getProductionConfig = createSelector(
   getFiltersState,
   (state: FiltersState) => state.productionConfig,
 );
+export const getProductMaturity = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.productMaturity,
+);
 export const getShouldUseFramesForReference = createSelector(
   getFiltersState,
   (state: FiltersState) => state.useFramesForReference,
@@ -1344,4 +1250,8 @@ export const getAriaVersion = createSelector(
 export const getTileID = createSelector(
   getFiltersState,
   (state: FiltersState) => state.tileID,
+);
+export const getGranuleList = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.granuleList,
 );

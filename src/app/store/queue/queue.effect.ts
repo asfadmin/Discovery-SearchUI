@@ -22,7 +22,6 @@ import {
   QueueScene,
   FindPair,
   MakeDownloadScriptFromList,
-  MakeDownloadScriptFromSarviewsProducts,
 } from './queue.action';
 import { getDuplicates, getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
@@ -81,23 +80,6 @@ export class QueueEffects {
     { dispatch: false },
   );
 
-  public MakeDownloadScriptFromSarviewsProductsList = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType<MakeDownloadScriptFromSarviewsProducts>(
-          QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_SARVIEWS_PRODUCTS,
-        ),
-        map((action) => action.payload),
-        switchMap((products) =>
-          this.bulkDownloadService.downloadSarviewsProductsScript$(products),
-        ),
-        map((blob) =>
-          FileSaver.saveAs(blob.body, `download-all-${this.currentDate()}.py`),
-        ),
-      ),
-    { dispatch: false },
-  );
-
   public downloadSearchtypeMetadata = createEffect(
     () =>
       this.actions$.pipe(
@@ -110,7 +92,7 @@ export class QueueEffects {
           ([format, searchParams]): MetadataDownload => ({
             params: {
               ...searchParams,
-              ...{ output: format.toLowerCase() },
+              output: format.toLowerCase(),
             },
             format: format,
           }),
@@ -139,7 +121,7 @@ export class QueueEffects {
         ),
         map(
           ([format, params]): MetadataDownload => ({
-            params: { ...params, ...{ output: format } },
+            params: { ...params, output: format },
             format,
           }),
         ),
@@ -156,7 +138,9 @@ export class QueueEffects {
   public queueScene = createEffect(() =>
     this.actions$.pipe(
       ofType<QueueScene>(QueueActionType.QUEUE_SCENE),
-      withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
+      withLatestFrom(
+        this.store$.select(scenesStore.getAllSceneProductsFiltered),
+      ),
       map(([action, sceneProducts]) => sceneProducts[action.payload]),
       map((products) => new AddItems(products)),
     ),
@@ -248,7 +232,9 @@ export class QueueEffects {
   public removeScene = createEffect(() =>
     this.actions$.pipe(
       ofType<RemoveSceneFromQueue>(QueueActionType.REMOVE_SCENE_FROM_QUEUE),
-      withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
+      withLatestFrom(
+        this.store$.select(scenesStore.getAllSceneProductsFiltered),
+      ),
       map(([action, sceneProducts]) => sceneProducts[action.payload]),
       tap((products) =>
         this.notificationService.downloadQueue(false, products.length),

@@ -8,7 +8,8 @@ import {
   inject,
 } from '@angular/core';
 
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+
 import { ClipboardService } from 'ngx-clipboard';
 import { map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -48,9 +49,7 @@ import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/c
 import { DownloadFileButtonComponent as DownloadFileButtonComponent_1 } from '@components/shared/download-file-button/download-file-button.component';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { DownloadAllComponent } from './download-all/download-all.component';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { FilterExtensionPipe } from '@pipes/filter-extension.pipe';
@@ -90,16 +89,15 @@ export interface selectedItems {
     MatTooltip,
     MatDialogActions,
     MatButton,
-    FontAwesomeModule,
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,
-    DownloadAllComponent,
     AsyncPipe,
     TruncateModule,
     ReadableSizeFromBytesPipe,
     FilterExtensionPipe,
     TranslateModule,
+    ScrollingModule,
   ],
 })
 export class QueueComponent implements OnInit, OnDestroy {
@@ -116,11 +114,9 @@ export class QueueComponent implements OnInit, OnDestroy {
   downloadButtons!: QueryList<DownloadFileButtonComponent>;
 
   public queueHasOnDemandProducts = false;
-  public queueHasEventMonitoringProducts = false;
   public showDemWarning: boolean;
   public showRestrictedDatasetWarning;
 
-  public copyIcon = faCopy;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
   public breakpoint: Breakpoints;
@@ -155,9 +151,6 @@ export class QueueComponent implements OnInit, OnDestroy {
     tap((products) => {
       this.queueHasOnDemandProducts = !products.every(
         (product) => !product.metadata.job,
-      );
-      this.queueHasEventMonitoringProducts = !products.every(
-        (product) => product.groupId !== 'SARViews',
       );
       this.showDemWarning = this.areAnyProducts
         ? this.demWarning(products)
@@ -250,7 +243,6 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public onCopyQueue(products: CMRProduct[]): void {
     const productListStr = products
-      .filter((product) => !product.isUnzippedFile)
       .map((product) => {
         if (product.metadata.productType === 'BURST_XML') {
           return product.id?.split('-XML')[0];
@@ -268,7 +260,6 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public onCopyQueueURLs(products: CMRProduct[], useS3Urls = false): void {
     const productListStr = products
-      .filter((product) => !product.isUnzippedFile)
       .map((product) =>
         useS3Urls ? (product.metadata?.s3URI ?? null) : product.downloadUrl,
       )
@@ -363,15 +354,6 @@ export class QueueComponent implements OnInit, OnDestroy {
       if (!button?.dFile?.state) {
         button.downloadFile(true);
       }
-    }
-  }
-  public limitedExportString() {
-    if (this.queueHasEventMonitoringProducts && this.queueHasOnDemandProducts) {
-      return 'On Demand and Event products in queue - limited export options';
-    } else if (this.queueHasEventMonitoringProducts) {
-      return 'Event Monitoring products in queue - limited export options';
-    } else {
-      return 'On Demand products in queue - limited export options';
     }
   }
 

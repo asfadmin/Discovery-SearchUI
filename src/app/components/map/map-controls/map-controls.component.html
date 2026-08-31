@@ -4,7 +4,7 @@
     class="fx-row icon-bar"
     [ngClass]="{
       'toolbar-collpased':
-        !showToolBar && searchType === searchTypes.DISPLACEMENT,
+        !showToolBar && searchType() === searchTypes.DISPLACEMENT,
     }"
   >
     @if (showToolBar === true) {
@@ -12,16 +12,14 @@
         <div class="fx-row">
           <div class="fx-col visible-toggle">
             <div class="fx-row icon-bar tool-bar-common">
-              @if (searchType !== searchTypes.SARVIEWS_EVENTS) {
-                <div class="fx-empty group-margin">
-                  <div class="map-view-button--layout button-group-label">
-                    <label>&nbsp;{{ 'MAP_VIEW' | translate }}</label>
-                  </div>
-                  <div class="fx-row">
-                    <app-view-selector class="fx-empty"> </app-view-selector>
-                  </div>
+              <div class="fx-empty group-margin">
+                <div class="map-view-button--layout button-group-label">
+                  <label>&nbsp;{{ 'MAP_VIEW' | translate }}</label>
                 </div>
-              }
+                <div class="fx-row">
+                  <app-view-selector class="fx-empty"> </app-view-selector>
+                </div>
+              </div>
               <div class="fx-empty zoom-buttons">
                 <div class="fx-row-center button-group-label">
                   <label>{{ 'ZOOM' | translate }}</label>
@@ -36,14 +34,14 @@
                       <mat-button-toggle
                         class="control-mat-button-toggle"
                         (click)="zoomIn()"
-                        matTooltip="{{ 'ZOOM_IN' | translate }}"
+                        [matTooltip]="'ZOOM_IN' | translate"
                       >
                         <mat-icon class="control-icon">add</mat-icon>
                       </mat-button-toggle>
                       <mat-button-toggle
                         class="control-mat-button-toggle"
                         (click)="zoomOut()"
-                        matTooltip="{{ 'ZOOM_OUT' | translate }}"
+                        [matTooltip]="'ZOOM_OUT' | translate"
                       >
                         <mat-icon class="control-icon">remove</mat-icon>
                       </mat-button-toggle>
@@ -62,8 +60,8 @@
                 </div>
               }
               @if (
-                searchType === searchTypes.DATASET ||
-                searchType === searchTypes.SBAS
+                searchType() === searchTypes.DATASET ||
+                searchType() === searchTypes.SBAS
               ) {
                 <div class="fx-empty group-margin">
                   <div class="fx-row-center button-group-label">
@@ -74,47 +72,11 @@
                   </div>
                 </div>
               }
-              <!-- Product Browse  -->
-              @if (searchType === searchTypes.SARVIEWS_EVENTS) {
-                <div class="fx-empty group-margin">
-                  <div
-                    class="fx-row-center button-group-label"
-                    style="white-space: nowrap"
-                  >
-                    <label>{{ 'PRODUCT' | translate }}</label>
-                  </div>
-                  <div class="fx-row-center">
-                    <div>
-                      <mat-button-toggle-group
-                        class="fx-empty"
-                        name="layerType"
-                        [disabled]="!(isBrowseOverlayEnabled$ | async)"
-                        [hideSingleSelectionIndicator]="true"
-                      >
-                        @if (searchType === searchTypes.SARVIEWS_EVENTS) {
-                          <mat-button-toggle
-                            class="control-mat-button-toggle"
-                            (click)="onUnpinAll()"
-                            matTooltip="{{
-                              'UNPIN_ALL_SELECTED_PRODUCTS' | translate
-                            }}"
-                          >
-                            <mat-icon
-                              class="control-icon"
-                              svgIcon="unpin"
-                            ></mat-icon>
-                          </mat-button-toggle>
-                        }
-                      </mat-button-toggle-group>
-                    </div>
-                  </div>
-                </div>
-              }
               <!-- Opacity Control -->
               @if (
-                searchType !== searchTypes.BASELINE &&
-                searchType !== searchTypes.SBAS &&
-                searchType !== searchTypes.DISPLACEMENT
+                searchType() !== searchTypes.BASELINE &&
+                searchType() !== searchTypes.SBAS &&
+                searchType() !== searchTypes.DISPLACEMENT
               ) {
                 <div class="fx-empty group-margin">
                   <div class="fx-row-center button-group-label">
@@ -129,7 +91,7 @@
                       [attr.aria-label]="'BROWSE_IMAGE_OPACITY' | translate"
                     >
                       <span class="opacity-button-text">
-                        {{ browseOverlayOpacity * 100 | number: '1.0-0' }}%
+                        {{ browseOverlayOpacity() * 100 | number: '1.0-0' }}%
                       </span>
                       <span class="fa fa-caret-down bottom-right"></span>
                     </button>

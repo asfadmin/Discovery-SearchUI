@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import * as models from '@models';
-import { EventProductSort, SBASOverlap } from '@models';
+import { SBASOverlap } from '@models';
 import { FiltersState } from './filters.reducer';
 
 export enum FiltersActionType {
@@ -50,7 +50,7 @@ export enum FiltersActionType {
 
   SET_FLIGHT_DIRECTIONS = '[Filters-Flight-Dir] Set Flight Directions',
 
-  SET_SUBTYPES = '[Filters-Subtype] Set Subtypes',
+  SET_PLATFORMS = '[Filters-Platforms] Set Platforms',
 
   OMIT_SEARCH_POLYGON = '[Filters-Search] Omit Search Polygon',
   USE_SEARCH_POLYGON = '[Filters-Search] Use Search Polygon',
@@ -78,25 +78,16 @@ export enum FiltersActionType {
   SET_SBAS_OVERLAP_THRESHOLD = '[Filters] Set SBAS Pair Overlap Threshold',
   SET_DEFAULT_FILTERS = '[Filters] Set User Profile Default Filters',
 
-  SET_SARVIEWS_EVENT_TYPES = '[Filters] Set SARViews event types',
-  SET_SARVIEWS_EVENT_NAME_FILTER = '[Filters] Set SARViews event name filter',
-  SET_SARVIEWS_EVENT_ACTIVE_FILTER = '[Filters] Set SARViews event active processing filter',
-  SET_SARVIEWS_MAGNITUDE_START = '[Filters] Set SARViews quake event magnitude range filter start',
-  SET_SARVIEWS_MAGNITUDE_END = '[Filters] Set SARViews quake event magnitude range filter end',
-  SET_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Set SARViews quake event magnitude range filter',
-  CLEAR_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Clear SARViews quake event magnitude range',
-
   SET_HYP3_PRODUCT_TYPES = '[Filters] Set Hyp3 product types filter',
-  SET_EVENT_PRODUCT_SORT = '[Filters] Set event product sorting order',
-
-  CLEAR_EVENT_FILTERS = '[Filters] Clear Event Search Filters',
   CLEAR_HYP3_PRODUCT_TYPES = '[Filters] Clear Hyp3 product types filter',
 
   SET_GEOCODE = '[Filters] Set geocode area name',
 
-  SET_FULL_BURST = '[Filters] Set Full Burst IDs',
+  SET_FULL_BURSTS = '[Filters] Set Full Burst IDs',
+  ADD_FULL_BURSTS = '[Filters] Add Full Burst IDs',
 
-  SET_OPERA_BURST_ID = '[Filters] Set Full OPERA S1 Burst IDs',
+  SET_OPERA_BURST_IDS = '[Filters] Set Full OPERA S1 Burst IDs',
+  ADD_OPERA_BURST_IDS = '[Filters] Add Full OPERA S1 Burst IDs',
   SET_INCLUDE_CALIBRATION_DATA = '[Filters] Set use calbiration data in OPERA-S1 search',
   SET_GROUP_ID = '[Filters] Set Sentinel-1 Group ID',
   SET_SHORT_NAMES = '[Filters] Set Short Names',
@@ -108,12 +99,15 @@ export enum FiltersActionType {
   SET_INSTRUMENT = '[Filters] Set Instrument',
   SET_SCIENCE_PRODUCT = '[Filters] Set Science Product',
   SET_PRODUCTION_CONFIG = '[Filters] Set Production Config',
+  SET_PRODUCT_MATURITY = '[Filters] Set Product Maturity',
 
   SET_ARIA_VERSION = '[Filters] Set ARIA Version',
 
   SET_TILE_ID = '[Filters] Set OPERA-S1 Tile ID',
 
   SET_USER_FRAME_FOR_BASELINE = '[Filters] Set if frame(s) used for baseline/sbas searches as reference scene',
+
+  SET_GRANULE_LIST = '[Filters] Set granule list',
 
   APPLY_DATASET_DEFAULTS = '[Filters] Apply dataset default filters',
 }
@@ -319,10 +313,10 @@ export class SetSidePolarizations implements Action {
   constructor(public payload: models.DatasetPolarizations) {}
 }
 
-export class SetSubtypes implements Action {
-  public readonly type = FiltersActionType.SET_SUBTYPES;
+export class SetPlatforms implements Action {
+  public readonly type = FiltersActionType.SET_PLATFORMS;
 
-  constructor(public payload: models.DatasetSubtypes) {}
+  constructor(public payload: models.DatasetPlatforms) {}
 }
 
 export class SetSearchList implements Action {
@@ -384,56 +378,10 @@ export class SetSBASOverlapThreshold implements Action {
   constructor(public payload: SBASOverlap) {}
 }
 
-export class SetSarviewsEventTypes implements Action {
-  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_TYPES;
-
-  constructor(public payload: models.SarviewsEventType[]) {}
-}
-
-export class SetSarviewsEventNameFilter implements Action {
-  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_NAME_FILTER;
-
-  constructor(public payload: string) {}
-}
-
-export class SetSarviewsEventActiveFilter implements Action {
-  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_ACTIVE_FILTER;
-
-  constructor(public payload: boolean) {}
-}
-
-export class SetSarviewsMagnitudeStart implements Action {
-  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_START;
-
-  constructor(public payload: number) {}
-}
-
-export class SetSarviewsMagnitudeEnd implements Action {
-  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_END;
-
-  constructor(public payload: number) {}
-}
-
-export class SetSarviewsMagnitudeRange implements Action {
-  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_RANGE;
-
-  constructor(public payload: models.Range<number>) {}
-}
-
-export class ClearSarviewsMagnitudeRange implements Action {
-  public readonly type = FiltersActionType.CLEAR_SARVIEWS_MAGNITUDE_RANGE;
-}
-
 export class SetHyp3ProductTypes implements Action {
   public readonly type = FiltersActionType.SET_HYP3_PRODUCT_TYPES;
 
   constructor(public payload: string[]) {}
-}
-
-export class SetEventProductSorting implements Action {
-  public readonly type = FiltersActionType.SET_EVENT_PRODUCT_SORT;
-
-  constructor(public payload: EventProductSort) {}
 }
 
 export class SetDefaultFilters implements Action {
@@ -460,22 +408,30 @@ export class SetGeocode implements Action {
   constructor(public payload: string) {}
 }
 
-export class ClearEventFilters implements Action {
-  public readonly type = FiltersActionType.CLEAR_EVENT_FILTERS;
-}
-
 export class ClearHyp3ProductTypes implements Action {
   public readonly type = FiltersActionType.CLEAR_HYP3_PRODUCT_TYPES;
 }
 
-export class setFullBurst implements Action {
-  public readonly type = FiltersActionType.SET_FULL_BURST;
+export class setFullBursts implements Action {
+  public readonly type = FiltersActionType.SET_FULL_BURSTS;
 
   constructor(public payload: string[]) {}
 }
 
-export class setOperaBurstID implements Action {
-  public readonly type = FiltersActionType.SET_OPERA_BURST_ID;
+export class setOperaBurstIDs implements Action {
+  public readonly type = FiltersActionType.SET_OPERA_BURST_IDS;
+
+  constructor(public payload: string[]) {}
+}
+
+export class addFullBursts implements Action {
+  public readonly type = FiltersActionType.ADD_FULL_BURSTS;
+
+  constructor(public payload: string[]) {}
+}
+
+export class addOperaBurstIDs implements Action {
+  public readonly type = FiltersActionType.ADD_OPERA_BURST_IDS;
 
   constructor(public payload: string[]) {}
 }
@@ -529,6 +485,12 @@ export class setProductionConfig implements Action {
   constructor(public payload: string[]) {}
 }
 
+export class setProductMaturity implements Action {
+  public readonly type = FiltersActionType.SET_PRODUCT_MATURITY;
+
+  constructor(public payload: string[]) {}
+}
+
 export class setAriaVersion implements Action {
   public readonly type = FiltersActionType.SET_ARIA_VERSION;
 
@@ -545,6 +507,12 @@ export class SetUseFrameForBaseline implements Action {
   public readonly type = FiltersActionType.SET_USER_FRAME_FOR_BASELINE;
 
   constructor(public payload: boolean) {}
+}
+
+export class setGranuleList implements Action {
+  public readonly type = FiltersActionType.SET_GRANULE_LIST;
+
+  constructor(public payload: string) {}
 }
 
 export type FiltersActions =
@@ -580,7 +548,7 @@ export type FiltersActions =
   | AddBeamMode
   | SetBeamModes
   | SetJobStatuses
-  | SetSubtypes
+  | SetPlatforms
   | AddPolarization
   | SetPolarizations
   | AddSidePolarization
@@ -598,20 +566,13 @@ export type FiltersActions =
   | Toggle50PercentOverlap
   | SetSBASOverlapThreshold
   | SetDefaultFilters
-  | SetSarviewsEventTypes
-  | SetSarviewsEventNameFilter
-  | SetSarviewsEventActiveFilter
-  | SetSarviewsMagnitudeStart
-  | SetSarviewsMagnitudeEnd
-  | SetSarviewsMagnitudeRange
   | SetGeocode
-  | ClearSarviewsMagnitudeRange
   | SetHyp3ProductTypes
-  | SetEventProductSorting
-  | ClearEventFilters
   | ClearHyp3ProductTypes
-  | setFullBurst
-  | setOperaBurstID
+  | setFullBursts
+  | setOperaBurstIDs
+  | addFullBursts
+  | addOperaBurstIDs
   | setUseCalibrationData
   | setGroupID
   | setFrameCoverage
@@ -623,5 +584,7 @@ export type FiltersActions =
   | setProductionConfig
   | setAriaVersion
   | setTileID
+  | setGranuleList
+  | setProductMaturity
   | SetUseFrameForBaseline
   | ApplyDatasetDefaults;

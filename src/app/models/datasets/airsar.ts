@@ -60,7 +60,7 @@ export const airsar = {
   ],
   beamModes: ['3FP', 'ATI', 'XTI'],
   polarizations: ['Full'],
-  subtypes: [],
-  platformDesc: 'AIRSAR_DESC',
-  platformIcon: '/assets/icons/flight_black_48dp.svg',
+  platforms: [],
+  description: 'AIRSAR_DESC',
+  icon: '/assets/icons/flight_black_48dp.svg',
 };

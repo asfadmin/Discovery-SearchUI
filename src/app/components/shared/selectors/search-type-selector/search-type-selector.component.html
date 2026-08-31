@@ -13,11 +13,11 @@
           [matMenuTriggerFor]="searchTypeMenu"
           class="button-menu-trigger"
           color="basic"
-          matTooltip="{{ searchTranslation[searchType] | translate }}"
+          [matTooltip]="searchTranslation[searchType()] | translate"
           mat-button
         >
           <div class="button-text">
-            {{ searchTranslation[searchType] | translate }}
+            {{ searchTranslation[searchType()] | translate }}
             <span class="mat-select-arrow"></span>
           </div>
         </button>
@@ -59,7 +59,7 @@
                       </span>
                     }
                     <app-docs-modal
-                      url="{{ type.helpUrl }}"
+                      [url]="type.helpUrl"
                       class="read-more-icon"
                     ></app-docs-modal>
                   </div>
@@ -71,7 +71,7 @@
                     </span>
                   }
                   @if (type.iconType === iconTypes.IMAGE) {
-                    <img src="{{ type.icon }}" class="menu-item-icon" />
+                    <img [src]="type.icon" class="menu-item-icon" />
                   }
                 </div>
               </div>
@@ -86,7 +86,7 @@
           class="menu-item"
           mat-menu-item
           (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
-          [ngClass]="{ 'disable-search-type-on-demand': !isLoggedIn }"
+          [ngClass]="{ 'disable-search-type-on-demand': !isLoggedIn() }"
         >
           <div class="menu-item-inner">
             <div class="fx-80 menu-item-content">
@@ -94,7 +94,7 @@
                 {{ 'ON_DEMAND_PRODUCTS' | translate }}
                 <span
                   class="login-prompt"
-                  [ngClass]="{ 'login-hidden': isLoggedIn }"
+                  [ngClass]="{ 'login-hidden': isLoggedIn() }"
                 >
                   {{ 'SIGN_IN_TO_ACCESS' | translate }}
                 </span>
@@ -119,7 +119,11 @@
             </div>
             <div class="fx-20 menu-item-aside">
               <img
-                [src]="isHyp3Plus() ? 'assets/icons/hyp3_plus.svg' :'assets/asf-logos/HyP3-graphic-only.png'"
+                [src]="
+                  isHyp3Plus()
+                    ? 'assets/icons/hyp3_plus.svg'
+                    : 'assets/asf-logos/HyP3-graphic-only.png'
+                "
                 class="menu-item-icon"
               />
             </div>
@@ -146,7 +150,7 @@
                 }}
               </div>
             </div>
-            <div class="fx-20 menu-item-aside" style="text-align: right">
+            <div class="fx-20 menu-item-aside menu-item-aside--right">
               <span class="material-icons-outlined menu-item-icon">{{
                 'DATASET_LINKED' | translate
               }}</span>

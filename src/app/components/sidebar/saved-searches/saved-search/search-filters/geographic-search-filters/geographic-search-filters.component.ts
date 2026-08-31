@@ -16,7 +16,7 @@ export class GeographicSearchFiltersComponent {
   @Input() filters: GeographicFiltersType;
 
   public formatTypesList(fileTypes: ProductType[]): string {
-    return fileTypes.map((subtype) => subtype.apiValue).join(', ');
+    return fileTypes.map((filterType) => filterType.apiValue).join(', ');
   }
 
   public noFilters(filters: GeographicFiltersType): boolean {
@@ -38,7 +38,7 @@ export class GeographicSearchFiltersComponent {
       filters.beamModes.length === 0 &&
       filters.polarizations.length === 0 &&
       filters.flightDirections.length === 0 &&
-      filters.subtypes.length === 0
+      filters.platforms.length === 0
     );
   }
 

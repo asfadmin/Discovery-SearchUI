@@ -12,6 +12,14 @@
   justify-content: space-between;
 }
 
+.help-icon {
+  margin-left: 10px;
+}
+
+.upload-trigger {
+  width: 40%;
+}
+
 .form-layout {
   margin-top: 10px;
   display: flex;
@@ -27,19 +35,18 @@
   flex-direction: row;
   justify-content: flex-start;
 }
+
 .aoi-text-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
   width: 100%;
-  margin-top: 15px;
 }
 
 .aoi-input-area {
   display: flex;
   flex-direction: row;
-  height: 200px;
 }
 
 .drop-text-box {

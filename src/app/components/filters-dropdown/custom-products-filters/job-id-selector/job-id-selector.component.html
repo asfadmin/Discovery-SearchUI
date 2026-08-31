@@ -1,4 +1,5 @@
 <mat-form-field class="job-id-selector">
+  <mat-label>{{ 'JOB_IDS_SELECTOR' | translate }}</mat-label>
   <textarea
     type="text"
     name="jobIdsInput"
@@ -7,8 +8,6 @@
     #autosize="cdkTextareaAutosize"
     cdkAutosizeMinRows="1"
     cdkAutosizeMaxRows="10"
-    placeholder="{{ 'JOB_IDS_SELECTOR' | translate }}"
-    aria-label="JOB_IDS_SELECTOR"
     (change)="onJobIdsChange($event)"
     [(ngModel)]="jobIds"
   >

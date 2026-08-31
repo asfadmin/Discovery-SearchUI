@@ -1,3 +1,15 @@
-.perspective{ 
-    transform: perspective(1px);
+.perspective {
+  transform: perspective(1px);
+}
+.loading-spinner {
+  margin: 0 4px;
+  display: inline-flex;
+}
+
+.results-count {
+  padding: 8px 2px;
+}
+
+.spinner-spacing {
+  margin: 0 4px;
 }

@@ -26,7 +26,7 @@ import { SubSink } from 'subsink';
       <button mat-button mat-dialog-close tabindex="-1">
         <app-docs-modal
           class="info-icon"
-          text="{{ FAQText }}"
+          [text]="FAQText"
           url="https://docs.asf.alaska.edu/datasets/disp_faq/"
         ></app-docs-modal>
       </button>

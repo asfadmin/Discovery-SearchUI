@@ -1,9 +1,11 @@
 import { test, expect } from 'e2e/fixtures';
+import { sentinel1Page } from 'e2e/helpers';
 
 test('SBAS overlap threshold filter changes the selected value', async ({
   page,
 }) => {
-  await page.goto('/');
+  await sentinel1Page(page);
+
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'SBAS SBAS search provides' })
@@ -11,10 +13,12 @@ test('SBAS overlap threshold filter changes the selected value', async ({
   await page
     .getByRole('region', { name: 'Scene' })
     .getByLabel('Scene')
-    .fill('S1A_IW_SLC__1SDV_20210920T235648_20210920T235715_039772_04B42F_3C60');
+    .fill(
+      'S1A_IW_SLC__1SDV_20210920T235648_20210920T235715_039772_04B42F_3C60',
+    );
   await page
-    .getByText('Cancel SEARCH arrow_drop_down')
-    .getByRole('button', { name: 'SEARCH' })
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
     .click();
 
   await page

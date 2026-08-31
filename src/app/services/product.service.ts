@@ -41,9 +41,10 @@ export class ProductService {
         // the new property also auto converts to the right scale already
         g.s = (g.nsr.sizeMB[filename]?.bytes ?? 0) / 1000000;
       }
-      const product = {
+      const product: models.CMRProduct = {
         name: g.gn,
         productTypeDisplay: g.ptd ?? g.gn,
+        productTypeGroup: null,
         file: filename,
         id: g.pid.replaceAll('{gn}', g.gn),
         downloadUrl: g.du.replaceAll('{gn}', g.gn),
@@ -52,12 +53,28 @@ export class ProductService {
         browses,
         thumbnail,
         groupId: g.gid.replaceAll('{gn}', g.gn),
-        isUnzippedFile: false,
         isDummyProduct: false,
         metadata: this.getMetadataFrom(g),
       };
 
-      product.metadata.subproducts = this.getSubproducts(product);
+      product.metadata.subproducts = this.getSubproducts(product).map(
+        (subproduct) => {
+          subproduct.productTypeGroup = this.productTypeToGroup(
+            subproduct,
+            subproduct?.productTypeDisplay,
+          );
+          return subproduct;
+        },
+      );
+
+      product.productTypeGroup = this.productTypeToGroup(
+        product,
+        product?.productTypeDisplay,
+      );
+      if (product.dataset === models.nisar.id) {
+        product.browses = this.sortNativeBrowseFirst([...product.browses]);
+      }
+
       if (product.metadata?.opera) {
         product.bytes =
           product?.metadata?.opera?.bytes?.[product.file]?.bytes || 0;
@@ -147,7 +164,18 @@ export class ProductService {
     }
     return [];
   }
-
+  public productTypeToGroup(product: models.CMRProduct, type: string): string {
+    const dataset = models.datasets[product.dataset];
+    if (!dataset?.productTypeDisplays?.groups) {
+      return null;
+    }
+    for (const { name, files } of dataset.productTypeDisplays.groups) {
+      if (files.some((pattern) => pattern.test(type))) {
+        return name;
+      }
+    }
+    return null;
+  }
   public urlToProductType(
     url: string,
     productTypeDisplay: Record<string, string>,
@@ -217,13 +245,14 @@ export class ProductService {
     } else {
       file_suffix = this.urlToProductType(
         product.downloadUrl,
-        models.opera_s1.productTypeDisplays,
+        models.opera_s1.productTypeDisplays.displays,
       );
     }
 
     product.productTypeDisplay =
-      models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()] ??
-      'Download';
+      models.opera_s1.productTypeDisplays.displays[
+        file_suffix?.toLowerCase()
+      ] ?? 'Download';
 
     if (product.metadata.productType === 'DIST-ALERT-S1') {
       product.productTypeDisplay =
@@ -257,11 +286,13 @@ export class ProductService {
     )) {
       file_suffix = this.urlToProductType(
         p,
-        models.opera_s1.productTypeDisplays,
+        models.opera_s1.productTypeDisplays.displays,
       );
 
       let productTypeDisplay =
-        models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()];
+        models.opera_s1.productTypeDisplays.displays[
+          file_suffix?.toLowerCase()
+        ];
       if (
         product.metadata.productType === 'DISP-S1' &&
         productTypeDisplay == null
@@ -353,10 +384,10 @@ export class ProductService {
     const products = [];
     let file_extension = this.urlToProductType(
       product.downloadUrl,
-      models.tropo.productTypeDisplays,
+      models.tropo.productTypeDisplays.displays,
     );
     product.productTypeDisplay =
-      models.tropo.productTypeDisplays[file_extension];
+      models.tropo.productTypeDisplays.displays[file_extension];
     const fileID = product.downloadUrl.split('/').slice(-1)[0];
     product.bytes = product.metadata.fileSizes[fileID]?.bytes;
     const thumbnail_index = product.browses.findIndex((url) =>
@@ -386,15 +417,16 @@ export class ProductService {
     ]) {
       file_extension = this.urlToProductType(
         p,
-        models.tropo.productTypeDisplays,
+        models.tropo.productTypeDisplays.displays,
       );
 
       if (p === '/assets/no-browse.png') {
         continue;
       }
       const productTypeDisplay =
-        models.tropo.productTypeDisplays[file_extension.toLowerCase()] ??
-        'Missing Display';
+        models.tropo.productTypeDisplays.displays[
+          file_extension.toLowerCase()
+        ] ?? 'Missing Display';
 
       if (productTypeDisplay === 'Missing Display') {
         console.log(
@@ -428,10 +460,10 @@ export class ProductService {
     const products = [];
     let file_extension = this.urlToProductType(
       product.downloadUrl,
-      models.seasat.productTypeDisplays,
+      models.seasat.productTypeDisplays.displays,
     );
     product.productTypeDisplay =
-      models.seasat.productTypeDisplays[file_extension];
+      models.seasat.productTypeDisplays.displays[file_extension];
     const fileID = product.downloadUrl.split('/').slice(-1)[0];
     product.bytes = product.metadata.fileSizes[fileID].bytes;
     const thumbnail_index = product.browses.findIndex((url) =>
@@ -461,12 +493,13 @@ export class ProductService {
     ]) {
       file_extension = this.urlToProductType(
         p,
-        models.seasat.productTypeDisplays,
+        models.seasat.productTypeDisplays.displays,
       );
 
       const productTypeDisplay =
-        models.seasat.productTypeDisplays[file_extension.toLowerCase()] ??
-        'Missing Display';
+        models.seasat.productTypeDisplays.displays[
+          file_extension.toLowerCase()
+        ] ?? 'Missing Display';
       if (productTypeDisplay === 'Missing Display') {
         console.log(
           `Missing product type display for file extension "${file_extension}"`,
@@ -692,8 +725,9 @@ export class ProductService {
       temp = p.split('.');
       file_extension = temp[temp.length - 1];
       let productTypeDisplay =
-        models.nisar.productTypeDisplays[file_extension.toLowerCase()] ??
-        'Missing Display';
+        models.nisar.productTypeDisplays.displays[
+          file_extension.toLowerCase()
+        ] ?? 'Missing Display';
       if (productTypeDisplay === 'Missing Display') {
         if (file_extension.includes('vc')) {
           productTypeDisplay = file_extension.toUpperCase();
@@ -704,12 +738,29 @@ export class ProductService {
         }
       }
       if (productTypeDisplay === 'Browse Image PNG') {
-        if (p === '/assets/no-browse.png') {
+        if (p === '/assets/no-browse.png' || p.endsWith('_thumbnail.png')) {
           continue;
         }
+        if (p.includes('_LATLON')) {
+          productTypeDisplay = 'Lat/Lon Browse Image PNG';
+        }
       }
+      const polarizationMatch = /.*_([AB])_([VH]{4}|[VH]{2})\.(png|kml)/;
+      const matched = p.match(polarizationMatch) ?? [];
+      if (matched.length > 0) {
+        const [frequency, polarization] = [matched[1], matched[2]];
+        productTypeDisplay = `Frequency ${frequency} ${polarization} ${productTypeDisplay}`;
+      }
+
       if (p.endsWith('.h5') && p.includes('QA_')) {
-        productTypeDisplay = models.nisar.productTypeDisplays.qa;
+        productTypeDisplay = models.nisar.productTypeDisplays.displays.qa;
+      }
+
+      if (
+        productTypeDisplay.includes('Footprint KML') &&
+        p.includes('_LATLON')
+      ) {
+        productTypeDisplay = 'Lat/Lon Footprint KML';
       }
 
       if (['Log File', 'Metadata JSON'].includes(productTypeDisplay)) {
@@ -719,6 +770,9 @@ export class ProductService {
       const fileID = p.split('/').slice(-1)[0];
       const s3Url = s3UrlsByProductID[fileID] ?? null;
       const fileSize = product.metadata.nisar?.sizeMB?.[fileID]?.bytes ?? 0;
+
+      const browsesWithNativeFirst = this.sortNativeBrowseFirst(browses);
+
       const subproduct = this.createSubproductForScene(
         product,
         p,
@@ -726,7 +780,7 @@ export class ProductService {
         file_extension,
         productTypeDisplay,
         fileSize,
-        browses,
+        browsesWithNativeFirst,
       );
 
       products.push(subproduct);
@@ -746,6 +800,15 @@ export class ProductService {
       }
 
       return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
+    });
+  }
+
+  public sortNativeBrowseFirst(browses: string[]): string[] {
+    return [...browses].sort((a, b) => {
+      const aIsNative = a.endsWith('_NATIVE.png') ? 0 : 1;
+      const bIsNative = b.endsWith('_NATIVE.png') ? 0 : 1;
+
+      return aIsNative - bIsNative;
     });
   }
 }

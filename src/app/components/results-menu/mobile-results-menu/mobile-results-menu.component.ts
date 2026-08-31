@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  inject,
+  computed,
+} from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -28,6 +35,7 @@ import { BaselineChartComponent } from '../../baseline-chart/baseline-chart.comp
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { SBASChartComponent } from '../../sbas-chart/sbas-chart.component';
 import { SbasSlidersTwoComponent } from '../sbas-results-menu/sbas-sliders-two/sbas-sliders-two.component';
+import { SceneSearchToolbarComponent } from '@components/results-menu/scene-search-toolbar/scene-search-toolbar.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 enum MobileViews {
@@ -52,6 +60,7 @@ enum MobileViews {
     ScenesListHeaderComponent,
     ScenesListComponent,
     SceneDetailComponent,
+    SceneSearchToolbarComponent,
 
     MatTooltip,
     SceneMetadataComponent,
@@ -74,9 +83,16 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
   public isDisconnected = false;
-  public pair: CMRProductPair;
-  public isAddingCustomPoint: boolean;
-  public isSelectedPairCustom: boolean;
+  public pairBase = this.store$.selectSignal(scenesStore.getSelectedPair);
+  public pair = computed(() => {
+    return this.pairBase() as CMRProductPair;
+  });
+  public isAddingCustomPoint = this.store$.selectSignal(
+    uiStore.getIsAddingCustomPoint,
+  );
+  public isSelectedPairCustom = this.store$.selectSignal(
+    scenesStore.getIsSelectedPairCustom,
+  );
 
   public view = MobileViews.SBAS;
   public Views = MobileViews;
@@ -85,7 +101,7 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
     scenesStore.getSelectedSceneProducts,
   );
 
-  public searchType: SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public SearchTypes = SearchType;
 
   private subs = new SubSink();
@@ -93,33 +109,9 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
-        this.searchType = searchType;
         this.view =
           searchType === SearchType.SBAS ? MobileViews.SBAS : MobileViews.LIST;
       }),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getIsSelectedPairCustom)
-        .subscribe(
-          (isPairCustom: boolean) => (this.isSelectedPairCustom = isPairCustom),
-        ),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(uiStore.getIsAddingCustomPoint)
-        .subscribe(
-          (isAddingCustomPoint) =>
-            (this.isAddingCustomPoint = isAddingCustomPoint),
-        ),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getSelectedPair)
-        .subscribe((selected: CMRProductPair) => (this.pair = selected)),
     );
   }
 
@@ -132,7 +124,7 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public deleteSelectedPair(): void {
-    this.store$.dispatch(new scenesStore.RemoveCustomPair(this.pair));
+    this.store$.dispatch(new scenesStore.RemoveCustomPair(this.pair()));
   }
 
   public onToggleFiltersMenu(): void {

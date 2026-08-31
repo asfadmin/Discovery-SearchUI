@@ -61,10 +61,10 @@
         <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ filters.flightDirections }}
       </div>
     }
-    @if (filters.subtypes.length) {
+    @if (filters.platforms.length) {
       <div>
-        <b>{{ 'DATASET_SUBTYPES' | translate }}:</b>
-        {{ formatTypesList(filters.subtypes) }}
+        <b>{{ 'SATELLITES' | translate }}:</b>
+        {{ formatTypesList(filters.platforms) }}
       </div>
     }
     @if (filters.selectedMission) {
@@ -154,6 +154,11 @@
     @if (filters.ariaVersion) {
       <div>
         <b>{{ 'ARIA_VERSION' | translate }}:</b> {{ filters.ariaVersion }}
+      </div>
+    }
+    @if (filters.granuleList) {
+      <div>
+        <b>{{ 'SCENE_PATTERN_LIST' | translate }}:</b> {{ filters.granuleList }}
       </div>
     }
   </div>

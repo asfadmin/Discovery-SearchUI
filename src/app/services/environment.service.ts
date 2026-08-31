@@ -17,7 +17,6 @@ export interface Environment {
   urs: string;
   api_maturity?: string;
   urs_client_id: string;
-  unzip: string;
   datapool?: string;
   banner: string;
   user_data: string;
@@ -25,6 +24,7 @@ export interface Environment {
   cmr_token?: string;
   cmr_provider?: string;
   force_token?: string;
+  displacement_api: string;
 }
 
 @Injectable({

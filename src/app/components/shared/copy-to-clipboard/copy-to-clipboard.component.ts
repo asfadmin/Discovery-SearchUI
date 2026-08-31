@@ -1,85 +1,82 @@
 import {
   Component,
-  Input,
   ViewChild,
   ElementRef,
   OnDestroy,
   inject,
+  input,
+  effect,
 } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { of } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
-
-import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
 import { NotificationService } from '@services/notification.service';
-import { CopyIcons } from '@models';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-copy-to-clipboard',
   templateUrl: './copy-to-clipboard.component.html',
-  styleUrls: ['./copy-to-clipboard.component.css'],
-  imports: [
-    FontAwesomeModule,
-    MatTooltip,
-    MatMenuTrigger,
-    MatMenu,
-
-    MatMenuItem,
-  ],
+  styleUrls: ['./copy-to-clipboard.component.scss'],
+  imports: [MatIcon, MatTooltip, MatMenuTrigger, MatMenu, MatMenuItem],
 })
 export class CopyToClipboardComponent implements OnDestroy {
   private clipboardService = inject(ClipboardService);
   private notificationService = inject(NotificationService);
 
-  @Input() value: string;
-  @Input({ required: false }) submenu: [string, string][] = [];
-  @Input() prompt = 'Copy to clipboard';
-  @Input() notification = 'Copied';
-  @Input() toast = true;
-  @Input({ required: false }) copyIcon: IconDefinition = CopyIcons.COPY;
+  value = input<string>('');
+  submenu = input<{ prompt: string; message: string; value: string }[]>([]);
+  prompt = input<string>('Copy to clipboard');
+  message = input<string>();
+  notification = input<string>('Copied');
+  toast = input<boolean>(true);
+  copyIcon = input<string>('file_copy');
+  svgIcon = input<string | undefined>(undefined);
+
   @ViewChild('copyTooltip', { static: true }) copyTooltip: ElementRef;
 
+  display = '';
   private subs = new SubSink();
 
+  constructor() {
+    effect(() => {
+      this.display = this.prompt();
+    });
+  }
   public onCopyIconClicked(e: Event): void {
-    this.clipboardService.copyFromContent(this.value);
-    if (this.toast) {
-      this.notificationService.clipboardCopyIcon(
-        this.prompt,
-        this.value.split(',').length,
-      );
+    this.clipboardService.copyFromContent(this.value());
+    if (this.toast()) {
+      this.notificationService.info(this.message());
     }
 
     this.subs.add(
-      of((' ' + this.prompt).slice(1))
+      of((' ' + this.prompt()).slice(1))
         .pipe(
-          tap(() => (this.prompt = this.notification)),
+          tap(() => (this.display = this.notification())),
           delay(2200),
         )
-        .subscribe((msg) => (this.prompt = msg)),
+        .subscribe((msg) => (this.display = msg)),
     );
 
     e.stopPropagation();
   }
 
-  public onCopyFromMenu(prompt: string, value: string) {
+  public onCopyFromMenu(prompt: string, message: string, value: string) {
     this.clipboardService.copyFromContent(value);
-    if (this.toast) {
-      this.notificationService.linkCopyIcon(prompt, value.split(',').length);
+    if (this.toast()) {
+      this.notificationService.info(message);
     }
 
     this.subs.add(
       of((' ' + prompt).slice(1))
         .pipe(
-          tap(() => (prompt = this.notification)),
+          tap(() => (this.display = this.notification())),
           delay(2200),
         )
-        .subscribe((msg) => (prompt = msg)),
+        .subscribe((msg) => (this.display = msg)),
     );
   }
 

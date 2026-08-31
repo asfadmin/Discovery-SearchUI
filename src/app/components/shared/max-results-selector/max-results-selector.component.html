@@ -1,90 +1,35 @@
-@if (searchType === searchTypes.DATASET) {
-  <div
-    [matMenuTriggerFor]="menu"
-    style="padding: 8px 2px"
-    class="faint-text clickable perspective"
-  >
-    <span [class.invisible]="searchType !== searchTypes.DATASET">
-      <span
-        >{{ formatNumber(maxResults)
-        }}<mat-icon class="faint-text clickable"
-          >arrow_drop_down</mat-icon
-        > </span
-      >{{ 'OF' | translate }}</span
-    >
-    @if (!isMaxResultsLoading) {
+<div
+  [matMenuTriggerFor]="isDataset ? menu : null"
+  class="faint-text perspective results-count"
+  [class.clickable]="isDataset"
+  [attr.aria-label]="'SELECT_MAX_RESULTS' | translate"
+  role="button"
+>
+  @if (isDataset) {
+    <span>
       <span>
-        {{
-          currentSearchAmount + burstXMLFileCount !== -1
-            ? formatNumber(currentSearchAmount + burstXMLFileCount)
-            : '0'
-        }}</span
-      >
-    }
-    @if (isMaxResultsLoading) {
-      <span style="margin: 0 4px">
-        <fa-icon icon="spinner" animation="spin-pulse"></fa-icon>
-      </span>
-    }
-    {{ 'FILES' | translate }}
-  </div>
-}
-
-@if (
-  searchType !== searchTypes.DATASET &&
-  searchType !== searchTypes.SARVIEWS_EVENTS
-) {
-  <div style="padding: 8px 2px" class="faint-text perspective">
-    <span [class.invisible]="true">
-      <span>
-        {{ formatNumber(burstXMLFileCount + maxResults) }}
-        <mat-icon class="faint-text clickable">arrow_drop_down</mat-icon>
+        {{ maxResults() | formatNumber }}
+        <mat-icon class="faint-text clickable"> arrow_drop_down</mat-icon>
       </span>
       {{ 'OF' | translate }}
     </span>
-    @if (!isMaxResultsLoading) {
-      <span>
-        @if (
-          searchType !== searchTypes.SBAS &&
-          searchType !== searchTypes.CUSTOM_PRODUCTS
-        ) {
-          <span>
-            {{
-              currentSearchAmount !== -1
-                ? formatNumber(currentSearchAmount)
-                : '0'
-            }}
-          </span>
-        }
-        @if (searchType === searchTypes.SBAS) {
-          <span>
-            {{
-              sbasProducts?.length !== -1
-                ? formatNumber(sbasProducts?.length)
-                : '0'
-            }}
-          </span>
-        }
-        @if (searchType === searchTypes.CUSTOM_PRODUCTS) {
-          <span>
-            {{ numberOfScenes !== 0 ? formatNumber(numberOfScenes) : '0' }}
-          </span>
-        }
-      </span>
-    }
-    @if (isMaxResultsLoading) {
-      <span style="margin: 0 4px">
-        <fa-icon icon="spinner" animation="spin-pulse"></fa-icon>
-      </span>
-    }
-    {{ 'FILES' | translate }}
-  </div>
-}
+  }
+  @if (!isMaxResultsLoading()) {
+    <span>
+      {{ totalResultsCount !== -1 ? (totalResultsCount | formatNumber) : '0' }}
+    </span>
+  } @else {
+    <span class="loading-spinner">
+      <mat-spinner diameter="16"></mat-spinner>
+    </span>
+  }
+  {{ 'FILES' | translate }}
+</div>
 
 <mat-menu #menu="matMenu">
   @for (amount of possibleMaxResults; track amount) {
     <button (click)="onNewMaxResults(amount)" mat-menu-item>
-      <span>{{ formatNumber(amount) }} {{ 'FILES' | translate }}</span>
+      <span>{{ amount | formatNumber }} {{ 'FILES' | translate }}</span>
     </button>
   }
   <button mat-menu-item>

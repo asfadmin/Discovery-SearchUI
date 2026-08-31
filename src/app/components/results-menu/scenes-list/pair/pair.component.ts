@@ -1,18 +1,9 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  Input,
-  Output,
-  EventEmitter,
-  inject,
-} from '@angular/core';
+import { Component, output, inject, input, computed } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
-
-import { SubSink } from 'subsink';
+import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 import {
@@ -44,30 +35,51 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
   ],
 })
-export class PairComponent implements OnInit, OnDestroy {
+export class PairComponent {
   private store$ = inject<Store<AppState>>(Store);
 
-  @Input() pair;
-  @Input() hyp3able;
+  readonly pair = input<models.CMRProductPair>();
+  readonly hyp3able = input<models.Hyp3ableProducts>();
 
-  @Output() togglePair = new EventEmitter();
+  readonly togglePair = output<string[]>();
+
   public hovered = false;
 
-  public selectedPair: string[];
-  private subs = new SubSink();
+  readonly selectedPair = this.store$.selectSignal(
+    scenesStore.getSelectedPairIds,
+  );
 
-  ngOnInit(): void {
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getSelectedPairIds)
-        .subscribe((pair) => (this.selectedPair = pair)),
-    );
-  }
+  readonly isFrameMode = this.store$.selectSignal(
+    filtersStore.getShouldUseFramesForReference,
+  );
 
-  public onPairSelected(pair): void {
-    // const action = new scenesStore.SetSelectedPair(pair.map(p => p.id));
+  readonly isSelected = computed(() => {
+    const selected = this.selectedPair();
+
+    if (!selected) {
+      return false;
+    } else {
+      return (
+        this.pair()[0].id + this.pair()[1].id === selected[0] + selected[1]
+      );
+    }
+  });
+
+  readonly pairPerpBaseline = computed(() =>
+    Math.abs(
+      this.pair()[0].metadata.perpendicular -
+        this.pair()[1].metadata.perpendicular,
+    ),
+  );
+
+  readonly pairTempBaseline = computed(() =>
+    Math.abs(
+      this.pair()[0].metadata.temporal - this.pair()[1].metadata.temporal,
+    ),
+  );
+
+  public onPairSelected(pair: models.CMRProductPair): void {
     this.togglePair.emit(pair.map((p) => p.id));
-    // this.store$.dispatch(action);
   }
 
   public onSetHovered(): void {
@@ -76,19 +88,5 @@ export class PairComponent implements OnInit, OnDestroy {
 
   public onClearHovered(): void {
     this.hovered = false;
-  }
-
-  public pairPerpBaseline(pair: models.CMRProductPair) {
-    return Math.abs(
-      pair[0].metadata.perpendicular - pair[1].metadata.perpendicular,
-    );
-  }
-
-  public pairTempBaseline(pair: models.CMRProductPair) {
-    return Math.abs(pair[0].metadata.temporal - pair[1].metadata.temporal);
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 }

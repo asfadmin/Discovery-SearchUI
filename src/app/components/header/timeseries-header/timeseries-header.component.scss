@@ -36,38 +36,25 @@
 
 .displacement-header-menu {
   height: 70px;
+  display: flex;
+  align-items: flex-start;
 }
 
-.azimuth-icon {
-  position: absolute;
-  display: inline-block;
-  width: 126px;
-  margin-left: 45px;
+.sat-legend {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 88px;
+  min-width: 156px;
+  margin-left: 12px;
   margin-top: 3px;
 }
 
-.azimuth-icon-text {
-  position: absolute;
-  margin-left: 10px;
-  margin-top: 71px;
+.legend-text {
   color: grey;
   font-size: 12px;
-}
-
-.line-of-site-icon {
-  position: absolute;
-  display: inline-block;
-  width: 156px;
-  margin-left: 185px;
-  margin-top: 3px;
-}
-
-.line-of-site-icon-text {
-  position: absolute;
-  margin-left: 160px;
-  margin-top: 71px;
-  color: grey;
-  font-size: 12px;
+  white-space: nowrap;
 }
 
 .invert-icon {

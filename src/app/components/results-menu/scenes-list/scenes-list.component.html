@@ -1,6 +1,5 @@
 <mat-action-list
   class="h100 mp0"
-  style="padding: 0"
   [ngClass]="{
     'list-view': (breakpoint$ | async) >= breakpoints.MEDIUM,
     'baseline-list-view-medium':
@@ -31,7 +30,7 @@
             (click)="onSceneSelected(scene.id)"
             (toggleScene)="onToggleScene(getGroupCriteria(scene))"
             [scene]="scene"
-            [offsets]="offsets"
+            [offsets]="offsets()"
             [searchType]="searchType"
             [isQueued]="allQueued[getGroupCriteria(scene)]"
             [hyp3ableByJobType]="
@@ -57,15 +56,6 @@
             </button>
           </button>
         }
-      }
-      @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
-        <ng-container *cdkVirtualFor="let event of sarviewsEvents">
-          <app-sarviews-event
-            [event]="event"
-            [selected]="event.event_id === selectedEvent"
-          >
-          </app-sarviews-event>
-        </ng-container>
       }
       @if (searchType === SearchTypes.SBAS) {
         <ng-container *cdkVirtualFor="let pair of pairs">

@@ -14,18 +14,15 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div style="display: flex; margin-top: 25px">
-      <app-search-type-selector style="margin-right: 25px">
+    <div class="search-options-row">
+      <app-search-type-selector class="selector-spacing-right">
       </app-search-type-selector>
 
-      <app-on-demand-user-selector
-        style="margin-top: 11px"
-      ></app-on-demand-user-selector>
+      <app-on-demand-user-selector></app-on-demand-user-selector>
 
       <app-job-id-selector
-        [jobIds]="hyp3JobIds"
+        [jobIds]="hyp3JobIds()"
         (newJobIds)="onNewHyp3JobIds($event)"
-        style="margin-top: 11px"
       ></app-job-id-selector>
     </div>
   </mat-expansion-panel>
@@ -45,7 +42,7 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div style="margin-top: 20px">
+    <div class="selector-card-spacing">
       <app-date-selector></app-date-selector>
     </div>
   </mat-expansion-panel>
@@ -65,13 +62,10 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div class="w100" style="display: flex; flex-wrap: wrap; margin-top: 25px">
-      <div
-        class="w100"
-        style="display: flex; flex-wrap: wrap; margin-top: 25px"
-      >
+    <div class="w100 job-filters-row">
+      <div class="w100 job-filters-row">
         <app-project-name-selector
-          style="margin-right: 25px"
+          class="selector-spacing-right"
         ></app-project-name-selector>
         <app-job-status-selector></app-job-status-selector>
       </div>
