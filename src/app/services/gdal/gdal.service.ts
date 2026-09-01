@@ -127,7 +127,7 @@ export class GdalService {
   ): string[] {
     const command = this.resolveGDALCommand(options);
     const driver =
-      this.resolveGDALVersion(options) == '>=3.13' ? 'HDF5' : 'NETCDF';
+      this.resolveGDALVersion(options) == '≥3.13' ? 'HDF5' : 'NETCDF';
     const downloadURL = `${driver}:"/vsicurl/${options.product.downloadUrl}":${options.datasetPath}`;
     const outputFileName = `-of ${this.resolveOutputFormat(options)} "${this.resolveOutputFilename(options)}"`;
     const configOptions = [];
