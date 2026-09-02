@@ -1,0 +1,20 @@
+[
+  {
+    "rule": "color-contrast",
+    "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    "targets": [
+      [
+        ".no-saved-searches > h2"
+      ]
+    ]
+  },
+  {
+    "rule": "meta-viewport",
+    "description": "Ensure <meta name=\"viewport\"> does not disable text scaling and zooming",
+    "targets": [
+      [
+        "meta[name=\"viewport\"]"
+      ]
+    ]
+  }
+]

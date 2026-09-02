@@ -1,0 +1,161 @@
+[
+  {
+    "rule": "button-name",
+    "description": "Ensure buttons have discernible text",
+    "targets": [
+      [
+        "#mat-button-toggle-9-button"
+      ],
+      [
+        "#mat-button-toggle-0-button"
+      ],
+      [
+        "#mat-button-toggle-1-button"
+      ],
+      [
+        "#mat-button-toggle-2-button"
+      ],
+      [
+        "#mat-button-toggle-3-button"
+      ],
+      [
+        "#mat-button-toggle-4-button"
+      ],
+      [
+        "#mat-button-toggle-7-button"
+      ]
+    ]
+  },
+  {
+    "rule": "image-alt",
+    "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+    "targets": [
+      [
+        "img[src$=\"NASA_comic_sans.png\"]"
+      ],
+      [
+        ".asf-logo"
+      ],
+      [
+        ".meatball"
+      ]
+    ]
+  },
+  {
+    "rule": "meta-viewport",
+    "description": "Ensure <meta name=\"viewport\"> does not disable text scaling and zooming",
+    "targets": [
+      [
+        "meta[name=\"viewport\"]"
+      ]
+    ]
+  },
+  {
+    "rule": "nested-interactive",
+    "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies",
+    "targets": [
+      [
+        "#mat-button-toggle-8-button"
+      ],
+      [
+        "#mat-button-toggle-6-button"
+      ]
+    ]
+  },
+  {
+    "rule": "region",
+    "description": "Ensure all page content is contained by landmarks",
+    "targets": [
+      [
+        "body > div:nth-child(2)"
+      ],
+      [
+        ".saved-searches__header"
+      ],
+      [
+        ".mdc-text-field--no-label"
+      ],
+      [
+        ".search-description > div[_ngcontent-ng-c3812570625=\"\"]:nth-child(2)"
+      ],
+      [
+        ".breadcrumb-list > .fx-row[_ngcontent-ng-c2768180567=\"\"]"
+      ],
+      [
+        ".button-label[_ngcontent-ng-c2182462753=\"\"]"
+      ],
+      [
+        ".button-label[_ngcontent-ng-c844290484=\"\"]"
+      ],
+      [
+        ".full-width > .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled > .mat-mdc-form-field-flex > .mat-mdc-form-field-infix"
+      ],
+      [
+        ".date-selector--layout > app-date-selector > app-date-range > .date-selector[novalidate=\"\"] > .date-input-field.mat-mdc-form-field-has-icon-suffix.mat-mdc-form-field-type-mat-input:nth-child(1) > .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled"
+      ],
+      [
+        ".date-selector--layout > app-date-selector > app-date-range > .date-selector[novalidate=\"\"] > .date-input-field.mat-mdc-form-field-has-icon-suffix.mat-mdc-form-field-type-mat-input:nth-child(2) > .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled"
+      ],
+      [
+        "#mat-button-toggle-8-button"
+      ],
+      [
+        "#mat-button-toggle-9-button"
+      ],
+      [
+        ".map-view-button--layout"
+      ],
+      [
+        ".zoom-buttons > .fx-row-center.button-group-label[_ngcontent-ng-c258732369=\"\"]"
+      ],
+      [
+        "#mat-button-toggle-0-button"
+      ],
+      [
+        "#mat-button-toggle-1-button"
+      ],
+      [
+        ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(3) > .fx-row-center.button-group-label[_ngcontent-ng-c258732369=\"\"]"
+      ],
+      [
+        ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(4)"
+      ],
+      [
+        ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(5) > .fx-row-center.button-group-label[_ngcontent-ng-c258732369=\"\"]"
+      ],
+      [
+        ".lat-lon"
+      ],
+      [
+        ".meatball"
+      ],
+      [
+        ".header"
+      ],
+      [
+        "#mat-button-toggle-6-button"
+      ],
+      [
+        "#mat-button-toggle-7-button"
+      ],
+      [
+        "app-attributions"
+      ],
+      [
+        "div[_ngcontent-ng-c2470562375=\"\"]:nth-child(8)"
+      ]
+    ]
+  },
+  {
+    "rule": "role-img-alt",
+    "description": "Ensure [role=\"img\"] and [role=\"image\"] elements have alternative text",
+    "targets": [
+      [
+        "mat-icon[svgicon=\"hyp3\"]"
+      ],
+      [
+        ".spacing.nav-icon-buttons.mat-basic:nth-child(3) > .mat-badge.mat-badge-primary.mat-badge-overlap"
+      ]
+    ]
+  }
+]

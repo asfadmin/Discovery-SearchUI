@@ -1,0 +1,293 @@
+[
+  {
+    "rule": "aria-progressbar-name",
+    "description": "Ensure every ARIA progressbar node has an accessible name",
+    "targets": [
+      [
+        "mat-progress-bar"
+      ]
+    ]
+  },
+  {
+    "rule": "button-name",
+    "description": "Ensure buttons have discernible text",
+    "targets": [
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141010T150203_20141010T150230_002769_0031CF_0798-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(1) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141022T150203_20141022T150230_002944_003582_3F96-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(2) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141010T150137_20141010T150205_002769_0031CF_0639-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(3) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141022T150137_20141022T150206_002944_003582_A2D2-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(4) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141103T150203_20141103T150230_003119_00394A_4A92-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(5) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141103T150138_20141103T150205_003119_00394A_D998-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(6) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141115T150203_20141115T150230_003294_003D0B_977D-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(7) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141115T150138_20141115T150205_003294_003D0B_5477-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(8) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141127T150202_20141127T150229_003469_004106_9A58-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(9) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141127T150137_20141127T150204_003469_004106_F3C9-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(10) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141209T150202_20141209T150229_003644_00450E_E894-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(11) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141209T150137_20141209T150204_003644_00450E_F1B1-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(12) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141221T150202_20141221T150229_003819_004909_2F0C-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(13) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141221T150137_20141221T150204_003819_004909_8887-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(14) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20150102T150201_20150102T150228_003994_004CF1_9F47-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(15) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20150102T150137_20150102T150204_003994_004CF1_C043-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(16) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20150114T150201_20150114T150228_004169_0050E6_430B-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(17) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20150114T150136_20150114T150203_004169_0050E6_BFC7-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(18) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20150126T150201_20150126T150228_004344_0054C3_F24F-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(19) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20150126T150136_20150126T150203_004344_0054C3_C23B-SLC > .link > .download-file-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ],
+      [
+        "mat-list:nth-child(20) > mat-list-item > .close-button.mdc-icon-button[mat-icon-button=\"\"]"
+      ]
+    ]
+  },
+  {
+    "rule": "color-contrast",
+    "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    "targets": [
+      [
+        ".map-view-button--layout > label"
+      ],
+      [
+        ".zoom-buttons > .fx-row-center.button-group-label[_ngcontent-ng-c258732369=\"\"] > label"
+      ],
+      [
+        ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(4) > .fx-row-center.button-group-label[_ngcontent-ng-c258732369=\"\"] > label"
+      ],
+      [
+        ".lat--layout"
+      ],
+      [
+        ".lat--layout > b[_ngcontent-ng-c653162596=\"\"]"
+      ],
+      [
+        ".lon--layout"
+      ],
+      [
+        ".lon--layout > b[_ngcontent-ng-c653162596=\"\"]"
+      ],
+      [
+        "a[_ngcontent-ng-c2770483286=\"\"][target=\"_blank\"]:nth-child(2)"
+      ],
+      [
+        "a[_ngcontent-ng-c2770483286=\"\"][target=\"_blank\"]:nth-child(4)"
+      ],
+      [
+        "a[_ngcontent-ng-c2770483286=\"\"][target=\"_blank\"]:nth-child(6)"
+      ],
+      [
+        "a[_ngcontent-ng-c2770483286=\"\"][target=\"_blank\"]:nth-child(8)"
+      ],
+      [
+        "strong"
+      ],
+      [
+        ".noUi-value-vertical.noUi-value[data-value=\"0\"]"
+      ],
+      [
+        "div[data-value=\"400\"]"
+      ],
+      [
+        "div[data-value=\"800\"]"
+      ],
+      [
+        "div[_ngcontent-ng-c2262651237=\"\"]:nth-child(1) > .sbas-label[_ngcontent-ng-c2262651237=\"\"]"
+      ],
+      [
+        "div[_ngcontent-ng-c2262651237=\"\"]:nth-child(2) > .sbas-label[_ngcontent-ng-c2262651237=\"\"]"
+      ],
+      [
+        ".noUi-value-horizontal.noUi-value[data-value=\"0\"]"
+      ],
+      [
+        "div[data-value=\"12\"]"
+      ],
+      [
+        "div[data-value=\"24\"]"
+      ],
+      [
+        "div[data-value=\"36\"]"
+      ],
+      [
+        "div[data-value=\"48\"]"
+      ],
+      [
+        "div[data-value=\"60\"]"
+      ],
+      [
+        ".text-link.link-pointer[_ngcontent-ng-c4032137122=\"\"]"
+      ],
+      [
+        "a[onfocus=\"this.blur()\"]"
+      ]
+    ]
+  },
+  {
+    "rule": "link-name",
+    "description": "Ensure links have discernible text",
+    "targets": [
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141010T150203_20141010T150230_002769_0031CF_0798-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141022T150203_20141022T150230_002944_003582_3F96-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141010T150137_20141010T150205_002769_0031CF_0639-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141022T150137_20141022T150206_002944_003582_A2D2-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141103T150203_20141103T150230_003119_00394A_4A92-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141103T150138_20141103T150205_003119_00394A_D998-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141115T150203_20141115T150230_003294_003D0B_977D-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141115T150138_20141115T150205_003294_003D0B_5477-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141127T150202_20141127T150229_003469_004106_9A58-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141127T150137_20141127T150204_003469_004106_F3C9-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141209T150202_20141209T150229_003644_00450E_E894-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141209T150137_20141209T150204_003644_00450E_F1B1-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141221T150202_20141221T150229_003819_004909_2F0C-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20141221T150137_20141221T150204_003819_004909_8887-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20150102T150201_20150102T150228_003994_004CF1_9F47-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20150102T150137_20150102T150204_003994_004CF1_C043-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20150114T150201_20150114T150228_004169_0050E6_430B-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20150114T150136_20150114T150203_004169_0050E6_BFC7-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20150126T150201_20150126T150228_004344_0054C3_F24F-SLC > .link"
+      ],
+      [
+        "#dlq_S1A_IW_SLC__1SDV_20150126T150136_20150126T150203_004344_0054C3_C23B-SLC > .link"
+      ]
+    ]
+  },
+  {
+    "rule": "meta-viewport",
+    "description": "Ensure <meta name=\"viewport\"> does not disable text scaling and zooming",
+    "targets": [
+      [
+        "meta[name=\"viewport\"]"
+      ]
+    ]
+  }
+]
