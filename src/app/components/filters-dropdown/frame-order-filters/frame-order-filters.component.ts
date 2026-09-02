@@ -1,22 +1,18 @@
 import { Component, Input, inject, Signal } from '@angular/core';
-
 import { FormsModule } from '@angular/forms';
-
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
-
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { FlightDirectionSelectorComponent } from '@components/shared/selectors/flight-direction-selector/flight-direction-selector.component';
+import { PathSelectorComponent } from '@components/shared/selectors/path-selector';
+import * as models from '@models';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
+import { ScreenSizeService } from '@services';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-
-import * as models from '@models';
-import { ScreenSizeService } from '@services';
-import { FlightDirectionSelectorComponent } from '@components/shared/selectors/flight-direction-selector/flight-direction-selector.component';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
-import { PathSelectorComponent } from '@components/shared/selectors/path-selector';
-import { TranslateModule } from '@ngx-translate/core';
-import { IsRelevantPipe } from '@pipes/relevant.pipe';
 
 enum FilterPanel {
   DATE = 'Date',

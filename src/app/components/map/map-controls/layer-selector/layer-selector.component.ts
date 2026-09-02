@@ -1,23 +1,20 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-
-import { Store } from '@ngrx/store';
-import { SubSink } from 'subsink';
-
-import { AppState } from '@store';
-import * as mapStore from '@store/map';
-
-import * as models from '@models';
-import * as searchStore from '@store/search';
-
-import { MapService, ScreenSizeService } from '@services';
-import { MatButton } from '@angular/material/button';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { AsyncPipe } from '@angular/common';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/list';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatRadioButton } from '@angular/material/radio';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { SubSink } from 'subsink';
+
+import * as models from '@models';
+import { MapService, ScreenSizeService } from '@services';
+import { AppState } from '@store';
+import * as mapStore from '@store/map';
+import * as searchStore from '@store/search';
 
 @Component({
   selector: 'app-layer-selector',

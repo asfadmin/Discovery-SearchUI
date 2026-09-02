@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -6,37 +7,36 @@ import {
   inject,
   computed,
 } from '@angular/core';
-
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
-import * as searchStore from '@store/search';
-import * as uiStore from '@store/ui';
-import { DatasetForProductService } from '@services';
-import { SubSink } from 'subsink';
-
-import { CMRProductPair, SearchType } from '@models';
 import { MatButton } from '@angular/material/button';
-import { AsyncPipe } from '@angular/common';
-import { MatCard, MatCardSubtitle } from '@angular/material/card';
-import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
-import { ScenesListComponent } from '../scenes-list/scenes-list.component';
-import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
-import { MatTooltip } from '@angular/material/tooltip';
-import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
-import { SceneFilesComponent } from '../scene-files/scene-files.component';
 import {
   MatButtonToggleGroup,
   MatButtonToggle,
 } from '@angular/material/button-toggle';
+import { MatCard, MatCardSubtitle } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
-import { BaselineChartComponent } from '../../baseline-chart/baseline-chart.component';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
+import { SubSink } from 'subsink';
+
+import { SceneSearchToolbarComponent } from '@components/results-menu/scene-search-toolbar/scene-search-toolbar.component';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
+import { CMRProductPair, SearchType } from '@models';
+import { DatasetForProductService } from '@services';
+import { AppState } from '@store';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+
+import { BaselineChartComponent } from '../../baseline-chart/baseline-chart.component';
 import { SBASChartComponent } from '../../sbas-chart/sbas-chart.component';
 import { SbasSlidersTwoComponent } from '../sbas-results-menu/sbas-sliders-two/sbas-sliders-two.component';
-import { SceneSearchToolbarComponent } from '@components/results-menu/scene-search-toolbar/scene-search-toolbar.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
+import { SceneFilesComponent } from '../scene-files/scene-files.component';
+import { ScenesListComponent } from '../scenes-list/scenes-list.component';
+import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 
 enum MobileViews {
   LIST = 0,

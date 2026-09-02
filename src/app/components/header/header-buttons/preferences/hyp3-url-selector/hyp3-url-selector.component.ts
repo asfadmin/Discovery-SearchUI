@@ -1,20 +1,21 @@
 import { Component, EventEmitter, Output, Input, inject } from '@angular/core';
-import { Hyp3ApiService } from '@services';
+import { FormsModule } from '@angular/forms';
+import {
+  MatAutocompleteTrigger,
+  MatAutocomplete,
+} from '@angular/material/autocomplete';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import {
   MatFormField,
   MatLabel,
   MatInput,
   MatSuffix,
 } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-import {
-  MatAutocompleteTrigger,
-  MatAutocomplete,
-} from '@angular/material/autocomplete';
 import { MatOption } from '@angular/material/select';
-import { MatIconButton, MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { Hyp3ApiService } from '@services';
 
 @Component({
   selector: 'app-hyp3-url-selector',

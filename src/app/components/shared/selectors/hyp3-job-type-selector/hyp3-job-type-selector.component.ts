@@ -1,17 +1,19 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { MatFormField } from '@angular/material/input';
 import {
   MatSelectChange,
   MatSelect,
   MatOption,
 } from '@angular/material/select';
-import * as models from '@models';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { SubSink } from 'subsink';
+
+import * as models from '@models';
 import { AppState } from '@store';
 import { getHyp3ProductTypes, SetHyp3ProductTypes } from '@store/filters';
-import { SubSink } from 'subsink';
-import { MatFormField } from '@angular/material/input';
+
 import {} from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-hyp3-job-type-selector',

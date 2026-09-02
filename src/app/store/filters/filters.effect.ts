@@ -1,23 +1,19 @@
 import { Injectable, inject } from '@angular/core';
-
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, map, withLatestFrom } from 'rxjs/operators';
 
-import * as filtersAction from './filters.action';
-
-import { MapService } from '../../services/map/map.service';
 import * as models from '@models';
-
+import { SearchType } from '@models';
 import { AppState } from '@store/app.reducer';
-import { Store } from '@ngrx/store';
-
+import { ResetMaxHyp3ResultsHit } from '@store/hyp3';
 import { getSearchType } from '@store/search';
 import { LoadFiltersPreset } from '@store/user';
-import { ResetMaxHyp3ResultsHit } from '@store/hyp3';
-import { SearchType } from '@models';
+
+import * as filtersAction from './filters.action';
 import { getSelectedDataset } from './filters.reducer';
+import { MapService } from '../../services/map/map.service';
 
 @Injectable()
 export class FiltersEffects {

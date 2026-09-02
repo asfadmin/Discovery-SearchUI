@@ -1,14 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { v1 as uuid } from 'uuid';
 
-import { MapService } from './map/map.service';
+import * as models from '@models';
 import { AppState } from '@store';
-import * as filtersStore from '@store/filters';
 import * as chartsStore from '@store/charts';
+import * as filtersStore from '@store/filters';
 import * as scenesStore from '@store/scenes';
 import { getSearchType } from '@store/search/search.reducer';
 import {
@@ -19,7 +18,7 @@ import {
   LoadSavedSearches,
 } from '@store/user/user.action';
 
-import * as models from '@models';
+import { MapService } from './map/map.service';
 
 @Injectable({
   providedIn: 'root',

@@ -1,13 +1,5 @@
-import { Component, inject, input, computed } from '@angular/core';
-
-import { Store } from '@ngrx/store';
-
-import { AppState } from '@store';
-import * as filtersStore from '@store/filters';
-
-import * as models from '@models';
-import { PropertyService } from '@services';
 import { UpperCasePipe } from '@angular/common';
+import { Component, inject, input, computed } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import {
   MatMenuTrigger,
@@ -16,10 +8,16 @@ import {
   MatMenuContent,
 } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
-import { ShortDateTimePipe } from '@pipes/short-date.pipe';
-import { JoinPipe } from '@pipes/join.pipe';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
+import * as models from '@models';
+import { JoinPipe } from '@pipes/join.pipe';
 import { IsRelevantPipe } from '@pipes/relevant.pipe';
+import { ShortDateTimePipe } from '@pipes/short-date.pipe';
+import { PropertyService } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 @Component({
   selector: 'app-scene-metadata',

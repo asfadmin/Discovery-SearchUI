@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+
 import { CMRProduct, datasetsForGDALProduct, GDALDataset } from '@models';
 import { MapService } from '@services';
 

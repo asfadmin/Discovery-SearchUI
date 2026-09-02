@@ -1,22 +1,21 @@
 import { Component, output, inject, input, computed } from '@angular/core';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
-import * as filtersStore from '@store/filters';
-
-import * as models from '@models';
+import { MatIcon } from '@angular/material/icon';
 import {
   MatListItem,
   MatListItemTitle,
   MatListItemMeta,
 } from '@angular/material/list';
-import { MatIcon } from '@angular/material/icon';
-import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
-import { ShortDatePipe } from '@pipes/short-date.pipe';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
+import * as models from '@models';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as scenesStore from '@store/scenes';
 
 @Component({
   selector: 'app-pair',

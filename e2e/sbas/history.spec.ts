@@ -1,6 +1,5 @@
 import { test, expect } from 'e2e/fixtures';
-import { loggedInSentinel1Page } from 'e2e/helpers';
-import { waitForASFAPIResponse } from 'e2e/helpers';
+import { loggedInSentinel1Page, waitForASFAPIResponse } from 'e2e/helpers';
 
 test('SBAS: Search History', { tag: '@auth' }, async ({ page }) => {
   const loggedInPage = await loggedInSentinel1Page(page);

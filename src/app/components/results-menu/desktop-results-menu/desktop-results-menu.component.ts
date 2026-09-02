@@ -1,22 +1,21 @@
+import { NgClass, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
-
-import { Observable } from 'rxjs';
-
+import { MatCard, MatCardSubtitle } from '@angular/material/card';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
+import { SubSink } from 'subsink';
+
+import { SceneSearchToolbarComponent } from '@components/results-menu/scene-search-toolbar/scene-search-toolbar.component';
+import * as models from '@models';
+import { ScenesService, ScreenSizeService } from '@services';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
-import { ScenesService, ScreenSizeService } from '@services';
-import { SubSink } from 'subsink';
-import * as models from '@models';
-import { MatCard, MatCardSubtitle } from '@angular/material/card';
-import { NgClass, AsyncPipe, TitleCasePipe } from '@angular/common';
-import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
-import { ScenesListComponent } from '../scenes-list/scenes-list.component';
+
 import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
 import { SceneFilesComponent } from '../scene-files/scene-files.component';
-import { SceneSearchToolbarComponent } from '@components/results-menu/scene-search-toolbar/scene-search-toolbar.component';
-
-import { TranslateModule } from '@ngx-translate/core';
+import { ScenesListComponent } from '../scenes-list/scenes-list.component';
+import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 
 @Component({
   selector: 'app-desktop-results-menu',

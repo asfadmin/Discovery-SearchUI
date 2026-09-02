@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { FullBurstSelectorComponent } from './full-burst-selector/full-burst-selector.component';
 
 @Component({

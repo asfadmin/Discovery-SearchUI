@@ -1,9 +1,11 @@
 import { Component, effect, ElementRef, input, viewChild } from '@angular/core';
-import { CopyToClipboardComponent } from '../copy-to-clipboard';
+import { TranslateModule } from '@ngx-translate/core';
 import Prism from 'prismjs';
+
+import { CopyToClipboardComponent } from '../copy-to-clipboard';
+
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-python';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-code-block',

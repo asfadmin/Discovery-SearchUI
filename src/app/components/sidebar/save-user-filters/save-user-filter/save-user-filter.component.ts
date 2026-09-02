@@ -8,26 +8,28 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import * as models from '@models';
-import * as userStore from '@store/user';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import { timer } from 'rxjs';
-import { NotificationService } from '@services';
-import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
-import { MatFormField, MatInput } from '@angular/material/input';
-import { MatLabel } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
-import { GeographicSearchFiltersComponent } from '../../saved-searches/saved-search/search-filters/geographic-search-filters/geographic-search-filters.component';
-import { BaselineSearchFiltersComponent } from '../../saved-searches/saved-search/search-filters/baseline-search-filters/baseline-search-filters.component';
-import { SbasSearchFiltersComponent } from '../../saved-searches/saved-search/search-filters/sbas-search-filters/sbas-search-filters.component';
+import { MatLabel } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { timer } from 'rxjs';
+
+import * as models from '@models';
 import {
   BaselineFilterPipe,
   SBASFilterPipe,
   GeographicFilterPipe,
 } from '@pipes/filter-type.pipe';
-import { TranslateModule } from '@ngx-translate/core';
+import { NotificationService } from '@services';
+import { AppState } from '@store';
+import * as userStore from '@store/user';
+
+import { BaselineSearchFiltersComponent } from '../../saved-searches/saved-search/search-filters/baseline-search-filters/baseline-search-filters.component';
+import { GeographicSearchFiltersComponent } from '../../saved-searches/saved-search/search-filters/geographic-search-filters/geographic-search-filters.component';
+import { SbasSearchFiltersComponent } from '../../saved-searches/saved-search/search-filters/sbas-search-filters/sbas-search-filters.component';
 
 @Component({
   selector: 'app-save-user-filter',

@@ -9,14 +9,15 @@ import {
   SimpleChanges,
   inject,
 } from '@angular/core';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 import * as d3 from 'd3';
+import { Subscription } from 'rxjs';
+
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
-import { Subscription } from 'rxjs';
-import { MatMiniFabButton } from '@angular/material/button';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-circle-slider',
   templateUrl: './circle-slider.component.html',

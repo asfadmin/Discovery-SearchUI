@@ -7,33 +7,31 @@ import {
   Signal,
 } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
-import { ClipboardService } from 'ngx-clipboard';
-import { SubSink } from 'subsink';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as uiStore from '@store/ui';
-import * as mapStore from '@store/map';
-import * as searchStore from '@store/search';
-
-import { Subject } from 'rxjs';
-import { tap, delay } from 'rxjs/operators';
-
-import { menuAnimation, MapInteractionModeType, SearchType } from '@models';
-import * as services from '@services';
-import { DrawNewPolygon } from '@store/map';
-import { SetGeocode } from '@store/filters';
+import { MatCard } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 import {
   MatFormField,
   MatLabel,
   MatInput,
   MatSuffix,
 } from '@angular/material/input';
-import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
-import { MatCard } from '@angular/material/card';
-import { AoiOptionsComponent } from '@components/shared/aoi-options/aoi-options.component';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { ClipboardService } from 'ngx-clipboard';
+import { Subject } from 'rxjs';
+import { tap, delay } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import { AoiOptionsComponent } from '@components/shared/aoi-options/aoi-options.component';
+import { menuAnimation, MapInteractionModeType, SearchType } from '@models';
+import * as services from '@services';
+import { AppState } from '@store';
+import { SetGeocode } from '@store/filters';
+import * as mapStore from '@store/map';
+import { DrawNewPolygon } from '@store/map';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
 
 @Component({
   selector: 'app-aoi-filter',

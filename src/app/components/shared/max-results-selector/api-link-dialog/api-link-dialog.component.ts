@@ -1,8 +1,8 @@
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { ClipboardService } from 'ngx-clipboard';
-
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import {
   MatDialogRef,
   MatDialogTitle,
@@ -10,12 +10,7 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import { SubSink } from 'subsink';
-
-import * as services from '@services';
-import { asfWebsite } from '@models';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { FormsModule } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
 import {
   MatFormField,
   MatLabel,
@@ -23,12 +18,17 @@ import {
   MatSuffix,
 } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
-import { DocsModalComponent } from '../../docs-modal/docs-modal.component';
-import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
+import { ClipboardService } from 'ngx-clipboard';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import { asfWebsite } from '@models';
+import * as services from '@services';
+
+import { DocsModalComponent } from '../../docs-modal/docs-modal.component';
 
 @Component({
   selector: 'app-api-link-dialog',

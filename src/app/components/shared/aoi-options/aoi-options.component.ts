@@ -1,3 +1,4 @@
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
   Component,
   OnInit,
@@ -9,33 +10,31 @@ import {
   inject,
 } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
-
-import { Subject } from 'rxjs';
-import { tap, delay } from 'rxjs/operators';
-
-import { Store } from '@ngrx/store';
-
-import { AppState } from '@store';
-import * as mapStore from '@store/map';
-import { MapInteractionModeType, Breakpoints, SearchType } from '@models';
-import { MapService, ScreenSizeService } from '@services';
-import { SubSink } from 'subsink';
-import { getSearchType, SetSearchOutOfDate } from '@store/search';
-import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
-import { SetGeocode } from '@store/filters';
-import { MatIcon } from '@angular/material/icon';
 import { MatIconButton, MatButton } from '@angular/material/button';
-import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
 import {
   MatFormField,
   MatLabel,
   MatInput,
   MatSuffix,
 } from '@angular/material/input';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { GeocodeSelectorComponent } from './geocode-selector/geocode-selector.component';
-import { FileUploadDialogComponent } from './file-upload/file-upload-dialog/file-upload-dialog.component';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { tap, delay } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import { MapInteractionModeType, Breakpoints, SearchType } from '@models';
+import { MapService, ScreenSizeService } from '@services';
+import { AppState } from '@store';
+import { SetGeocode } from '@store/filters';
+import * as mapStore from '@store/map';
+import { getSearchType, SetSearchOutOfDate } from '@store/search';
+import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
+
+import { FileUploadDialogComponent } from './file-upload/file-upload-dialog/file-upload-dialog.component';
+import { GeocodeSelectorComponent } from './geocode-selector/geocode-selector.component';
 
 // Declare GTM dataLayer array.
 declare global {

@@ -14,15 +14,15 @@ app-project-name-dialog {
   }
 
   .dialog-subtitle {
-    margin: 4px 0 0 0;
-    opacity: 0.7;
+    margin: 4px 0 0;
     font-size: 14px;
+    opacity: 0.7;
 
     &.job-count-warning,
     &.cannot-rename-warning {
+      font-weight: 500;
       color: #f44336;
       opacity: 1;
-      font-weight: 500;
     }
   }
 
@@ -35,8 +35,8 @@ app-project-name-dialog {
   }
 
   .project-name-field {
-    margin-left: 32px;
     width: calc(100% - 32px);
+    margin-left: 32px;
 
     .mat-mdc-text-field-wrapper {
       padding-top: 0;
@@ -44,8 +44,8 @@ app-project-name-dialog {
 
     // Subtle disabled state when "Remove" is selected
     &.disabled {
-      opacity: 0.5;
       pointer-events: none;
+      opacity: 0.5;
     }
   }
 
@@ -57,9 +57,9 @@ app-project-name-dialog {
   }
 
   .projects-label {
-    margin: 16px 0 8px 0;
-    opacity: 0.7;
+    margin: 16px 0 8px;
     font-size: 14px;
+    opacity: 0.7;
 
     &.bold {
       font-weight: 500;
@@ -68,10 +68,10 @@ app-project-name-dialog {
   }
 
   .projects-table-wrapper {
-    border: 1px solid rgb(0, 0, 0, 0.12);
-    border-radius: 4px;
     margin-bottom: 8px;
     overflow: hidden;
+    border: 1px solid rgb(0 0 0 / 12%);
+    border-radius: 4px;
 
     &.scrollable {
       max-height: 220px;
@@ -87,6 +87,7 @@ app-project-name-dialog {
       position: sticky;
       top: 0;
       z-index: 1;
+
       // Default light theme background
       background-color: white;
 
@@ -98,8 +99,8 @@ app-project-name-dialog {
 
     .job-count-header,
     .job-count-cell {
-      text-align: right;
       width: 80px;
+      text-align: right;
     }
   }
 
@@ -124,8 +125,8 @@ app-project-name-dialog {
 
   // Progress bar styles
   .progress-container {
-    text-align: center;
     padding: 24px 0;
+    text-align: center;
 
     mat-progress-bar {
       margin-bottom: 16px;
@@ -138,7 +139,7 @@ app-project-name-dialog {
     }
 
     .estimated-time {
-      margin: 8px 0 0 0;
+      margin: 8px 0 0;
       font-size: 13px;
       opacity: 0.7;
     }
@@ -146,8 +147,8 @@ app-project-name-dialog {
 
   // Result styles
   .result-container {
-    text-align: center;
     padding: 16px 0;
+    text-align: center;
 
     p {
       margin: 0;
@@ -173,19 +174,19 @@ app-project-name-dialog {
     text-align: left;
 
     .failed-projects-label {
+      margin-bottom: 8px;
       font-size: 14px;
       font-weight: 500;
       color: #f44336;
-      margin-bottom: 8px;
     }
 
     .failed-projects-list {
-      margin: 0;
-      padding-left: 20px;
-      font-size: 13px;
-      border: 1px solid rgb(0, 0, 0, 0.12);
-      border-radius: 4px;
       padding: 8px 8px 8px 28px;
+      padding-left: 20px;
+      margin: 0;
+      font-size: 13px;
+      border: 1px solid rgb(0 0 0 / 12%);
+      border-radius: 4px;
 
       &.scrollable {
         max-height: 120px;

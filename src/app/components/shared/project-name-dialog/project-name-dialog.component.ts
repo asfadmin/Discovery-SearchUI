@@ -12,6 +12,8 @@ import {
   HostListener,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -21,9 +23,9 @@ import {
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import {
   MatTableDataSource,
   MatTable,
@@ -37,8 +39,6 @@ import {
   MatRowDef,
   MatRow,
 } from '@angular/material/table';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatSort, MatSortModule } from '@angular/material/sort';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 

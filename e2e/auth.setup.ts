@@ -1,5 +1,6 @@
 import { chromium, expect } from '@playwright/test';
 import dotenv from 'dotenv';
+
 import { overrideUserCookieHeaders } from 'e2e/helpers';
 
 async function globalSetup() {

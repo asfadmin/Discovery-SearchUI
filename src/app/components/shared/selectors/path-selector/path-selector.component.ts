@@ -1,22 +1,21 @@
 import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
-
+import { MatButton } from '@angular/material/button';
+import { MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { Store, Action } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { tap, map, delay } from 'rxjs/operators';
-import { Store, Action } from '@ngrx/store';
 import { SubSink } from 'subsink';
 
+import { Props } from '@models';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
+import { PropertyService } from '@services';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
-import { Props } from '@models';
-import { PropertyService } from '@services';
-import { MatFormField, MatInput } from '@angular/material/input';
-import { MatLabel } from '@angular/material/form-field';
-import { MatButton } from '@angular/material/button';
 import { AoiClearComponent } from './aoi-clear/aoi-clear.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { IsRelevantPipe } from '@pipes/relevant.pipe';
 
 enum PathFormInputType {
   PATH_START = 'Path Start',

@@ -1,17 +1,17 @@
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component, OnInit, inject } from '@angular/core';
-
-import { EnvironmentService, NotificationService } from '@services';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import {
   MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
 } from '@angular/material/dialog';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { EnvironmentService, NotificationService } from '@services';
 
 @Component({
   selector: 'app-customize-env',

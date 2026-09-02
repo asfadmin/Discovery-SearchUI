@@ -1,21 +1,21 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-
-import { combineLatest, Subject } from 'rxjs';
-import { debounceTime, tap } from 'rxjs/operators';
-import { SubSink } from 'subsink';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as filtersStore from '@store/filters';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import {
   MatSlideToggleChange,
   MatSlideToggle,
 } from '@angular/material/slide-toggle';
-import { FormsModule } from '@angular/forms';
-import { CircleSliderComponent } from '../circle-slider/circle-slider.component';
-import { MatButton } from '@angular/material/button';
-import { ShortDateSeasonPipe } from '@pipes/short-date.pipe';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { combineLatest, Subject } from 'rxjs';
+import { debounceTime, tap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import { ShortDateSeasonPipe } from '@pipes/short-date.pipe';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+
+import { CircleSliderComponent } from '../circle-slider/circle-slider.component';
 
 @Component({
   selector: 'app-season-selector',
