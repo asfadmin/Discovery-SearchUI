@@ -169,8 +169,6 @@ export class MapEffects {
             );
             if (latlon_browse) {
               url = latlon_browse;
-            } else {
-              console.log('no lat/long');
             }
 
             // for OPERA-S1 geotiffs
