@@ -132,7 +132,9 @@ export class QueueEffects {
   public queueScene = createEffect(() =>
     this.actions$.pipe(
       ofType<QueueScene>(QueueActionType.QUEUE_SCENE),
-      withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
+      withLatestFrom(
+        this.store$.select(scenesStore.getAllSceneProductsFiltered),
+      ),
       map(([action, sceneProducts]) => sceneProducts[action.payload]),
       map((products) => new AddItems(products)),
     ),
@@ -224,7 +226,9 @@ export class QueueEffects {
   public removeScene = createEffect(() =>
     this.actions$.pipe(
       ofType<RemoveSceneFromQueue>(QueueActionType.REMOVE_SCENE_FROM_QUEUE),
-      withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
+      withLatestFrom(
+        this.store$.select(scenesStore.getAllSceneProductsFiltered),
+      ),
       map(([action, sceneProducts]) => sceneProducts[action.payload]),
       tap((products) =>
         this.notificationService.downloadQueue(false, products.length),
