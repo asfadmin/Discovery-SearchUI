@@ -1,33 +1,34 @@
+import { KeyValuePipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-
-import { tap } from 'rxjs/operators';
-import { AppState } from '@store';
-import * as filtersStore from '@store/filters';
-
-import { PropertyService } from '@services';
-import { SubSink } from 'subsink';
-import * as models from '@models';
+import { FormsModule } from '@angular/forms';
+import { MatLabel } from '@angular/material/form-field';
 import { MatFormField, MatHint } from '@angular/material/input';
 import {
   MatSelect,
   MatSelectTrigger,
   MatOption,
 } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
-import { KeyValuePipe } from '@angular/common';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { tap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import * as models from '@models';
 import { JoinPipe } from '@pipes/join.pipe';
 import { PolarizationCountPipe } from '@pipes/polarization.pipe';
 import { IsRelevantPipe } from '@pipes/relevant.pipe';
+import { PropertyService } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 @Component({
   selector: 'app-observation-panel-selector',
   templateUrl: './observation-panel-selector.component.html',
   styleUrl: './observation-panel-selector.component.scss',
   imports: [
     MatFormField,
+    MatLabel,
     MatSelect,
     FormsModule,
     MatSelectTrigger,

@@ -1,25 +1,26 @@
-import { Component, Output, EventEmitter, inject, Signal } from '@angular/core';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as queueStore from '@store/queue';
-import * as scenesStore from '@store/scenes';
-import * as uiStore from '@store/ui';
-import * as filtersStore from '@store/filters';
-import { ScreenSizeService } from '@services';
-import { Breakpoints } from '@models';
-import * as searchStore from '@store/search';
-import * as models from '@models';
 import { AsyncPipe } from '@angular/common';
-import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { Component, Output, EventEmitter, inject, Signal } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
 import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
 import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
 import { MasterSceneSelectorComponent } from '@components/shared/selectors/master-scene-selector/master-scene-selector.component';
-import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { Breakpoints } from '@models';
+import * as models from '@models';
+import { ScreenSizeService } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as queueStore from '@store/queue';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+
 import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-baseline-header',

@@ -3,6 +3,7 @@
 
 .arrow-button-toggle {
   padding-top: 6px;
+
   @include themify($themes) {
     background-color: themed('primary') !important;
   }
@@ -16,6 +17,7 @@
     color: #ddd !important;
   }
 }
+
 .search-button {
   height: 36px !important;
   border-radius: 0 !important;

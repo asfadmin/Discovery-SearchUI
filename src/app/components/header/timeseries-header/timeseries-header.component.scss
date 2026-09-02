@@ -1,20 +1,20 @@
-@use "asf-theme-variables" as *;
+@use 'asf-theme-variables' as *;
 
 .baseline-header-layout {
-  flex-direction: row;
   box-sizing: border-box;
   display: flex;
+  flex-direction: row;
 }
 
 .baseline-header-wrapper {
-  flex-direction: row;
   box-sizing: border-box;
   display: flex;
+  flex-direction: row;
 }
 
 .search-button-layout {
-  flex: 0 1 auto;
   box-sizing: border-box;
+  flex: 0 1 auto;
 }
 
 .scene-selector {
@@ -35,39 +35,26 @@
 }
 
 .displacement-header-menu {
+  display: flex;
+  align-items: flex-start;
   height: 70px;
 }
 
-.azimuth-icon {
-  position: absolute;
-  display: inline-block;
-  width: 126px;
+.sat-legend {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 156px;
+  height: 88px;
+  margin-top: 3px;
   margin-left: 45px;
-  margin-top: 3px;
 }
 
-.azimuth-icon-text {
-  position: absolute;
-  margin-left: 10px;
-  margin-top: 71px;
-  color: grey;
+.legend-text {
   font-size: 12px;
-}
-
-.line-of-site-icon {
-  position: absolute;
-  display: inline-block;
-  width: 156px;
-  margin-left: 185px;
-  margin-top: 3px;
-}
-
-.line-of-site-icon-text {
-  position: absolute;
-  margin-left: 160px;
-  margin-top: 71px;
   color: grey;
-  font-size: 12px;
+  white-space: nowrap;
 }
 
 .invert-icon {
@@ -79,4 +66,3 @@
 .flip-icon {
   transform: rotateY(180deg); // Rotate 180 degrees along the y-axis
 }
-

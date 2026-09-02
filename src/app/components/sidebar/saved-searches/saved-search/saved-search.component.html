@@ -32,6 +32,7 @@
               onsubmit="return false"
             >
               <mat-form-field>
+                <mat-label>{{ 'SEARCH_NAME' | translate }}</mat-label>
                 <input
                   matInput
                   [(ngModel)]="editName"
@@ -39,7 +40,6 @@
                   (keyup.enter)="onEditFocusLeave()"
                   (focusout)="onEditFocusLeave()"
                   name="editNameInput"
-                  [placeholder]="'SEARCH_NAME' | translate"
                   #nameEditInput
                 />
               </mat-form-field>

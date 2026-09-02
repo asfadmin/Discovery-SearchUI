@@ -24,10 +24,10 @@
 }
 
 .invalid-input-animation {
-  animation: shake 0.82s;
   transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
   perspective: 1000px;
+  backface-visibility: hidden;
+  animation: shake 0.82s;
 }
 
 .primary-text {
@@ -66,8 +66,8 @@
 }
 
 .mp0 {
-  margin: 0 !important;
   padding: 0 !important;
+  margin: 0 !important;
 }
 
 .bold {
@@ -81,48 +81,48 @@
 }
 
 .fx-row {
-  flex-direction: row;
   box-sizing: border-box;
   display: flex;
+  flex-direction: row;
 }
 
 .fx-col {
-  flex-direction: column;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
 }
 
 .fx-empty {
-  flex: 1 1 0%;
   box-sizing: border-box;
+  flex: 1 1 0%;
 }
 
 .fx-auto {
-  flex: 1 1 auto;
   box-sizing: border-box;
+  flex: 1 1 auto;
 }
 
 .fx-nogrow {
-  flex: 0 1 auto;
   box-sizing: border-box;
+  flex: 0 1 auto;
 }
 
 .fx-80 {
-  flex: 1 1 100%;
   box-sizing: border-box;
+  flex: 1 1 100%;
   max-width: 80%;
 }
 
 .fx-20 {
-  flex: 1 1 100%;
   box-sizing: border-box;
+  flex: 1 1 100%;
   max-width: 20%;
 }
 
 .fx-row-center {
-  flex-direction: row;
   box-sizing: border-box;
   display: flex;
+  flex-direction: row;
   place-content: stretch center;
 
   // align-items: stretch;
@@ -148,12 +148,13 @@
 }
 
 .no-drag {
+  user-select: none;
+
   // USED IN browse-list
 
   /* https://stackoverflow.com/questions/12906789/preventing-an-image-from-being-draggable-or-selectable-without-using-js */
-  user-drag: none;
   -webkit-user-drag: none;
-  user-select: none;
+  user-drag: none;
 }
 
 .blue-link {

@@ -1,25 +1,25 @@
 import { Component, inject, Signal } from '@angular/core';
-
-import { AppState } from '@store';
-import { Store } from '@ngrx/store';
-import * as hyp3Store from '@store/hyp3';
-
-import * as models from '@models';
-import { ScreenSizeService } from '@services';
 import {
   MatAccordion,
   MatExpansionPanel,
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
-import { OnDemandUserSelectorComponent } from '@components/shared/selectors/on-demand-user-selector/on-demand-user-selector.component';
-import { JobIdSelectorComponent } from './job-id-selector/job-id-selector.component';
-import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
-import { ProjectNameSelectorComponent } from '@components/shared/selectors/project-name-selector/project-name-selector.component';
-import { JobStatusSelectorComponent } from '@components/shared/selectors/job-status-selector/job-status-selector.component';
-import { JobProductNameSelectorComponent } from '@components/shared/selectors/job-product-name-selector/job-product-name-selector.component';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { JobProductNameSelectorComponent } from '@components/shared/selectors/job-product-name-selector/job-product-name-selector.component';
+import { JobStatusSelectorComponent } from '@components/shared/selectors/job-status-selector/job-status-selector.component';
+import { OnDemandUserSelectorComponent } from '@components/shared/selectors/on-demand-user-selector/on-demand-user-selector.component';
+import { ProjectNameSelectorComponent } from '@components/shared/selectors/project-name-selector/project-name-selector.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import * as models from '@models';
+import { ScreenSizeService } from '@services';
+import { AppState } from '@store';
+import * as hyp3Store from '@store/hyp3';
+
+import { JobIdSelectorComponent } from './job-id-selector/job-id-selector.component';
 
 enum FilterPanel {
   SEARCH = 'SEARCH_OPTIONS',

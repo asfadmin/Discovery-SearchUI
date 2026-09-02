@@ -1,17 +1,19 @@
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-
 import { Action, Store } from '@ngrx/store';
 import * as moment from 'moment';
+import WKT from 'ol/format/WKT';
+import { Geometry } from 'ol/geom';
 import { debounceTime, filter, map, skip, take } from 'rxjs/operators';
 
+import * as models from '@models';
+import { MapDrawModeType } from '@models';
 import { AppState } from '@store';
-import * as hyp3Store from '@store/hyp3';
 import * as chartsStore from '@store/charts';
-import * as scenesStore from '@store/scenes';
-import * as mapStore from '@store/map';
 import * as filterStore from '@store/filters';
-import * as uiStore from '@store/ui';
+import * as hyp3Store from '@store/hyp3';
+import * as mapStore from '@store/map';
+import * as scenesStore from '@store/scenes';
 import {
   MakeSearch,
   SetHyp3PlusMode,
@@ -19,18 +21,14 @@ import {
   SetSearchType,
 } from '@store/search/search.action';
 import { getSearchType } from '@store/search/search.reducer';
-
-import * as models from '@models';
-import { MapDrawModeType } from '@models';
+import * as uiStore from '@store/ui';
 
 import { MapService } from './map/map.service';
-import { WktService } from './wkt.service';
-import { RangeService } from './range.service';
-import { PropertyService } from './property.service';
-import { ThemingService } from './theming.service';
 import { PointHistoryService } from './point-history.service';
-import WKT from 'ol/format/WKT';
-import { Geometry } from 'ol/geom';
+import { PropertyService } from './property.service';
+import { RangeService } from './range.service';
+import { ThemingService } from './theming.service';
+import { WktService } from './wkt.service';
 
 @Injectable({
   providedIn: 'root',

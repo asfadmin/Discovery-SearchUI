@@ -1,21 +1,27 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  Pipe,
+  PipeTransform,
+} from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as searchStore from '@store/search';
-import * as filtersStore from '@store/filters';
-import * as scenesStore from '@store/scenes';
+import { TranslateModule } from '@ngx-translate/core';
+import { combineLatest } from 'rxjs';
+import { SubSink } from 'subsink';
 
 import * as models from '@models';
-import { SubSink } from 'subsink';
 import { PairService, ScenesService } from '@services';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { MatIcon } from '@angular/material/icon';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+
 import { DocsModalComponent } from '../docs-modal/docs-modal.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { Pipe, PipeTransform } from '@angular/core';
-import { combineLatest } from 'rxjs';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Pipe({
   name: 'formatNumber',

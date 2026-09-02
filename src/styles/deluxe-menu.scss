@@ -2,8 +2,9 @@
 
 hr {
   @include themify($themes) {
-    border-top-color: rgba(themed('primary-light'), 0.2);
+    border-top-color: rgb(themed('primary-light'), 0.2);
   }
+
   margin-block: 0;
 }
 
@@ -24,31 +25,36 @@ hr {
 
 .large-icon {
   @include md-icon-size(30px);
+
   min-height: 30px;
   margin-right: 0;
+
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
 }
 
 .mat-mdc-icon-button {
+  min-width: 60px;
   height: 36px;
   line-height: 36px;
-  min-width: 60px;
 }
+
 .mat-mdc-list-item {
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
 }
+
 .menu-hr {
   @include themify($themes) {
     color: themed('dark-primary-text');
     background-color: themed('primary-dark');
   }
+
+  height: 1px;
   background-image: none;
   border: none;
-  height: 1px;
   opacity: 1;
 }
 
@@ -64,29 +70,31 @@ hr {
   @include themify($themes) {
     background-color: themed('background-white') !important;
   }
-  font-weight: 400;
+
   height: auto;
+  font-weight: 400;
 }
 
 .disabled {
-  opacity: 20%;
+  opacity: 0.2;
 }
 
 .menu-item {
-  //display: flex !important;
+  // display: flex !important;
   flex-flow: row;
   margin: 10px;
 }
 
 .menu-item-content {
-  white-space: normal;
   flex: 7;
+  white-space: normal;
 }
 
 .item-content {
   @include themify($themes) {
     color: themed('blue-link') !important;
   }
+
   line-height: 18px;
 }
 
@@ -94,21 +102,23 @@ hr {
   @include themify_non_host($themes) {
     color: themed('dark-primary-text');
   }
-  line-height: 22px;
-  font-size: 18px;
+
   margin-bottom: 12px;
+  font-size: 18px;
+  line-height: 22px;
 }
 
 .menu-item-aside {
   flex: 3;
-  text-align: center;
   align-items: center;
+  text-align: center;
 }
 
 .menu-item-icon {
   @include md-icon-size(65px);
 
   margin-right: 0;
+
   @include themify_non_host($themes) {
     color: themed('dark-primary-text');
   }

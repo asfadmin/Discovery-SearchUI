@@ -1,4 +1,10 @@
 import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualForOf,
+} from '@angular/cdk/scrolling';
+import { NgClass, AsyncPipe, SlicePipe } from '@angular/common';
+import {
   Component,
   OnInit,
   Input,
@@ -8,7 +14,11 @@ import {
   AfterContentInit,
   inject,
 } from '@angular/core';
-
+import { MatButton } from '@angular/material/button';
+import { MatActionList, MatListItem } from '@angular/material/list';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { ActiveToast } from 'ngx-toastr';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import {
   tap,
@@ -22,30 +32,18 @@ import {
 } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as searchStore from '@store/search';
-import * as scenesStore from '@store/scenes';
-import * as queueStore from '@store/queue';
-import * as hyp3Store from '@store/hyp3';
-import * as filtersStore from '@store/filters';
-
-import {
-  CdkVirtualScrollViewport,
-  CdkFixedSizeVirtualScroll,
-  CdkVirtualForOf,
-} from '@angular/cdk/scrolling';
-
-import * as services from '@services';
 import * as models from '@models';
 import { CMRProduct, QueuedHyp3Job } from '@models';
-import { ActiveToast } from 'ngx-toastr';
-import { MatActionList, MatListItem } from '@angular/material/list';
-import { NgClass, AsyncPipe, SlicePipe } from '@angular/common';
-import { SceneComponent } from './scene/scene.component';
-import { MatButton } from '@angular/material/button';
+import * as services from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as hyp3Store from '@store/hyp3';
+import * as queueStore from '@store/queue';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+
 import { PairComponent } from './pair/pair.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { SceneComponent } from './scene/scene.component';
 
 const INFINITY = 2e10;
 
@@ -282,7 +280,7 @@ export class ScenesListComponent
 
     const queueScenes$ = combineLatest([
       this.store$.select(queueStore.getQueuedProducts),
-      this.store$.select(scenesStore.getAllSceneProducts),
+      this.store$.select(scenesStore.getAllSceneProductsFiltered),
     ]).pipe(
       debounceTime(0),
       map(([queueProducts, searchScenes]) => {
@@ -300,7 +298,7 @@ export class ScenesListComponent
         Object.entries(searchScenes).map(([sceneName, products]) => {
           numberOfQueuedProducts[sceneName] = [
             (queuedProductGroups[sceneName] || []).length,
-            (products as any[]).length,
+            products.length,
           ];
         });
 
@@ -328,7 +326,6 @@ export class ScenesListComponent
           map((scenes) =>
             Object.entries(scenes).reduce((total, [scene, amt]) => {
               total[scene] = amt[0] >= amt[1];
-
               return total;
             }, {}),
           ),

@@ -1,0 +1,46 @@
+@use '@angular/material' as mat;
+@use 'asf-theme-variables' as *;
+
+.gdal-dataset {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.gdal-dataset-name {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gdal-dataset-chip {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
+
+  max-width: 100%;
+  height: fit-content;
+  padding: 0.3em 0.4em 0.3em 0.3em;
+  text-overflow: ellipsis;
+  font-size: 0.8rem;
+  font-style: italic;
+  white-space: nowrap;
+  background: rgb(0 0 0 / 7.5%);
+  border-radius: 5px;
+  box-shadow:
+    0 2px 5px rgb(0 0 0 / 30%),
+    0 -1px 2px rgb(0 0 0 / 15%);
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.icon-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}

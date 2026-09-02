@@ -9,21 +9,21 @@ import {
   ChangeDetectionStrategy,
   inject,
 } from '@angular/core';
-
-import { timer } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatLabel } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { MatTooltip } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 import * as moment from 'moment';
+import { timer } from 'rxjs';
 
 import * as models from '@models';
-
-import { AsfLanguageService } from '@services/asf-language.service';
-import { MatIcon } from '@angular/material/icon';
-import { MatTooltip } from '@angular/material/tooltip';
-import { FormsModule } from '@angular/forms';
-import { MatFormField, MatInput } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
-import { SearchFiltersComponent } from './search-filters/search-filters.component';
 import { GeographicFilterPipe, ListFilterPipe } from '@pipes/filter-type.pipe';
-import { TranslateModule } from '@ngx-translate/core';
+import { AsfLanguageService } from '@services/asf-language.service';
+
+import { SearchFiltersComponent } from './search-filters/search-filters.component';
 
 @Component({
   selector: 'app-saved-search',
@@ -35,6 +35,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatTooltip,
     FormsModule,
     MatFormField,
+    MatLabel,
     MatInput,
     MatButton,
     SearchFiltersComponent,

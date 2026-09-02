@@ -1,0 +1,71 @@
+@use '@angular/material' as mat;
+@use 'asf-theme-variables' as *;
+
+.code-wrapper {
+  position: relative;
+  padding: 0 1em;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgb(0 0 0 / 30%);
+}
+
+.code {
+  padding: 0 0 0.5em;
+  margin: 0;
+  overflow-x: auto;
+}
+
+.code-header,
+.code::before {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  padding-top: 1em;
+  padding-bottom: 0.25em;
+  margin-bottom: 0.4em;
+  font-size: 16px;
+  font-style: italic;
+  border-radius: 5px;
+
+  @include themify($themes) {
+    border-bottom-style: solid;
+    border-bottom-width: 1pt;
+    border-image: linear-gradient(
+        to right,
+        themed('dark-disabled-text'),
+        themed('dark-dividers') 30%,
+        themed('dark-dividers') 95%,
+        themed('dark-disabled-text') 100%
+      )
+      1;
+  }
+}
+
+.code-header:hover {
+  @include themify($themes) {
+    background-color: themed('dark-focused');
+  }
+}
+
+.gdal-output-wrapper:hover {
+  @include themify($themes) {
+    background-color: themed('dark-focused');
+  }
+}
+
+.code.sh::before {
+  content: '$ ';
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+code {
+  font-family: monospace;
+  font-size: 14px;
+}

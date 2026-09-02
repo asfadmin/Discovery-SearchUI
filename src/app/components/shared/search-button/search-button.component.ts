@@ -1,32 +1,3 @@
-import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
-import { SubSink } from 'subsink';
-
-import { CustomizeEnvComponent } from '@components/header/header-buttons/customize-env/customize-env.component';
-import { combineLatest, Subject } from 'rxjs';
-import { tap, delay, take } from 'rxjs/operators';
-import { Store, ActionsSubject } from '@ngrx/store';
-import { ofType } from '@ngrx/effects';
-
-import { AppState } from '@store';
-import * as searchStore from '@store/search';
-import * as userStore from '@store/user';
-import * as uiStore from '@store/ui';
-import * as filtersStore from '@store/filters';
-import * as hyp3Store from '@store/hyp3';
-
-import * as services from '@services';
-import { ClipboardService } from 'ngx-clipboard';
-import { SidebarType, SearchType } from '@models';
-import { MatDialog } from '@angular/material/dialog';
-import { getFilterMaster } from '@store/scenes';
-import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
-import {
-  CodeExportComponent,
-  CodeExportType,
-} from '@components/shared/code-export';
-import { ApiLinkDialogComponent } from '../max-results-selector/api-link-dialog/api-link-dialog.component';
-import { ScreenSizeService } from '@services';
-import * as models from '@models';
 import {
   NgStyle,
   AsyncPipe,
@@ -34,16 +5,44 @@ import {
   TitleCasePipe,
   KeyValuePipe,
 } from '@angular/common';
+import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import {
   MatButtonToggleGroup,
   MatButtonToggle,
 } from '@angular/material/button-toggle';
-import { MatButton } from '@angular/material/button';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
-import { MatTooltip } from '@angular/material/tooltip';
 import { MatDivider } from '@angular/material/list';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
+import { ofType } from '@ngrx/effects';
+import { Store, ActionsSubject } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { ClipboardService } from 'ngx-clipboard';
+import { combineLatest, Subject } from 'rxjs';
+import { tap, delay, take } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import { CustomizeEnvComponent } from '@components/header/header-buttons/customize-env/customize-env.component';
+import {
+  CodeExportComponent,
+  CodeExportType,
+} from '@components/shared/code-export';
+import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
+import { SidebarType, SearchType } from '@models';
+import * as models from '@models';
+import * as services from '@services';
+import { ScreenSizeService } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as hyp3Store from '@store/hyp3';
+import { getFilterMaster } from '@store/scenes';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+import * as userStore from '@store/user';
+
+import { ApiLinkDialogComponent } from '../max-results-selector/api-link-dialog/api-link-dialog.component';
 
 // Declare GTM dataLayer array.
 declare global {

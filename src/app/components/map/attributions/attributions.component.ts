@@ -1,13 +1,12 @@
 import { Component, Input, inject } from '@angular/core';
-
 import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as uiStore from '@store/ui';
+import { TranslateModule } from '@ngx-translate/core';
 
-import { Breakpoints, asfWebsite } from '@models';
 import { MaxResultsSelectorComponent } from '@components/shared/max-results-selector/max-results-selector.component';
 import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { Breakpoints, asfWebsite } from '@models';
+import { AppState } from '@store';
+import * as uiStore from '@store/ui';
 
 @Component({
   selector: 'app-attributions',

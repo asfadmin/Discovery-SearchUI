@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as filterStore from '@store/filters';
 import {
   MatRadioChange,
   MatRadioGroup,
   MatRadioButton,
 } from '@angular/material/radio';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { AppState } from '@store';
+import * as filterStore from '@store/filters';
 
 @Component({
   selector: 'app-opera-calibration-data-selector',

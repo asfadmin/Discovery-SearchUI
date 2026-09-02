@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
-import * as services from '@services';
 import { MatIcon } from '@angular/material/icon';
+
+import * as services from '@services';
 
 @Component({
   selector: 'app-hyp3-url',

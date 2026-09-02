@@ -1,16 +1,16 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { MatOptionModule } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
-import * as models from '@models';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
+import * as models from '@models';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
+import { PropertyService } from '@services';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-import { PropertyService } from '@services';
-import { AsyncPipe } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { IsRelevantPipe } from '@pipes/relevant.pipe';
 
 @Component({
   selector: 'app-flight-direction-selector',

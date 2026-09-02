@@ -1,14 +1,23 @@
+import { NgClass, AsyncPipe } from '@angular/common';
 import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
-
+import { MatButton } from '@angular/material/button';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { MatCard, MatCardSubtitle } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Action, Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
-import { Action, Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as uiStore from '@store/ui';
-import * as queueStore from '@store/queue';
-import * as filtersStore from '@store/filters';
-
+import { SceneSearchToolbarComponent } from '@components/results-menu/scene-search-toolbar/scene-search-toolbar.component';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
+import * as models from '@models';
 import {
   ScreenSizeService,
   MapService,
@@ -18,27 +27,15 @@ import {
   PossibleHyp3JobsService,
   Hyp3JobStatusService,
 } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as queueStore from '@store/queue';
+import * as uiStore from '@store/ui';
 
-import { SubSink } from 'subsink';
-
-import * as models from '@models';
-import { NgClass, AsyncPipe } from '@angular/common';
-import { MatCard, MatCardSubtitle } from '@angular/material/card';
-import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
-import { ScenesListComponent } from '../scenes-list/scenes-list.component';
-import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
-import { SceneSearchToolbarComponent } from '@components/results-menu/scene-search-toolbar/scene-search-toolbar.component';
-import {
-  MatButtonToggleGroup,
-  MatButtonToggle,
-} from '@angular/material/button-toggle';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
-import { MatButton } from '@angular/material/button';
 import { BaselineChartComponent } from '../../baseline-chart/baseline-chart.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
+import { ScenesListComponent } from '../scenes-list/scenes-list.component';
+import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 
 enum CardViews {
   LIST = 0,

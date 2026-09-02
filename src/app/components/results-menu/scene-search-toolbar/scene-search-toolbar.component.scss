@@ -7,8 +7,8 @@
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mini-toggle-button .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-  line-height: 24px !important;
   padding: 0 12px;
+  line-height: 24px !important;
 }
 
 .menu-override {
@@ -22,21 +22,20 @@
 .tool-menu {
   z-index: 2;
   display: flex;
-  justify-content: flex-start;
   flex-wrap: nowrap; // Prevent wrapping
+  align-items: center;
+  justify-content: flex-start;
+  height: 48px;
+  min-height: 48px;
 
   @include themify($themes) {
     background: lighten(themed("primary-light"), 8%);
 
     button[disabled="true"] {
-      background-color: themed("primary-light");
       color: themed("dark-secondary-text");
+      background-color: themed("primary-light");
     }
   }
-
-  align-items: center;
-  height: 48px;
-  min-height: 48px;
 
   button {
     flex: 0 0 auto !important; // Prevent buttons from growing
@@ -62,16 +61,15 @@
 }
 
 .search-button {
-  margin-left: 20px;
   width: auto !important; // Prevent expansion
   min-width: 80px; // Set minimum width
   max-width: fit-content; // Don't exceed content width
-
-  @include themify($themes) {
-    background-color: themed("primary");
-    color: themed("light-primary-text");
-  }
-
+  margin-left: 20px;
   border: 1px groove rgb(0 0 0 / 25%) !important;
   border-radius: 4px !important;
+
+  @include themify($themes) {
+    color: themed("light-primary-text");
+    background-color: themed("primary");
+  }
 }

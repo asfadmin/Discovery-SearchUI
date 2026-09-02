@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   Output,
@@ -10,18 +11,18 @@ import {
   viewChild,
   ElementRef,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLabel, MatInputModule } from '@angular/material/input';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { AsyncPipe } from '@angular/common';
-import { MatLabel, MatInputModule } from '@angular/material/input';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
 import { DatasetComponent } from './dataset/dataset.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
 
 // Declare GTM dataLayer array.
 declare global {

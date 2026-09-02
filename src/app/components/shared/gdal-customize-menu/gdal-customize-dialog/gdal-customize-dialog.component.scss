@@ -1,0 +1,202 @@
+@use '@angular/material' as mat;
+@use 'asf-theme-variables' as *;
+
+:host {
+  @include themify($themes) {
+    color: themed('light-black');
+  }
+
+  overflow: hidden auto;
+}
+
+.exit-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.gdal-export-wrapper {
+  height: 100%;
+  padding: 1em;
+  overflow-x: hidden;
+}
+
+h1 {
+  text-align: center;
+}
+
+.subtitle {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  font-style: italic;
+}
+
+.gdal-dataset {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.gdal-dataset-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gdal-dataset-chip {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
+
+  max-width: 100%;
+  height: fit-content;
+  padding: 0.4em;
+  text-overflow: ellipsis;
+  font-size: 0.8rem;
+  font-style: italic;
+  white-space: nowrap;
+  background: rgb(0 0 0 / 7.5%);
+  border-radius: 5px;
+  box-shadow:
+    0 2px 5px rgb(0 0 0 / 30%),
+    0 -1px 2px rgb(0 0 0 / 15%);
+}
+
+.gdal-dataset-path {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
+
+  flex-shrink: 1;
+  min-width: 0;
+  max-width: 100%;
+  padding-left: 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.icon-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.dataset-list-card {
+  flex-grow: 1;
+}
+
+.dataset-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 1em;
+}
+
+.options-list-card {
+  flex-shrink: 1;
+}
+
+.output-type {
+  display: flex;
+  justify-content: center;
+
+  @include themify($themes) {
+    @include mat.button-toggle-overrides(
+      (
+        hover-state-layer-opacity: 0.3,
+        shape: 15px,
+      )
+    );
+  }
+
+  padding-bottom: 0.5em;
+}
+
+.options-list {
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 2em;
+  padding: 0 1em;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  @include mat.checkbox-overrides(
+    (
+      label-text-size: 16px,
+    )
+  );
+}
+
+.option.checkbox {
+  padding-bottom: 20px;
+}
+
+.two-column-layout {
+  display: flex;
+}
+
+.gdal-output-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.filename {
+  flex-grow: 1;
+  min-width: 80%;
+  max-width: 100%;
+}
+
+.reproject {
+  width: 20ch;
+}
+
+.short {
+  width: 15ch;
+}
+
+.blur-overlay-container {
+  position: relative;
+}
+
+.blur-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: color-mix(
+    in srgb,
+    var('--mat-dialog-container-color') 30%,
+    transparent
+  );
+  backdrop-filter: blur(1px);
+}
+
+.footer {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em;
+  margin-top: 1em;
+  box-shadow: 0 -10px 10px -5px rgb(0 0 0 / 15%);
+}

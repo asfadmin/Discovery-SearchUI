@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import {
   Component,
   Input,
@@ -8,7 +9,6 @@ import {
 
 import { LonLat } from '@models';
 import * as services from '@services';
-import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-map-info',

@@ -1,12 +1,12 @@
 .sbas-slider-wrapper {
-  line-height: 27px;
-  font-weight: normal;
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: 0;
-  padding: 20px 0 30px 30px;
   flex-direction: column;
   height: 100%;
+  padding: 20px 0 30px 30px;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  font-weight: normal;
+  line-height: 27px;
 }
 
 .sbas-label {
@@ -28,6 +28,6 @@
 }
 
 div.noUi-handle.noUi-handle-lower {
-  width: 16px !important;
   right: -5px !important;
+  width: 16px !important;
 }

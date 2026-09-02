@@ -1,15 +1,16 @@
 import { ActionReducerMap, MetaReducer } from '@ngrx/store';
 
 import { environment } from '@environments/environment';
-import { ScenesState, scenesReducer } from './scenes';
-import { MapState, mapReducer } from './map';
-import { FiltersState, filtersReducer } from './filters';
-import { UIState, uiReducer } from './ui';
-import { SearchState, searchReducer } from './search';
-import { QueueState, queueReducer } from './queue';
-import { UserState, userReducer } from './user';
-import { Hyp3State, hyp3Reducer } from './hyp3';
+
 import { chartsReducer, ChartsState } from './charts';
+import { FiltersState, filtersReducer } from './filters';
+import { Hyp3State, hyp3Reducer } from './hyp3';
+import { MapState, mapReducer } from './map';
+import { QueueState, queueReducer } from './queue';
+import { ScenesState, scenesReducer } from './scenes';
+import { SearchState, searchReducer } from './search';
+import { UIState, uiReducer } from './ui';
+import { UserState, userReducer } from './user';
 
 export interface AppState {
   scenes: ScenesState;

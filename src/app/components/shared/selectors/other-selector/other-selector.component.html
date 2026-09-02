@@ -9,11 +9,11 @@
 
   @if (dataset | isRelevant: p.BEAM_MODE) {
     <mat-form-field>
+      <mat-label>{{ 'BEAM_MODE' | translate }}</mat-label>
       <mat-select
         (selectionChange)="onNewDatasetBeamModes($event.value)"
         [(ngModel)]="beamModes"
         [disabled]="!(dataset | isRelevant: p.BEAM_MODE)"
-        [placeholder]="'BEAM_MODE' | translate"
         multiple
       >
         @for (mode of dataset.beamModes; track mode) {
@@ -34,11 +34,11 @@
   }
 
   <mat-form-field>
+    <mat-label>{{ 'POLARIZATION' | translate }}</mat-label>
     <mat-select
       (selectionChange)="onNewDatasetPolarizations($event.value)"
       [(ngModel)]="polarizations"
       [disabled]="!(dataset | isRelevant: p.POLARIZATION)"
-      [placeholder]="'POLARIZATION' | translate"
       multiple
     >
       @for (pol of dataset.polarizations; track pol) {
@@ -58,11 +58,11 @@
   </mat-form-field>
 
   <mat-form-field>
+    <mat-label>{{ 'DIRECTION' | translate }}</mat-label>
     <mat-select
       (selectionChange)="onNewFlightDirectionsSelected($event.value)"
       [(ngModel)]="flightDirections"
       [disabled]="!(dataset | isRelevant: p.FLIGHT_DIRECTION)"
-      [placeholder]="'DIRECTION' | translate"
       multiple
     >
       @for (direction of flightDirectionTypes; track direction) {
@@ -84,11 +84,11 @@
 
   @if (dataset | isRelevant: p.PLATFORM) {
     <mat-form-field>
+      <mat-label>{{ 'SATELLITE' | translate }}</mat-label>
       <mat-select
         (selectionChange)="onNewPlatformSelected($event.value)"
         [(ngModel)]="platforms"
         [disabled]="!(dataset | isRelevant: p.PLATFORM)"
-        [placeholder]="'SATELLITE' | translate"
         multiple
       >
         @for (platform of dataset.platforms; track platform) {
@@ -111,30 +111,30 @@
 
   @if (['SENTINEL-1', 'SENTINEL-1 BURSTS', 'OPERA-S1'].includes(dataset.id)) {
     <mat-form-field>
+      <mat-label>{{ 'GROUP_ID' | translate }}</mat-label>
       <input
         matInput
         (input)="onNewGroupID()"
         [(ngModel)]="groupID"
         [maxlength]="29"
         type="text"
-        [placeholder]="'GROUP_ID' | translate"
       />
     </mat-form-field>
   }
   @if (dataset.id === 'OPERA-S1') {
     <mat-form-field>
+      <mat-label>{{ 'TILE_ID' | translate }}</mat-label>
       <input
         matInput
         type="text"
         (input)="onNewTileID()"
         [(ngModel)]="tileID"
-        [placeholder]="'TILE_ID' | translate"
       />
     </mat-form-field>
   }
   @if (dataset.apiValue.dataset === 'ARIA S1 GUNW') {
     <mat-form-field>
-      <mat-label> Version Number </mat-label>
+      <mat-label>{{ 'VERSION_NUMBER' | translate }}</mat-label>
       <input
         matInput
         type="text"

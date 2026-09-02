@@ -1,16 +1,18 @@
 import { Injectable, inject } from '@angular/core';
-
+import { Store } from '@ngrx/store';
+import moment from 'moment';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import moment from 'moment';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store/app.reducer';
+
 import {
-  getAllProducts,
-  getPerpendicularSortDirection,
-  getScenes,
-  getTemporalSortDirection,
-} from '@store/scenes/scenes.reducer';
+  CMRProduct,
+  SearchType,
+  Range,
+  ColumnSortDirection,
+  Hyp3Job,
+  Hyp3JobStatusCode,
+} from '@models';
+import { AppState } from '@store/app.reducer';
 import {
   getTemporalRange,
   getPerpendicularRange,
@@ -21,17 +23,15 @@ import {
   getProductNameFilter,
   getSeason,
 } from '@store/filters/filters.reducer';
-import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
-import { getSearchType } from '@store/search/search.reducer';
-
 import {
-  CMRProduct,
-  SearchType,
-  Range,
-  ColumnSortDirection,
-  Hyp3Job,
-  Hyp3JobStatusCode,
-} from '@models';
+  getAllProducts,
+  getPerpendicularSortDirection,
+  getScenes,
+  getTemporalSortDirection,
+} from '@store/scenes/scenes.reducer';
+import { getSearchType } from '@store/search/search.reducer';
+import { getShowS1RawData, getShowExpiredData } from '@store/ui/ui.reducer';
+
 import { NotificationService } from './notification.service';
 
 @Injectable({

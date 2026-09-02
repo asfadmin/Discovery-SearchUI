@@ -7,19 +7,21 @@ import {
   inject,
   computed,
 } from '@angular/core';
-import * as models from '@models';
-import * as filtersStore from '@store/filters';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import { SubSink } from 'subsink';
+import { MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatHint } from '@angular/material/input';
 import {
   MatSelectChange,
   MatSelect,
   MatOption,
 } from '@angular/material/select';
-import { MatFormField, MatHint } from '@angular/material/input';
 import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { SubSink } from 'subsink';
+
+import * as models from '@models';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 @Component({
   selector: 'app-short-name-selector',
@@ -27,6 +29,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './short-name-selector.component.scss',
   imports: [
     MatFormField,
+    MatLabel,
     MatSelect,
 
     MatOption,

@@ -1,3 +1,8 @@
+import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualForOf,
+} from '@angular/cdk/scrolling';
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -5,25 +10,19 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-
+import { MatLabel } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { MatDivider, MatNavList, MatListItem } from '@angular/material/list';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { startWith, map, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
-import { Store } from '@ngrx/store';
+import * as models from '@models';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-
-import * as models from '@models';
-import { MatFormField, MatInput } from '@angular/material/input';
-import { MatIcon } from '@angular/material/icon';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatDivider, MatNavList, MatListItem } from '@angular/material/list';
-import {
-  CdkVirtualScrollViewport,
-  CdkFixedSizeVirtualScroll,
-  CdkVirtualForOf,
-} from '@angular/cdk/scrolling';
-import { TranslateModule } from '@ngx-translate/core';
 
 export interface StateGroup {
   letter: string;
@@ -44,6 +43,7 @@ export const _filter = (opt: string[], value: string): string[] => {
     FormsModule,
     ReactiveFormsModule,
     MatFormField,
+    MatLabel,
     MatInput,
 
     MatIcon,

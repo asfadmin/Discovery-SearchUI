@@ -1,37 +1,35 @@
-import { Component, input, inject, signal, Signal } from '@angular/core';
-
-import { Store } from '@ngrx/store';
-
-import { AppState } from '@store/app.reducer';
-import * as filtersStore from '@store/filters';
-
-import * as models from '@models';
-import { PropertyService, ScreenSizeService } from '@services';
 import { AsyncPipe } from '@angular/common';
+import { Component, input, inject, signal, Signal } from '@angular/core';
 import {
   MatAccordion,
   MatExpansionPanel,
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
-import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { AoiOptionsComponent } from '@components/shared/aoi-options/aoi-options.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { BurstSelectorComponent } from '@components/shared/selectors/burst-selector/burst-selector.component';
+import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
 import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
-import { SeasonSelectorComponent } from '@components/shared/selectors/season-selector/season-selector.component';
+import { GranuleListSelectorComponent } from '@components/shared/selectors/granule-list-selector/granule-list-selector.component';
+import { MissionSelectorComponent } from '@components/shared/selectors/mission-selector/mission-selector.component';
+import { ObservationPanelSelectorComponent } from '@components/shared/selectors/observation-panel-selector/observation-panel-selector.component';
+import { OperaS1SelectorComponent } from '@components/shared/selectors/opera-s1-selector/opera-s1-selector.component';
+import { OtherSelectorComponent } from '@components/shared/selectors/other-selector/other-selector.component';
+import { PathSelectorComponent } from '@components/shared/selectors/path-selector/path-selector.component';
+import { ProductMaturitySelectorComponent } from '@components/shared/selectors/product-maturity-selector/product-maturity-selector.component';
 import { ProductScienceSelectorComponent } from '@components/shared/selectors/product-science-selector/product-science-selector.component';
 import { ProductionConfigSelectorComponent } from '@components/shared/selectors/production-config-selector/production-config-selector.component';
-import { ProductMaturitySelectorComponent } from '@components/shared/selectors/product-maturity-selector/product-maturity-selector.component';
-import { OtherSelectorComponent } from '@components/shared/selectors/other-selector/other-selector.component';
-import { ObservationPanelSelectorComponent } from '@components/shared/selectors/observation-panel-selector/observation-panel-selector.component';
-import { PathSelectorComponent } from '@components/shared/selectors/path-selector/path-selector.component';
-import { MissionSelectorComponent } from '@components/shared/selectors/mission-selector/mission-selector.component';
-import { BurstSelectorComponent } from '@components/shared/selectors/burst-selector/burst-selector.component';
-import { OperaS1SelectorComponent } from '@components/shared/selectors/opera-s1-selector/opera-s1-selector.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { GranuleListSelectorComponent } from '@components/shared/selectors/granule-list-selector/granule-list-selector.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { SeasonSelectorComponent } from '@components/shared/selectors/season-selector/season-selector.component';
+import * as models from '@models';
 import { IsRelevantPipe } from '@pipes/relevant.pipe';
+import { PropertyService, ScreenSizeService } from '@services';
+import { AppState } from '@store/app.reducer';
+import * as filtersStore from '@store/filters';
 
 enum FilterPanel {
   DATE = 'Date',

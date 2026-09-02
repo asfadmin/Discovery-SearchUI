@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -6,16 +7,15 @@ import {
   EventEmitter,
   inject,
 } from '@angular/core';
-
-import * as services from '@services';
-import * as models from '@models';
-import { NgClass } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { MatListItemMeta } from '@angular/material/list';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
-import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
+import * as models from '@models';
+import * as services from '@services';
 
 @Component({
   selector: 'app-baseline-scene-controls',

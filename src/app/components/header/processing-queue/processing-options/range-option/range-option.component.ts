@@ -1,5 +1,6 @@
+import { LowerCasePipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Range } from '@models';
+import { FormsModule } from '@angular/forms';
 import {
   MatFormField,
   MatLabel,
@@ -7,8 +8,8 @@ import {
   MatError,
 } from '@angular/material/input';
 import { MatTooltip } from '@angular/material/tooltip';
-import { FormsModule } from '@angular/forms';
-import { LowerCasePipe } from '@angular/common';
+
+import { Range } from '@models';
 
 @Component({
   selector: 'app-range-option',
