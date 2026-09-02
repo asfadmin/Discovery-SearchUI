@@ -83,8 +83,14 @@ export class FiltersEffects {
         filtersAction.FiltersActionType.CLEAR_DATASET_FILTERS,
         filtersAction.FiltersActionType.SET_SELECTED_DATASET,
       ),
-      withLatestFrom(this.store$.select(getSelectedDataset)),
-      filter(([_, dataset]) => !!dataset),
+      withLatestFrom(
+        this.store$.select(getSelectedDataset),
+        this.store$.select(getSearchType),
+      ),
+      filter(
+        ([_, dataset, searchType]) =>
+          !!dataset && searchType === SearchType.DATASET,
+      ),
       map(([_, dataset]) => {
         const defaults = dataset.defaultFilters;
         if (!defaults) {
