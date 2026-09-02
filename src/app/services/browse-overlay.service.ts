@@ -54,7 +54,8 @@ export class BrowseOverlayService {
             datasetID === 'SENTINEL-1' ||
             datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)' ||
             datasetID === 'UAVSAR' ||
-            datasetID === 'OPERA-S1'
+            datasetID === 'OPERA-S1' ||
+            datasetID === 'NISAR'
           );
         case models.SearchType.LIST:
           return (
@@ -64,7 +65,8 @@ export class BrowseOverlayService {
             selectedScene?.dataset === 'Sentinel-1C' ||
             selectedScene?.dataset === 'Sentinel-1D' ||
             selectedScene?.dataset === 'Sentinel-1 Interferogram (BETA)' ||
-            selectedScene?.dataset === 'UAVSAR'
+            selectedScene?.dataset === 'UAVSAR' ||
+            selectedScene?.dataset === 'NISAR'
           );
         case models.SearchType.CUSTOM_PRODUCTS:
           return true;

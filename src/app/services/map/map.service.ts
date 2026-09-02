@@ -758,8 +758,8 @@ export class MapService implements OnDestroy {
 
       const base_image = new Image();
       base_image.crossOrigin = 'Anonymous';
-
       base_image.src = imageURL;
+
       base_image.onload = () => {
         ctx.drawImage(base_image, 0, 0);
         const copy = document.createElement('canvas').getContext('2d'),
@@ -838,7 +838,7 @@ export class MapService implements OnDestroy {
       this.map.removeLayer(this.browseImageLayer);
     }
     if (!url.endsWith('.tif')) {
-      if (url.includes('OPERA')) {
+      if (url.includes('OPERA') || url.includes('NISAR')) {
         this.trimImage(url).then((imageBlob: Blob) => {
           const url = URL.createObjectURL(imageBlob);
           URL.revokeObjectURL(this.localBrowseImageURL);
