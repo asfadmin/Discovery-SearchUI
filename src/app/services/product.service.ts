@@ -152,6 +152,9 @@ export class ProductService {
     if (product.dataset === 'SEASAT 1') {
       return this.seasatSubproductsFromScene(product);
     }
+    if (product.dataset === 'UAVSAR') {
+      return this.uavsarSubproductsFromScene(product);
+    }
     if (
       models.tropo.productTypes
         .map((t) => t.apiValue)
@@ -540,6 +543,113 @@ export class ProductService {
     });
   }
 
+  private getUAVSARURLPolarization(
+    url: string,
+    polarization: string | string[],
+  ) {
+    let regex = /.*([VH]{2})_.*(\.(mlc)|(grd))/;
+    if (polarization instanceof Array) {
+      regex = /.*([VH]{4})_.*(\.(mlc)|(grd))/;
+    }
+
+    const reg = url.match(regex) ?? [''];
+    return reg[1];
+  }
+
+  public getUAVSARFileTypeExtension(url: string) {
+    const regex =
+      /(unw\.|cor\.|int\.|amp1\.|amp2\.|hgt\.|T1\.|T2\.)?(grd|hgt|int|unw|cor|amp1|amp2|kmz|png|inc|gif|ann|slc|slope|mlc|dat)$/;
+    const reg = url.match(regex) ?? [''];
+    return reg[0];
+  }
+  private uavsarSubproductsFromScene(product: models.CMRProduct) {
+    const products = [];
+    let file_extension = product.downloadUrl.endsWith('-END')
+      ? 'end'
+      : this.getUAVSARFileTypeExtension(product.downloadUrl);
+    product.productTypeDisplay =
+      models.uavsar.productTypeDisplays.displays[file_extension];
+
+    let polarization = this.getUAVSARURLPolarization(
+      product.downloadUrl,
+      product.metadata.polarization,
+    );
+    if (polarization != undefined) {
+      product.productTypeDisplay = `${product.productTypeDisplay} ${polarization}`;
+    }
+    const fileID = product.downloadUrl.split('/').slice(-1)[0];
+    product.bytes = product.metadata.fileSizes[fileID]?.bytes ?? 0;
+    const thumbnail_index = product.browses.findIndex((url) =>
+      url.toLowerCase().includes('thumbnail'),
+    );
+    if (thumbnail_index !== -1) {
+      product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
+    }
+    product.browses = product.browses.filter((url) => !url.includes('low-res'));
+
+    const s3UrlsByProductID = product.metadata.s3Urls.reduce((prev, curr) => {
+      const subproductFileID = curr.split('/').at(-1);
+
+      prev[subproductFileID] = curr;
+
+      return prev;
+    }, {});
+
+    product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
+
+    const browses = [];
+    for (const p of [
+      ...product.metadata.additionalUrls.filter(
+        (url) => url !== product.downloadUrl,
+      ),
+      ...product.browses,
+    ]) {
+      if (p === '/assets/no-browse.png') {
+        continue;
+      }
+      file_extension = p.endsWith('-END')
+        ? 'end'
+        : this.getUAVSARFileTypeExtension(p);
+
+      let productTypeDisplay =
+        models.uavsar.productTypeDisplays.displays[
+          file_extension.toLowerCase()
+        ] ?? 'Missing Display';
+      polarization = this.getUAVSARURLPolarization(
+        p,
+        product.metadata.polarization,
+      );
+      if (polarization != undefined) {
+        productTypeDisplay = `${productTypeDisplay} ${polarization}`;
+      }
+      if (productTypeDisplay === 'Missing Display') {
+        console.log(
+          `Missing product type display for file extension "${file_extension}"`,
+        );
+      }
+
+      if (['Metadata IN'].includes(productTypeDisplay)) {
+        continue;
+      }
+
+      const fileID = p.split('/').slice(-1)[0];
+      const s3Url = s3UrlsByProductID[fileID] ?? null;
+      const fileSize = product.metadata.fileSizes[fileID]?.bytes ?? 0;
+      const subproduct = this.createSubproductForScene(
+        product,
+        p,
+        s3Url,
+        file_extension,
+        productTypeDisplay,
+        fileSize,
+        browses,
+      );
+
+      products.push(subproduct);
+    }
+
+    return products;
+  }
   private createSubproductForScene(
     scene: models.CMRProduct,
     url: string,

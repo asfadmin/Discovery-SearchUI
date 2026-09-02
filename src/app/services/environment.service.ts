@@ -23,6 +23,7 @@ export interface Environment {
   bulk_download: string;
   cmr_token?: string;
   cmr_provider?: string;
+  force_token?: string;
   displacement_api: string;
 }
 

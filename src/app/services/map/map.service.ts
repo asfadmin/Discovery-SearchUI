@@ -843,7 +843,8 @@ export class MapService implements OnDestroy {
     if (this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
-    if (!url.endsWith('.tif')) {
+    // TODO: Display legends on map with relevant browse images would be neat
+    if (!url.endsWith('.tif') && !url.includes('legend')) {
       if (url.includes('OPERA')) {
         this.trimImage(url).then((imageBlob: Blob) => {
           const url = URL.createObjectURL(imageBlob);

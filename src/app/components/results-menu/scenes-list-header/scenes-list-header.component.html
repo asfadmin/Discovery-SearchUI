@@ -446,10 +446,11 @@
                 </button>
               }
               @if (
-                searchType() === SearchTypes.DATASET &&
-                (currentDatasetID() === 'OPERA-S1' ||
-                  currentDatasetID() === 'NISAR' ||
-                  currentDatasetID() === 'SEASAT')
+                (searchType() === SearchTypes.DATASET &&
+                  (currentDatasetID() === 'OPERA-S1' ||
+                    currentDatasetID() === 'NISAR' ||
+                    currentDatasetID() === 'SEASAT')) ||
+                currentDatasetID() === 'UAVSAR'
               ) {
                 <button
                   mat-menu-item
