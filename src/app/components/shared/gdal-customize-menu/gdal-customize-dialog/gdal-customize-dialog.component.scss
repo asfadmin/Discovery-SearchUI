@@ -1,0 +1,198 @@
+@use '@angular/material' as mat;
+@use 'asf-theme-variables' as *;
+
+:host {
+  @include themify($themes) {
+    color: themed('light-black');
+  }
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.exit-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.gdal-export-wrapper {
+  overflow-x: hidden;
+  height: 100%;
+  padding: 1em;
+}
+
+h1 {
+  text-align: center;
+}
+
+.subtitle {
+  font-style: italic;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.gdal-dataset {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.gdal-dataset-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.gdal-dataset-chip {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
+  font-style: italic;
+  font-size: 0.8rem;
+  background: rgb(0, 0, 0, 0.075);
+  box-shadow:
+    0 2px 5px rgb(0, 0, 0, 0.3),
+    0 -1px 2px rgb(0, 0, 0, 0.15);
+  height: fit-content;
+  padding: 0.4em;
+  border-radius: 5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.gdal-dataset-path {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
+  padding-left: 1em;
+  text-align: right;
+  font-size: 0.75rem;
+  flex-shrink: 1;
+  min-width: 0;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.icon-row {
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.dataset-list-card {
+  flex-grow: 1;
+}
+
+.dataset-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 1em 0 1em;
+}
+
+.options-list-card {
+  flex-shrink: 1;
+}
+
+.output-type {
+  display: flex;
+  justify-content: center;
+  @include themify($themes) {
+    @include mat.button-toggle-overrides(
+      (
+        hover-state-layer-opacity: 0.3,
+        shape: 15px,
+      )
+    );
+  }
+  padding-bottom: 0.5em;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 2em;
+  padding: 0 1em 0 1em;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  @include mat.checkbox-overrides(
+    (
+      label-text-size: 16px,
+    )
+  );
+}
+
+.option.checkbox {
+  padding-bottom: 20px;
+}
+
+.two-column-layout {
+  display: flex;
+}
+
+.gdal-output-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.filename {
+  max-width: 100%;
+  min-width: 80%;
+  flex-grow: 1;
+}
+
+.reproject {
+  width: 20ch;
+}
+
+.short {
+  width: 15ch;
+}
+
+.blur-overlay-container {
+  position: relative;
+}
+
+.blur-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  background-color: color-mix(
+    in srgb,
+    var('--mat-dialog-container-color') 30%,
+    transparent
+  );
+  backdrop-filter: blur(1px);
+}
+
+.footer {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
+  box-shadow: 0 -10px 10px -5px rgb(0, 0, 0, 0.15);
+  padding: 1em;
+  margin-top: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

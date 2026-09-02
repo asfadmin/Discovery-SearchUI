@@ -3,10 +3,14 @@
     (click)="onCopyIconClicked($event)"
     class="clickable icon"
     [matTooltip]="display"
+    [aria-label]="display"
     matTooltipPosition="left"
     inline="true"
+    [svgIcon]="svgIcon()"
   >
-    {{ copyIcon() }}
+    @if (!svgIcon()) {
+      {{ copyIcon() }}
+    }
   </mat-icon>
 }
 
@@ -15,6 +19,7 @@
     [matMenuTriggerFor]="promptMenu"
     class="clickable icon"
     [matTooltip]="display"
+    [aria-label]="display"
     matTooltipPosition="left"
     inline="true"
   >
