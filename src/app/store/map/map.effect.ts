@@ -98,7 +98,8 @@ export class MapEffects {
               dataset?.id === 'SENTINEL-1' ||
               dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)' ||
               dataset?.id === 'UAVSAR' ||
-              dataset?.id === 'OPERA-S1'
+              dataset?.id === 'OPERA-S1' ||
+              dataset?.id === 'NISAR'
             );
           }
           return (
@@ -125,7 +126,8 @@ export class MapEffects {
               product.dataset === 'Sentinel-1C' ||
               product.dataset === 'Sentinel-1D' ||
               product.dataset === 'Sentinel-1 Interferogram (BETA)' ||
-              product.dataset === 'UAVSAR';
+              product.dataset === 'UAVSAR' ||
+              product.dataset === 'NISAR';
 
             if (!isAllowed) {
               this.store$.dispatch(new ClearBrowseOverlays());
@@ -161,7 +163,15 @@ export class MapEffects {
             }
           }
           if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
-            const url = selectedProduct.browses[0];
+            let url = selectedProduct.browses[0];
+            const latlon_browse = selectedProduct.browses.find((url) =>
+              url.includes('LATLON'),
+            );
+            if (latlon_browse) {
+              url = latlon_browse;
+            } else {
+              console.log('no lat/long');
+            }
 
             // for OPERA-S1 geotiffs
             // TODO: Wait for https://github.com/openlayers/openlayers/pull/15402
