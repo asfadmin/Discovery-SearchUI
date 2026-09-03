@@ -1,8 +1,13 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
-
+import moment2 from 'moment';
+import { Feature } from 'ol';
+import GeoJSON from 'ol/format/GeoJSON';
+import WKT from 'ol/format/WKT';
+import Geometry from 'ol/geom/Geometry';
+import VectorSource from 'ol/source/Vector';
 import { of, forkJoin, combineLatest, Observable } from 'rxjs';
 import {
   map,
@@ -15,6 +20,23 @@ import {
   debounceTime,
 } from 'rxjs/operators';
 
+import * as models from '@models';
+import { SearchType } from '@models';
+import * as services from '@services';
+import * as filtersStore from '@store/filters';
+import { FiltersActionType } from '@store/filters';
+import * as hyp3Store from '@store/hyp3';
+import * as mapStore from '@store/map';
+import * as scenesStore from '@store/scenes';
+import {
+  getAreResultsLoaded,
+  getScenes,
+  ScenesActionType,
+} from '@store/scenes';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
+
 import { AppState } from '../app.reducer';
 import {
   SetSearchAmount,
@@ -26,17 +48,6 @@ import {
   SetSearchOutOfDate,
   TimeseriesSearchResponse,
   setSearchKioskMode,
-} from './search.action';
-import * as scenesStore from '@store/scenes';
-import * as filtersStore from '@store/filters';
-import * as mapStore from '@store/map';
-import * as uiStore from '@store/ui';
-import * as hyp3Store from '@store/hyp3';
-import moment2 from 'moment';
-
-import * as services from '@services';
-
-import {
   SearchActionType,
   LoadOnDemandScenesList,
   SearchResponse,
@@ -49,23 +60,6 @@ import {
   getareResultsOutOfDate,
   getSearchType,
 } from './search.reducer';
-
-import * as models from '@models';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import WKT from 'ol/format/WKT';
-import GeoJSON from 'ol/format/GeoJSON';
-import VectorSource from 'ol/source/Vector';
-import {
-  getAreResultsLoaded,
-  getScenes,
-  ScenesActionType,
-} from '@store/scenes';
-import { SearchType } from '@models';
-import { Feature } from 'ol';
-import Geometry from 'ol/geom/Geometry';
-import { FiltersActionType } from '@store/filters';
-import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
-import * as searchStore from '@store/search';
 
 @Injectable()
 export class SearchEffects {

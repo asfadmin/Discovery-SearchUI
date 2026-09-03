@@ -1,9 +1,10 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EnvironmentService, NotificationService } from '@services';
-import { Observable, Subject, catchError, map, of, retry, timer } from 'rxjs';
-import { FlightDirection, TimeseriesSubframe } from '@models';
+import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable, Subject, catchError, map, of, retry, timer } from 'rxjs';
+
+import { FlightDirection, TimeseriesSubframe } from '@models';
+import { EnvironmentService, NotificationService } from '@services';
 import { AppState } from '@store';
 import { setTimeseriesValid } from '@store/charts';
 

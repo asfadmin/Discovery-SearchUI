@@ -1,19 +1,20 @@
 import { Injectable, inject } from '@angular/core';
-
 import { Map } from 'ol';
-import View from 'ol/View.js';
-import ImageLayer from 'ol/layer/Image';
-import * as polygonStyle from './map/polygon.style';
-import Static from 'ol/source/ImageStatic.js';
-import { XYZ } from 'ol/source';
-import { mapOptions } from '@models';
-import TileLayer from 'ol/layer/WebGLTile.js';
-import { Layer, Vector } from 'ol/layer';
-import Polygon from 'ol/geom/Polygon';
 import { Extent, getCenter } from 'ol/extent';
-import VectorSource from 'ol/source/Vector';
+import Polygon from 'ol/geom/Polygon';
+import { Layer, Vector } from 'ol/layer';
+import ImageLayer from 'ol/layer/Image';
+import TileLayer from 'ol/layer/WebGLTile.js';
 import Projection from 'ol/proj/Projection';
+import { XYZ } from 'ol/source';
+import Static from 'ol/source/ImageStatic.js';
+import VectorSource from 'ol/source/Vector';
+import View from 'ol/View.js';
+
+import { mapOptions } from '@models';
 import { BrowseOverlayService, WktService } from '@services';
+
+import * as polygonStyle from './map/polygon.style';
 interface Dimension {
   width: number;
   height: number;

@@ -1,18 +1,16 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { map, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
-import { Store } from '@ngrx/store';
+import { SearchType } from '@models';
+import { MapService, WktService } from '@services';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-
-import { MapService, WktService } from '@services';
 import { getSearchType } from '@store/search';
-import { SearchType } from '@models';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-aoi-clear',

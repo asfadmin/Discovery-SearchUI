@@ -1,11 +1,14 @@
 import { Injectable, inject } from '@angular/core';
-
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-
 import * as FileSaver from 'file-saver';
 import moment from 'moment';
 import { map, withLatestFrom, switchMap, tap, skip } from 'rxjs/operators';
+
+import * as models from '@models';
+import * as services from '@services';
+import * as hyp3Store from '@store/hyp3';
+import * as scenesStore from '@store/scenes';
 
 import { AppState } from '../app.reducer';
 import {
@@ -24,11 +27,6 @@ import {
   MakeDownloadScriptFromList,
 } from './queue.action';
 import { getDuplicates, getQueuedProducts } from './queue.reducer';
-import * as scenesStore from '@store/scenes';
-import * as hyp3Store from '@store/hyp3';
-
-import * as services from '@services';
-import * as models from '@models';
 
 export interface MetadataDownload {
   params: Record<string, string | null>;
@@ -134,7 +132,9 @@ export class QueueEffects {
   public queueScene = createEffect(() =>
     this.actions$.pipe(
       ofType<QueueScene>(QueueActionType.QUEUE_SCENE),
-      withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
+      withLatestFrom(
+        this.store$.select(scenesStore.getAllSceneProductsFiltered),
+      ),
       map(([action, sceneProducts]) => sceneProducts[action.payload]),
       map((products) => new AddItems(products)),
     ),
@@ -226,7 +226,9 @@ export class QueueEffects {
   public removeScene = createEffect(() =>
     this.actions$.pipe(
       ofType<RemoveSceneFromQueue>(QueueActionType.REMOVE_SCENE_FROM_QUEUE),
-      withLatestFrom(this.store$.select(scenesStore.getAllSceneProducts)),
+      withLatestFrom(
+        this.store$.select(scenesStore.getAllSceneProductsFiltered),
+      ),
       map(([action, sceneProducts]) => sceneProducts[action.payload]),
       tap((products) =>
         this.notificationService.downloadQueue(false, products.length),

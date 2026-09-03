@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-
 import {
   Observable,
   combineLatest,
@@ -12,8 +11,9 @@ import {
   map,
 } from 'rxjs';
 
-import { Hyp3ApiService } from './hyp3-api.service';
 import * as models from '@models';
+
+import { Hyp3ApiService } from './hyp3-api.service';
 
 @Injectable({
   providedIn: 'root',

@@ -7,11 +7,9 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
-
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-
-import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
 import { MapInteractionModeType } from '@models';

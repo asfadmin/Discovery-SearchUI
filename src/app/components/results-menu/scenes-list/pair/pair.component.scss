@@ -1,12 +1,12 @@
 .button-flex-row  {
-  flex-direction: row;
   display: flex;
+  flex-direction: row;
   align-items: flex-start;
 }
 
 .date {
-  text-align: right;
   margin: 0 4px !important;
+  text-align: right;
 }
 
 .icon-margin {

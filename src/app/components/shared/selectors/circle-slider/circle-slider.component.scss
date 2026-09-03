@@ -4,6 +4,7 @@
   @include themify($themes) {
     stroke: lighten(themed('primary'), 40%);
   }
+
   fill: none;
   stroke-width: 10px;
 }
@@ -12,6 +13,7 @@
   @include themify($themes) {
     stroke: themed('primary');
   }
+
   fill: none;
   stroke-width: 10px;
 }
@@ -33,15 +35,16 @@
 
 figure {
   display: inline-flex;
-  margin: 0;
   grid-row: 1;
   grid-column: 1;
+  margin: 0;
 }
 
 ::ng-deep .notch {
   @include themify($themes) {
     stroke: lighten(themed('primary'), 40%);
   }
+
   stroke-width: 1px;
 }
 

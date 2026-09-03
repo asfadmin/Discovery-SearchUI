@@ -1,3 +1,4 @@
+import { NgPlural, NgPluralCase, UpperCasePipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -7,25 +8,11 @@ import {
   inject,
   Signal,
 } from '@angular/core';
-
-import * as models from '@models';
-import * as hyp3Store from '@store/hyp3';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as searchStore from '@store/search';
-import { QueuedHyp3Job, SearchType } from '@models';
-import * as services from '@services';
-import * as userStore from '@store/user';
-import { MatDialogRef } from '@angular/material/dialog';
-import { ProcessingQueueComponent } from '@components/header/processing-queue';
-import { SubSink } from 'subsink';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, map } from 'rxjs/operators';
-import moment from 'moment';
-import { MatFormField, MatLabel } from '@angular/material/input';
-import { MatSelect, MatOption } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { NgPlural, NgPluralCase, UpperCasePipe } from '@angular/common';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatLabel } from '@angular/material/input';
 import {
   MatList,
   MatListItem,
@@ -34,12 +21,25 @@ import {
   MatListItemLine,
   MatListItemMeta,
 } from '@angular/material/list';
-import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatSelect, MatOption } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import moment from 'moment';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import { ProcessingQueueComponent } from '@components/header/processing-queue';
+import * as models from '@models';
+import { QueuedHyp3Job, SearchType } from '@models';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { ShortDatePipe } from '@pipes/short-date.pipe';
-import { TranslateModule } from '@ngx-translate/core';
+import * as services from '@services';
+import { AppState } from '@store';
+import * as hyp3Store from '@store/hyp3';
+import * as searchStore from '@store/search';
+import * as userStore from '@store/user';
 
 @Component({
   selector: 'app-processing-queue-jobs',

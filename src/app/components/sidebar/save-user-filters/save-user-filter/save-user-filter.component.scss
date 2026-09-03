@@ -14,25 +14,25 @@
 }
 
 .header-view {
-  padding: 10px 10px 10px 60px;
-  height: 100px;
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
+  justify-content: space-between;
+  height: 100px;
+  padding: 10px 10px 10px 60px;
   word-break: break-all;
 }
 
 .filter-expansion-panel {
-  width: 75%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  width: 75%;
 }
 
 .filter-apply-button {
   width: 25%;
-  margin-right: 25px;
   margin-top: 10px;
+  margin-right: 25px;
 }
 
 .filter-title {
@@ -43,8 +43,8 @@
 .saved-filter {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 7px 10px;
   margin: 0;
 }
@@ -59,24 +59,23 @@
 }
 
 .expand-arrow {
-  margin-right: 20px;
   margin-top: -2px;
+  margin-right: 20px;
 }
 
 .expand-arrow--icon {
-  font-size: 38px;
   display: flex;
-  align-content: center;
-  justify-content: center;
-  height: 38px;
+  place-content: center center;
   width: 38px;
+  height: 38px;
+  font-size: 38px;
 }
 
 .detailed-view {
-  padding: 0 10px 15px 60px;
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 10px 15px 60px;
   word-break: break-all;
 }
 

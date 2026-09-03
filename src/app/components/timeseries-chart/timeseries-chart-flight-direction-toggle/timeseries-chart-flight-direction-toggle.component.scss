@@ -7,11 +7,12 @@
     @include themify($themes) {
         color: themed("dark-primary-text");
     }
-    cursor: pointer;
+
+    padding-right: 10px;
     font-size: 14px;
     font-weight: 400;
-    padding-right: 10px;
     text-align: left;
+    cursor: pointer;
     transform:
       translateY(-1.2812em)
       scale(0.75)
@@ -24,9 +25,8 @@
         color: themed('dark-primary-text');
     }
 
-    transform: scale(1.5);
-
     margin-top: -4px;
+    transform: scale(1.5);
 
     @include md-icon-size($asf-ribbon-icon-size);
 }
@@ -35,6 +35,7 @@
     @include themify($themes) {
         color: themed('dark-primary-text');
     }
+
     @include md-icon-size($asf-ribbon-icon-size);
 }
 

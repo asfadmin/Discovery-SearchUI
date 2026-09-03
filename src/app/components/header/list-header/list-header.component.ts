@@ -1,18 +1,18 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { Breakpoints } from '@models';
+import { ScreenSizeService } from '@services';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 
-import { ScreenSizeService } from '@services';
-import { Breakpoints } from '@models';
-import { AsyncPipe } from '@angular/common';
-import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
 import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-list-header',

@@ -7,23 +7,6 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
-
-import * as noUiSlider from 'nouislider';
-import { Subject, fromEvent, Observable } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-} from 'rxjs/operators';
-
-import { AppState } from '@store';
-import { Store } from '@ngrx/store';
-import * as filtersStore from '@store/filters';
-
-import { SubSink } from 'subsink';
-import { ScreenSizeService } from '@services';
-import * as models from '@models';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -37,7 +20,22 @@ import {
   MatInput,
   MatError,
 } from '@angular/material/input';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import * as noUiSlider from 'nouislider';
+import { Subject, fromEvent, Observable } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+} from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import * as models from '@models';
+import { ScreenSizeService } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 @Component({
   selector: 'app-sbas-sliders-two',

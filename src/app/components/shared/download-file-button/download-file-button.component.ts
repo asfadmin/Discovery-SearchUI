@@ -1,3 +1,4 @@
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import {
   Component,
   Input,
@@ -7,8 +8,12 @@ import {
   AfterViewInit,
   inject,
 } from '@angular/core';
-import { DownloadService } from '@services/download.service';
-import { CMRProduct, DownloadStatus } from '@models';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   Observable,
   Subscription,
@@ -20,20 +25,14 @@ import {
   // switchMap,
   takeWhile,
 } from 'rxjs';
-
-import { Store } from '@ngrx/store';
-import * as queueStore from '@store/queue';
-import { AppState } from '@store';
-
-import * as userStore from '@store/user';
 import { SubSink } from 'subsink';
+
+import { CMRProduct, DownloadStatus } from '@models';
 import { AuthService, NotificationService } from '@services';
-import { HttpClient, HttpEventType } from '@angular/common/http';
-import { MatIconButton, MatButton } from '@angular/material/button';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { TranslateModule } from '@ngx-translate/core';
+import { DownloadService } from '@services/download.service';
+import { AppState } from '@store';
+import * as queueStore from '@store/queue';
+import * as userStore from '@store/user';
 
 @Component({
   selector: 'app-download-file-button',

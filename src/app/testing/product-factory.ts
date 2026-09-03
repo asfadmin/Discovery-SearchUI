@@ -1,10 +1,13 @@
+import { createHash } from 'crypto';
+
+import moment from 'moment';
+
 import {
   CMRProduct,
   CMRProductMetadata,
   FlightDirection,
   Dataset,
 } from '@models';
-
 import {
   airsar,
   alos,
@@ -24,10 +27,6 @@ import {
   alos_2,
   tropo,
 } from '@models/datasets';
-
-import moment from 'moment';
-
-import { createHash } from 'crypto';
 
 function createProduct(product: CMRProduct): CMRProduct {
   return product;

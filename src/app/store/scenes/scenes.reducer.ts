@@ -1,14 +1,16 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { ScenesActionType, ScenesActions } from './scenes.action';
-
 import {
   CMRProduct,
   ColumnSortDirection,
   opera_s1,
   CMRProductsById,
+  Props,
+  datasets,
 } from '@models';
 import { createSceneArraySelector } from '@store/selectors';
+
+import { ScenesActionType, ScenesActions } from './scenes.action';
 
 export interface ScenesState {
   ids: string[];
@@ -459,12 +461,35 @@ export const getNumberOfProducts = createSelector(
 export const getAllSceneProducts = createSelector(
   getScenesState,
   (state: ScenesState) => {
-    const allSceneProducts = {};
+    const allSceneProducts: Record<string, CMRProduct[]> = {};
 
     Object.entries(state.scenes).forEach(([sceneId, scene]) => {
       const products = scene.map((name) => state.products[name]);
 
       allSceneProducts[sceneId] = products;
+    });
+
+    return allSceneProducts;
+  },
+);
+
+export const getAllSceneProductsFiltered = createSelector(
+  getScenesState,
+  (state: ScenesState) => {
+    const allSceneProducts: Record<string, CMRProduct[]> = {};
+
+    Object.entries(state.scenes).forEach(([sceneId, scene]) => {
+      if (
+        datasets[state.products[sceneId]?.dataset]?.properties.includes(
+          Props.SINGLE_PRODUCT,
+        )
+      ) {
+        allSceneProducts[sceneId] = [state.products[sceneId]];
+      } else {
+        const products = scene.map((name) => state.products[name]);
+
+        allSceneProducts[sceneId] = products;
+      }
     });
 
     return allSceneProducts;

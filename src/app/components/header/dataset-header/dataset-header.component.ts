@@ -1,28 +1,28 @@
-import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-
-import { AppState } from '@store';
-import * as uiStore from '@store/ui';
-import * as queueStore from '@store/queue';
-import * as filterStore from '@store/filters';
-
-import * as models from '@models';
-import * as services from '@services';
 import { NgClass, AsyncPipe } from '@angular/common';
-import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
-import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { AoiFilterComponent } from './aoi-filter/aoi-filter.component';
-import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
-import { MaxResultsSelectorComponent } from '@components/shared/max-results-selector/max-results-selector.component';
-import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
+import { MatIcon } from '@angular/material/icon';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { MaxResultsSelectorComponent } from '@components/shared/max-results-selector/max-results-selector.component';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
+import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import * as models from '@models';
 import { IsRelevantPipe } from '@pipes/relevant.pipe';
+import * as services from '@services';
+import { AppState } from '@store';
+import * as filterStore from '@store/filters';
+import * as queueStore from '@store/queue';
+import * as uiStore from '@store/ui';
+
+import { AoiFilterComponent } from './aoi-filter/aoi-filter.component';
+import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
 
 @Component({
   selector: 'app-dataset-header',

@@ -1,16 +1,15 @@
 import { Component, inject } from '@angular/core';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as searchStore from '@store/search';
-import { SearchType } from '@models';
-
 import {
   MatBottomSheetRef,
   MAT_BOTTOM_SHEET_DATA,
 } from '@angular/material/bottom-sheet';
 import { MatButton } from '@angular/material/button';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { SearchType } from '@models';
+import { AppState } from '@store';
+import * as searchStore from '@store/search';
 
 @Component({
   selector: 'app-queue-submit',

@@ -1,10 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 
+import * as models from '@models';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-
-import * as models from '@models';
 
 @Injectable({
   providedIn: 'root',

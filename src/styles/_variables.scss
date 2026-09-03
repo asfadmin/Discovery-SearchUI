@@ -3,28 +3,23 @@
 $asf-font-size: 16px;
 $asf-line-height: 17px;
 $asf-ribbon-icon-size: 18px;
-
 $uaf-primary-blue: #236192;
 $uaf-primary-yellow: #ffcd00;
 $uaf-primary-white: #fff;
-
 $uaf-neutrals-1: #efdbb2;
 $uaf-neutrals-2: #c7c9c7;
 $uaf-neutrals-3: #d7d2cb;
-
 $uaf-accent-4: #65665c;
-
-$dark-primary-text: rgba(0,0,0, 0.87);
-$dark-secondary-text: rgba(0,0,0, 0.54);
-$dark-disabled-text: rgba(0,0,0, 0.38);
-$dark-dividers: rgba(0,0,0, 0.12);
-$dark-focused: rgba(0,0,0, 0.12);
+$dark-primary-text: rgb(0 0 0 / 87%);
+$dark-secondary-text: rgb(0 0 0 / 54%);
+$dark-disabled-text: rgb(0 0 0 / 38%);
+$dark-dividers: rgb(0 0 0 / 12%);
+$dark-focused: rgb(0 0 0 / 12%);
 $light-primary-text: white;
-$light-secondary-text: rgba(255,255,255, 0.7);
-$light-disabled-text: rgba(255,255,255, 0.5);
-$light-dividers: rgba(255,255,255, 0.12);
-$light-focused: rgba(255,255,255, 0.12);
-
+$light-secondary-text: rgb(255 255 255 / 70%);
+$light-disabled-text: rgb(255 255 255 / 50%);
+$light-dividers: rgb(255 255 255 / 12%);
+$light-focused: rgb(255 255 255 / 12%);
 $contrast: (
   50: $dark-primary-text,
   100: $dark-primary-text,
@@ -36,12 +31,11 @@ $contrast: (
   700: $light-primary-text,
   800: $light-primary-text,
   900: $light-primary-text,
-  A100: $dark-primary-text,
-  A200: $light-primary-text,
-  A400: $light-primary-text,
-  A700: $light-primary-text,
+  a100: $dark-primary-text,
+  a200: $light-primary-text,
+  a400: $light-primary-text,
+  a700: $light-primary-text,
 );
-
 $mat-asf-primary: (
   50: #fbfcf0,
   100: #f6f7eb,
@@ -59,7 +53,6 @@ $mat-asf-primary: (
   A700 : #fbfcf0,
   contrast: $contrast,
 );
-
 $mat-asf-blue: (
   50: #e3f6fc,
   100: #b8e8f8,
@@ -73,7 +66,6 @@ $mat-asf-blue: (
   900: #236192,
   contrast: $contrast,
 );
-
 $mat-asf-red: (
   50: #fbeaef,
   100: #f6cbd5,
@@ -87,7 +79,6 @@ $mat-asf-red: (
   900: #a6192e,
   contrast: $contrast,
 );
-
 $mat-asf-yellow: (
   50: #fff9e0,
   100: #ffedb0,

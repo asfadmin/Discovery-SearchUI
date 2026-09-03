@@ -1,10 +1,18 @@
+import { AsyncPipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild, OnInit, OnDestroy, inject } from '@angular/core';
-
+import { MatButton } from '@angular/material/button';
+import { MatButtonToggle } from '@angular/material/button-toggle';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { Subject, of } from 'rxjs';
 import { delay, tap, catchError } from 'rxjs/operators';
-
 import { SubSink } from 'subsink';
 
+import * as models from '@models';
 import {
   AsfApiService,
   AsfLanguageService,
@@ -13,19 +21,8 @@ import {
   WktService,
   ScreenSizeService,
 } from '@services';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { DrawNewPolygon } from '@store/map';
-
-import * as models from '@models';
-import { AsyncPipe } from '@angular/common';
-import { MatButton } from '@angular/material/button';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatButtonToggle } from '@angular/material/button-toggle';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
 
 enum FileErrors {
   TOO_LARGE = 'Too large',

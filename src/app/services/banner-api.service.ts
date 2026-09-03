@@ -1,11 +1,11 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { Injectable, inject } from '@angular/core';
 import { Observable, of, combineLatest } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { EnvironmentService } from './environment.service';
 import { BannerApiResponse } from '@models';
+
+import { EnvironmentService } from './environment.service';
 // import { NotificationService } from './notification.service';
 
 @Injectable({

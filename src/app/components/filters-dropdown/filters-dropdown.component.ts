@@ -1,5 +1,3 @@
-import { Component, Input, OnInit, inject, Signal } from '@angular/core';
-
 import {
   trigger,
   state,
@@ -7,37 +5,37 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-
+import { AsyncPipe } from '@angular/common';
+import { Component, Input, OnInit, inject, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 
-import { AppState } from '@store';
-import * as uiStore from '@store/ui';
-import * as searchStore from '@store/search';
-import * as filterStore from '@store/filters';
-
+import { CancelFilterChangesComponent } from '@components/shared/cancel-filter-changes/cancel-filter-changes.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { MaxResultsSelectorComponent } from '@components/shared/max-results-selector/max-results-selector.component';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
+import * as models from '@models';
+import { SBASOverlap } from '@models';
 import {
   EnvironmentService,
   NotificationService,
   ScreenSizeService,
 } from '@services';
-import * as models from '@models';
-import { Observable } from 'rxjs';
+import { AppState } from '@store';
+import * as filterStore from '@store/filters';
 import { areFiltersChanged } from '@store/filters';
-import { SBASOverlap } from '@models';
-import { AsyncPipe } from '@angular/common';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
-import { FrameOrderFiltersComponent } from './frame-order-filters/frame-order-filters.component';
-import { DatasetFiltersComponent } from './dataset-filters/dataset-filters.component';
-import { ListFiltersComponent } from './list-filters/list-filters.component';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+
 import { BaselineFiltersComponent } from './baseline-filters/baseline-filters.component';
-import { SbasFiltersComponent } from './sbas-filters/sbas-filters.component';
 import { CustomProductsFiltersComponent } from './custom-products-filters/custom-products-filters.component';
+import { DatasetFiltersComponent } from './dataset-filters/dataset-filters.component';
+import { FrameOrderFiltersComponent } from './frame-order-filters/frame-order-filters.component';
+import { ListFiltersComponent } from './list-filters/list-filters.component';
+import { SbasFiltersComponent } from './sbas-filters/sbas-filters.component';
 import { TimeseriesFiltersComponent } from './timeseries-filters/timeseries-filters.component';
-import { MaxResultsSelectorComponent } from '@components/shared/max-results-selector/max-results-selector.component';
-import { CancelFilterChangesComponent } from '@components/shared/cancel-filter-changes/cancel-filter-changes.component';
-import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-filters-dropdown',

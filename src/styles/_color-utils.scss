@@ -21,21 +21,27 @@
   @if $lightness != null {
     $adjustments: map.merge($adjustments, ("lightness": $lightness));
   }
+
   @if $saturation != null {
     $adjustments: map.merge($adjustments, ("saturation": $saturation));
   }
+
   @if $hue != null {
     $adjustments: map.merge($adjustments, ("hue": $hue));
   }
+
   @if $alpha != null {
     $adjustments: map.merge($adjustments, ("alpha": $alpha));
   }
+
   @if $red != null {
     $adjustments: map.merge($adjustments, ("red": $red));
   }
+
   @if $green != null {
     $adjustments: map.merge($adjustments, ("green": $green));
   }
+
   @if $blue != null {
     $adjustments: map.merge($adjustments, ("blue": $blue));
   }
