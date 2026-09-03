@@ -353,6 +353,8 @@
   "HOW_TO_USE_SERVICE": "How do you want to use our service?",
   "HOW_TO_USE_SERVICE_DESCRIPTION": "Please provide a short description (1-5 sentences) of how and why you would like to use ASF's On Demand products. Expand the section below for some examples.",
   "HYP3_SDK_PYTHON_EXPORT": "HyP3 SDK Python Export",
+  "HYP3_API": "HyP3 API",
+  "HYP3_API_UI": "HyP3 API UI",
   "HYP3_API_URL": "HyP3 API URL",
   "HYP3_USER_GUIDE": "HyP3 User Guide",
   "HYP3_AVAILABLE": "Available for On Demand Processing (HyP3)",
@@ -947,5 +949,8 @@
   "EXPORTED_DATASET_PATH_CLIPBOARD": "Copied dataset path to clipboard.",
   "GDAL_313_ADMONITION": "GDAL 3.13 supports use of HDF5 driver for NISAR files instead of the NETCDF driver required by older versions.",
   "SELECT": "Select",
-  "GDAL_DROPDOWN_EXPAND_BUTTON": "Expand GDAL datasets dialog."
+  "GDAL_DROPDOWN_EXPAND_BUTTON": "Expand GDAL datasets dialog.",
+  "LAT": "lat",
+  "LON": "lon",
+  "NOT_APPLICABLE": "N/A"
 }

@@ -358,6 +358,8 @@
   "HOW_TO_USE_SERVICE": "¿Cómo desea utilizar nuestro servicio?",
   "HOW_TO_USE_SERVICE_DESCRIPTION": "Por favor, proporcione una breve descripción (de 1 a 5 oraciones) de cómo y por qué desea utilizar los productos On Demand de ASF. Expanda la sección siguiente para ver algunos ejemplos.",
   "HYP3_SDK_PYTHON_EXPORT": "Exportar HyP3 SDK Python",
+  "HYP3_API": "HyP3 API",
+  "HYP3_API_UI": "HyP3 API UI",
   "HYP3_API_URL": "URL de la API de HyP3",
   "HYP3_USER_GUIDE": "Guía del usuario de HyP3",
   "HYP3_AVAILABLE": "Disponible para procesamiento On Demand (HyP3)",
@@ -924,7 +926,7 @@
   "GDAL_COMMAND_DESCRIPTION": "Comando GDAL para la línea de comandos",
   "CUSTOMIZE_PRODUCT": "Personalizar con GDAL",
   "SELECT_A_DATASET": "Seleccione un conjunto de datos para exportar.",
-  "SELECT_A_DATASET_TO_CONTINUE": "Select a dataset to continue.",
+  "SELECT_A_DATASET_TO_CONTINUE": "Seleccione un conjunto de datos para continuar.",
   "CONFIGURE_GDAL_OPTIONS": "Configure las opciones de salida.",
   "RUN_GDAL_SNIPPET": "Copie el fragmento de código GDAL.",
   "CROP_TO_AOI": "Recortar al Área de Interés actual",
@@ -947,5 +949,8 @@
   "EXPORTED_DATASET_PATH_CLIPBOARD": "Ruta del conjunto de datos copiada al portapapeles.",
   "GDAL_313_ADMONITION": "GDAL 3.13 admite el controlador HDF5 para archivos NISAR, en lugar del controlador NETCDF que requieren las versiones anteriores.",
   "SELECT": "Select",
-  "GDAL_DROPDOWN_EXPAND_BUTTON": "Expand GDAL datasets dialog."
+  "GDAL_DROPDOWN_EXPAND_BUTTON": "Expandir el diálogo de conjuntos de datos de GDAL.",
+  "LAT": "lat",
+  "LON": "lon",
+  "NOT_APPLICABLE": "N/D"
 }
