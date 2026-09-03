@@ -469,7 +469,10 @@
       @if (!isUserLoggedIn) {
         <div>
           @if (breakpoint === breakpoints.MOBILE) {
-            <span> <b>{{ 'NOT_APPLICABLE' | translate }}</b> - {{ 'LOGIN_TO_VIEW' | translate }} </span>
+            <span>
+              <b>{{ 'NOT_APPLICABLE' | translate }}</b> -
+              {{ 'LOGIN_TO_VIEW' | translate }}
+            </span>
           }
           @if (breakpoint !== breakpoints.MOBILE) {
             <span>

@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 
 import { TranslateModule } from '@ngx-translate/core';
-
 import { LonLat } from '@models';
 import * as services from '@services';
 
