@@ -10,7 +10,7 @@
 
 .dataset-deprecated {
   @include themify($themes) {
-    background: color.adjust(themed('warn'), 20) !important;
+    background: color.adjust(themed('warn'), $lightness: 20%) !important;
   }
 }
 
