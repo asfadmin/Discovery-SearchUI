@@ -1,5 +1,14 @@
 [
   {
+    "rule": "aria-progressbar-name",
+    "description": "Ensure every ARIA progressbar node has an accessible name",
+    "targets": [
+      [
+        "mat-spinner"
+      ]
+    ]
+  },
+  {
     "rule": "button-name",
     "description": "Ensure buttons have discernible text",
     "targets": [
@@ -86,6 +95,21 @@
     "targets": [
       [
         "meta[name=\"viewport\"]"
+      ]
+    ]
+  },
+  {
+    "rule": "nested-interactive",
+    "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies",
+    "targets": [
+      [
+        "#mat-button-toggle-12-button"
+      ],
+      [
+        ".perspective"
+      ],
+      [
+        "#mat-button-toggle-6-button"
       ]
     ]
   },

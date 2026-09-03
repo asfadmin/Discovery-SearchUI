@@ -1,19 +1,13 @@
 [
   {
-    "rule": "aria-input-field-name",
-    "description": "Ensure every ARIA input field has an accessible name",
+    "rule": "aria-progressbar-name",
+    "description": "Ensure every ARIA progressbar node has an accessible name",
     "targets": [
       [
-        "div[aria-valuetext=\"0.00\"]"
+        ".max-results > app-max-results-selector > .perspective.results-count[aria-label=\"Select max results\"] > .loading-spinner.ng-star-inserted[_ngcontent-ng-c756410754=\"\"] > mat-spinner"
       ],
       [
-        "div[aria-valuetext=\"800.00\"]"
-      ],
-      [
-        "div[aria-valuemax=\"12.0\"]"
-      ],
-      [
-        "div[aria-valuemin=\"1.0\"]"
+        ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"] > .loading-spinner.ng-star-inserted[_ngcontent-ng-c756410754=\"\"] > mat-spinner"
       ]
     ]
   },
@@ -22,7 +16,7 @@
     "description": "Ensure buttons have discernible text",
     "targets": [
       [
-        "#mat-button-toggle-11-button"
+        "#mat-button-toggle-9-button"
       ],
       [
         "#mat-button-toggle-0-button"
@@ -40,25 +34,10 @@
         "#mat-button-toggle-4-button"
       ],
       [
+        ".mdc-fab"
+      ],
+      [
         "#mat-button-toggle-7-button"
-      ],
-      [
-        "#mat-button-toggle-14-button"
-      ],
-      [
-        "#mat-button-toggle-15-button"
-      ],
-      [
-        "#mat-button-toggle-16-button"
-      ],
-      [
-        "#mat-button-toggle-17-button"
-      ],
-      [
-        "#mat-button-toggle-18-button"
-      ],
-      [
-        "#mat-button-toggle-19-button"
       ]
     ]
   },
@@ -67,7 +46,34 @@
     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
     "targets": [
       [
-        "a[target=\"_blank\"]:nth-child(2)"
+        ".map-view-button--layout > label"
+      ],
+      [
+        ".zoom-buttons > .fx-row-center.button-group-label[_ngcontent-ng-c258732369=\"\"] > label"
+      ],
+      [
+        ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(4) > .fx-row-center.button-group-label[_ngcontent-ng-c258732369=\"\"] > label"
+      ],
+      [
+        ".lat--layout"
+      ],
+      [
+        ".lat--layout > b"
+      ],
+      [
+        ".lon--layout"
+      ],
+      [
+        ".lon--layout > b"
+      ],
+      [
+        ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"]"
+      ],
+      [
+        ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"] > .ng-star-inserted[_ngcontent-ng-c756410754=\"\"]:nth-child(1)"
+      ],
+      [
+        ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"] > .ng-star-inserted[_ngcontent-ng-c756410754=\"\"]:nth-child(1) > span[_ngcontent-ng-c756410754=\"\"]"
       ],
       [
         "a[target=\"_blank\"]:nth-child(4)"
@@ -112,7 +118,13 @@
     "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies",
     "targets": [
       [
-        "#mat-button-toggle-10-button"
+        "#mat-button-toggle-8-button"
+      ],
+      [
+        ".max-results > app-max-results-selector > .perspective.results-count[aria-label=\"Select max results\"]"
+      ],
+      [
+        ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"]"
       ],
       [
         "#mat-button-toggle-6-button"
@@ -127,34 +139,28 @@
         "body > div:nth-child(2)"
       ],
       [
-        ".saved-searches__header"
-      ],
-      [
-        ".mdc-text-field--no-label"
-      ],
-      [
-        ".search-description > div[_ngcontent-ng-c3812570625=\"\"]:nth-child(2)"
-      ],
-      [
-        "app-search-filters"
-      ],
-      [
         ".breadcrumb-list > .fx-row[_ngcontent-ng-c2768180567=\"\"]"
       ],
       [
-        ".button-label"
+        ".button-label[_ngcontent-ng-c2182462753=\"\"]"
       ],
       [
-        ".reference-toggle-wrapper"
+        ".button-label[_ngcontent-ng-c844290484=\"\"]"
       ],
       [
-        ".mat-form-field-animations-enabled.w100.mat-mdc-form-field-type-mat-input > .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled"
+        ".full-width > .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled > .mat-mdc-form-field-flex > .mat-mdc-form-field-infix"
       ],
       [
-        "#mat-button-toggle-10-button"
+        ".date-selector--layout > app-date-selector > app-date-range > .date-selector[novalidate=\"\"] > .date-input-field.mat-mdc-form-field-has-icon-suffix.mat-mdc-form-field-type-mat-input:nth-child(1) > .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled"
       ],
       [
-        "#mat-button-toggle-11-button"
+        ".date-selector--layout > app-date-selector > app-date-range > .date-selector[novalidate=\"\"] > .date-input-field.mat-mdc-form-field-has-icon-suffix.mat-mdc-form-field-type-mat-input:nth-child(2) > .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled"
+      ],
+      [
+        "#mat-button-toggle-8-button"
+      ],
+      [
+        "#mat-button-toggle-9-button"
       ],
       [
         "app-info-bar"
@@ -178,13 +184,16 @@
         ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(4)"
       ],
       [
+        ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(5) > .fx-row-center.button-group-label[_ngcontent-ng-c258732369=\"\"]"
+      ],
+      [
         ".lat-lon"
       ],
       [
         ".meatball"
       ],
       [
-        ".dataset-filters-card > .header"
+        ".header"
       ],
       [
         "#mat-button-toggle-6-button"
@@ -196,40 +205,7 @@
         "app-attributions"
       ],
       [
-        "div[_ngcontent-ng-c2470562375=\"\"]:nth-child(7)"
-      ],
-      [
-        ".sbas-button-group[_ngcontent-ng-c2454936245=\"\"]:nth-child(1) > .button-group-label[_ngcontent-ng-c2454936245=\"\"]"
-      ],
-      [
-        "#mat-button-toggle-14-button"
-      ],
-      [
-        "#mat-button-toggle-15-button"
-      ],
-      [
-        "#mat-button-toggle-16-button"
-      ],
-      [
-        ".sbas-button-group[_ngcontent-ng-c2454936245=\"\"]:nth-child(3) > .button-group-label[_ngcontent-ng-c2454936245=\"\"]"
-      ],
-      [
-        "#mat-button-toggle-17-button"
-      ],
-      [
-        "#mat-button-toggle-18-button"
-      ],
-      [
-        "#mat-button-toggle-19-button"
-      ],
-      [
-        ".sbas-button-group[_ngcontent-ng-c2454936245=\"\"]:nth-child(5) > .button-group-label[_ngcontent-ng-c2454936245=\"\"]"
-      ],
-      [
-        ".sbas-column-1[_ngcontent-ng-c2454936245=\"\"]"
-      ],
-      [
-        "app-sbas-sliders-two > div[_ngcontent-ng-c2262651237=\"\"]:nth-child(1)"
+        "div[_ngcontent-ng-c2470562375=\"\"]:nth-child(8)"
       ]
     ]
   },

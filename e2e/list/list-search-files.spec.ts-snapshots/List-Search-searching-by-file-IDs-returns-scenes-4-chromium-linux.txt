@@ -49,6 +49,9 @@
         ".lon--layout > b"
       ],
       [
+        ".ls-example > div[_ngcontent-ng-c3217264297=\"\"] > span[_ngcontent-ng-c3217264297=\"\"]"
+      ],
+      [
         "div[_ngcontent-ng-c3217264297=\"\"]:nth-child(3) > span[_ngcontent-ng-c3217264297=\"\"]"
       ],
       [

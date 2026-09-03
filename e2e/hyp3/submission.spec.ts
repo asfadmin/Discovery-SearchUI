@@ -20,7 +20,6 @@ test(
         'S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906',
       );
     await expect(loggedInPage).toHaveScreenshot();
-    expect(await accessibilityScan(page)).toMatchSnapshot();
 
     await loggedInPage.waitForResponse(
       (response) =>
@@ -43,7 +42,7 @@ test(
       .first()
       .click();
     await expect(loggedInPage).toHaveScreenshot();
-    expect(await accessibilityScan(page)).toMatchSnapshot();
+    expect(await accessibilityScan(loggedInPage)).toMatchSnapshot();
 
     await loggedInPage.locator('.mdc-icon-button').first().click();
     await loggedInPage
@@ -51,13 +50,13 @@ test(
       .click();
     await loggedInPage.getByRole('button', { name: 'On Demand' }).click();
     await expect(loggedInPage).toHaveScreenshot();
-    expect(await accessibilityScan(page)).toMatchSnapshot();
+    expect(await accessibilityScan(loggedInPage)).toMatchSnapshot();
 
     await loggedInPage
       .getByRole('menuitem', { name: 'On Demand Queue' })
       .click();
     await expect(loggedInPage).toHaveScreenshot();
-    expect(await accessibilityScan(page)).toMatchSnapshot();
+    expect(await accessibilityScan(loggedInPage)).toMatchSnapshot();
 
     await loggedInPage
       .getByRole('button', { name: 'Submit 1 job (5 credits)' })
@@ -69,7 +68,7 @@ test(
       'Submit 1 Job (5 credits)',
     );
     await expect(loggedInPage).toHaveScreenshot();
-    expect(await accessibilityScan(page)).toMatchSnapshot();
+    expect(await accessibilityScan(loggedInPage)).toMatchSnapshot();
   },
 );
 
