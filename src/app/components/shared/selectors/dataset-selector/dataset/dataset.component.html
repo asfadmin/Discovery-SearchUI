@@ -3,11 +3,11 @@
   class="menu-item mat-menu-item"
   (click)="onSelectionChange(dataset().id)"
   [ngClass]="{
-    'dataset--deprecated': isDeprecated(),
+    'dataset-deprecated': isDeprecated(),
   }"
 >
   <div class="menu-item-inner">
-    <div class="dataset--layout menu-item-content">
+    <div class="dataset-layout menu-item-content">
       <div class="item-title">
         {{ dataset().name }}
         <span class="dataset-light-text">
