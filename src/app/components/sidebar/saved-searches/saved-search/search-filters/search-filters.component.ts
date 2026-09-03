@@ -1,11 +1,6 @@
 import { Component, Input } from '@angular/core';
 
 import * as models from '@models';
-import { ListSearchFiltersComponent } from './list-search-filters/list-search-filters.component';
-import { GeographicSearchFiltersComponent } from './geographic-search-filters/geographic-search-filters.component';
-import { BaselineSearchFiltersComponent } from './baseline-search-filters/baseline-search-filters.component';
-import { SbasSearchFiltersComponent } from './sbas-search-filters/sbas-search-filters.component';
-import { DisplacementFiltersComponent } from './displacement-filters/displacement-filters.component';
 import {
   DisplacementFilterPipe,
   BaselineFilterPipe,
@@ -13,6 +8,12 @@ import {
   GeographicFilterPipe,
   ListFilterPipe,
 } from '@pipes/filter-type.pipe';
+
+import { BaselineSearchFiltersComponent } from './baseline-search-filters/baseline-search-filters.component';
+import { DisplacementFiltersComponent } from './displacement-filters/displacement-filters.component';
+import { GeographicSearchFiltersComponent } from './geographic-search-filters/geographic-search-filters.component';
+import { ListSearchFiltersComponent } from './list-search-filters/list-search-filters.component';
+import { SbasSearchFiltersComponent } from './sbas-search-filters/sbas-search-filters.component';
 
 @Component({
   selector: 'app-search-filters',

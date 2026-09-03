@@ -1,21 +1,19 @@
-import { Component, inject, computed } from '@angular/core';
-
-import { Store } from '@ngrx/store';
-
-import { AppState } from '@store';
-import * as hyp3Store from '@store/hyp3';
-import * as filtersStore from '@store/filters';
-import * as searchStore from '@store/search';
-
-import * as services from '@services';
-import * as models from '@models';
-import * as userStore from '@store/user';
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import { Hyp3UrlComponent } from '@components/shared/hyp3-url/hyp3-url.component';
-import { ShortDatePipe } from '@pipes/short-date.pipe';
-import { JoinPipe } from '@pipes/join.pipe';
+import { Component, inject, computed, Signal } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { Signal } from '@angular/core';
+
+import { Hyp3UrlComponent } from '@components/shared/hyp3-url/hyp3-url.component';
+import * as models from '@models';
+import { JoinPipe } from '@pipes/join.pipe';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
+import * as services from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as hyp3Store from '@store/hyp3';
+import * as searchStore from '@store/search';
+import * as userStore from '@store/user';
+
 @Component({
   selector: 'app-info-bar',
   templateUrl: './info-bar.component.html',

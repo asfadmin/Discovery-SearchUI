@@ -7,27 +7,28 @@ import {
   Output,
   inject,
 } from '@angular/core';
-import { MapService, WktService } from '@services';
-import { debounceTime, Subject, switchMap } from 'rxjs';
-import { Vector as VectorSource } from 'ol/source';
-import GeoJSON from 'ol/format/GeoJSON';
-import { transformExtent } from 'ol/proj';
-
-import { SubSink } from 'subsink';
-import { AppState } from '@store';
-import { Store } from '@ngrx/store';
-import { getGeocodeArea } from '@store/filters';
-import { Feature } from 'ol';
-import * as models from '@models';
-import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 import {
   MatAutocompleteTrigger,
   MatAutocomplete,
 } from '@angular/material/autocomplete';
-import { FormsModule } from '@angular/forms';
-import {} from '@angular/common';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
 import { MatOption } from '@angular/material/select';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { Feature } from 'ol';
+import GeoJSON from 'ol/format/GeoJSON';
+import { transformExtent } from 'ol/proj';
+import { Vector as VectorSource } from 'ol/source';
+import { debounceTime, Subject, switchMap } from 'rxjs';
+import { SubSink } from 'subsink';
+
+import * as models from '@models';
+import { MapService, WktService } from '@services';
+import { AppState } from '@store';
+import { getGeocodeArea } from '@store/filters';
+
+import {} from '@angular/common';
 
 @Component({
   selector: 'app-geocode-selector',

@@ -1,14 +1,6 @@
+import { UpperCasePipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-
-import { tap } from 'rxjs/operators';
-import { AppState } from '@store';
-import * as filtersStore from '@store/filters';
-
-import { PropertyService } from '@services';
-import { SubSink } from 'subsink';
-import * as models from '@models';
-import { ProductTypeSelectorComponent } from '../product-type-selector/product-type-selector.component';
+import { FormsModule } from '@angular/forms';
 import {
   MatFormField,
   MatHint,
@@ -16,11 +8,19 @@ import {
   MatLabel,
 } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
-import { ShortNameSelectorComponent } from '../short-name-selector/short-name-selector.component';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { tap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import * as models from '@models';
 import { IsRelevantPipe } from '@pipes/relevant.pipe';
-import { UpperCasePipe } from '@angular/common';
+import { PropertyService } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+
+import { ProductTypeSelectorComponent } from '../product-type-selector/product-type-selector.component';
+import { ShortNameSelectorComponent } from '../short-name-selector/short-name-selector.component';
 
 @Component({
   selector: 'app-other-selector',

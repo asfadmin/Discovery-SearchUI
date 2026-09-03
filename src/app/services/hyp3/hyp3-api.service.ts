@@ -1,10 +1,11 @@
-import { Injectable, inject } from '@angular/core';
 import {
   HttpClient,
   HttpErrorResponse,
   HttpParams,
 } from '@angular/common/http';
-
+import { Injectable, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as moment from 'moment';
 import {
   Observable,
   of,
@@ -16,14 +17,12 @@ import {
   Subject,
 } from 'rxjs';
 import { mergeMap, toArray, bufferCount, tap, finalize } from 'rxjs/operators';
-import * as moment from 'moment';
 
 import * as models from '@models';
+import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 
 import { NotificationService } from '../notification.service';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
 
 export interface RenameProgressInfo {
   percent: number;

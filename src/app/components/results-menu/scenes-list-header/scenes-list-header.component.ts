@@ -1,7 +1,22 @@
+import { NgClass, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatMenuTrigger,
+  MatMenu,
+  MatMenuItem,
+  MatMenuContent,
+} from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
-
-import { combineLatest, switchMap } from 'rxjs';
+import { combineLatest, switchMap, Observable } from 'rxjs';
 import {
   debounceTime,
   filter,
@@ -10,16 +25,19 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { SubSink } from 'subsink';
 
-import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
-import * as uiStore from '@store/ui';
-import * as queueStore from '@store/queue';
-import * as searchStore from '@store/search';
-import * as filtersStore from '@store/filters';
-import * as hyp3Store from '@store/hyp3';
-
+import {
+  CodeExportComponent,
+  CodeExportType,
+} from '@components/shared/code-export';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
+import {
+  ProjectNameDialogComponent,
+  ProjectNameDialogData,
+  ProjectNameDialogResult,
+} from '@components/shared/project-name-dialog';
+import * as models from '@models';
 import {
   MapService,
   ScenesService,
@@ -31,35 +49,13 @@ import {
   ExportService,
   DatasetForProductService,
 } from '@services';
-
-import * as models from '@models';
-import { SubSink } from 'subsink';
-import { Observable } from 'rxjs';
-import {
-  CodeExportComponent,
-  CodeExportType,
-} from '@components/shared/code-export';
-import {
-  ProjectNameDialogComponent,
-  ProjectNameDialogData,
-  ProjectNameDialogResult,
-} from '@components/shared/project-name-dialog';
-import { MatDialog } from '@angular/material/dialog';
-import { NgClass, AsyncPipe, KeyValuePipe } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
-import { MatTooltip } from '@angular/material/tooltip';
-import {
-  MatButtonToggleGroup,
-  MatButtonToggle,
-} from '@angular/material/button-toggle';
-import {
-  MatMenuTrigger,
-  MatMenu,
-  MatMenuItem,
-  MatMenuContent,
-} from '@angular/material/menu';
-import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as hyp3Store from '@store/hyp3';
+import * as queueStore from '@store/queue';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
 
 interface ProductGroup {
   name: string;

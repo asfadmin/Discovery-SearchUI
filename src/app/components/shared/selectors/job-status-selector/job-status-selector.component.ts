@@ -1,17 +1,17 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { Hyp3JobStatusCode } from '@models';
-
+import { FormsModule } from '@angular/forms';
+import { MatLabel } from '@angular/material/form-field';
+import { MatFormField } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { SubSink } from 'subsink';
 
+import { Hyp3JobStatusCode } from '@models';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-import { SubSink } from 'subsink';
-import { MatFormField } from '@angular/material/input';
-import { MatLabel } from '@angular/material/form-field';
-import { MatSelect, MatOption } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
+
 import {} from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-job-status-selector',

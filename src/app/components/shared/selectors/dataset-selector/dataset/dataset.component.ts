@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   Component,
   computed,
@@ -6,19 +7,18 @@ import {
   output,
   ViewChild,
 } from '@angular/core';
-
-import { Dataset } from '@models';
-import { provisionalIssuesUrl } from '@models/datasets/nisar';
+import { MatCardActions } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { MatCardActions } from '@angular/material/card';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { ScreenSizeService } from '@services';
+
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { Dataset } from '@models';
 import * as models from '@models';
+import { provisionalIssuesUrl } from '@models/datasets/nisar';
 import { PrettyDateRangePipe } from '@pipes/pretty-date.pipe';
+import { ScreenSizeService } from '@services';
 
 @Component({
   selector: 'app-dataset',

@@ -8,25 +8,24 @@ import {
   inject,
   ViewChild,
 } from '@angular/core';
-
-import * as models from '@models';
-import * as filtersStore from '@store/filters';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import { SubSink } from 'subsink';
+import { MatLabel } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormField, MatHint } from '@angular/material/input';
 import {
   MatSelectChange,
   MatSelect,
   MatOption,
 } from '@angular/material/select';
-import { combineLatest } from 'rxjs';
-import { MatFormField, MatHint } from '@angular/material/input';
-import { MatLabel } from '@angular/material/form-field';
 import { MatTooltip } from '@angular/material/tooltip';
-
-import { MatIconModule } from '@angular/material/icon';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { combineLatest } from 'rxjs';
+import { SubSink } from 'subsink';
+
+import * as models from '@models';
 import { SearchService } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 @Component({
   selector: 'app-product-type-selector',

@@ -1,12 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { beta } from '@models';
-import * as filtersStore from '@store/filters';
-import { AppState } from '@store';
-import { Store } from '@ngrx/store';
-
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { beta } from '@models';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 @Component({
   selector: 'app-baseline-frame-reference-toggle',

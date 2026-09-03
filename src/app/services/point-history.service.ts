@@ -1,6 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { timeseriesChartItemState } from '@models';
 import { Store } from '@ngrx/store';
+import WKT from 'ol/format/WKT';
+import { Geometry } from 'ol/geom';
+import { Subject } from 'rxjs';
+
+import { timeseriesChartItemState } from '@models';
+import * as models from '@models';
 import { AppState } from '@store';
 import {
   addTimeseriesState,
@@ -8,11 +13,6 @@ import {
   resetTimeseriesStates,
   setTimeseriesStates,
 } from '@store/charts';
-import WKT from 'ol/format/WKT';
-
-import { Geometry } from 'ol/geom';
-import { Subject } from 'rxjs';
-import * as models from '@models';
 
 export interface PointHistoryState {
   uuidSeries: string;

@@ -3,8 +3,8 @@
 @use 'deluxe-menu-2' as *;
 
 .dataset--layout {
-  white-space: normal;
   flex: 7;
+  white-space: normal;
 }
 
 .dataset--deprecated {
@@ -37,21 +37,26 @@
 .increase-right-margin {
   margin-right: 15px;
 }
+
 .disclaimer {
-  font-size: large;
   margin-top: 10px;
+  font-size: large;
 }
+
 .item-content {
   @include themify($themes) {
     color: themed('dark-primary-text') !important;
   }
+
   line-height: 18px;
 }
+
 .faint-text {
   @include themify_non_host($themes) {
     color: themed('dark-secondary-text');
   }
 }
+
 .menu-item-icon {
   img {
     @include themify($themes) {

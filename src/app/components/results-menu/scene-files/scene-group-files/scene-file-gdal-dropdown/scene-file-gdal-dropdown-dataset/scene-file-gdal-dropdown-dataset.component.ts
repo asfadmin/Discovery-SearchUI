@@ -1,9 +1,9 @@
 import { Component, input, inject, computed } from '@angular/core';
-import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { GdalProductInfo, GdalService } from '@services/gdal/gdal.service';
 
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import * as models from '@models';
+import { GdalProductInfo, GdalService } from '@services/gdal/gdal.service';
 
 @Component({
   selector: 'app-scene-file-gdal-dropdown-dataset',

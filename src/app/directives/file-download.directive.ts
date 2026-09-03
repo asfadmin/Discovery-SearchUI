@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import {
   Directive,
   ElementRef,
@@ -9,9 +10,8 @@ import {
   inject,
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { catchError, map } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
 import { of, Subscription } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 /** Same Origin regular expression */
 export const SAMEORIGIN = new InjectionToken<RegExp>('asf.sameorigin.regex', {

@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-
-import { BrowseOverlayService } from './browse-overlay.service';
 import { provideMockStore } from '@ngrx/store/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
+
+import { BrowseOverlayService } from './browse-overlay.service';
 
 describe('BrowseOverlayService', () => {
   let service: BrowseOverlayService;

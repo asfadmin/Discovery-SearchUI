@@ -7,15 +7,15 @@
 .banner-dialog {
   /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
   mat-dialog-container {
-    padding: 0;
     box-sizing: border-box;
-    overflow: hidden;
-    resize: none;
-    outline: 0;
     width: 100%;
     height: 100%;
     min-height: inherit;
     max-height: inherit;
+    padding: 0;
+    overflow: hidden;
+    resize: none;
+    outline: 0;
   }
 
   /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
@@ -70,9 +70,10 @@
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 #dataset-button-toggle-group .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  padding: 0;
+
   // USED IN search-button
   line-height: 0;
-  padding: 0;
 }
 
 .help-panel-config {
@@ -111,8 +112,8 @@
 .content-block .mat-step-header .mat-step-icon {
   // USED IN processing-queue
   @include themify_non_host($themes) {
-    background-color: themed('primary');
     color: themed('light-primary-text');
+    background-color: themed('primary');
   }
 }
 
@@ -140,9 +141,10 @@
 }
 
 .pair-row .mat-list-item-content {
+  justify-content: space-between;
+
   // USED IN pair
   width: 100%;
-  justify-content: space-between;
 }
 
 .layer-select-button {
@@ -193,8 +195,8 @@
 
 .mat-mdc-snack-bar-container.ts-snackbar {
   @include themify($themes) {
-    background-color: themed('primary-light');
     color: themed('dark-primary-text');
+    background-color: themed('primary-light');
   }
 
   // --mat-snack-bar-button-color: #fff;
@@ -242,21 +244,22 @@
 }
 
 .image-dialog {
+  padding: 0;
+
   // MOVE TO image-dialog
   margin: 0;
-  padding: 0;
 }
 
 .tooltip {
   position: absolute;
-  text-align: center;
+  z-index: 100000;
   padding: 6px 10px;
   font: 12px sans-serif;
+  text-align: center;
+  pointer-events: none;
   background: #c9cac4;
   border: 0;
   border-radius: 8px;
-  pointer-events: none;
-  z-index: 100000;
 }
 
 .on-demand-tooltip {
@@ -293,15 +296,16 @@
 }
 
 .ol-custom-scale-line {
+  width: auto;
+
   // USED IN map
   height: 14px;
-  width: auto;
   color: $asf-primary-light;
-  background: $asf-primary-dark;
-  border-style: solid;
-  border-color: $asf-primary-light;
-  border-width: 0 2px;
   text-align: center;
+  background: $asf-primary-dark;
+  border-color: $asf-primary-light;
+  border-style: solid;
+  border-width: 0 2px;
 }
 
 .sbas-column-1 {
@@ -309,15 +313,16 @@
 
   div.noUi-handle.noUi-handle-lower,
   div.noUi-handle.noUi-handle-upper {
-    width: 16px;
     right: -5px;
+    width: 16px;
   }
 
   .noUi-vertical .noUi-handle::after,
   .noUi-vertical .noUi-handle::before {
+    left: 3px;
+
     // UNUSED?
     width: 8px;
-    left: 3px;
     background-color: $asf-primary-dark;
   }
 
@@ -330,20 +335,20 @@
 .displacement-slider.noUi-horizontal,
 .sbas-column-2.noUi-horizontal {
   .noUi-handle {
-    height: 16px;
     top: -5px;
+    height: 16px;
   }
 
   .noUi-handle::after,
   .noUi-handle::before {
-    height: 8px;
     top: 3px;
+    height: 8px;
     background-color: $asf-primary-dark;
   }
 
   .noUi-value-horizontal {
-    font-size: 13px;
     top: 17px;
+    font-size: 13px;
   }
 
   .noUi-tooltip {
@@ -356,8 +361,8 @@
 
   .noUi-handle::after,
   .noUi-handle::before {
-    height: 10px;
     top: 4px;
+    height: 10px;
   }
 
   .noUi-handle::before {

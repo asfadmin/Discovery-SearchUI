@@ -1,17 +1,17 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { SubSink } from 'subsink';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
-import * as filtersStore from '@store/filters';
-// import * as models from '@models';
-import { getSearchType } from '@store/search';
-import { SearchType } from '@models';
-import { beta } from '@models';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { SubSink } from 'subsink';
+
+import { SearchType, beta } from '@models';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as scenesStore from '@store/scenes';
+// import * as models from '@models';
+import { getSearchType } from '@store/search';
+
 @Component({
   selector: 'app-master-scene-selector',
   templateUrl: './master-scene-selector.component.html',

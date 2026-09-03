@@ -1,3 +1,6 @@
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { ScrollingModule, CdkScrollable } from '@angular/cdk/scrolling';
+import { NgClass, AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -7,37 +10,14 @@ import {
   ViewChildren,
   inject,
 } from '@angular/core';
-
-import { ScrollingModule } from '@angular/cdk/scrolling';
-
-import { ClipboardService } from 'ngx-clipboard';
-import { map, tap } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-
-import { AppState } from '@store';
-import * as queueStore from '@store/queue';
-
-import { NotificationService, ScreenSizeService } from '@services';
-import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
+import { MatIconButton, MatButton } from '@angular/material/button';
 import {
   MatDialogRef,
   MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
 } from '@angular/material/dialog';
-import { SubSink } from 'subsink';
-import { ResizedEvent } from '@directives/resized.directive';
-import * as userStore from '@store/user';
-import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
-import UAParser from 'ua-parser-js';
-import { DownloadService } from '@services/download.service';
-import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
-import { ResizedDirective } from '../../../directives/resized.directive';
-import { MatProgressBar } from '@angular/material/progress-bar';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { MatIcon } from '@angular/material/icon';
-import { NgClass, AsyncPipe } from '@angular/common';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import {
   MatList,
   MatListItem,
@@ -45,15 +25,33 @@ import {
   MatListItemLine,
   MatListItemMeta,
 } from '@angular/material/list';
-import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
-import { DownloadFileButtonComponent as DownloadFileButtonComponent_1 } from '@components/shared/download-file-button/download-file-button.component';
-import { MatIconButton, MatButton } from '@angular/material/button';
-import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { TruncateModule } from '@yellowspot/ng-truncate';
-import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
-import { FilterExtensionPipe } from '@pipes/filter-extension.pipe';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { TruncateModule } from '@yellowspot/ng-truncate';
+import { ClipboardService } from 'ngx-clipboard';
+import { map, tap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+import UAParser from 'ua-parser-js';
+
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import {
+  DownloadFileButtonComponent,
+  DownloadFileButtonComponent as DownloadFileButtonComponent_1,
+} from '@components/shared/download-file-button/download-file-button.component';
+import { ResizedEvent, ResizedDirective } from '@directives/resized.directive';
+import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
+import { FilterExtensionPipe } from '@pipes/filter-extension.pipe';
+import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
+import { NotificationService, ScreenSizeService } from '@services';
+import { DownloadService } from '@services/download.service';
+import { AppState } from '@store';
+import * as queueStore from '@store/queue';
+import * as userStore from '@store/user';
+
 // import { DownloadService } from '@services/download.service';
 
 export interface selectedItems {
