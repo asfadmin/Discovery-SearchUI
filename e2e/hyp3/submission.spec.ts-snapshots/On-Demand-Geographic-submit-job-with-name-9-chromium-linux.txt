@@ -74,9 +74,6 @@
       ],
       [
         "a[target=\"_blank\"] > .ng-star-inserted[_ngcontent-ng-c3009017480=\"\"]"
-      ],
-      [
-        "mat-label[_ngcontent-ng-c2163326189=\"\"]"
       ]
     ]
   },

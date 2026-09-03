@@ -1,5 +1,17 @@
 [
   {
+    "rule": "aria-progressbar-name",
+    "description": "Ensure every ARIA progressbar node has an accessible name",
+    "targets": [
+      [
+        "mat-spinner"
+      ],
+      [
+        "mat-spinner"
+      ]
+    ]
+  },
+  {
     "rule": "button-name",
     "description": "Ensure buttons have discernible text",
     "targets": [
@@ -64,9 +76,6 @@
         ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"] > .ng-star-inserted[_ngcontent-ng-c756410754=\"\"]:nth-child(1) > span[_ngcontent-ng-c756410754=\"\"]"
       ],
       [
-        ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"] > .ng-star-inserted[_ngcontent-ng-c756410754=\"\"]:nth-child(2)"
-      ],
-      [
         "a[target=\"_blank\"]:nth-child(4)"
       ],
       [
@@ -110,6 +119,12 @@
     "targets": [
       [
         "#mat-button-toggle-8-button"
+      ],
+      [
+        ".max-results > app-max-results-selector > .perspective.results-count[aria-label=\"Select max results\"]"
+      ],
+      [
+        ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"]"
       ],
       [
         "#mat-button-toggle-6-button"

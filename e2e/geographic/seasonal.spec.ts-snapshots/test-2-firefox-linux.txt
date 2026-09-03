@@ -4,10 +4,10 @@
     "description": "Ensure every ARIA progressbar node has an accessible name",
     "targets": [
       [
-        ".max-results > app-max-results-selector > .perspective.results-count[aria-label=\"Select max results\"] > .loading-spinner.ng-star-inserted[_ngcontent-ng-c756410754=\"\"] > mat-spinner"
+        "mat-spinner"
       ],
       [
-        ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"] > .loading-spinner.ng-star-inserted[_ngcontent-ng-c756410754=\"\"] > mat-spinner"
+        "mat-spinner"
       ]
     ]
   },

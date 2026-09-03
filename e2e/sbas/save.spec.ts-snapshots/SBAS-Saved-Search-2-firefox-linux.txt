@@ -1,19 +1,10 @@
 [
   {
-    "rule": "aria-input-field-name",
-    "description": "Ensure every ARIA input field has an accessible name",
+    "rule": "aria-progressbar-name",
+    "description": "Ensure every ARIA progressbar node has an accessible name",
     "targets": [
       [
-        "div[aria-valuetext=\"0.00\"]"
-      ],
-      [
-        "div[aria-valuetext=\"800.00\"]"
-      ],
-      [
-        "div[aria-valuemax=\"12.0\"]"
-      ],
-      [
-        "div[aria-valuemin=\"1.0\"]"
+        ":root"
       ]
     ]
   },
@@ -41,45 +32,6 @@
       ],
       [
         "#mat-button-toggle-7-button"
-      ],
-      [
-        "#mat-button-toggle-14-button"
-      ],
-      [
-        "#mat-button-toggle-15-button"
-      ],
-      [
-        "#mat-button-toggle-16-button"
-      ],
-      [
-        "#mat-button-toggle-17-button"
-      ],
-      [
-        "#mat-button-toggle-18-button"
-      ],
-      [
-        "#mat-button-toggle-19-button"
-      ]
-    ]
-  },
-  {
-    "rule": "color-contrast",
-    "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
-    "targets": [
-      [
-        "a[target=\"_blank\"]:nth-child(2)"
-      ],
-      [
-        "a[target=\"_blank\"]:nth-child(4)"
-      ],
-      [
-        "a[target=\"_blank\"]:nth-child(6)"
-      ],
-      [
-        "a[target=\"_blank\"]:nth-child(8)"
-      ],
-      [
-        "strong"
       ]
     ]
   },
@@ -148,7 +100,7 @@
         ".reference-toggle-wrapper"
       ],
       [
-        ".mat-form-field-animations-enabled.w100.mat-mdc-form-field-type-mat-input > .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled"
+        "app-master-scene-selector > form > mat-form-field > .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled"
       ],
       [
         "#mat-button-toggle-10-button"
@@ -157,7 +109,7 @@
         "#mat-button-toggle-11-button"
       ],
       [
-        "app-info-bar"
+        ":root"
       ],
       [
         ".map-view-button--layout"
@@ -184,7 +136,7 @@
         ".meatball"
       ],
       [
-        ".dataset-filters-card > .header"
+        ".header"
       ],
       [
         "#mat-button-toggle-6-button"
@@ -197,39 +149,6 @@
       ],
       [
         "div[_ngcontent-ng-c2470562375=\"\"]:nth-child(7)"
-      ],
-      [
-        ".sbas-button-group[_ngcontent-ng-c2454936245=\"\"]:nth-child(1) > .button-group-label[_ngcontent-ng-c2454936245=\"\"]"
-      ],
-      [
-        "#mat-button-toggle-14-button"
-      ],
-      [
-        "#mat-button-toggle-15-button"
-      ],
-      [
-        "#mat-button-toggle-16-button"
-      ],
-      [
-        ".sbas-button-group[_ngcontent-ng-c2454936245=\"\"]:nth-child(3) > .button-group-label[_ngcontent-ng-c2454936245=\"\"]"
-      ],
-      [
-        "#mat-button-toggle-17-button"
-      ],
-      [
-        "#mat-button-toggle-18-button"
-      ],
-      [
-        "#mat-button-toggle-19-button"
-      ],
-      [
-        ".sbas-button-group[_ngcontent-ng-c2454936245=\"\"]:nth-child(5) > .button-group-label[_ngcontent-ng-c2454936245=\"\"]"
-      ],
-      [
-        ".sbas-column-1[_ngcontent-ng-c2454936245=\"\"]"
-      ],
-      [
-        "app-sbas-sliders-two > div[_ngcontent-ng-c2262651237=\"\"]:nth-child(1)"
       ]
     ]
   },

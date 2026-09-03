@@ -52,7 +52,7 @@
         "#mat-button-toggle-20-button"
       ],
       [
-        "#mat-button-toggle-21-button"
+        "#mat-button-toggle-22-button"
       ],
       [
         "#mat-button-toggle-12-button"
@@ -229,13 +229,13 @@
         ".list-button-group.fx-empty[_ngcontent-ng-c868551677=\"\"]:nth-child(3) > .fx-row-center.button-group-label[_ngcontent-ng-c868551677=\"\"]"
       ],
       [
-        "#mat-button-toggle-22-button"
+        "#mat-button-toggle-21-button"
       ],
       [
         ".list-button-group.fx-empty[_ngcontent-ng-c868551677=\"\"]:nth-child(4) > .fx-row-center.button-group-label[_ngcontent-ng-c868551677=\"\"]"
       ],
       [
-        "#mat-button-toggle-21-button"
+        "#mat-button-toggle-22-button"
       ],
       [
         ".ng-star-inserted[_ngcontent-ng-c2454936245=\"\"]:nth-child(1) > .product-name-spacing[_ngcontent-ng-c2454936245=\"\"]"

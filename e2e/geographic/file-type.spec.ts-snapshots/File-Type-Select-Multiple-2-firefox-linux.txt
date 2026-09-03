@@ -27,6 +27,63 @@
     ]
   },
   {
+    "rule": "color-contrast",
+    "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    "targets": [
+      [
+        ".map-view-button--layout > label"
+      ],
+      [
+        ".zoom-buttons > .fx-row-center.button-group-label[_ngcontent-ng-c258732369=\"\"] > label"
+      ],
+      [
+        ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(4) > .fx-row-center.button-group-label[_ngcontent-ng-c258732369=\"\"] > label"
+      ],
+      [
+        ".lat--layout"
+      ],
+      [
+        ".lat--layout > b"
+      ],
+      [
+        ".lon--layout"
+      ],
+      [
+        ".lon--layout > b"
+      ],
+      [
+        "#mat-mdc-form-field-label-2 > mat-label"
+      ],
+      [
+        "mat-label[_ngcontent-ng-c1684748382=\"\"]"
+      ],
+      [
+        ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"]"
+      ],
+      [
+        ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"] > span[_ngcontent-ng-c756410754=\"\"]:nth-child(1)"
+      ],
+      [
+        ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"] > span[_ngcontent-ng-c756410754=\"\"]:nth-child(1) > span[_ngcontent-ng-c756410754=\"\"]"
+      ],
+      [
+        ".max-results-spacing > .perspective.results-count[aria-label=\"Select max results\"] > span[_ngcontent-ng-c756410754=\"\"]:nth-child(2)"
+      ],
+      [
+        "a[target=\"_blank\"]:nth-child(4)"
+      ],
+      [
+        "a[target=\"_blank\"]:nth-child(6)"
+      ],
+      [
+        "a[target=\"_blank\"]:nth-child(8)"
+      ],
+      [
+        "strong"
+      ]
+    ]
+  },
+  {
     "rule": "image-alt",
     "description": "Ensure <img> elements have alternative text or a role of none or presentation",
     "targets": [
