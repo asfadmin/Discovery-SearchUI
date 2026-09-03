@@ -1,6 +1,6 @@
-@use "asf-theme-variables" as *;
-@use "deluxe-menu" as *;
-@use "deluxe-menu-2" as *;
+@use 'asf-theme-variables' as *;
+@use 'deluxe-menu' as *;
+@use 'deluxe-menu-2' as *;
 
 .description-layout {
   display: flex;
@@ -11,7 +11,7 @@
     width: 50px !important;
     height: 50px !important;
     font-size: 50px !important;
-    color: themed("dark-primary-text");
+    color: themed('dark-primary-text');
   }
 
   @include md-icon-size(50px);
@@ -67,7 +67,7 @@
 
 .mat-mdc-button {
   @include themify($themes) {
-    color: themed("blue-link");
+    color: themed('blue-link');
   }
 
   font-style: italic;
@@ -97,15 +97,12 @@
 
 .button-label {
   @include themify($themes) {
-    color: themed("dark-secondary-text");
+    color: themed('dark-secondary-text');
   }
 
   font-size: 14px;
   font-weight: 400;
-  transform:
-    translateY(-1.2812em)
-    scale(0.75)
-    perspective(100px)
+  transform: translateY(-1.2812em) scale(0.75) perspective(100px)
     translateZ(0.0011px);
 }
 
@@ -115,7 +112,7 @@
 
 .button-text {
   @include themify($themes) {
-    color: themed("dark-primary-text");
+    color: themed('dark-primary-text');
   }
 
   padding: 0;
@@ -176,7 +173,7 @@
 
 .blue-link {
   @include themify_non_host($themes) {
-    color: themed("blue-link");
+    color: themed('blue-link');
   }
 
   // color: $uaf-primary-blue;
@@ -185,7 +182,6 @@
 .mobile-button-wrapper {
   // transform: scale(0.82);
   // margin-top: -6px;
-
 }
 
 :host {
@@ -231,7 +227,6 @@
   display: none;
 }
 
-
 .read-more-icon {
   position: relative;
   top: 3px;
@@ -264,4 +259,13 @@
   &:hover {
     text-decoration: underline;
   }
+}
+
+.deprecation-notice {
+  font-weight: 800;
+  color: red;
+}
+.link {
+  color: blue;
+  text-decoration: underline;
 }
