@@ -13,18 +13,17 @@
 @use "color-utils" as *;
 
 @mixin md-icon-size($size: 24px) {
-  font-size: $size !important;
-  height: $size !important;
   width: $size !important;
+  height: $size !important;
+  font-size: $size !important;
 }
 
 $asf-app-primary: mat.m2-define-palette($mat-asf-primary, 700, 400, 900);
 $asf-app-dark-primary: mat.m2-define-palette($mat-dark-asf-primary, 700, 400, 900);
-$asf-app-accent:  mat.m2-define-palette(mat.$m2-grey-palette, 300, 100, 400);
-$asf-app-blue:  mat.m2-define-palette($mat-asf-blue, 700, 400, 900);
-$asf-app-warn:    mat.m2-define-palette($mat-asf-yellow, 200, 100, 500);
+$asf-app-accent: mat.m2-define-palette(mat.$m2-grey-palette, 300, 100, 400);
+$asf-app-blue: mat.m2-define-palette($mat-asf-blue, 700, 400, 900);
+$asf-app-warn: mat.m2-define-palette($mat-asf-yellow, 200, 100, 500);
 $asf-app-err: mat.m2-define-palette($mat-asf-red, 200, 100, 500);
-
 $asf-warn: mat.m2-get-color-from-palette($asf-app-warn);
 $asf-err: mat.m2-get-color-from-palette($asf-app-err);
 $asf-blue: mat.m2-get-color-from-palette($asf-app-blue);
@@ -34,22 +33,21 @@ $asf-accent: mat.m2-get-color-from-palette($asf-app-accent);
 $asf-primary-light: lighten($asf-primary, 40%);
 $asf-primary-dark: darken($asf-primary, 15%);
 $asf-background-white: lighten($asf-primary, 80%);
-
 $themes: (
   light: (
     light-white: white,
-    light-black: rgb(0 0 0 / 0.87),
+    light-black: rgb(0 0 0 / 87%),
     background-white: lighten(mat.m2-get-color-from-palette($asf-app-primary), 80%),
-    dark-primary-text: rgb(0 0 0 / 0.87),
-    dark-secondary-text: rgb(0 0 0 / 0.54),
-    dark-disabled-text: rgb(0 0 0 / 0.38),
-    dark-dividers: rgb(0 0 0 / 0.12),
-    dark-focused: rgb(0 0 0 / 0.12),
+    dark-primary-text: rgb(0 0 0 / 87%),
+    dark-secondary-text: rgb(0 0 0 / 54%),
+    dark-disabled-text: rgb(0 0 0 / 38%),
+    dark-dividers: rgb(0 0 0 / 12%),
+    dark-focused: rgb(0 0 0 / 12%),
     light-primary-text: white,
-    light-secondary-text: rgb(255 255 255 / 0.7),
-    light-disabled-text: rgb(255 255 255 / 0.5),
-    light-dividers: rgb(255 255 255 / 0.12),
-    light-focused: rgb(255 255 255 / 0.12),
+    light-secondary-text: rgb(255 255 255 / 70%),
+    light-disabled-text: rgb(255 255 255 / 50%),
+    light-dividers: rgb(255 255 255 / 12%),
+    light-focused: rgb(255 255 255 / 12%),
     borders: lightgray,
     primary: mat.m2-get-color-from-palette($asf-app-primary),
     accent: mat.m2-get-color-from-palette($asf-app-accent),
@@ -64,15 +62,15 @@ $themes: (
     light-white: black,
     light-black: white,
     light-primary-text: white,
-    light-secondary-text: rgb(255 255 255 / 0.54),
-    light-disabled-text: rgb(255 255 255 / 0.38),
-    light-dividers: rgb(255 255 255 / 0.12),
-    light-focused: rgb(255 255 255 / 0.12),
+    light-secondary-text: rgb(255 255 255 / 54%),
+    light-disabled-text: rgb(255 255 255 / 38%),
+    light-dividers: rgb(255 255 255 / 12%),
+    light-focused: rgb(255 255 255 / 12%),
     dark-primary-text: rgb(183 183 183),
-    dark-secondary-text: rgb(183 183 183 / 0.7),
-    dark-disabled-text: rgb(183 183 183 / 0.5),
-    dark-dividers: rgb(255 255 255 / 0.12),
-    dark-focused: rgb(255 255 255 / 0.12),
+    dark-secondary-text: rgb(183 183 183 / 70%),
+    dark-disabled-text: rgb(183 183 183 / 50%),
+    dark-dividers: rgb(255 255 255 / 12%),
+    dark-focused: rgb(255 255 255 / 12%),
     borders: lightgray,
     inverted-image: invert(100%),
     primary: mat.m2-get-color-from-palette($asf-app-dark-primary),
@@ -90,11 +88,13 @@ $themes: (
   @each $theme, $map in $themes {
     :host-context(.theme-#{$theme}) & {
       $theme-map: () !global;
+
       @each $key, $submap in $map {
         $value: map.get(map.get($themes, $theme), '#{$key}');
         $theme-map: map.merge($theme-map, ($key: $value)) !global;
       }
       @content;
+
       $theme-map: null !global;
     }
   }
@@ -104,11 +104,13 @@ $themes: (
   @each $theme, $map in $themes {
     .theme-#{$theme} & {
       $theme-map: () !global;
+
       @each $key, $submap in $map {
         $value: map.get(map.get($themes, $theme), '#{$key}');
         $theme-map: map.merge($theme-map, ($key: $value)) !global;
       }
       @content;
+
       $theme-map: null !global;
     }
   }

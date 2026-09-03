@@ -1,12 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '@store';
 import { combineLatest, first, map, switchMap } from 'rxjs';
 
-import { SearchParamsService } from './search-params.service';
+import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
+
 import { AsfApiService } from './asf-api.service';
 import { Hyp3ApiService } from './hyp3';
+import { SearchParamsService } from './search-params.service';
 
 @Injectable({
   providedIn: 'root',

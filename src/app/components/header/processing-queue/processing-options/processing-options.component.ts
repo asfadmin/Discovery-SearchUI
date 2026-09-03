@@ -1,17 +1,17 @@
+import { UpperCasePipe } from '@angular/common';
 import { Component, Input, inject, Signal } from '@angular/core';
-
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
+import * as models from '@models';
 import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
 import * as queueStore from '@store/queue';
 
-import * as models from '@models';
-import { UpperCasePipe } from '@angular/common';
+import { CheckboxOptionComponent } from './checkbox-option/checkbox-option.component';
 import { DropdownOptionComponent } from './dropdown-option/dropdown-option.component';
 import { RangeOptionComponent } from './range-option/range-option.component';
-import { CheckboxOptionComponent } from './checkbox-option/checkbox-option.component';
 import { SubsetOptionComponent } from './subset-option/subset-option.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-processing-options',

@@ -1,12 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { SearchType } from '@models';
+import { MatButton } from '@angular/material/button';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { SearchType } from '@models';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
-import { MatButton } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-cancel-filter-changes',
   templateUrl: './cancel-filter-changes.component.html',

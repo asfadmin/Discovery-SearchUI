@@ -48,13 +48,13 @@ mat-tree {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: auto;
   padding: 0;
+  margin-left: auto;
 
   mat-icon {
-    font-size: 20px;
     width: 20px;
     height: 20px;
+    font-size: 20px;
     line-height: 20px;
 
     @include themify($themes) {
@@ -64,10 +64,10 @@ mat-tree {
 }
 
 .chevron {
-  margin-left: 10px;
-  font-size: 20px;
   width: 20px;
   height: 20px;
+  margin-left: 10px;
+  font-size: 20px;
   line-height: 20px;
   transition: transform 0.2s;
 

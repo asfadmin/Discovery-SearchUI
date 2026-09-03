@@ -1,7 +1,7 @@
 .noshow {
+  display: none;
   width: 1px;
   color: transparent;
-  display: none;
 }
 
 .filters-toggle-row {
@@ -14,46 +14,47 @@
 
 ::ng-deep .on-demand-toggle {
 display: flex;
-justify-content: center;
 flex-direction: column;
+justify-content: center;
 margin-top: 10px;
 
     .mdc-form-field.mat-internal-form-field {
-        flex-direction: column-reverse !important;
         display: flex !important;
-        align-items: flex-start !important;
+        flex-direction: column-reverse !important;
         gap: 5px !important;
+        align-items: flex-start !important;
     }
 }
 
 .dataset-selector--layout {
-  flex: 1 1 130px !important;
-  box-sizing: border-box !important;
-  max-width: 130px !important;
-  min-width: 130px !important;
   position: relative;
-  top:-4px
+  top:-4px;
+  box-sizing: border-box !important;
+  flex: 1 1 130px !important;
+  min-width: 130px !important;
+  max-width: 130px !important
 }
 
 $width: 330px;
 
 .date-selector--layout {
-  flex: 1 1 $width;
   box-sizing: border-box;
-  max-width: $width;
+  flex: 1 1 $width;
   min-width: $width;
+  max-width: $width;
 }
+
 .more-horiz {
   margin-left: 0 !important;
 }
 
 .on-demand-mode-toggle-wrapper {
-  cursor: pointer;
-  transform: scale(.8);
   position: absolute;
   top: 70px;
   left: -18px;
   width: 200px;
+  cursor: pointer;
+  transform: scale(.8);
 }
 
 .dataset-header-wrapper {

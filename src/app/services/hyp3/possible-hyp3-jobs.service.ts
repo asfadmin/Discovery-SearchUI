@@ -1,16 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-
+import { Store } from '@ngrx/store';
 import { combineLatest, of } from 'rxjs';
 import { map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
 
+import * as models from '@models';
+import { ScenesService, PairService } from '@services';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
-
-import * as models from '@models';
-
-import { ScenesService, PairService } from '@services';
 
 @Injectable({
   providedIn: 'root',

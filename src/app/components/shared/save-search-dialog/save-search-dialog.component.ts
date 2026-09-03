@@ -1,4 +1,8 @@
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { UpperCasePipe, TitleCasePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -6,29 +10,24 @@ import {
   MatDialogContent,
   MatDialogActions,
 } from '@angular/material/dialog';
-import { v1 as uuid } from 'uuid';
-
+import { MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatInput, MatHint } from '@angular/material/input';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { combineLatest } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as searchStore from '@store/search';
-import * as filterStore from '@store/filters';
-import * as userStore from '@store/user';
-import * as uiStore from '@store/ui';
+import { v1 as uuid } from 'uuid';
 
-import { SavedSearchService, NotificationService } from '@services';
 import * as models from '@models';
-
+import { SavedSearchService, NotificationService } from '@services';
 import { AsfLanguageService } from '@services/asf-language.service';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { FormsModule } from '@angular/forms';
-import { MatFormField, MatInput, MatHint } from '@angular/material/input';
-import { MatLabel } from '@angular/material/form-field';
+import { AppState } from '@store';
+import * as filterStore from '@store/filters';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+import * as userStore from '@store/user';
+
 import { SearchFiltersComponent } from '../../sidebar/saved-searches/saved-search/search-filters/search-filters.component';
-import { MatButton } from '@angular/material/button';
-import { UpperCasePipe, TitleCasePipe } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-save-search-dialog',

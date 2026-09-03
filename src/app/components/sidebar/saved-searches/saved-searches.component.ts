@@ -1,3 +1,4 @@
+import { NgClass, AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -6,35 +7,33 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
-
-import { SubSink } from 'subsink';
-import { switchMap } from 'rxjs/operators';
+import { MatFormField, MatInput } from '@angular/material/input';
 import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as userStore from '@store/user';
-import * as searchStore from '@store/search';
-import * as uiStore from '@store/ui';
+import { TranslateModule } from '@ngx-translate/core';
+import { switchMap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
+import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
+import * as models from '@models';
 import {
   SavedSearchService,
   ScreenSizeService,
   SearchService,
 } from '@services';
-import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
-import * as models from '@models';
-
 import { AsfLanguageService } from '@services/asf-language.service';
-import { NgClass, AsyncPipe } from '@angular/common';
-import {
-  MatButtonToggleGroup,
-  MatButtonToggle,
-} from '@angular/material/button-toggle';
-import { FormsModule } from '@angular/forms';
-import { MatFormField, MatInput } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
+import { AppState } from '@store';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+import * as userStore from '@store/user';
+
 import { SavedSearchComponent } from './saved-search/saved-search.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-saved-searches',

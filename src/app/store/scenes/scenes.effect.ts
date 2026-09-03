@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import {
   map,
   distinctUntilChanged,
@@ -7,15 +8,15 @@ import {
   withLatestFrom,
   debounceTime,
 } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { CMRProduct, SearchType } from '@models';
-import { ScenesActionType, SetScenes, SetSelectedScene } from './scenes.action';
-import { allScenesFrom, getSelectedScene } from '.';
 import { ScenesService } from '@services';
 import { AppState } from '@store/app.reducer';
-import { Store } from '@ngrx/store';
 import { HideS1RawData, UIActionType } from '@store/ui';
+
+import { ScenesActionType, SetScenes, SetSelectedScene } from './scenes.action';
+
+import { allScenesFrom, getSelectedScene } from '.';
 
 @Injectable()
 export class ScenesEffects {

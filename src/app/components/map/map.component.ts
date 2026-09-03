@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -8,25 +9,26 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-
+import { MatButton, MatFabButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { Feature } from 'ol';
+import WKT from 'ol/format/WKT';
+import Geometry from 'ol/geom/Geometry';
+import { Vector as VectorLayer } from 'ol/layer';
+import Overlay from 'ol/Overlay';
+import { Vector as VectorSource } from 'ol/source';
+import { StyleLike } from 'ol/style/Style';
 import { combineLatest, distinctUntilChanged, Observable } from 'rxjs';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-
-import { Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource } from 'ol/source';
-import Overlay from 'ol/Overlay';
-
-import tippy, { followCursor } from 'tippy.js';
 import { SubSink } from 'subsink';
+import tippy, { followCursor } from 'tippy.js';
 
-import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
-import * as searchStore from '@store/search';
-import * as mapStore from '@store/map';
-import * as uiStore from '@store/ui';
-import * as filtersStore from '@store/filters';
-import * as sceneStore from '@store/scenes';
+import { FileUploadComponent } from '@components/shared/aoi-options/file-upload/file-upload.component';
+import { InteractionSelectorComponent } from '@components/shared/aoi-options/interaction-selector/interaction-selector.component';
 import * as models from '@models';
 import {
   DisplacementDisclaimerService,
@@ -37,25 +39,20 @@ import {
   WktService,
 } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
-import { StyleLike } from 'ol/style/Style';
-import { Feature } from 'ol';
-import Geometry from 'ol/geom/Geometry';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import WKT from 'ol/format/WKT';
+import { AppState } from '@store';
 import { getTimeseriesChartStates } from '@store/charts';
-import { MatButton, MatFabButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { AsyncPipe } from '@angular/common';
-import { MapControlsComponent } from './map-controls/map-controls.component';
-import { DisplacementLayersComponent } from './displacement-layers/displacement-layers.component';
+import * as filtersStore from '@store/filters';
+import * as mapStore from '@store/map';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+
 import { BannersComponent } from './banners/banners.component';
-import { InteractionSelectorComponent } from '@components/shared/aoi-options/interaction-selector/interaction-selector.component';
+import { DisplacementLayersComponent } from './displacement-layers/displacement-layers.component';
 import { LayerSelectorComponent } from './map-controls/layer-selector/layer-selector.component';
+import { MapControlsComponent } from './map-controls/map-controls.component';
 import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.component';
-import { FileUploadComponent } from '@components/shared/aoi-options/file-upload/file-upload.component';
 import { AttributionsComponent } from './attributions/attributions.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -160,7 +157,9 @@ export class MapComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.SBAS));
     this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(true));
     this.store$.dispatch(
-      new sceneStore.SetFilterMaster(this.OnDemandFrames[0].frameID.toString()),
+      new scenesStore.SetFilterMaster(
+        this.OnDemandFrames[0].frameID.toString(),
+      ),
     );
     this.store$.dispatch(new filtersStore.SetSelectedDataset(models.beta.id));
     this.store$.dispatch(new searchStore.MakeSearch());
@@ -310,7 +309,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.subs.add(
       combineLatest([
         this.store$.select(filtersStore.getShouldUseFramesForReference),
-        this.store$.select(sceneStore.getFilterMaster), // frame id for things
+        this.store$.select(scenesStore.getFilterMaster), // frame id for things
         this.store$.select(filtersStore.getSelectedDataset),
       ]).subscribe(([shouldUseFramesForReference, filterMaster, dataset]) => {
         // TODO: load in frame map instead of grabbing previous frame map feature

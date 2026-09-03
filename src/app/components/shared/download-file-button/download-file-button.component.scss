@@ -3,17 +3,18 @@
 
 .download-file-button {
   text-decoration: none;
+
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
 }
 
 .progress-spinner {
+  position: relative;
+  float: right;
   display: block;
   width: 40px;
   height: 40px;
-  position: relative;
-  float: right;
 }
 
 .paused-icon {
@@ -23,10 +24,10 @@
 
 .progress-spinner-value {
   position: absolute;
-  left: 7px;
-  text-align: center;
-  width: 25px;
   top: 10px;
+  left: 7px;
+  width: 25px;
+  text-align: center;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
@@ -64,9 +65,9 @@
   }
 
   mat-icon {
-    font-size: 20px;
     width: 20px;
     height: 20px;
+    font-size: 20px;
     line-height: 20px;
 
     @include themify($themes) {
