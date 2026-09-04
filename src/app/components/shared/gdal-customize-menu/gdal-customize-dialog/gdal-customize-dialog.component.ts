@@ -5,6 +5,7 @@ import {
   Signal,
   computed,
   effect,
+  untracked,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -142,15 +143,20 @@ machine urs.earthdata.nasa.gov
     return 'Unix';
   }
 
+  updateFilename() {
+    // This is the only way a signal two way bound to a matInput with ngModel will accept a new value.
+    this.outputFilename.set('');
+    this.outputFilename.set(
+      this.gdalService.resolveOutputFilename(this.gdalOptions()),
+    );
+  }
+
   constructor() {
     effect(() => {
-      if (!this.selectedDataset()) {
-        return;
+      if (this.selectedDataset() !== '') {
+        // Only update when selectedDataset changes, not when other options change.
+        untracked(() => this.updateFilename());
       }
-
-      this.outputFilename.set(
-        this.gdalService.resolveOutputFilename(this.gdalOptions()),
-      );
     });
   }
 }

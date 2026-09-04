@@ -65,20 +65,8 @@
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div> -->
+      <h3>{{ 'CONFIGURE_GDAL_OUTPUTFILE' | translate }}</h3>
       <div class="options-list">
-        <span class="option short">
-          <mat-form-field>
-            <mat-label> {{ 'GDAL_VERSION' | translate }}</mat-label>
-            <mat-select
-              [(ngModel)]="gdalVersion"
-              [matTooltip]="'GDAL_313_ADMONITION' | translate"
-            >
-              @for (version of gdalVersions; track version) {
-                <mat-option [value]="version"> {{ version }} </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </span>
         <span class="option short">
           <mat-form-field>
             <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
@@ -89,16 +77,21 @@
             </mat-select>
           </mat-form-field>
         </span>
-        <span class="option">
+        <span class="option filename">
           <mat-form-field>
-            <mat-label> {{ 'OUTPUT_OS' | translate }}</mat-label>
-            <mat-select [(ngModel)]="outputOS">
-              @for (os of outputOSList; track os) {
-                <mat-option [value]="os"> {{ os }} </mat-option>
-              }
-            </mat-select>
+            <mat-label class="filename">
+              {{ 'OUTPUT_FILENAME' | translate }}</mat-label
+            >
+            <input
+              matInput
+              name="outputFilenameInput"
+              [(ngModel)]="outputFilename"
+            />
           </mat-form-field>
         </span>
+      </div>
+      <h3>{{ 'CONFIGURE_GEOSPATIAL_OPTIONS' | translate }}</h3>
+      <div class="options-list">
         <span class="option reproject">
           <mat-form-field>
             <mat-label> {{ 'REPROJECT' | translate }}</mat-label>
@@ -123,18 +116,36 @@
             >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
           >
         </span>
+      </div>
+      <h3>{{ 'CONFIGURE_GDAL_ENVIRONMENT' | translate }}</h3>
+      <div class="options-list">
+        <span class="option short">
+          <mat-form-field>
+            <mat-label> {{ 'GDAL_VERSION' | translate }}</mat-label>
+            <mat-select
+              [(ngModel)]="gdalVersion"
+              [matTooltip]="'GDAL_313_ADMONITION' | translate"
+            >
+              @for (version of gdalVersions; track version) {
+                <mat-option [value]="version"> {{ version }} </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </span>
+        <span class="option">
+          <mat-form-field>
+            <mat-label> {{ 'OUTPUT_OS' | translate }}</mat-label>
+            <mat-select [(ngModel)]="outputOS">
+              @for (os of outputOSList; track os) {
+                <mat-option [value]="os"> {{ os }} </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </span>
         <span class="option checkbox">
           <mat-checkbox [(ngModel)]="minimalCommand">{{
             'MINIMAL_COMMAND' | translate
           }}</mat-checkbox>
-        </span>
-        <span class="option filename">
-          <mat-form-field>
-            <mat-label class="filename">
-              {{ 'OUTPUT_FILENAME' | translate }}</mat-label
-            >
-            <input matInput [(ngModel)]="outputFilename" />
-          </mat-form-field>
         </span>
       </div>
     </div>
