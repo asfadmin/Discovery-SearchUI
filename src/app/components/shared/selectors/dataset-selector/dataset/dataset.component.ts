@@ -36,7 +36,7 @@ import { ScreenSizeService } from '@services';
   ],
 })
 export class DatasetComponent {
-  dataset = input<Dataset>();
+  dataset = input.required<Dataset>();
   selected = output<string>();
   private screenSize = inject(ScreenSizeService);
 
