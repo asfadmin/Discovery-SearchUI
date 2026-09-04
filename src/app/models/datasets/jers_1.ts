@@ -14,6 +14,7 @@ export const jers_1 = {
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
     Props.BASELINE_TOOL,
+    Props.DEPRECATED,
   ],
   apiValue: { dataset: 'JERS-1' },
   date: {

@@ -1,10 +1,10 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import {
   Component,
-  EventEmitter,
+  computed,
   inject,
-  Input,
-  Output,
+  input,
+  output,
   ViewChild,
 } from '@angular/core';
 import { MatCardActions } from '@angular/material/card';
@@ -36,9 +36,8 @@ import { ScreenSizeService } from '@services';
   ],
 })
 export class DatasetComponent {
-  @Input() dataset: Dataset;
-  @Input() isSelected: boolean;
-  @Output() selected: EventEmitter<string> = new EventEmitter<string>();
+  dataset = input.required<Dataset>();
+  selected = output<string>();
   private screenSize = inject(ScreenSizeService);
 
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -46,15 +45,20 @@ export class DatasetComponent {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
 
   public provisionalIssuesUrl = provisionalIssuesUrl;
-
   public isReadMore = true;
+
+  public isDeprecated = computed(() => {
+    return this.dataset().properties.includes(models.Props.DEPRECATED);
+  });
+
   public onOpenHelp() {
-    window.open(this.dataset.infoUrl);
+    window.open(this.dataset().infoUrl);
   }
 
   public onInfoClicked(e: Event): void {
     e.stopPropagation();
   }
+
   public onOpenDocs(event, dataset: string) {
     this.trigger.closeMenu();
     this.onSelectionChange(dataset);

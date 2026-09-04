@@ -14,7 +14,7 @@ import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
   { menuSelector: 'SMAP', expected: 'SMAP' },
   { menuSelector: 'UAVSAR', expected: 'UAVSAR' },
   { menuSelector: 'RADARSAT-1', expected: 'RADARSAT-1' },
-  { menuSelector: 'ERS Primarily SAR imagery', expected: 'ERS' },
+  { menuSelector: 'ERS This dataset', expected: 'ERS' },
   { menuSelector: 'JERS-1', expected: 'JERS' },
   { menuSelector: 'AIRSAR', expected: 'AIRSAR' },
   { menuSelector: 'SEASAT', expected: 'SEASAT' },
