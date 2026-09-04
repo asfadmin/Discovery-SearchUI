@@ -1,0 +1,125 @@
+[
+  {
+    "rule": "color-contrast",
+    "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    "targets": [
+      [
+        ".map-view-button--layout > label"
+      ],
+      [
+        ".zoom-buttons > .fx-row-center.button-group-label[_ngcontent-ng-c258732369=\"\"] > label"
+      ],
+      [
+        ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(4) > .fx-row-center.button-group-label[_ngcontent-ng-c258732369=\"\"] > label"
+      ],
+      [
+        ".lat--layout"
+      ],
+      [
+        ".lat--layout > b"
+      ],
+      [
+        ".lon--layout"
+      ],
+      [
+        ".lon--layout > b"
+      ],
+      [
+        "a[target=\"_blank\"][_ngcontent-ng-c2770483286=\"\"]:nth-child(2)"
+      ],
+      [
+        "a[target=\"_blank\"][_ngcontent-ng-c2770483286=\"\"]:nth-child(4)"
+      ],
+      [
+        "a[target=\"_blank\"][_ngcontent-ng-c2770483286=\"\"]:nth-child(6)"
+      ],
+      [
+        "a[target=\"_blank\"][_ngcontent-ng-c2770483286=\"\"]:nth-child(8)"
+      ],
+      [
+        "strong"
+      ],
+      [
+        ".comment.token:nth-child(1)"
+      ],
+      [
+        ".comment.token:nth-child(2)"
+      ],
+      [
+        ".comment.token:nth-child(3)"
+      ],
+      [
+        ".comment.token:nth-child(4)"
+      ],
+      [
+        ".comment.token:nth-child(5)"
+      ],
+      [
+        ".comment.token:nth-child(7)"
+      ],
+      [
+        ".comment.token:nth-child(8)"
+      ],
+      [
+        ".keyword.token:nth-child(9)"
+      ],
+      [
+        ".keyword.token:nth-child(10)"
+      ],
+      [
+        ".keyword.token:nth-child(11)"
+      ],
+      [
+        ".string.token:nth-child(17)"
+      ],
+      [
+        ".number"
+      ],
+      [
+        ".string.token:nth-child(21)"
+      ],
+      [
+        ".string.token:nth-child(24)"
+      ],
+      [
+        ".comment.token:nth-child(28)"
+      ],
+      [
+        ".comment.token:nth-child(29)"
+      ],
+      [
+        ".comment.token:nth-child(30)"
+      ],
+      [
+        ".comment.token:nth-child(31)"
+      ],
+      [
+        ".comment.token:nth-child(32)"
+      ],
+      [
+        ".comment.token:nth-child(33)"
+      ],
+      [
+        ".comment.token:nth-child(34)"
+      ]
+    ]
+  },
+  {
+    "rule": "meta-viewport",
+    "description": "Ensure <meta name=\"viewport\"> does not disable text scaling and zooming",
+    "targets": [
+      [
+        "meta[name=\"viewport\"]"
+      ]
+    ]
+  },
+  {
+    "rule": "scrollable-region-focusable",
+    "description": "Ensure elements that have scrollable content are accessible by keyboard in Safari",
+    "targets": [
+      [
+        "mat-dialog-content"
+      ]
+    ]
+  }
+]

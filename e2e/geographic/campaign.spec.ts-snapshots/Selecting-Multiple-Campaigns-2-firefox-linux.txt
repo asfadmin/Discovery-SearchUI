@@ -1,0 +1,443 @@
+[
+  {
+    "rule": "button-name",
+    "description": "Ensure buttons have discernible text",
+    "targets": [
+      [
+        "#mat-button-toggle-9-button"
+      ],
+      [
+        "#mat-button-toggle-0-button"
+      ],
+      [
+        "#mat-button-toggle-1-button"
+      ],
+      [
+        "#mat-button-toggle-2-button"
+      ],
+      [
+        "#mat-button-toggle-3-button"
+      ],
+      [
+        "#mat-button-toggle-4-button"
+      ],
+      [
+        "#mat-button-toggle-7-button"
+      ],
+      [
+        "#mat-button-toggle-10-button"
+      ],
+      [
+        "#mat-button-toggle-11-button"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-SLOPE > .link[_ngcontent-ng-c298621648=\"\"] > .download-file-button.mdc-icon-button.mat-mdc-icon-button"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-PROJECTED > .link[_ngcontent-ng-c298621648=\"\"] > .download-file-button.mdc-icon-button.mat-mdc-icon-button"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-COMPLEX > .link[_ngcontent-ng-c298621648=\"\"] > .download-file-button.mdc-icon-button.mat-mdc-icon-button"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-INC > .link[_ngcontent-ng-c298621648=\"\"] > .download-file-button.mdc-icon-button.mat-mdc-icon-button"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-STOKES > .link[_ngcontent-ng-c298621648=\"\"] > .download-file-button.mdc-icon-button.mat-mdc-icon-button"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-DEM_TIFF > .link[_ngcontent-ng-c298621648=\"\"] > .download-file-button.mdc-icon-button.mat-mdc-icon-button"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-KMZ > .link[_ngcontent-ng-c298621648=\"\"] > .download-file-button.mdc-icon-button.mat-mdc-icon-button"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-PROJECTED_ML3X3 > .link[_ngcontent-ng-c298621648=\"\"] > .download-file-button.mdc-icon-button.mat-mdc-icon-button"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-PAULI > .link[_ngcontent-ng-c298621648=\"\"] > .download-file-button.mdc-icon-button.mat-mdc-icon-button"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-PROJECTED_ML5X5 > .link[_ngcontent-ng-c298621648=\"\"] > .download-file-button.mdc-icon-button.mat-mdc-icon-button"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-METADATA > .link[_ngcontent-ng-c298621648=\"\"] > .download-file-button.mdc-icon-button.mat-mdc-icon-button"
+      ]
+    ]
+  },
+  {
+    "rule": "color-contrast",
+    "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    "targets": [
+      [
+        ".map-view-button--layout > label"
+      ],
+      [
+        ".zoom-buttons > .button-group-label.fx-row-center[_ngcontent-ng-c258732369=\"\"] > label"
+      ],
+      [
+        ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(4) > .button-group-label.fx-row-center[_ngcontent-ng-c258732369=\"\"] > label"
+      ],
+      [
+        ".lat--layout"
+      ],
+      [
+        ".lat--layout > b[_ngcontent-ng-c653162596=\"\"]"
+      ],
+      [
+        ".lon--layout"
+      ],
+      [
+        ".lon--layout > b[_ngcontent-ng-c653162596=\"\"]"
+      ],
+      [
+        "a[_ngcontent-ng-c2770483286=\"\"][target=\"_blank\"]:nth-child(2)"
+      ],
+      [
+        "a[_ngcontent-ng-c2770483286=\"\"][target=\"_blank\"]:nth-child(4)"
+      ],
+      [
+        "a[_ngcontent-ng-c2770483286=\"\"][target=\"_blank\"]:nth-child(6)"
+      ],
+      [
+        "a[_ngcontent-ng-c2770483286=\"\"][target=\"_blank\"]:nth-child(8)"
+      ],
+      [
+        "strong"
+      ]
+    ]
+  },
+  {
+    "rule": "image-alt",
+    "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+    "targets": [
+      [
+        "img[src$=\"NASA_comic_sans.png\"]"
+      ],
+      [
+        ".asf-logo"
+      ],
+      [
+        ".meatball"
+      ],
+      [
+        ".selected.mat-mdc-list-item-interactive.mat-mdc-list-item-single-line > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content.mdc-list-item__primary-text > .button-flex-row[_ngcontent-ng-c1067939290=\"\"] > .image-flex.ng-star-inserted[_ngcontent-ng-c1067939290=\"\"] > .list-thumbnail[onerror=\"this.src='assets/no-thumb.png'\"][matbadgeoverlap=\"false\"]"
+      ],
+      [
+        ".ng-star-inserted:nth-child(2) > app-scene > .mat-mdc-list-item-interactive.mat-mdc-list-item-single-line.mdc-list-item--with-one-line > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content.mdc-list-item__primary-text > .button-flex-row[_ngcontent-ng-c1067939290=\"\"] > .image-flex.ng-star-inserted[_ngcontent-ng-c1067939290=\"\"] > .list-thumbnail[onerror=\"this.src='assets/no-thumb.png'\"][matbadgeoverlap=\"false\"]"
+      ],
+      [
+        ".ng-star-inserted:nth-child(3) > app-scene > .mat-mdc-list-item-interactive.mat-mdc-list-item-single-line.mdc-list-item--with-one-line > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content.mdc-list-item__primary-text > .button-flex-row[_ngcontent-ng-c1067939290=\"\"] > .image-flex.ng-star-inserted[_ngcontent-ng-c1067939290=\"\"] > .list-thumbnail[onerror=\"this.src='assets/no-thumb.png'\"][matbadgeoverlap=\"false\"]"
+      ],
+      [
+        ".ng-star-inserted:nth-child(4) > app-scene > .mat-mdc-list-item-interactive.mat-mdc-list-item-single-line.mdc-list-item--with-one-line > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content.mdc-list-item__primary-text > .button-flex-row[_ngcontent-ng-c1067939290=\"\"] > .image-flex.ng-star-inserted[_ngcontent-ng-c1067939290=\"\"] > .list-thumbnail[onerror=\"this.src='assets/no-thumb.png'\"][matbadgeoverlap=\"false\"]"
+      ],
+      [
+        ".ng-star-inserted:nth-child(5) > app-scene > .mat-mdc-list-item-interactive.mat-mdc-list-item-single-line.mdc-list-item--with-one-line > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content.mdc-list-item__primary-text > .button-flex-row[_ngcontent-ng-c1067939290=\"\"] > .image-flex.ng-star-inserted[_ngcontent-ng-c1067939290=\"\"] > .list-thumbnail[onerror=\"this.src='assets/no-thumb.png'\"][matbadgeoverlap=\"false\"]"
+      ],
+      [
+        ".ng-star-inserted:nth-child(6) > app-scene > .mat-mdc-list-item-interactive.mat-mdc-list-item-single-line.mdc-list-item--with-one-line > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content.mdc-list-item__primary-text > .button-flex-row[_ngcontent-ng-c1067939290=\"\"] > .image-flex.ng-star-inserted[_ngcontent-ng-c1067939290=\"\"] > .list-thumbnail[onerror=\"this.src='assets/no-thumb.png'\"][matbadgeoverlap=\"false\"]"
+      ],
+      [
+        ".ng-star-inserted:nth-child(7) > app-scene > .mat-mdc-list-item-interactive.mat-mdc-list-item-single-line.mdc-list-item--with-one-line > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content.mdc-list-item__primary-text > .button-flex-row[_ngcontent-ng-c1067939290=\"\"] > .image-flex.ng-star-inserted[_ngcontent-ng-c1067939290=\"\"] > .list-thumbnail[onerror=\"this.src='assets/no-thumb.png'\"][matbadgeoverlap=\"false\"]"
+      ],
+      [
+        ".ng-star-inserted:nth-child(8) > app-scene > .mat-mdc-list-item-interactive.mat-mdc-list-item-single-line.mdc-list-item--with-one-line > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content.mdc-list-item__primary-text > .button-flex-row[_ngcontent-ng-c1067939290=\"\"] > .image-flex.ng-star-inserted[_ngcontent-ng-c1067939290=\"\"] > .list-thumbnail[onerror=\"this.src='assets/no-thumb.png'\"][matbadgeoverlap=\"false\"]"
+      ],
+      [
+        ".ng-star-inserted:nth-child(9) > app-scene > .mat-mdc-list-item-interactive.mat-mdc-list-item-single-line.mdc-list-item--with-one-line > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content.mdc-list-item__primary-text > .button-flex-row[_ngcontent-ng-c1067939290=\"\"] > .image-flex.ng-star-inserted[_ngcontent-ng-c1067939290=\"\"] > .list-thumbnail[onerror=\"this.src='assets/no-thumb.png'\"][matbadgeoverlap=\"false\"]"
+      ],
+      [
+        ".ng-star-inserted:nth-child(10) > app-scene > .mat-mdc-list-item-interactive.mat-mdc-list-item-single-line.mdc-list-item--with-one-line > .mdc-list-item__content > .mat-mdc-list-item-unscoped-content.mdc-list-item__primary-text > .button-flex-row[_ngcontent-ng-c1067939290=\"\"] > .image-flex.ng-star-inserted[_ngcontent-ng-c1067939290=\"\"] > .list-thumbnail[onerror=\"this.src='assets/no-thumb.png'\"][matbadgeoverlap=\"false\"]"
+      ]
+    ]
+  },
+  {
+    "rule": "link-in-text-block",
+    "description": "Ensure links are distinguished from surrounding text in a way that does not rely on color",
+    "targets": [
+      [
+        ".faint-text[target=\"_blank\"][_ngcontent-ng-c131096243=\"\"]"
+      ]
+    ]
+  },
+  {
+    "rule": "link-name",
+    "description": "Ensure links have discernible text",
+    "targets": [
+      [
+        ".download"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-SLOPE > .link[_ngcontent-ng-c298621648=\"\"]"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-PROJECTED > .link[_ngcontent-ng-c298621648=\"\"]"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-COMPLEX > .link[_ngcontent-ng-c298621648=\"\"]"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-INC > .link[_ngcontent-ng-c298621648=\"\"]"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-STOKES > .link[_ngcontent-ng-c298621648=\"\"]"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-DEM_TIFF > .link[_ngcontent-ng-c298621648=\"\"]"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-KMZ > .link[_ngcontent-ng-c298621648=\"\"]"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-PROJECTED_ML3X3 > .link[_ngcontent-ng-c298621648=\"\"]"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-PAULI > .link[_ngcontent-ng-c298621648=\"\"]"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-PROJECTED_ML5X5 > .link[_ngcontent-ng-c298621648=\"\"]"
+      ],
+      [
+        "#scene_UA_permaf_20015_15147_009_151005_L090_CX_02-METADATA > .link[_ngcontent-ng-c298621648=\"\"]"
+      ]
+    ]
+  },
+  {
+    "rule": "meta-viewport",
+    "description": "Ensure <meta name=\"viewport\"> does not disable text scaling and zooming",
+    "targets": [
+      [
+        "meta[name=\"viewport\"]"
+      ]
+    ]
+  },
+  {
+    "rule": "nested-interactive",
+    "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies",
+    "targets": [
+      [
+        "#mat-button-toggle-8-button"
+      ],
+      [
+        "#mat-button-toggle-6-button"
+      ]
+    ]
+  },
+  {
+    "rule": "region",
+    "description": "Ensure all page content is contained by landmarks",
+    "targets": [
+      [
+        "body > div:nth-child(2)"
+      ],
+      [
+        ".breadcrumb-list > .fx-row[_ngcontent-ng-c2768180567=\"\"]"
+      ],
+      [
+        ".button-label[_ngcontent-ng-c2182462753=\"\"]"
+      ],
+      [
+        ".button-label[_ngcontent-ng-c844290484=\"\"]"
+      ],
+      [
+        ".full-width > .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled > .mat-mdc-form-field-flex > .mat-mdc-form-field-infix"
+      ],
+      [
+        ".date-selector--layout > app-date-selector > app-date-range > .date-selector[novalidate=\"\"] > .date-input-field.mat-mdc-form-field-has-icon-suffix.mat-mdc-form-field-type-mat-input:nth-child(1) > .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled"
+      ],
+      [
+        ".date-selector--layout > app-date-selector > app-date-range > .date-selector[novalidate=\"\"] > .date-input-field.mat-mdc-form-field-has-icon-suffix.mat-mdc-form-field-type-mat-input:nth-child(2) > .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled"
+      ],
+      [
+        "#mat-button-toggle-8-button"
+      ],
+      [
+        "#mat-button-toggle-9-button"
+      ],
+      [
+        "app-info-bar"
+      ],
+      [
+        ".map-view-button--layout"
+      ],
+      [
+        ".zoom-buttons > .button-group-label.fx-row-center[_ngcontent-ng-c258732369=\"\"]"
+      ],
+      [
+        "#mat-button-toggle-0-button"
+      ],
+      [
+        "#mat-button-toggle-1-button"
+      ],
+      [
+        ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(3) > .button-group-label.fx-row-center[_ngcontent-ng-c258732369=\"\"]"
+      ],
+      [
+        ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(4)"
+      ],
+      [
+        ".group-margin.fx-empty[_ngcontent-ng-c258732369=\"\"]:nth-child(5) > .button-group-label.fx-row-center[_ngcontent-ng-c258732369=\"\"]"
+      ],
+      [
+        ".lat-lon"
+      ],
+      [
+        ".meatball"
+      ],
+      [
+        ".header.ng-tns-c1559564457-0[_ngcontent-ng-c1559564457=\"\"]"
+      ],
+      [
+        "#mat-button-toggle-6-button"
+      ],
+      [
+        "#mat-button-toggle-7-button"
+      ],
+      [
+        "app-attributions"
+      ],
+      [
+        "div[_ngcontent-ng-c2470562375=\"\"]:nth-child(8)"
+      ],
+      [
+        ".scene-count"
+      ],
+      [
+        ".list-button-group.fx-empty[_ngcontent-ng-c868551677=\"\"]:nth-child(1) > .button-group-label.fx-row-center[_ngcontent-ng-c868551677=\"\"]"
+      ],
+      [
+        "#mat-button-toggle-10-button"
+      ],
+      [
+        ".list-button-group.fx-empty[_ngcontent-ng-c868551677=\"\"]:nth-child(2) > .button-group-label.fx-row-center[_ngcontent-ng-c868551677=\"\"]"
+      ],
+      [
+        "#mat-button-toggle-11-button"
+      ],
+      [
+        ".no-box-shadow > mat-card-subtitle"
+      ],
+      [
+        "mat-card-title > span[_ngcontent-ng-c131096243=\"\"]"
+      ],
+      [
+        ".subtitle"
+      ],
+      [
+        ".detail-card-info"
+      ],
+      [
+        "li:nth-child(1) > .v-mid[_ngcontent-ng-c3858063292=\"\"]:nth-child(1)"
+      ],
+      [
+        "li:nth-child(2) > .v-mid[_ngcontent-ng-c3858063292=\"\"]:nth-child(1)"
+      ],
+      [
+        "li:nth-child(3) > .v-mid[_ngcontent-ng-c3858063292=\"\"]:nth-child(1)"
+      ],
+      [
+        "li:nth-child(4) > .v-mid[_ngcontent-ng-c3858063292=\"\"]:nth-child(1)"
+      ],
+      [
+        ".detail-item-margin:nth-child(5) > .v-mid[_ngcontent-ng-c3858063292=\"\"]:nth-child(1)"
+      ],
+      [
+        ".detail-item-margin:nth-child(6)"
+      ],
+      [
+        ".detail-item-margin:nth-child(7)"
+      ],
+      [
+        ".browse-pager"
+      ],
+      [
+        ".img-container"
+      ],
+      [
+        ".search-button-label"
+      ],
+      [
+        ".no-left-border > mat-card-subtitle"
+      ],
+      [
+        "app-scene-file:nth-child(1) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-title.mdc-list-item__primary-text[matlistitemtitle=\"\"] > b"
+      ],
+      [
+        "app-scene-file:nth-child(1) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-line.mdc-list-item__secondary-text.file-sub-line"
+      ],
+      [
+        "app-scene-file:nth-child(2) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-title.mdc-list-item__primary-text[matlistitemtitle=\"\"] > b"
+      ],
+      [
+        "app-scene-file:nth-child(2) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-line.mdc-list-item__secondary-text.file-sub-line"
+      ],
+      [
+        "app-scene-file:nth-child(3) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-title.mdc-list-item__primary-text[matlistitemtitle=\"\"] > b"
+      ],
+      [
+        "app-scene-file:nth-child(3) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-line.mdc-list-item__secondary-text.file-sub-line"
+      ],
+      [
+        "app-scene-file:nth-child(4) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-title.mdc-list-item__primary-text[matlistitemtitle=\"\"] > b"
+      ],
+      [
+        "app-scene-file:nth-child(4) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-line.mdc-list-item__secondary-text.file-sub-line"
+      ],
+      [
+        "app-scene-file:nth-child(5) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-title.mdc-list-item__primary-text[matlistitemtitle=\"\"] > b"
+      ],
+      [
+        "app-scene-file:nth-child(5) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-line.mdc-list-item__secondary-text.file-sub-line"
+      ],
+      [
+        "app-scene-file:nth-child(6) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-title.mdc-list-item__primary-text[matlistitemtitle=\"\"] > b"
+      ],
+      [
+        "app-scene-file:nth-child(6) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-line.mdc-list-item__secondary-text.file-sub-line"
+      ],
+      [
+        "app-scene-file:nth-child(7) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-title.mdc-list-item__primary-text[matlistitemtitle=\"\"] > b"
+      ],
+      [
+        "app-scene-file:nth-child(7) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-line.mdc-list-item__secondary-text.file-sub-line"
+      ],
+      [
+        "app-scene-file:nth-child(8) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-title.mdc-list-item__primary-text[matlistitemtitle=\"\"] > b"
+      ],
+      [
+        "app-scene-file:nth-child(8) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-line.mdc-list-item__secondary-text.file-sub-line"
+      ],
+      [
+        "app-scene-file:nth-child(9) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-title.mdc-list-item__primary-text[matlistitemtitle=\"\"] > b"
+      ],
+      [
+        "app-scene-file:nth-child(9) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-line.mdc-list-item__secondary-text.file-sub-line"
+      ],
+      [
+        "app-scene-file:nth-child(10) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-title.mdc-list-item__primary-text[matlistitemtitle=\"\"] > b"
+      ],
+      [
+        "app-scene-file:nth-child(10) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-line.mdc-list-item__secondary-text.file-sub-line"
+      ],
+      [
+        "app-scene-file:nth-child(11) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-title.mdc-list-item__primary-text[matlistitemtitle=\"\"] > b"
+      ],
+      [
+        "app-scene-file:nth-child(11) > mat-list-item > .mdc-list-item__content > .mat-mdc-list-item-line.mdc-list-item__secondary-text.file-sub-line"
+      ]
+    ]
+  },
+  {
+    "rule": "role-img-alt",
+    "description": "Ensure [role=\"img\"] and [role=\"image\"] elements have alternative text",
+    "targets": [
+      [
+        "mat-icon[svgicon=\"hyp3\"]"
+      ],
+      [
+        ".spacing.nav-icon-buttons.mat-basic:nth-child(3) > .mat-badge.mat-badge-primary.mat-badge-overlap"
+      ]
+    ]
+  }
+]
