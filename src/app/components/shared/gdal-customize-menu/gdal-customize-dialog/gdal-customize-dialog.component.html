@@ -52,19 +52,49 @@
   <div class="blur-overlay-container">
     <div class="options-list-card">
       <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
-      <!-- <div class="output-type">
-      <mat-button-toggle-group
-        [(ngModel)]="outputType"
-        class="mat-elevation-z2"
-      >
-        <mat-button-toggle value="gdal">
-          {{ 'GDAL_OUTPUT' | translate }}
-        </mat-button-toggle>
-        <mat-button-toggle value="qgis">
-          {{ 'QGIS_OUTPUT' | translate }}
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-    </div> -->
+      <h3>{{ 'CONFIGURE_GEOSPATIAL_OPTIONS' | translate }}</h3>
+      <div class="options-list">
+        <span class="option checkbox">
+          <mat-checkbox
+            [disabled]="!gdalService.isCropToAOIAvailable()"
+            disabledInteractive
+            [(ngModel)]="cropToAOI"
+            [matTooltip]="
+              !gdalService.isCropToAOIAvailable()
+                ? ('CROP_TO_AOI_DISABLED' | translate)
+                : null
+            "
+            >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
+          >
+        </span>
+        @if (gdalService.isCropToAOIAvailable()) {
+          <span class="option cutline">
+            <mat-form-field>
+              <mat-label>{{ 'AREA_OF_INTEREST_WKT' | translate }}</mat-label>
+              <input
+                matInput
+                [disabled]="!cropToAOI()"
+                disabledInteractive
+                [matTooltip]="
+                  !cropToAOI() ? ('CROP_TO_AOI_IS_DISABLED' | translate) : null
+                "
+                [(ngModel)]="cutlineWKT"
+              />
+            </mat-form-field>
+          </span>
+        }
+        <span class="option reproject">
+          <mat-form-field>
+            <mat-label> {{ 'REPROJECT' | translate }}</mat-label>
+            <input
+              class="reproject"
+              matInput
+              [matTooltip]="'REPROJECT_TOOLTIP' | translate"
+              [(ngModel)]="selectedProjection"
+            />
+          </mat-form-field>
+        </span>
+      </div>
       <h3>{{ 'CONFIGURE_GDAL_OUTPUTFILE' | translate }}</h3>
       <div class="options-list">
         <span class="option short">
@@ -88,33 +118,6 @@
               [(ngModel)]="outputFilename"
             />
           </mat-form-field>
-        </span>
-      </div>
-      <h3>{{ 'CONFIGURE_GEOSPATIAL_OPTIONS' | translate }}</h3>
-      <div class="options-list">
-        <span class="option reproject">
-          <mat-form-field>
-            <mat-label> {{ 'REPROJECT' | translate }}</mat-label>
-            <input
-              class="reproject"
-              matInput
-              [matTooltip]="'REPROJECT_TOOLTIP' | translate"
-              [(ngModel)]="selectedProjection"
-            />
-          </mat-form-field>
-        </span>
-        <span class="option checkbox">
-          <mat-checkbox
-            [disabled]="!gdalService.isCropToAOIAvailable()"
-            disabledInteractive
-            [(ngModel)]="cropToAOI"
-            [matTooltip]="
-              !gdalService.isCropToAOIAvailable()
-                ? ('CROP_TO_AOI_DISABLED' | translate)
-                : null
-            "
-            >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
-          >
         </span>
       </div>
       <h3>{{ 'CONFIGURE_GDAL_ENVIRONMENT' | translate }}</h3>
