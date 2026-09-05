@@ -1311,6 +1311,7 @@
   "RUN_GDAL_SNIPPET": "Copie el fragmento de código GDAL.",
   "CROP_TO_AOI": "Recortar al Área de Interés actual",
   "CROP_TO_AOI_DISABLED": "Seleccione un Área de Interés poligonal para usar esta función.",
+  "CROP_TO_AOI_IS_DISABLED": "Crop to AOI is disabled.",
   "REPROJECT": "Proyección de salida",
   "REPROJECT_TOOLTIP": "Admite WGS84 o cualquier código EPSG.",
   "MINIMAL_COMMAND": "Usar archivo de configuración",
@@ -1333,5 +1334,8 @@
   "EXPORTED_DATASET_PATH_CLIPBOARD": "Ruta del conjunto de datos copiada al portapapeles.",
   "GDAL_313_ADMONITION": "GDAL 3.13 admite el controlador HDF5 para archivos NISAR, en lugar del controlador NETCDF que requieren las versiones anteriores.",
   "SELECT": "Select",
-  "GDAL_DROPDOWN_EXPAND_BUTTON": "Expand GDAL datasets dialog."
+  "GDAL_DROPDOWN_EXPAND_BUTTON": "Expand GDAL datasets dialog.",
+  "CONFIGURE_GDAL_OUTPUTFILE": "Output File",
+  "CONFIGURE_GEOSPATIAL_OPTIONS": "Geospatial",
+  "CONFIGURE_GDAL_ENVIRONMENT": "GDAL Environment"
 }

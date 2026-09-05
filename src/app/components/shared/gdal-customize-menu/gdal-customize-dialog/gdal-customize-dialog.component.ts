@@ -5,6 +5,7 @@ import {
   Signal,
   computed,
   effect,
+  untracked,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -84,6 +85,7 @@ export class GdalCustomizeDialogComponent {
     }
   });
   cropToAOI = signal<boolean>(false);
+  cutlineWKT = signal<string>(this.gdalService.searchPolygon() ?? '');
   minimalCommand = signal<boolean>(false);
   outputOSList = GDAL_OS;
   outputOS = signal<GdalOs>(this.getOS());
@@ -100,7 +102,7 @@ export class GdalCustomizeDialogComponent {
         outputFormat: this.outputFormat(),
         outputExtension: this.outputExtension(),
       },
-      aoi: this.cropToAOI(),
+      cutlineWKT: this.cropToAOI() ? this.cutlineWKT() : undefined,
       minimalCommand: this.minimalCommand(),
       os: this.outputOS(),
       outputFilename: this.outputFilename(),
@@ -142,15 +144,20 @@ machine urs.earthdata.nasa.gov
     return 'Unix';
   }
 
+  updateFilename() {
+    // This is the only way a signal two way bound to a matInput with ngModel will accept a new value.
+    this.outputFilename.set('');
+    this.outputFilename.set(
+      this.gdalService.resolveOutputFilename(this.gdalOptions()),
+    );
+  }
+
   constructor() {
     effect(() => {
-      if (!this.selectedDataset()) {
-        return;
+      if (this.selectedDataset() !== '') {
+        // Only update when selectedDataset changes, not when other options change.
+        untracked(() => this.updateFilename());
       }
-
-      this.outputFilename.set(
-        this.gdalService.resolveOutputFilename(this.gdalOptions()),
-      );
     });
   }
 }

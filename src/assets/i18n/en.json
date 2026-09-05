@@ -1311,6 +1311,7 @@
   "RUN_GDAL_SNIPPET": "Copy GDAL snippet.",
   "CROP_TO_AOI": "Crop to current AOI",
   "CROP_TO_AOI_DISABLED": "Select a polygon AOI to use this feature.",
+  "CROP_TO_AOI_IS_DISABLED": "Crop to AOI is disabled.",
   "REPROJECT": "Output Projection",
   "REPROJECT_TOOLTIP": "Supports WGS84 or any EPSG code.",
   "MINIMAL_COMMAND": "Use Config File",
@@ -1333,5 +1334,8 @@
   "EXPORTED_DATASET_PATH_CLIPBOARD": "Copied dataset path to clipboard.",
   "GDAL_313_ADMONITION": "GDAL 3.13 supports use of HDF5 driver for NISAR files instead of the NETCDF driver required by older versions.",
   "SELECT": "Select",
-  "GDAL_DROPDOWN_EXPAND_BUTTON": "Expand GDAL datasets dialog."
+  "GDAL_DROPDOWN_EXPAND_BUTTON": "Expand GDAL datasets dialog.",
+  "CONFIGURE_GDAL_OUTPUTFILE": "Output File",
+  "CONFIGURE_GEOSPATIAL_OPTIONS": "Geospatial",
+  "CONFIGURE_GDAL_ENVIRONMENT": "GDAL Environment"
 }

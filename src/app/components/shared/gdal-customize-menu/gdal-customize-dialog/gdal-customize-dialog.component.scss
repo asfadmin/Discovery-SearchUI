@@ -162,6 +162,12 @@ h1 {
   max-width: 100%;
 }
 
+.cutline {
+  flex-grow: 1;
+  min-width: 50%;
+  max-width: 100%;
+}
+
 .reproject {
   width: 20ch;
 }
