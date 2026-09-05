@@ -1311,6 +1311,7 @@
   "RUN_GDAL_SNIPPET": "Copie el fragmento de código GDAL.",
   "CROP_TO_AOI": "Recortar al Área de Interés actual",
   "CROP_TO_AOI_DISABLED": "Seleccione un Área de Interés poligonal para usar esta función.",
+  "CROP_TO_AOI_IS_DISABLED": "Crop to AOI is disabled.",
   "REPROJECT": "Proyección de salida",
   "REPROJECT_TOOLTIP": "Admite WGS84 o cualquier código EPSG.",
   "MINIMAL_COMMAND": "Usar archivo de configuración",
