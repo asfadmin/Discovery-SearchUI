@@ -7,6 +7,7 @@ export interface DerivedDataset {
   info_url: string;
   download_url: string;
   picture: string;
+  deprecated?: boolean;
 }
 
 const pictureFolder = 'assets/derived-datasets';
@@ -59,6 +60,7 @@ The RADARSAT-1 Antarctic Mapping Project (RAMP) was composed of two main mission
     info_url: `${asfWebsite.home}/sar-data-sets/radarsat-antarctic-mapping-project-ramp`,
     download_url: `${asfWebsite.home}/data-sets/derived-data-sets/ramp/ramp-get-ramp-data`,
     picture: `${pictureFolder}/ramp.png`,
+    deprecated: true,
   },
   {
     name: 'SEA_ICE_MEASURES',
@@ -79,5 +81,6 @@ The inundated wetlands Earth System Data Record (ESDR) consists of two primary c
     info_url: `${asfWebsite.home}/sar-data-sets/wetlands-measures`,
     download_url: `${asfWebsite.home}/data-sets/derived-data-sets/wetlands-measures/wetlands-measures-product-downloads/`,
     picture: `${pictureFolder}/wetlands_measures.gif`,
+    deprecated: true,
   },
 ];

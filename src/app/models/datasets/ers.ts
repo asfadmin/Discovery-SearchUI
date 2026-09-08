@@ -15,6 +15,7 @@ export const ers = {
     Props.ABSOLUTE_ORBIT,
     Props.BASELINE_TOOL,
     Props.PLATFORM,
+    Props.DEPRECATED,
   ],
   apiValue: { dataset: 'ERS' },
   date: {

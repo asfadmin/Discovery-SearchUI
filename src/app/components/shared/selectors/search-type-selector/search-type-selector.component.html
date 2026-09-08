@@ -179,6 +179,18 @@
                   >
                     {{ dataset.name | translate }}
                   </div>
+                  @if (dataset.deprecated) {
+                    <div class="deprecation-notice">
+                      {{ 'DATASET_DEPRECATION_NOTICE' | translate }}
+
+                      <br />
+                      {{ 'EMAIL' | translate }}
+                      <a class="link" href="mailto:uso@alaska.edu"
+                        >uso&#64;alaska.edu
+                      </a>
+                      {{ 'FOR_MORE_INFO' | translate }}
+                    </div>
+                  }
                   <div
                     class="item-content"
                     [ngClass]="{ limitTextHeight: isReadMore }"

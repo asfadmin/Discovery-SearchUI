@@ -24,6 +24,7 @@ export enum Props {
   USE_TRACK = 'Use Track for Path',
   FRAME_ORDERING = 'Allow ordering frames via SBAS tooling',
   SINGLE_PRODUCT = 'Scene list toggle button only adds/removes base product',
+  DEPRECATED = 'Dataset pending deprecation',
 }
 
 export const apiParamNames = {
