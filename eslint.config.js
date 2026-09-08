@@ -104,7 +104,7 @@ module.exports = tseslint.config([
     language: 'json/json',
     rules: {
       'json/no-duplicate-keys': 'error',
-      'json/sort-keys': 'error',
+      'json/sort-keys': ['error', 'asc', { natural: true }],
     },
   },
   {
