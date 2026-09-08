@@ -97,6 +97,7 @@
   "devDependencies": {
     "@angular/build": "^21.2.19",
     "@angular/language-service": "^21.2.9",
+    "@eslint/json": "^2.1.0",
     "@ngrx/schematics": "^21.0.1",
     "@playwright/test": "1.59.1",
     "@vitest/coverage-v8": "^4.0.17",
