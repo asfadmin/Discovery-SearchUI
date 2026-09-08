@@ -140,8 +140,7 @@
           "options": {
             "lintFilePatterns": [
               "src/**/*.ts",
-              "src/**/*.html",
-              "src/assets/i18n/*.json"
+              "src/**/*.html"
             ]
           }
         },

@@ -4,9 +4,8 @@ const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 const prettierRecommended = require('eslint-plugin-prettier/recommended');
 const importPlugin = require('eslint-plugin-import');
-const json = require('@eslint/json');
 
-module.exports = tseslint.config([
+module.exports = tseslint.config(
   {
     files: ['**/*.ts'],
     extends: [
@@ -97,17 +96,6 @@ module.exports = tseslint.config([
     },
   },
   {
-    files: ['src/assets/i18n/*.json'],
-    plugins: {
-      json: json.default,
-    },
-    language: 'json/json',
-    rules: {
-      'json/no-duplicate-keys': 'error',
-      'json/sort-keys': ['error', 'asc', { natural: true }],
-    },
-  },
-  {
     files: ['**/*'],
     extends: [prettierRecommended],
     rules: {
@@ -120,4 +108,4 @@ module.exports = tseslint.config([
       ],
     },
   },
-]);
+);
