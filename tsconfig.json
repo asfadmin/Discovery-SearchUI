@@ -4,13 +4,13 @@
     "strictTemplates": true
   },
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "noUnusedLocals": true,
+    "strict": false,
     "noUnusedParameters": true,
     "typeRoots": [
       "node_modules/@types"
@@ -21,65 +21,63 @@
     "useDefineForClassFields": false,
     "resolveJsonModule": true,
     "paths": {
+      "*": ["./*"],
       "@components": [
-        "src/app/components"
+        "./src/app/components"
       ],
       "@services": [
-        "src/app/services"
+        "./src/app/services"
       ],
       "@pipes": [
-        "src/app/pipes"
+        "./src/app/pipes"
       ],
       "@models": [
-        "src/app/models"
+        "./src/app/models"
       ],
       "@directives": [
-        "src/app/directives"
+        "./src/app/directives"
       ],
       "@store": [
-        "src/app/store"
+        "./src/app/store"
       ],
       "@shared": [
-        "src/app/shared"
+        "./src/app/shared"
       ],
       "@environments": [
-        "src/environments"
+        "./src/environments"
       ],
       "@testing": [
-        "src/app/testing"
+        "./src/app/testing"
       ],
       "@components/*": [
-        "src/app/components/*"
+        "./src/app/components/*"
       ],
       "@services/*": [
-        "src/app/services/*"
+        "./src/app/services/*"
       ],
       "@pipes/*": [
-        "src/app/pipes/*"
+        "./src/app/pipes/*"
       ],
       "@models/*": [
-        "src/app/models/*"
+        "./src/app/models/*"
       ],
       "@directives/*": [
-        "src/app/directives/*"
+        "./src/app/directives/*"
       ],
       "@store/*": [
-        "src/app/store/*"
+        "./src/app/store/*"
       ],
       "@shared/*": [
-        "src/app/shared/*"
+        "./src/app/shared/*"
       ],
       "@environments/*": [
-        "src/environments/*"
+        "./src/environments/*"
       ],
       "@testing/*": [
-        "src/app/testing/*"
-      ],
-      "@e2e/*": [
-        "@e2e/*"
+        "./src/app/testing/*"
       ],
       "@i18n/*": [
-        "src/assets/i18n/*"
+        "./src/assets/i18n/*"
       ]
     }
   }
