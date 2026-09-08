@@ -119,6 +119,6 @@
     "ts-morph": "^28.0.0",
     "ts-node": "^8.10.2",
     "typescript-eslint": "8.40.0",
-    "vitest": "^4.0.17"
+    "vitest": "^4.1.11"
   }
 }
