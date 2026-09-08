@@ -85,7 +85,7 @@ export class GdalCustomizeDialogComponent {
     }
   });
   cropToAOI = signal<boolean>(false);
-  cutlineWKT = signal<string>(this.gdalService.searchPolygon() ?? '');
+  cutlineWKT = signal<string>(this.gdalService.searchPolygon());
   minimalCommand = signal<boolean>(false);
   outputOSList = GDAL_OS;
   outputOS = signal<GdalOs>(this.getOS());
@@ -102,7 +102,7 @@ export class GdalCustomizeDialogComponent {
         outputFormat: this.outputFormat(),
         outputExtension: this.outputExtension(),
       },
-      cutlineWKT: this.cropToAOI() ? this.cutlineWKT() : undefined,
+      cutlineWKT: this.cropToAOI() ? this.cutlineWKT() : '',
       minimalCommand: this.minimalCommand(),
       os: this.outputOS(),
       outputFilename: this.outputFilename(),
