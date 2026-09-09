@@ -8,7 +8,7 @@ import * as models from '@models';
 import { SearchType } from '@models';
 import { AppState } from '@store/app.reducer';
 import { ResetMaxHyp3ResultsHit } from '@store/hyp3';
-import { getSearchType } from '@store/search';
+import { getSearchType, SearchActionType } from '@store/search';
 import { LoadFiltersPreset } from '@store/user';
 
 import * as filtersAction from './filters.action';
@@ -79,8 +79,14 @@ export class FiltersEffects {
         filtersAction.FiltersActionType.CLEAR_DATASET_FILTERS,
         filtersAction.FiltersActionType.SET_SELECTED_DATASET,
       ),
-      withLatestFrom(this.store$.select(getSelectedDataset)),
-      filter(([_, dataset]) => !!dataset),
+      withLatestFrom(
+        this.store$.select(getSelectedDataset),
+        this.store$.select(getSearchType),
+      ),
+      filter(
+        ([_, dataset, searchType]) =>
+          !!dataset && searchType === SearchType.DATASET,
+      ),
       map(([_, dataset]) => {
         const defaults = dataset.defaultFilters;
         if (!defaults) {
@@ -90,6 +96,29 @@ export class FiltersEffects {
         return new filtersAction.ApplyDatasetDefaults(defaults);
       }),
       filter((a) => a !== null),
+    ),
+  );
+
+  public clearDefaultFiltersOnSearchTypeChange = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
+      withLatestFrom(
+        this.store$.select(getSelectedDataset),
+        this.store$.select(getSearchType),
+      ),
+      filter(
+        ([_, dataset, searchType]) =>
+          searchType !== SearchType.DATASET && !!dataset?.defaultFilters,
+      ),
+      map(([_, dataset]) => {
+        const cleared = Object.fromEntries(
+          Object.entries(dataset.defaultFilters).map(([key, value]) => [
+            key,
+            Array.isArray(value) ? [] : null,
+          ]),
+        );
+        return new filtersAction.ApplyDatasetDefaults(cleared);
+      }),
     ),
   );
 }
