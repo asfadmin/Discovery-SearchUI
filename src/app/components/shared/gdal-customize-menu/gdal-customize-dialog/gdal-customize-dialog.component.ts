@@ -84,6 +84,7 @@ export class GdalCustomizeDialogComponent {
     }
   });
   cropToAOI = signal<boolean>(false);
+  cutlineWKT = signal<string>(this.gdalService.searchPolygon());
   minimalCommand = signal<boolean>(false);
   outputOSList = GDAL_OS;
   outputOS = signal<GdalOs>(this.getOS());
@@ -100,7 +101,7 @@ export class GdalCustomizeDialogComponent {
         outputFormat: this.outputFormat(),
         outputExtension: this.outputExtension(),
       },
-      aoi: this.cropToAOI(),
+      cutlineWKT: this.cropToAOI() ? this.cutlineWKT() : '',
       minimalCommand: this.minimalCommand(),
       os: this.outputOS(),
       outputFilename: this.outputFilename(),
@@ -144,13 +145,14 @@ machine urs.earthdata.nasa.gov
 
   constructor() {
     effect(() => {
-      if (!this.selectedDataset()) {
-        return;
+      if (this.selectedDataset() !== '') {
+        this.outputFilename.set(
+          this.gdalService.resolveOutputFilename({
+            product: this.data.product,
+            datasetPath: this.selectedDataset(),
+          }),
+        );
       }
-
-      this.outputFilename.set(
-        this.gdalService.resolveOutputFilename(this.gdalOptions()),
-      );
     });
   }
 }
