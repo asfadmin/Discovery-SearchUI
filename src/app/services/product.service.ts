@@ -155,6 +155,9 @@ export class ProductService {
     if (product.dataset === 'UAVSAR') {
       return this.uavsarSubproductsFromScene(product);
     }
+    if (product.dataset === 'SMAP') {
+      return this.smapSubproductFromScene(product);
+    }
     if (
       models.tropo.productTypes
         .map((t) => t.apiValue)
@@ -648,6 +651,67 @@ export class ProductService {
       products.push(subproduct);
     }
 
+    return products;
+  }
+
+  private getSMAPFileExtension(url: string) {
+    return url.split('.').pop() ?? '';
+  }
+
+  private smapSubproductFromScene(product: models.CMRProduct) {
+    const products: models.CMRProduct[] = [];
+    const file_extension = this.getSMAPFileExtension(product.downloadUrl);
+    product.productTypeDisplay =
+      models.smap.productTypeDisplays.displays[file_extension];
+    const fileID = product.downloadUrl.split('/').slice(-1)[0];
+    product.bytes = product.metadata.fileSizes[fileID]?.bytes ?? 0;
+    const s3UrlsByProductID = product.metadata.s3Urls.reduce((prev, curr) => {
+      const subproductFileID = curr.split('/').at(-1);
+
+      prev[subproductFileID] = curr;
+
+      return prev;
+    }, {});
+
+    product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
+
+    for (const p of [
+      ...product.metadata.additionalUrls.filter(
+        (url: string) => url !== product.downloadUrl,
+      ),
+      ...product.browses,
+    ]) {
+      if (p === '/assets/no-browse.png') {
+        continue;
+      }
+      const file_extension = this.getSMAPFileExtension(p);
+
+      const productTypeDisplay =
+        models.smap.productTypeDisplays.displays[
+          file_extension.toLowerCase()
+        ] ?? 'Missing Display';
+      // TODO: take into account collection short_name?
+      if (productTypeDisplay === 'Missing Display') {
+        console.log(
+          `Missing product type display for file extension "${file_extension}"`,
+        );
+      }
+
+      const fileID = p.split('/').slice(-1)[0];
+      const s3Url = s3UrlsByProductID[fileID] ?? null;
+      const fileSize = product.metadata.fileSizes[fileID]?.bytes ?? 0;
+      const subproduct = this.createSubproductForScene(
+        product,
+        p,
+        s3Url,
+        file_extension,
+        productTypeDisplay,
+        fileSize,
+        [],
+      );
+
+      products.push(subproduct);
+    }
     return products;
   }
   private createSubproductForScene(

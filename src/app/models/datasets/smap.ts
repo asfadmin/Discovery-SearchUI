@@ -73,4 +73,11 @@ export const smap = {
   platforms: [],
   description: 'SMAP_DESC',
   icon: '/assets/icons/satellite_alt_black_48dp.svg',
+  productTypeDisplays: {
+    displays: {
+      h5: 'Product',
+      xml: 'Product Metadata',
+      qa: 'Data Quality',
+    },
+  },
 };
