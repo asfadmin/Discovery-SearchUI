@@ -661,8 +661,11 @@ export class ProductService {
   private smapSubproductFromScene(product: models.CMRProduct) {
     const products: models.CMRProduct[] = [];
     const file_extension = this.getSMAPFileExtension(product.downloadUrl);
+
     product.productTypeDisplay =
-      models.smap.productTypeDisplays.displays[file_extension];
+      models.smap.productTypeDisplays.displays[
+        `${product.metadata.productType}.${file_extension}`
+      ] ?? 'Missing Display';
     const fileID = product.downloadUrl.split('/').slice(-1)[0];
     product.bytes = product.metadata.fileSizes[fileID]?.bytes ?? 0;
     const s3UrlsByProductID = product.metadata.s3Urls.reduce((prev, curr) => {
@@ -672,7 +675,6 @@ export class ProductService {
 
       return prev;
     }, {});
-
     product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
 
     for (const p of [
@@ -688,9 +690,8 @@ export class ProductService {
 
       const productTypeDisplay =
         models.smap.productTypeDisplays.displays[
-          file_extension.toLowerCase()
+          `${product.metadata.productType}.${file_extension}`
         ] ?? 'Missing Display';
-      // TODO: take into account collection short_name?
       if (productTypeDisplay === 'Missing Display') {
         console.log(
           `Missing product type display for file extension "${file_extension}"`,

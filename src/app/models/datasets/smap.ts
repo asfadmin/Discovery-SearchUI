@@ -75,9 +75,20 @@ export const smap = {
   icon: '/assets/icons/satellite_alt_black_48dp.svg',
   productTypeDisplays: {
     displays: {
-      h5: 'Product',
-      xml: 'Product Metadata',
-      qa: 'Data Quality',
+      'L1A_RADAR.h5': 'Level 1A Radar Product',
+      'L1A_RADAR_RO.h5': 'Level 1A Receive Only Product',
+      'L1B_S0_LORES.h5': 'Level 1B Low Resolution Product',
+      'L1C_S0_HIRES.h5': 'Level 1C High Resolution Product',
+
+      'L1A_RADAR.xml': 'Level 1A Radar Product Metadata',
+      'L1A_RADAR_RO.xml': 'Level 1A Receive Only Product Metadata',
+      'L1B_S0_LORES.xml': 'Level 1B Low Resolution Product Metadata',
+      'L1C_S0_HIRES.xml': 'Level 1C High Resolution Product Metadata',
+
+      'L1A_RADAR.qa': 'Level 1A Radar Data Quality',
+      'L1A_RADAR_RO.qa': 'Level 1A Receive Only Data Quality',
+      'L1B_S0_LORES.qa': 'Level 1B Low Resolution Data Quality',
+      'L1C_S0_HIRES.qa': 'Level 1C High Resolution Data Quality',
     },
   },
 };
