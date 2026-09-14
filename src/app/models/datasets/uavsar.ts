@@ -72,6 +72,7 @@ export const uavsar = {
       gif: 'Browse Image GIF',
       png: 'Browse Image PNG',
       ann: 'Annotation file / Metadata',
+      end: 'End File',
     },
   },
 };
