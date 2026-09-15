@@ -60,7 +60,13 @@ export class SearchParamsService {
 
   private missionParam$ = this.store$
     .select(filterStore.getSelectedMission)
-    .pipe(map((mission) => ({ collectionName: mission })));
+    .pipe(
+      withLatestFrom(this.store$.select(filterStore.getSelectedDataset)),
+      map(([mission, dataset]) => ({
+        [dataset.id === 'UAVSAR' ? 'siteDescription' : 'collectionName']:
+          mission,
+      })),
+    );
 
   private burstParams$ = this.store$.select(filterStore.getFullBurstIDs).pipe(
     map((fullIDs) => ({
