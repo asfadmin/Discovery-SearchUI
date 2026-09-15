@@ -152,6 +152,9 @@ export class ProductService {
     if (product.dataset === 'SEASAT 1') {
       return this.seasatSubproductsFromScene(product);
     }
+    if (product.dataset === 'ALOS') {
+        return this.alosSubproductsFromScene(product);
+    }
     if (
       models.tropo.productTypes
         .map((t) => t.apiValue)
@@ -570,6 +573,95 @@ export class ProductService {
     } as models.CMRProduct;
   }
 
+  private alosSubproductsFromScene(product: models.CMRProduct) {
+    const products = [];
+    let file_extension = this.urlToProductType(
+      product.downloadUrl,
+      models.alos.productTypeDisplays.displays,
+    );
+    product.productTypeDisplay =
+      models.alos.productTypeDisplays.displays[file_extension];
+    const fileID = product.downloadUrl.split('/').slice(-1)[0];
+    product.bytes = product.metadata.fileSizes[fileID].bytes;
+    const thumbnail_index = product.browses.findIndex((url) =>
+      url.toLowerCase().includes('thumbnail'),
+    );
+    if (thumbnail_index !== -1) {
+      product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
+    }
+    product.browses = product.browses.filter((url) => !url.includes('low-res'));
+
+    const s3UrlsByProductID = product.metadata.s3Urls.reduce((prev, curr) => {
+      const subproductFileID = curr.split('/').at(-1);
+
+      prev[subproductFileID] = curr;
+
+      return prev;
+    }, {});
+
+    product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
+
+    const browses = [];
+    for (const p of [
+      ...product.metadata.additionalUrls.filter(
+        (url) => url !== product.downloadUrl,
+      ),
+      ...product.browses,
+    ]) {
+        if (p === '/assets/no-browse.png') {
+            continue
+        }
+      file_extension = this.urlToProductType(
+        p,
+        models.alos.productTypeDisplays.displays,
+      );
+
+      const productTypeDisplay =
+        models.alos.productTypeDisplays.displays[
+          file_extension.toLowerCase()
+        ] ?? 'Missing Display';
+      if (productTypeDisplay === 'Missing Display') {
+        console.log(
+          `Missing product type display for file extension "${file_extension}"`,
+        );
+      }
+
+      if (['Metadata IN'].includes(productTypeDisplay)) {
+        continue;
+      }
+
+      const fileID = p.split('/').slice(-1)[0];
+      const s3Url = s3UrlsByProductID[fileID] ?? null;
+      const fileSize = product.metadata.fileSizes[fileID]?.bytes ?? 0;
+      const subproduct = this.createSubproductForScene(
+        product,
+        p,
+        s3Url,
+        file_extension,
+        productTypeDisplay,
+        fileSize,
+        browses,
+      );
+
+      products.push(subproduct);
+    }
+
+    return products.sort((a, b) => {
+      if (
+        a.productTypeDisplay.includes('Metadata') ||
+        a.productTypeDisplay.includes('QA')
+      ) {
+        return 1;
+      } else if (
+        b.productTypeDisplay.includes('Metadata') ||
+        b.productTypeDisplay.includes('QA')
+      ) {
+        return -1;
+      }
+
+      return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
+    });
+  }
   private nisarSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
     let temp = product.downloadUrl.split('.');

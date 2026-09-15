@@ -73,6 +73,18 @@ export const alos = {
     'VV+VH',
     'quadrature',
   ],
+    productTypeDisplays: {
+    displays: {
+      h5: 'Level One HDF5 Image',
+      in: 'Metadata IN',
+      tif: 'Level One GeoTIFF Product',
+      xml: 'ISO Metadata XML',
+      kml: 'Metadata KML',
+      qc_report: 'QC Report',
+      jpg: 'Browse Image JPEG',
+      zip: 'Zip Archive'
+    },
+  },
   platforms: [],
   description: 'PALSAR_DESC',
   icon: '/assets/icons/satellite_alt_black_48dp.svg',
