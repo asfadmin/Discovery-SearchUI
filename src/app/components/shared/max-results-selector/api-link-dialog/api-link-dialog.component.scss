@@ -4,6 +4,7 @@
   @include themify($themes) {
     background: darken(themed('background-white'), 10%);
   }
+
   margin-bottom: 9px;
 }
 
@@ -11,7 +12,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 15px 24px 0 24px;
+  padding: 15px 24px 0;
+
   @include themify($themes) {
     background: darken(themed('background-white'), 10%);
   }

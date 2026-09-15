@@ -3,60 +3,58 @@
 .dataset-filters-div {
   /* autoprefixer: off */
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
+  inset: 0;
+  z-index: 2020;
   width: 900px;
   max-width: 100vw;
+  margin: 0 auto;
   overflow: hidden;
-  z-index: 2020;
 }
 
 .dataset-filters-card {
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
   z-index: 1020;
   display: flex;
+  flex-flow: column nowrap;
   height: 100%;
+  overflow: hidden;
+  box-shadow:
+    0 8px 10px 1px rgb(0 0 0 / 14%),
+    0 3px 14px 2px rgb(0 0 0 / 12%),
+    0 5px 5px -3px rgb(0 0 0 / 40%);
 
-  @media screen and (max-width: 800px) {
+  @media screen and (width <= 800px) {
     height: calc(100% - 32px);
   }
-  overflow: hidden;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  box-shadow:
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12),
-    0 5px 5px -3px rgba(0, 0, 0, 0.4);
 
   .header {
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
     position: sticky;
     top: 0;
+    z-index: 1020;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    font-size: 24px;
+
     @include themify($themes) {
       background-color: themed('primary-light');
       border-bottom: 1px solid themed('primary-dark');
 
     }
-    font-size: 24px;
-    padding: 15px;
-    z-index: 1020;
   }
 
   .header-title {
     display: flex;
+    flex-grow: 1;
     flex-direction: row;
     align-items: center;
     justify-content: start;
-    flex-grow: 1;
   }
 
   .save-search-btn {
@@ -65,26 +63,27 @@
 
   .filters-list {
     flex-grow: 1;
-    overflow: auto;
     min-height: 4em;
     padding: 10px;
+    overflow: auto;
   }
 
   .footer {
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
     position: sticky;
     bottom: 0;
+    z-index: 1020;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: row;
+    justify-content: flex-end;
+    min-height: 30px;
+    padding: 10px;
+
     @include themify($themes) {
       background-color: themed('primary-light');
       border-top: 1px solid themed('primary-dark');
 
     }
-    z-index: 1020;
-    padding: 10px;
-    min-height: 30px;
   }
 }
 
@@ -93,8 +92,8 @@
 }
 
 .max-results-spacing {
-  margin-right: 10px;
   align-self: center;
+  margin-right: 10px;
 }
 
 h3 {
@@ -107,8 +106,9 @@ h3 {
   @include themify($themes) {
     color: themed('primary')
   }
-  padding-left: 5px;
+
   flex-shrink: 0;
+  padding-left: 5px;
   margin-top: 6px;
 }
 

@@ -1,14 +1,14 @@
 import { View } from 'ol';
-import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
-import { WMTS } from 'ol/source';
-import { Options as WMTS_Options } from 'ol/source/WMTS';
+import { Extent } from 'ol/extent';
 import { Graticule as GraticuleLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/WebGLTile.js';
 import * as proj from 'ol/proj';
+import { WMTS } from 'ol/source';
+import { Options as WMTS_Options } from 'ol/source/WMTS';
 import { Stroke } from 'ol/style';
+import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 
 import { MapView, CustomProjection } from './map-view';
-import { Extent } from 'ol/extent';
 
 export function arctic(): MapView {
   const extent: Extent = [-7295304, -7295304, 7295304, 7295304];

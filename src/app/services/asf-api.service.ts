@@ -1,6 +1,5 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-
+import { Injectable, inject } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -12,9 +11,10 @@ import {
   on_demand_test_collections,
   on_demand_test_collections_asfdev,
 } from '@models';
+
 import { EnvironmentService } from './environment.service';
-import { PropertyService } from './property.service';
 import { ProductService } from './product.service';
+import { PropertyService } from './property.service';
 
 @Injectable({
   providedIn: 'root',

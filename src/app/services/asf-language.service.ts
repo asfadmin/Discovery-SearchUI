@@ -1,13 +1,15 @@
-import { TranslateService } from '@ngx-translate/core';
-import { CookieService } from 'ngx-cookie-service';
-import * as moment from 'moment';
 import { Injectable, inject } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
+import { Title } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import * as moment from 'moment';
+import { CookieService } from 'ngx-cookie-service';
+import { SubSink } from 'subsink';
+
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
-import { Store } from '@ngrx/store';
-import { SubSink } from 'subsink';
-import { Title } from '@angular/platform-browser';
+
 const defaultLanguage = 'en';
 
 @Injectable({

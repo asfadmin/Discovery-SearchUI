@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Directive, inject } from '@angular/core';
-import { ActiveToast, ToastrService } from 'ngx-toastr';
-import { Banner } from '@models';
 import { MatDialog } from '@angular/material/dialog';
-import { BannerDialogComponent } from '@components/map/banners/banner-dialog/banner-dialog.component';
-import {} from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { ActiveToast, ToastrService } from 'ngx-toastr';
+
+import { BannerDialogComponent } from '@components/map/banners/banner-dialog/banner-dialog.component';
+import { Banner } from '@models';
 
 export interface DialogData {
   title: string;

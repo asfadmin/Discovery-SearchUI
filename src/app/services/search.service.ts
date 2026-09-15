@@ -1,23 +1,23 @@
 import { Injectable, inject } from '@angular/core';
-
 import { Store } from '@ngrx/store';
+
+import * as models from '@models';
 import { AppState } from '@store';
+import { resetTimeseriesStates } from '@store/charts';
+import * as filterStore from '@store/filters';
+import { SetProductTypes, SetSelectedDataset } from '@store/filters';
+import * as mapStore from '@store/map';
 import * as scenesStore from '@store/scenes';
 import {
   MakeSearch,
   ClearSearch,
   SetSearchType,
 } from '@store/search/search.action';
-import * as filterStore from '@store/filters';
-import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
-import * as models from '@models';
 import { MapService } from './map/map.service';
-import { WktService } from './wkt.service';
 import { PointHistoryService } from './point-history.service';
-import { resetTimeseriesStates } from '@store/charts';
-import { SetProductTypes, SetSelectedDataset } from '@store/filters';
+import { WktService } from './wkt.service';
 
 @Injectable({
   providedIn: 'root',

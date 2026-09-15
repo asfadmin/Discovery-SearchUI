@@ -1,6 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { Hyp3ActionType, Hyp3Actions } from './hyp3.action';
 import {
   Hyp3Job,
   Hyp3User,
@@ -9,6 +8,8 @@ import {
   Hyp3Costs,
   ApplicationStatus,
 } from '@models';
+
+import { Hyp3ActionType, Hyp3Actions } from './hyp3.action';
 
 /* State */
 

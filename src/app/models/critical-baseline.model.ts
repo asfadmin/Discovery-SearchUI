@@ -1,3 +1,4 @@
+import { CMRProduct } from './cmr-product.model';
 import {
   alos,
   sentinel1a,
@@ -6,8 +7,6 @@ import {
   sentinel1d,
   radarsat1,
 } from './critical-baselines';
-
-import { CMRProduct } from './cmr-product.model';
 
 const criticalBaselines = {
   ALOS: alos, // Beam -> offNadirAngle

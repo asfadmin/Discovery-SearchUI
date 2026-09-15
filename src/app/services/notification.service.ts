@@ -1,14 +1,14 @@
 import { Injectable, inject } from '@angular/core';
-
-import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
-import { TranslateService } from '@ngx-translate/core';
-
-import * as uiStore from '@store/ui';
-import { AppState } from '@store';
 import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
-import { SearchService } from './search.service';
+
 import { SearchRedirect } from '@models';
+import { AppState } from '@store';
+import * as uiStore from '@store/ui';
+
+import { SearchService } from './search.service';
 
 @Injectable({
   providedIn: 'root',

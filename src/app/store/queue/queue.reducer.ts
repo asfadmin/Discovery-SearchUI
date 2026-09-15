@@ -1,7 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { QueueActionType, QueueActions } from './queue.action';
 import { CMRProduct, QueuedHyp3Job, DownloadStatus } from '@models';
+
+import { QueueActionType, QueueActions } from './queue.action';
 
 export type ProductMap = Record<string, CMRProduct>;
 

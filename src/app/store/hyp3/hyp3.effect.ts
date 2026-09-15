@@ -1,11 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-
 import { of } from 'rxjs';
 import { map, switchMap, delay, catchError } from 'rxjs/operators';
 
 import { Hyp3ApiService, AsfApiService } from '@services';
+
 import {
   Hyp3ActionType,
   SetJobs,

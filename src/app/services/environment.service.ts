@@ -1,8 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-import { env } from './env';
 import { Store } from '@ngrx/store';
+
 import { AppState } from '@store';
 import { SetSearchOutOfDate } from '@store/search';
+
+import { env } from './env';
 
 export interface Environments {
   prod: Environment;

@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
-
-import { ScreenSizeService } from '@services';
-import { Breakpoints } from '@models';
 import { AsyncPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { MatCard } from '@angular/material/card';
+
+import { Breakpoints } from '@models';
+import { ScreenSizeService } from '@services';
 
 @Component({
   selector: 'app-logo',

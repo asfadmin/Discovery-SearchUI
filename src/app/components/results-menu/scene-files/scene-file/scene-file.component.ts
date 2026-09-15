@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   Input,
@@ -7,25 +8,9 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
-
-import * as moment from 'moment';
-
-import * as queueStore from '@store/queue';
-import * as searchStore from '@store/search';
-
-import {
-  EnvironmentService,
-  Hyp3JobStatusService,
-  OnDemandService,
-} from '@services';
-import * as models from '@models';
-import { SubSink } from 'subsink';
-import { of } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { AppState } from '@store';
-import { Store } from '@ngrx/store';
-import { SearchType } from '@models';
-import * as filterStore from '@store/filters';
+import { MatIconButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
 import {
   MatListItem,
   MatListItemIcon,
@@ -33,24 +18,37 @@ import {
   MatListItemMeta,
   MatListItemLine,
 } from '@angular/material/list';
-import { AsyncPipe } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
-import { MatTooltip } from '@angular/material/tooltip';
-import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
-import { MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { MatDialog } from '@angular/material/dialog';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { TruncateModule } from '@yellowspot/ng-truncate';
+import * as moment from 'moment';
+import { of } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import { CartToggleComponent } from '@components/shared/cart-toggle/cart-toggle.component';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
+import { Hyp3JobStatusBadgeComponent } from '@components/shared/hyp3-job-status-badge/hyp3-job-status-badge.component';
 import {
   ProjectNameDialogComponent,
   ProjectNameDialogData,
 } from '@components/shared/project-name-dialog';
-import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
-import { CartToggleComponent } from '@components/shared/cart-toggle/cart-toggle.component';
-import { Hyp3JobStatusBadgeComponent } from '@components/shared/hyp3-job-status-badge/hyp3-job-status-badge.component';
-import { TruncateModule } from '@yellowspot/ng-truncate';
+import { SearchType } from '@models';
+import * as models from '@models';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { FullDatePipe } from '@pipes/short-date.pipe';
-import { TranslateModule } from '@ngx-translate/core';
+import {
+  EnvironmentService,
+  Hyp3JobStatusService,
+  OnDemandService,
+} from '@services';
+import { AppState } from '@store';
+import * as filterStore from '@store/filters';
+import * as queueStore from '@store/queue';
+import * as searchStore from '@store/search';
 
 @Component({
   selector: 'app-scene-file',

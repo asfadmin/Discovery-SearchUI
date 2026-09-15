@@ -7,14 +7,14 @@
 
 .on-demand-popup-menu {
     position: absolute;
-    background-color: white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #cccccc;
     bottom: 12px;
     left: -50px;
     min-width: 200px;
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 20%);
 }
 
 .hidden {
@@ -51,20 +51,20 @@
 }
 
 .mat-mdc-icon-button {
-  color: black;
-  padding: 0;
-  min-width: 0;
-  width: 40px;
-  height: 24px;
   flex-shrink: 1;
+  width: 40px;
+  min-width: 0;
+  height: 24px;
+  padding: 0;
   line-height: 24px;
+  color: black;
   border-radius: 50%;
 }
 
 .map-buttons {
-  pointer-events: none;
-  margin-left: 0;
   margin-right: 20px;
+  margin-left: 0;
+  pointer-events: none;
 }
 
 button {
@@ -73,30 +73,29 @@ button {
 
 .ol-popup {
   position: absolute;
-  filter: drop-shadow(0 1px 4px rgb(0 0 0 / 20%));
-  filter: drop-shadow(0 1px 4px rgb(0 0 0 / 20%));
   bottom: 12px;
   left: -50px;
+  filter: drop-shadow(0 1px 4px rgb(0 0 0 / 20%));
 }
 
 .meatball {
   position: fixed;
-  pointer-events: none;
-  bottom: 30px;
   right: 10px;
+  bottom: 30px;
+  pointer-events: none;
 }
 
 .opera-logo {
   position: fixed;
   bottom: 30px;
   left: 10px;
+  z-index: 999;
   width: 110px;
   height: auto;
-  cursor: pointer;
   pointer-events: auto;
+  cursor: pointer;
   opacity: 0.85;
   transition: opacity 0.2s ease;
-  z-index: 999;
 
   &:hover {
     opacity: 1;
@@ -104,11 +103,11 @@ button {
 }
 
 .mobile-map-controls {
-  pointer-events: auto;
   position: fixed;
   right: 4px;
   display: flex;
   flex-direction: column;
+  pointer-events: auto;
 }
 
 .map-control-fab {
@@ -125,50 +124,44 @@ button {
 
 .mobile-map-controls-full {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
+  z-index: 1101;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  z-index: 1101;
 }
 
 .mobile-controls-background {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
+  z-index: 1100;
   width: 100%;
   height: 100%;
-  background: rgb(0 0 0 / 25%);
-  z-index: 1100;
   pointer-events: auto;
+  background: rgb(0 0 0 / 25%);
 }
 
 .mobile-control-group {
   display: flex;
   margin: 10px auto;
-  zoom: 160%;
   pointer-events: auto;
+  zoom: 160%;
 }
 
 ::ng-deep.ol-overviewmap {
   top: 0.5em;
   right: 0.5em;
-  left: inherit !important;
   bottom: inherit !important;
+  left: inherit !important;
 }
 
 ::ng-deep.map .ol-custom-overviewmap,
 ::ng-deep.map .ol-custom-overviewmap.ol-uncollapsible {
-  right: 0;
   top: 0;
+  right: 0;
 }
 
 ::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) {
@@ -176,8 +169,8 @@ button {
 }
 
 ::ng-deep.map .ol-custom-overviewmap .ol-overviewmap-map {
-  border: none;
   width: 300px;
+  border: none;
 }
 
 ::ng-deep.map .ol-overviewmap.ol-custom-overviewmap.ol-unselectable.ol-control button {
@@ -193,42 +186,39 @@ button {
 }
 
 ::ng-deep.map .ol-custom-overviewmap .ol-overviewmap-box {
-  border: 2px solid red;
   cursor: grab;
+  border: 2px solid red;
 }
 
 ::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) button {
-  bottom: auto;
-  left: auto;
-  right: 1px;
-  top: 1px;
+  inset: 1px 1px auto auto;
 }
 
 .disclaimer-chip {
   position: fixed;
   top: 131px;
   left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  background-color: rgba(0, 0, 0, 0.25);
-  color: white;
-  border-radius: 16px;
-  font-size: 13px;
-  cursor: pointer;
-  pointer-events: auto;
   z-index: 999;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 13px;
+  color: white;
+  pointer-events: auto;
+  cursor: pointer;
+  background-color: rgb(0 0 0 / 25%);
+  border-radius: 16px;
+  transform: translateX(-50%);
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgb(0 0 0 / 90%);
   }
 
   .disclaimer-icon {
-    font-size: 18px;
     width: 18px;
     height: 18px;
+    font-size: 18px;
   }
 }

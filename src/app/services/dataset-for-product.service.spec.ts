@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import * as models from '@models';
-import { productFactory } from '@testing/product-factory';
-import { beforeEach, describe, expect, it } from 'vitest';
 import { alos } from '@models/datasets';
+import { productFactory } from '@testing/product-factory';
 
 import { DatasetForProductService } from './dataset-for-product.service';
 

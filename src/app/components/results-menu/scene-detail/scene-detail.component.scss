@@ -14,33 +14,34 @@ a {
 }
 
 .detail-card {
-  max-width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  max-width: 100%;
+  height: 100%;
+  overflow-x: hidden !important;
 
   @include themify($themes) {
     border-left: themed("primary-light") 1px solid;
   }
-
-  overflow-x: hidden !important;
 }
+
 .detail-card-info-mobile {
   height: auto;
 }
+
 .scrollable {
   overflow: auto;
 }
 
 .detail-card-header {
-  word-break: break-all;
   padding-top: 5px;
   line-height: 20px;
+  word-break: break-all;
 }
 
 .detail-card-info {
-  margin-left: 16px;
   margin-right: 16px;
+  margin-left: 16px;
 }
 
 .detail-card-spacing {
@@ -60,20 +61,20 @@ a {
 }
 
 .banner {
+  width: calc(100% + 32px);
   height: 30px;
+  margin-left: -16px;
 
   @include themify($themes) {
-    background: themed("primary-light");
     color: themed("dark-primary-text");
+    background: themed("primary-light");
 
     mat-icon {
       color: themed("dark-primary-text");
     }
   }
-  margin-left: -16px;
 
-  width: calc(100% + 32px);
-  //box-shadow: #00000038 0 7px 18px;
+  // box-shadow: #00000038 0 7px 18px;
 
   mat-icon {
     margin-top: 4px;
@@ -106,9 +107,9 @@ a {
 
 .menu-items {
   display: inherit;
+  align-items: center;
   margin-right: auto;
   margin-left: 5%;
-  align-items: center;
 }
 
 .content {
@@ -141,23 +142,22 @@ a {
 }
 
 .scene-detail--wrapper {
-  flex-direction: row;
   box-sizing: border-box;
   display: flex;
-
+  flex-direction: row;
   margin-bottom: 16px; // Add margin space for toolbar
 }
 
 .scene-detail--layout {
-  flex-direction: column;
   box-sizing: border-box;
   display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
   place-content: stretch space-between;
   align-items: stretch;
-  flex: 1 1 0%;
 }
 
 .no-padding {
-  padding-left: 0;
   padding-right: 0;
+  padding-left: 0;
 }

@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+
 import * as models from '@models';
 
 export const showGraphLines = createAction('[Chart] show lines');

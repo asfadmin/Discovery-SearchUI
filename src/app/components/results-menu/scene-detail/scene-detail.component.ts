@@ -1,46 +1,44 @@
-import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { SubSink } from 'subsink';
-import { map, tap, distinctUntilChanged } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-
-import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
-import * as searchStore from '@store/search';
-import * as uiStore from '@store/ui';
-import * as userStore from '@store/user';
-
-import * as models from '@models';
-import {
-  calibratedCrid,
-  provisionalIssuesUrl,
-  betaIssuesUrl,
-} from '@models/datasets/nisar';
-
-import {
-  AuthService,
-  BrowseOverlayService,
-  MapService,
-  PropertyService,
-  ScreenSizeService,
-} from '@services';
-import { ImageDialogComponent } from './image-dialog';
-
-import { DatasetForProductService } from '@services';
-import { Observable } from 'rxjs';
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
 import {
   MatCardHeader,
   MatCardTitle,
   MatCardSubtitle,
   MatCardContent,
 } from '@angular/material/card';
-import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
+import { map, tap, distinctUntilChanged } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
-import { MatIcon } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import * as models from '@models';
+import {
+  calibratedCrid,
+  provisionalIssuesUrl,
+  betaIssuesUrl,
+} from '@models/datasets/nisar';
+import {
+  AuthService,
+  BrowseOverlayService,
+  MapService,
+  PropertyService,
+  ScreenSizeService,
+  DatasetForProductService,
+} from '@services';
+import { AppState } from '@store';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+import * as userStore from '@store/user';
+
+import { ImageDialogComponent } from './image-dialog';
 
 @Component({
   selector: 'app-scene-detail',

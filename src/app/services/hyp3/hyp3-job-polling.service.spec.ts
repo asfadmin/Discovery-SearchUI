@@ -1,3 +1,5 @@
+import { TestBed } from '@angular/core/testing';
+import { BehaviorSubject, of } from 'rxjs';
 import {
   beforeEach,
   describe,
@@ -6,13 +8,13 @@ import {
   vi,
   type MockedObject,
 } from 'vitest';
-import { TestBed } from '@angular/core/testing';
-
-import { Hyp3JobPollingService } from './hyp3-job-polling.service';
-import { Hyp3ApiService } from '.';
-import { BehaviorSubject, of } from 'rxjs';
 
 import * as models from '@models';
+
+import { Hyp3JobPollingService } from './hyp3-job-polling.service';
+
+import { Hyp3ApiService } from '.';
+
 // import { TestScheduler } from 'rxjs/testing';
 
 describe('Hyp3JobPollingService', () => {

@@ -9,12 +9,13 @@
     background: themed('background-white');
   }
 
-  display: flex;
   position: fixed;
+  display: flex;
 }
 
 #result-div {
   z-index: 0;
+
   @include themify($themes) {
     background-color: themed('primary-light');
   }
@@ -49,8 +50,8 @@
 }
 
 .desktop-menu-offset {
-  z-index: 2000;
   bottom: 0;
+  z-index: 2000;
 }
 
 .results-menu--background {
@@ -62,20 +63,20 @@
   min-height: 30px;
   margin-bottom: 0;
   font-family: Roboto, sans-serif;
-  font-weight: 400;
   font-size: 16px;
+  font-weight: 400;
   text-align: center;
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
-  }
-
   border-left: none;
+
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+    background-color: themed('primary-light');
+  }
 }
 
 .app-scene-list {
-  height: 100%;
   width: 100%;
+  height: 100%;
 }
 
 .small-size {
@@ -87,12 +88,13 @@
 }
 
 .no-left-border {
-  box-shadow: none !important;
   border-left: none;
+  box-shadow: none !important;
 }
 
 .left-border {
   box-shadow: none !important;
+
   @include themify($themes) {
     border-left: themed('primary-light') 1px solid;
   }
@@ -113,26 +115,26 @@
 
 .resize-min,
 .resize-max {
-  flex: 0 0 40px;
-  cursor: pointer;
-  text-align: center;
   z-index: 10;
+  flex: 0 0 40px;
+  text-align: center;
+  cursor: pointer;
 }
 
 .resize-handle-filler {
+  z-index: 9;
+  display: grid;
+  place-content: center;
   width: 56px;
   height: 25px;
-  z-index: 9;
+  cursor: ns-resize;
+  background-repeat: no-repeat;
+  background-position: center;
+
   // background-image: url("/assets/div-handles/hgrip.svg");
   @include themify($themes) {
     background-color: themed('primary-light');
   }
-
-  background-position: center;
-  background-repeat: no-repeat;
-  cursor: ns-resize;
-  display: grid;
-  place-content: center;
 }
 
 .hgrip-icon {
@@ -144,26 +146,25 @@
 }
 
 .resize-spacer {
-  width: 64px;
   display: inline-block;
+  width: 64px;
 }
 
 .min-max-controls {
+  z-index: 9;
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  padding-right: 20px;
   height: 35px;
-  z-index: 9;
+  padding-right: 20px;
 }
 
 .resize-controls {
+  z-index: 9;
   display: flex;
   justify-content: center;
   width: 100%;
   height: 25px;
-
-  z-index: 9;
 }
 
 .mobile {
@@ -177,6 +178,7 @@
 
   a {
     text-decoration: none;
+
     @include themify($themes) {
       color: themed('dark-primary-text');
     }
@@ -205,12 +207,12 @@
 }
 
 .mobile-displacement-search {
+  bottom: 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
   width: 100%;
   margin-top: 100px;
-  bottom: 0;
 }
 
 .hidden {

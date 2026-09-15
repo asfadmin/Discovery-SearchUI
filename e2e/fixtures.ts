@@ -1,6 +1,8 @@
-import { test as base, expect } from '@playwright/test';
-import { sanitize } from 'e2e/helpers';
 import * as fs from 'fs';
+
+import { test as base, expect } from '@playwright/test';
+
+import { sanitize } from 'e2e/helpers';
 
 const THIRD_PARTY_PATTERN =
   /(googletagmanager|crazyegg|earthdata\.gov|feedback\.js)/;

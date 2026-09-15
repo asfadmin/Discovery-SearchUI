@@ -1,9 +1,9 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { GeographicFiltersType, ProductType } from '@models';
-import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { JoinPipe } from '@pipes/join.pipe';
-import { TranslateModule } from '@ngx-translate/core';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
 
 @Component({
   selector: 'app-geographic-search-filters',

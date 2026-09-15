@@ -1,5 +1,6 @@
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { Component, ViewEncapsulation, inject } from '@angular/core';
-import { DialogData } from '@components/map/banners';
+import { MatButton } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
   MatDialogTitle,
@@ -7,9 +8,9 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { DialogData } from '@components/map/banners';
 
 @Component({
   selector: 'app-banner-dialog',

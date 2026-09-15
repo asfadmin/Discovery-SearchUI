@@ -1,4 +1,5 @@
 import { Geometry } from 'ol/geom';
+
 import { MapDrawModeType } from '@models/map.model';
 
 export interface timeseriesChartItemState {

@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
+import { MatButtonToggle } from '@angular/material/button-toggle';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
-import { MatButtonToggle } from '@angular/material/button-toggle';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-gridlines-selector',

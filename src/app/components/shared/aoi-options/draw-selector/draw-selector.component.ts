@@ -1,27 +1,26 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { ThemePalette } from '@angular/material/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as mapStore from '@store/map';
-import * as uiStore from '@store/ui';
-import * as searchStore from '@store/search';
-
-import { ScreenSizeService } from '@services';
 import {
   MapDrawModeType,
   MapInteractionModeType,
   Breakpoints,
   SearchType,
 } from '@models';
-import { ThemePalette } from '@angular/material/core';
-import { TitleCasePipe } from '@angular/common';
-import { MatButton } from '@angular/material/button';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { MatIcon } from '@angular/material/icon';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { TranslateModule } from '@ngx-translate/core';
 import { AoiIconPipe } from '@pipes/aoi-icon.pipe';
+import { ScreenSizeService } from '@services';
+import { AppState } from '@store';
+import * as mapStore from '@store/map';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
 
 @Component({
   selector: 'app-draw-selector',

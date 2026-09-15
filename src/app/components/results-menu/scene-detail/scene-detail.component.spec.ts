@@ -2,12 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore } from '@ngrx/store/testing';
 import { ToastrModule } from 'ngx-toastr';
 import { beforeEach, describe, expect, it } from 'vitest';
+
+import { nisar, sentinel_1 } from '@models/datasets';
+import * as scenesStore from '@store/scenes';
 import { productFactory } from '@testing/product-factory';
 import testProviders from '@testing/providers';
-import { nisar, sentinel_1 } from '@models/datasets';
 
 import { SceneDetailComponent } from './scene-detail.component';
-import * as scenesStore from '@store/scenes';
 
 describe('SceneDetailComponent', () => {
   let component: SceneDetailComponent;

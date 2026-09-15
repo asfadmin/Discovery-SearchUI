@@ -1,5 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-
+import { Store } from '@ngrx/store';
+import { Feature } from 'ol';
+import Geometry from 'ol/geom/Geometry';
 import { Observable, combineLatest } from 'rxjs';
 import {
   map,
@@ -7,19 +9,6 @@ import {
   shareReplay,
   debounceTime,
 } from 'rxjs/operators';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store/app.reducer';
-import { getScenes, getCustomPairs } from '@store/scenes/scenes.reducer';
-import {
-  getTemporalRange,
-  getPerpendicularRange,
-  getDateRange,
-  DateRangeState,
-  getSeason,
-  getSBASOverlapThreshold,
-} from '@store/filters/filters.reducer';
-import { getSearchType } from '@store/search/search.reducer';
 
 import {
   CMRProduct,
@@ -29,11 +18,20 @@ import {
   SBASOverlap,
   SearchType,
 } from '@models';
+import { AppState } from '@store/app.reducer';
+import {
+  getTemporalRange,
+  getPerpendicularRange,
+  getDateRange,
+  DateRangeState,
+  getSeason,
+  getSBASOverlapThreshold,
+} from '@store/filters/filters.reducer';
+import { getScenes, getCustomPairs } from '@store/scenes/scenes.reducer';
+import { getSearchType } from '@store/search/search.reducer';
+
 import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
-
-import { Feature } from 'ol';
-import Geometry from 'ol/geom/Geometry';
 
 @Injectable({
   providedIn: 'root',

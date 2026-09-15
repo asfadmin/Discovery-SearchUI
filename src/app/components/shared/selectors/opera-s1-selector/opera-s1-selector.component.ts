@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { OperaBurstIdSelectorComponent } from './opera-burst-id-selector/opera-burst-id-selector.component';
 
 @Component({

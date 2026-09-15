@@ -1,5 +1,5 @@
-import { Observable, of } from 'rxjs';
 import { TranslateLoader } from '@ngx-translate/core';
+import { Observable, of } from 'rxjs';
 
 import translationsEN from '@i18n/en.json';
 import translationsES from '@i18n/es.json';

@@ -1,7 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { UserActionType, UserActions } from './user.action';
 import * as models from '@models';
+
+import { UserActionType, UserActions } from './user.action';
 /* State */
 
 export interface UserState {

@@ -1,3 +1,4 @@
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import {
   Component,
   OnDestroy,
@@ -6,6 +7,7 @@ import {
   signal,
   computed,
 } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import {
   MatDialog,
   MAT_DIALOG_DATA,
@@ -13,13 +15,11 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { MatButton } from '@angular/material/button';
 
 export interface DialogData {
   rawUrl: string;

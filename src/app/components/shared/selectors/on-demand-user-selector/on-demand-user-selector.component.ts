@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 
-import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
-import { MatFormField, MatInput } from '@angular/material/input';
-import { MatLabel } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-on-demand-user-selector',

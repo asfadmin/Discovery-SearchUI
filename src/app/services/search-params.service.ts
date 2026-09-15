@@ -1,24 +1,21 @@
 import { Injectable, inject } from '@angular/core';
-
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
-
+import { Polygon } from 'ol/geom';
 import { combineLatest } from 'rxjs';
 import { map, withLatestFrom, startWith } from 'rxjs/operators';
 
+import * as models from '@models';
 import { AppState } from '@store';
 import * as filterStore from '@store/filters';
-import * as scenesStore from '@store/scenes';
 import * as hyp3Store from '@store/hyp3';
+import * as scenesStore from '@store/scenes';
 import { getSearchType } from '@store/search/search.reducer';
+import * as userStore from '@store/user';
 
+import { DrawService } from './map/draw.service';
 import { MapService } from './map/map.service';
 import { RangeService } from './range.service';
-
-import * as models from '@models';
-import { DrawService } from './map/draw.service';
-import { Polygon } from 'ol/geom';
-import * as userStore from '@store/user';
 
 @Injectable({
   providedIn: 'root',

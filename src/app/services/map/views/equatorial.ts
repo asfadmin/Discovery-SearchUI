@@ -1,12 +1,13 @@
 import { View } from 'ol';
-import { XYZ } from 'ol/source';
 import { Graticule as GraticuleLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/WebGLTile.js';
-
 import * as proj from 'ol/proj';
+import { XYZ } from 'ol/source';
 import { Stroke, Text } from 'ol/style';
-import { MapView, Projection } from './map-view';
+
 import * as models from '@models';
+
+import { MapView, Projection } from './map-view';
 
 function equatorialView(url: string): MapView {
   const projection = new Projection('EPSG:3857');

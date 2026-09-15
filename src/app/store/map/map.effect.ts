@@ -1,12 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-import { SearchType } from '@models';
-
-import * as models from '@models';
-
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
+
+import { SearchType } from '@models';
+import * as models from '@models';
 import { MapService } from '@services';
 import { AppState } from '@store';
+import { getSelectedDataset } from '@store/filters';
 import { getAreResultsLoaded, getProducts } from '@store/scenes';
 import {
   ScenesActionType,
@@ -19,12 +20,13 @@ import {
   SetSearchOutOfDate,
   SetSearchType,
 } from '@store/search';
-import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
-import { MapActionType, SetBrowseOverlayOpacity } from '.';
-import { getSelectedDataset } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
-import { ClearBrowseOverlays, SetCoherenceOverlayOpacity } from './map.action';
 import { getIsUserLoggedIn } from '@store/user';
+
+import { ClearBrowseOverlays, SetCoherenceOverlayOpacity } from './map.action';
+
+import { MapActionType, SetBrowseOverlayOpacity } from '.';
+
 @Injectable()
 export class MapEffects {
   private actions$ = inject(Actions);
@@ -98,7 +100,8 @@ export class MapEffects {
               dataset?.id === 'SENTINEL-1' ||
               dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)' ||
               dataset?.id === 'UAVSAR' ||
-              dataset?.id === 'OPERA-S1'
+              dataset?.id === 'OPERA-S1' ||
+              dataset?.id === 'NISAR'
             );
           }
           return (
@@ -125,7 +128,8 @@ export class MapEffects {
               product.dataset === 'Sentinel-1C' ||
               product.dataset === 'Sentinel-1D' ||
               product.dataset === 'Sentinel-1 Interferogram (BETA)' ||
-              product.dataset === 'UAVSAR';
+              product.dataset === 'UAVSAR' ||
+              product.dataset === 'NISAR';
 
             if (!isAllowed) {
               this.store$.dispatch(new ClearBrowseOverlays());
@@ -161,7 +165,13 @@ export class MapEffects {
             }
           }
           if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
-            const url = selectedProduct.browses[0];
+            let url = selectedProduct.browses[0];
+            const latlon_browse = selectedProduct.browses.find((url) =>
+              url.includes('LATLON'),
+            );
+            if (latlon_browse) {
+              url = latlon_browse;
+            }
 
             // for OPERA-S1 geotiffs
             // TODO: Wait for https://github.com/openlayers/openlayers/pull/15402

@@ -1,23 +1,23 @@
+import { NgOptimizedImage, AsyncPipe } from '@angular/common';
 import { Component, inject, Signal, computed } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { map } from 'rxjs/operators';
 
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as uiStore from '@store/ui';
-import * as searchStore from '@store/search';
-import * as mapStore from '@store/map';
-import * as filtersStore from '@store/filters';
-
-import { ScreenSizeService, ThemingService } from '@services';
+import { DrawSelectorComponent } from '@components/shared/aoi-options/draw-selector/draw-selector.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
 import { MapDrawModeType, MapInteractionModeType } from '@models';
 import * as models from '@models';
-import { NgOptimizedImage, AsyncPipe } from '@angular/common';
-import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
-import { DrawSelectorComponent } from '@components/shared/aoi-options/draw-selector/draw-selector.component';
+import { ScreenSizeService, ThemingService } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as mapStore from '@store/map';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+
 import { TimeseriesChartFlightDirectionToggleComponent } from '../../timeseries-chart/timeseries-chart-flight-direction-toggle/timeseries-chart-flight-direction-toggle.component';
 import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-timeseries-header',

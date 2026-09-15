@@ -7,26 +7,26 @@ import {
   inject,
 } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
-import { SubSink } from 'subsink';
-
-import { combineLatest, Subject } from 'rxjs';
-import { tap, delay } from 'rxjs/operators';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as hyp3Store from '@store/hyp3';
-import * as filtersStore from '@store/filters';
-import { NotificationService } from '@services/notification.service';
-import { ScenesService } from '@services';
-import { MatFormField, MatInput } from '@angular/material/input';
-import { MatLabel } from '@angular/material/form-field';
 import {
   MatAutocompleteTrigger,
   MatAutocomplete,
 } from '@angular/material/autocomplete';
-import {} from '@angular/common';
+import { MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatInput } from '@angular/material/input';
 import { MatOption } from '@angular/material/select';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { combineLatest, Subject } from 'rxjs';
+import { tap, delay } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import { ScenesService } from '@services';
+import { NotificationService } from '@services/notification.service';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as hyp3Store from '@store/hyp3';
+
+import {} from '@angular/common';
 
 @Component({
   selector: 'app-project-name-selector',

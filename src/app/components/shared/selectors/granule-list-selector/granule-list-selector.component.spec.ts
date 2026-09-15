@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ToastrModule } from 'ngx-toastr';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { GranuleListSelectorComponent } from './granule-list-selector.component';
 import testProviders from '@testing/providers';
+
+import { GranuleListSelectorComponent } from './granule-list-selector.component';
 
 describe('SceneFilesComponent', () => {
   let component: GranuleListSelectorComponent;

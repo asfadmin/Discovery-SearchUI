@@ -1,3 +1,5 @@
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { NgPlural, NgPluralCase, TitleCasePipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -6,6 +8,7 @@ import {
   PipeTransform,
   Signal,
 } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -13,31 +16,26 @@ import {
   MatDialogContent,
   MatDialogActions,
 } from '@angular/material/dialog';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import { of, from } from 'rxjs';
-import { tap, catchError, concatMap, finalize } from 'rxjs/operators';
-
-import * as queueStore from '@store/queue';
-import * as hyp3Store from '@store/hyp3';
-import * as searchStore from '@store/search';
-
-import * as models from '@models';
-import * as services from '@services';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { ProjectNameSelectorComponent } from '@components/shared/selectors/project-name-selector/project-name-selector.component';
-import { NgPlural, NgPluralCase, TitleCasePipe } from '@angular/common';
 import {
   MatSelectionList,
   MatListOption,
   MatListItemTitle,
   MatListItemLine,
 } from '@angular/material/list';
-import { MatButton } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { of, from } from 'rxjs';
+import { tap, catchError, concatMap, finalize } from 'rxjs/operators';
+
+import { ProjectNameSelectorComponent } from '@components/shared/selectors/project-name-selector/project-name-selector.component';
+import * as models from '@models';
+import * as services from '@services';
+import { AppState } from '@store';
+import * as hyp3Store from '@store/hyp3';
+import * as queueStore from '@store/queue';
+import * as searchStore from '@store/search';
 
 @Pipe({ name: 'shorthyp3name', standalone: true })
 class ShortHyp3Name implements PipeTransform {

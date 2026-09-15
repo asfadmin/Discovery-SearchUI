@@ -7,19 +7,18 @@ import {
   EventEmitter,
   inject,
 } from '@angular/core';
-
+import { Store } from '@ngrx/store';
+import * as d3 from 'd3';
 import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
-import * as d3 from 'd3';
-import { Store } from '@ngrx/store';
+import { CMRProduct, CMRProductPair } from '@models';
+import { ScenesService, PairService } from '@services';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
 
-import { SubSink } from 'subsink';
-import { ScenesService, PairService } from '@services';
-import { CMRProduct, CMRProductPair } from '@models';
 import { ResizedDirective } from '../../directives/resized.directive';
 
 export enum ChartDatasets {

@@ -14,6 +14,7 @@ export const radarsat_1 = {
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
     Props.BASELINE_TOOL,
+    Props.DEPRECATED,
   ],
   apiValue: { dataset: 'RADARSAT-1' },
   date: {

@@ -7,27 +7,20 @@ import {
   Renderer2,
   inject,
 } from '@angular/core';
+import { Store } from '@ngrx/store';
 import * as noUiSlider from 'nouislider';
 import { PipsMode } from 'nouislider';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-// import * as models from "@models";
-// import {Observable, Subject} from 'rxjs';
-// import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
-// import * as filtersStore from "@store/filters";
-import { SubSink } from 'subsink';
-// import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import * as filtersStore from '@store/filters';
-import * as models from '@models';
-// import moment from 'moment/moment';
 import { Observable, Subject } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
   withLatestFrom,
 } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
-// import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import * as models from '@models';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 @Component({
   selector: 'app-timeseries-chart-temporal-slider',

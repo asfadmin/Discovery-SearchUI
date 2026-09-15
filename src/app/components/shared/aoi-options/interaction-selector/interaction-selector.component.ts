@@ -1,23 +1,23 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, ViewChild, inject } from '@angular/core';
 import {
   MatButtonToggle,
   MatButtonToggleGroup,
 } from '@angular/material/button-toggle';
-
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { MapInteractionModeType } from '@models';
+import * as models from '@models';
+import * as services from '@services';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
-import { MapInteractionModeType } from '@models';
-import * as services from '@services';
-import * as models from '@models';
 import { DrawSelectorComponent } from '../draw-selector/draw-selector.component';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { AsyncPipe } from '@angular/common';
 import { FileUploadDialogComponent } from '../file-upload/file-upload-dialog/file-upload-dialog.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-interaction-selector',

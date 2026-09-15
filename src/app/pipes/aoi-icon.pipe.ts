@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 import { MapDrawModeType } from '@models';
 
 @Pipe({

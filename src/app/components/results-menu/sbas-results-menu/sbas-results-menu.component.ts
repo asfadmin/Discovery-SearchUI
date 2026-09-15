@@ -7,35 +7,34 @@ import {
   ElementRef,
   inject,
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { ResizeEvent, ResizableModule } from 'angular-resizable-element';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as uiStore from '@store/ui';
-import * as scenesStore from '@store/scenes';
-import * as searchStore from '@store/search';
-
-import { Breakpoints, CMRProductPair } from '@models';
-import { ScreenSizeService, DatasetForProductService } from '@services';
-
-import { SubSink } from 'subsink';
-import { map } from 'rxjs/operators';
-import { MatCard, MatCardSubtitle } from '@angular/material/card';
-import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
-import { ScenesListComponent } from '../scenes-list/scenes-list.component';
-import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
 import {
   MatButtonToggleGroup,
   MatButtonToggle,
 } from '@angular/material/button-toggle';
-import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
-import { SBASChartComponent } from '../../sbas-chart/sbas-chart.component';
-import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
+import { MatCard, MatCardSubtitle } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { ResizeEvent, ResizableModule } from 'angular-resizable-element';
+import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
+import { Breakpoints, CMRProductPair } from '@models';
+import { ScreenSizeService, DatasetForProductService } from '@services';
+import { AppState } from '@store';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+
+import { ScenesListComponent } from '../scenes-list/scenes-list.component';
+import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
+import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
+import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
+import { SBASChartComponent } from '../../sbas-chart/sbas-chart.component';
 
 enum CardViews {
   LIST = 0,

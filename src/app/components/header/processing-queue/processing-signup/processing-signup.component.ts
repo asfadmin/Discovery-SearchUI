@@ -5,18 +5,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import {
-  AsfLanguageService,
-  Hyp3ApiService,
-  NotificationService,
-  UserDataService,
-} from '@services';
-import { EarthdataUserInfo, Hyp3User, ApplicationStatus } from '@models';
-
-import * as userStore from '@store/user';
-import * as hyp3Store from '@store/hyp3';
-import { ValidationError } from 'xml2js';
+import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import {
   MatAccordion,
@@ -25,20 +14,31 @@ import {
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
 import {
-  MatList,
-  MatListItem,
-  MatListItemTitle,
-  MatListItemLine,
-} from '@angular/material/list';
-import {
   MatFormField,
   MatLabel,
   MatInput,
   MatError,
 } from '@angular/material/input';
+import {
+  MatList,
+  MatListItem,
+  MatListItemTitle,
+  MatListItemLine,
+} from '@angular/material/list';
 import { MatTooltip } from '@angular/material/tooltip';
-import { MatButton } from '@angular/material/button';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { ValidationError } from 'xml2js';
+
+import { EarthdataUserInfo, Hyp3User, ApplicationStatus } from '@models';
+import {
+  AsfLanguageService,
+  Hyp3ApiService,
+  NotificationService,
+  UserDataService,
+} from '@services';
+import * as hyp3Store from '@store/hyp3';
+import * as userStore from '@store/user';
 
 @Component({
   selector: 'app-processing-signup',

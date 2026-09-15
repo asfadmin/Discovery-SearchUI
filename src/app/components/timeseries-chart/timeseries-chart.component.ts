@@ -1,4 +1,10 @@
 import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkScrollable,
+} from '@angular/cdk/scrolling';
+import { NgStyle } from '@angular/common';
+import {
   Component,
   ElementRef,
   Input,
@@ -10,48 +16,37 @@ import {
   ViewEncapsulation,
   inject,
 } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenu, MatMenuContent } from '@angular/material/menu';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import * as d3 from 'd3';
-// import * as models from '@models';
 import {
   debounceTime,
   distinctUntilChanged,
   map,
   Observable,
   withLatestFrom,
-  // Subject
 } from 'rxjs';
-
-import { Store } from '@ngrx/store';
-import * as filtersStore from '@store/filters';
-import { AppState } from '@store';
-// import * as sceneStore from '@store/scenes';
-import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
-import { AsfLanguageService } from '@services/asf-language.service';
-import { NetcdfService } from '@services';
-import * as models from '@models';
-import {
-  CdkVirtualScrollViewport,
-  CdkFixedSizeVirtualScroll,
-  CdkScrollable,
-} from '@angular/cdk/scrolling';
-import * as uiStore from '@store/ui';
-// import {hidden} from '@services/map/polygon.style';
-// import {style} from '@angular/animations';
-import { linearRegression, linearRegressionLine } from './regression-line';
 
-import { NgStyle } from '@angular/common';
-import { MatButton } from '@angular/material/button';
-import { ResizedDirective } from '../../directives/resized.directive';
-import { ContextMenuTriggerDirective } from '../../directives/context-menu.directive';
-import { TimeseriesChartExportComponent } from './timeseries-chart-export/timeseries-chart-export.component';
 import { ChartModalComponent } from '@components/shared/chart-modal/chart-modal.component';
-import { TimeseriesChartZoomComponent } from './timeseries-chart-zoom/timeseries-chart-zoom.component';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatMenu, MatMenuContent } from '@angular/material/menu';
+import * as models from '@models';
+import { NetcdfService } from '@services';
+import { AsfLanguageService } from '@services/asf-language.service';
+import { AppState } from '@store';
+import * as chartsStore from '@store/charts';
+import * as filtersStore from '@store/filters';
+import * as uiStore from '@store/ui';
+
+import { linearRegression, linearRegressionLine } from './regression-line';
+import { TimeseriesChartExportComponent } from './timeseries-chart-export/timeseries-chart-export.component';
 import { TimeseriesChartTemporalSliderComponent } from './timeseries-chart-temporal-slider/timeseries-chart-temporal-slider.component';
-import { MatIcon } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import { TimeseriesChartZoomComponent } from './timeseries-chart-zoom/timeseries-chart-zoom.component';
+import { ContextMenuTriggerDirective } from '../../directives/context-menu.directive';
+import { ResizedDirective } from '../../directives/resized.directive';
 
 interface TimeSeriesFit {
   seriesNumber: number;

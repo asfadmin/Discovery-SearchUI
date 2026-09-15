@@ -1,24 +1,24 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   Component,
-  EventEmitter,
+  computed,
   inject,
-  Input,
-  Output,
+  input,
+  output,
   ViewChild,
 } from '@angular/core';
-
-import { Dataset } from '@models';
-import { provisionalIssuesUrl } from '@models/datasets/nisar';
+import { MatCardActions } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { MatCardActions } from '@angular/material/card';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { ScreenSizeService } from '@services';
+
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { Dataset } from '@models';
 import * as models from '@models';
+import { provisionalIssuesUrl } from '@models/datasets/nisar';
 import { PrettyDateRangePipe } from '@pipes/pretty-date.pipe';
+import { ScreenSizeService } from '@services';
 
 @Component({
   selector: 'app-dataset',
@@ -36,9 +36,8 @@ import { PrettyDateRangePipe } from '@pipes/pretty-date.pipe';
   ],
 })
 export class DatasetComponent {
-  @Input() dataset: Dataset;
-  @Input() isSelected: boolean;
-  @Output() selected: EventEmitter<string> = new EventEmitter<string>();
+  dataset = input.required<Dataset>();
+  selected = output<string>();
   private screenSize = inject(ScreenSizeService);
 
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -46,15 +45,20 @@ export class DatasetComponent {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
 
   public provisionalIssuesUrl = provisionalIssuesUrl;
-
   public isReadMore = true;
+
+  public isDeprecated = computed(() => {
+    return this.dataset().properties.includes(models.Props.DEPRECATED);
+  });
+
   public onOpenHelp() {
-    window.open(this.dataset.infoUrl);
+    window.open(this.dataset().infoUrl);
   }
 
   public onInfoClicked(e: Event): void {
     e.stopPropagation();
   }
+
   public onOpenDocs(event, dataset: string) {
     this.trigger.closeMenu();
     this.onSelectionChange(dataset);

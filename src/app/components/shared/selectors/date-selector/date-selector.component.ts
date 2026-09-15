@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -6,23 +7,21 @@ import {
   Input,
   inject,
 } from '@angular/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { Store, ActionsSubject } from '@ngrx/store';
 import moment from 'moment';
-
 import { combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
-import { Store, ActionsSubject } from '@ngrx/store';
-import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
-import * as filtersStore from '@store/filters';
-import * as searchStore from '@store/search';
-
 import { DateRangeExtrema, SearchType } from '@models';
 import { DateExtremaService } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+
 import { DateRangeComponent } from '../date-range/date-range.component';
-import { AsyncPipe } from '@angular/common';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 @Component({
   selector: 'app-date-selector',

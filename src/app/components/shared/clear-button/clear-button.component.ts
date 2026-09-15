@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-
+import { MatButton } from '@angular/material/button';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
-import { MatButton } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-clear-button',

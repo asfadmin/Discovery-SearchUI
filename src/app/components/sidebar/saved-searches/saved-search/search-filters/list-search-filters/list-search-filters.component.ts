@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ListFiltersType } from '@models';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-list-search-filters',

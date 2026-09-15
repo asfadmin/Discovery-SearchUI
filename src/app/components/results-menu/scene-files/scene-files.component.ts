@@ -1,3 +1,5 @@
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -8,8 +10,11 @@ import {
   signal,
   computed,
 } from '@angular/core';
-import { SubSink } from 'subsink';
-
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
+import { MatList } from '@angular/material/list';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { combineLatest, of } from 'rxjs';
 import {
   debounceTime,
@@ -19,29 +24,26 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
-import * as queueStore from '@store/queue';
-import * as userStore from '@store/user';
-import * as hyp3Store from '@store/hyp3';
-
-import { AsfApiService, Hyp3ApiService, ProductService } from '@services';
 import * as models from '@models';
-
-import { MatList } from '@angular/material/list';
-import { MatDialog } from '@angular/material/dialog';
-import { ScreenSizeService } from '@services';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import * as filterStore from '@store/filters';
 import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
-import { AsyncPipe } from '@angular/common';
+import { getStaticQueryParams } from '@models/datasets/opera_s1';
+import {
+  AsfApiService,
+  Hyp3ApiService,
+  ScreenSizeService,
+  ProductService,
+} from '@services';
+import { AppState } from '@store';
+import * as filterStore from '@store/filters';
+import * as hyp3Store from '@store/hyp3';
+import * as queueStore from '@store/queue';
+import * as scenesStore from '@store/scenes';
+import * as userStore from '@store/user';
+
 import { SceneFileComponent } from './scene-file/scene-file.component';
 import { SceneGroupFilesComponent } from './scene-group-files/scene-group-files.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { getStaticQueryParams } from '@models/datasets/opera_s1';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 interface SceneFilesWarning {
   translationKey: string;
@@ -156,6 +158,15 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
       return {
         translationKey: 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING',
         url: 'https://asf.alaska.edu/information/palsar-rtc-dem-information/',
+      };
+    } else if (
+      models.datasets[this.scene()?.dataset]?.properties.includes(
+        models.Props.DEPRECATED,
+      )
+    ) {
+      return {
+        translationKey: 'DATASET_DEPRECATION_NOTICE',
+        url: 'https://asf.alaska.edu/',
       };
     } else {
       return null;

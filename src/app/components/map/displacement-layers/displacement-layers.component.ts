@@ -1,21 +1,22 @@
 import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatSlider, MatSliderThumb } from '@angular/material/slider';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { distinctUntilChanged, filter, map } from 'rxjs';
 import { SubSink } from 'subsink';
 
-import { MapService } from '@services';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import * as models from '@models';
-import { Store } from '@ngrx/store';
+import { MapService } from '@services';
 import { AppState } from '@store';
 import { getFlightDirections } from '@store/filters';
-import { distinctUntilChanged, filter, map } from 'rxjs';
-import { MatCheckbox } from '@angular/material/checkbox';
 import * as mapStore from '@store/map';
 import { getVelocityOverlayOpacity } from '@store/map';
-import { MatSlider, MatSliderThumb } from '@angular/material/slider';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+
 import { MapLegendComponent } from './map-legend/map-legend.component';
-import { MatTooltip } from '@angular/material/tooltip';
-import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-displacement-layers',

@@ -5,14 +5,15 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { debounceTime, filter, map } from 'rxjs';
 import { SubSink } from 'subsink';
 
-import * as filtersStore from '@store/filters';
-import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
+import * as filtersStore from '@store/filters';
+
 @Component({
   selector: 'app-opera-burst-id-selector',
   templateUrl: './opera-burst-id-selector.component.html',

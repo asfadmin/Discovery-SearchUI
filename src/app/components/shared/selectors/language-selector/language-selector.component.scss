@@ -1,44 +1,44 @@
 @use "@angular/material" as mat;
-
 @use "asf-theme-variables" as *;
 @use "flex-layout-sass/mixin" as *;
 
 .langSelect-div {
-  display: inline-block;
   position:absolute;
   top: -3px;
   right: 25px;
+  display: inline-block;
 }
 
 .langSelect-select {
-  border: none;
   width: auto;
   font-size: 11px;
+  background-color: inherit;
+  border: none;
+
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
-  background-color: inherit;
 }
 
 .lang-fab-button {
-  display: inline-block;
   position: absolute;
   top: -12px;
   right: 15px;
+  display: inline-block;
   width: auto;
   height: 34px;
   padding: 5px;
   font-size: 12px;
 
   .mat-icon {
+    padding: 4px 0 0;
     font-size: 14px;
-    padding: 4px 0 0 0;
   }
 
   .icon-text {
     display: inline-block;
-    margin-top: -7px;
     padding-right: 5px;
+    margin-top: -7px;
   }
 
 }

@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -7,24 +8,21 @@ import {
   inject,
   Signal,
 } from '@angular/core';
-
+import { Store } from '@ngrx/store';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import * as d3 from 'd3';
 import { combineLatest } from 'rxjs';
 import { map, tap, filter } from 'rxjs/operators';
-
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as scenesStore from '@store/scenes';
-import * as queueStore from '@store/queue';
-
 import { SubSink } from 'subsink';
-import { ScenesService } from '@services';
+
 import { criticalBaselineFor, CMRProduct } from '@models';
-import * as d3 from 'd3';
 import * as models from '@models';
+import { ScenesService } from '@services';
 import * as services from '@services';
-import { AsyncPipe } from '@angular/common';
+import { AppState } from '@store';
+import * as queueStore from '@store/queue';
+import * as scenesStore from '@store/scenes';
+
 import { ResizedDirective } from '../../directives/resized.directive';
 export enum ChartDatasets {
   MASTER = 0,
