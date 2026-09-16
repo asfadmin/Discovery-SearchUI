@@ -2,27 +2,26 @@
 
 .preferences-group {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   gap: 10px;
 }
 
 .action-controls {
-  flex-shrink: 0;
   display: flex;
+  flex-shrink: 0;
   flex-direction: row;
   justify-content: flex-end;
   padding-top: 13px;
 }
 
 .preferences-form--layout {
-  padding: 0 25px;
   width: 100%;
+  padding: 0 25px;
 }
 
 .feedback-link {
-  margin-right: 10px;
   flex: 30px;
+  margin-right: 10px;
 
   a {
     @include themify($themes) {
@@ -64,15 +63,15 @@
 .default-max-concurrent-downloads,
 .default-filters-presets,
 .default-map {
-  margin-right: 30px;
   width: 220px;
+  margin-right: 30px;
 }
 
 .section-heading {
-  margin: 0;
-  font-weight: 500;
   width: 137px;
+  margin: 0;
   font-size: 18px;
+  font-weight: 500;
 }
 
 .section-heading-mobile {

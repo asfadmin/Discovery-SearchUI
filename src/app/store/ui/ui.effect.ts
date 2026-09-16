@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-
+import { MatDialog } from '@angular/material/dialog';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of, first } from 'rxjs';
 import {
   map,
@@ -9,18 +10,17 @@ import {
   withLatestFrom,
   tap,
 } from 'rxjs/operators';
-import * as uiActions from './ui.action';
-import * as uiStore from '@store/ui';
-import * as filtersStore from '@store/filters';
-import * as userStore from '@store/user';
-import { getSearchType } from '@store/search/search.reducer';
 
-import { BannerApiService } from '../../services/banner-api.service';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import { SearchType } from '@models';
 import { PreferencesComponent } from '@components/header/header-buttons/preferences/preferences.component';
-import { MatDialog } from '@angular/material/dialog';
+import { SearchType } from '@models';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import { getSearchType } from '@store/search/search.reducer';
+import * as uiStore from '@store/ui';
+import * as userStore from '@store/user';
+
+import * as uiActions from './ui.action';
+import { BannerApiService } from '../../services/banner-api.service';
 
 @Injectable()
 export class UIEffects {

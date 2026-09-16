@@ -1,3 +1,5 @@
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { UpperCasePipe, TitleCasePipe } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -7,18 +9,28 @@ import {
   inject,
   Signal,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as userStore from '@store/user';
-import * as hyp3Store from '@store/hyp3';
-import * as searchStore from '@store/search';
-
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import {
   MatDialogRef,
   MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
 } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatFormField,
+  MatLabel,
+  MatInputModule,
+} from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { Store } from '@ngrx/store';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { take } from 'rxjs';
+import { SubSink } from 'subsink';
+
 import {
   MapLayerTypes,
   UserAuth,
@@ -29,24 +41,16 @@ import {
   FilterType,
   Breakpoints,
 } from '@models';
-import { Hyp3ApiService, ThemingService } from '@services';
-import { SubSink } from 'subsink';
-import { take } from 'rxjs';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import { AsfLanguageService } from '@services/asf-language.service';
 import * as models from '@models';
+import { Hyp3ApiService, ThemingService } from '@services';
 import * as services from '@services';
-import { MatIcon } from '@angular/material/icon';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { FormsModule } from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/input';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelect, MatOption } from '@angular/material/select';
-import { UpperCasePipe, TitleCasePipe } from '@angular/common';
+import { AsfLanguageService } from '@services/asf-language.service';
+import { AppState } from '@store';
+import * as hyp3Store from '@store/hyp3';
+import * as searchStore from '@store/search';
+import * as userStore from '@store/user';
+
 import { Hyp3UrlSelectorComponent } from './hyp3-url-selector/hyp3-url-selector.component';
-import { MatButton } from '@angular/material/button';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-preferences',

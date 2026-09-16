@@ -1,29 +1,28 @@
+import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { Component, inject, Signal } from '@angular/core';
-
-import { AppState } from '@store';
-import { Store } from '@ngrx/store';
-import * as scenesStore from '@store/scenes';
-import * as filtersStore from '@store/filters';
-
-import * as models from '@models';
-import { ScreenSizeService } from '@services';
 import {
   MatAccordion,
   MatExpansionPanel,
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import { AsyncPipe, UpperCasePipe } from '@angular/common';
-import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
-import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
-import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
-import { MasterSceneSelectorComponent } from '@components/shared/selectors/master-scene-selector/master-scene-selector.component';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
+import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
 import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
-import { SeasonSelectorComponent } from '@components/shared/selectors/season-selector/season-selector.component';
+import { MasterSceneSelectorComponent } from '@components/shared/selectors/master-scene-selector/master-scene-selector.component';
 import { SbasOverlapSelectorComponent } from '@components/shared/selectors/sbas-overlap-selector/sbas-overlap-selector.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { SeasonSelectorComponent } from '@components/shared/selectors/season-selector/season-selector.component';
+import * as models from '@models';
+import { ScreenSizeService } from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as scenesStore from '@store/scenes';
 
 enum FilterPanel {
   SEARCH = 'Search Options',

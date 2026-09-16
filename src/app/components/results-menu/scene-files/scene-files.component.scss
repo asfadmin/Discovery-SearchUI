@@ -15,14 +15,14 @@ $thumb-size: 50px;
 
 .dem-warning {
   @include themify($themes) {
-    background-color: lighten(themed('primary-light'), 10%);
     color: themed('err');
+    background-color: lighten(themed('primary-light'), 10%);
   }
 
-  font-size: 14px;
-  padding-left: 25px;
   padding-top: 2px;
   padding-bottom: 5px;
+  padding-left: 25px;
+  font-size: 14px;
   background-color: rgb(220 220 220);
 }
 
@@ -31,17 +31,18 @@ $thumb-size: 50px;
     color: themed('blue-link');
   }
 }
+
 .map-icon {
-  cursor: pointer;
   position: absolute;
   display: inline;
   margin-left: 5px;
+  cursor: pointer;
 }
 
 .map-button-toggle {
   @include themify($themes) {
-    background-color: themed('primary') !important;
     color: themed('light-primary-text') !important;
+    background-color: themed('primary') !important;
   }
 
   padding-right: 40px;
@@ -59,19 +60,20 @@ $thumb-size: 50px;
 
 .criteria-button-group {
   outline: none;
+
   // width: auto;
 }
 
 ::ng-deep div.mat-mdc-menu-panel {
   min-width: 112px;
+  max-height: calc(100vh - 48px);
 
   /** set width to 500px */
-  //max-width: 500px;
+  // max-width: 500px;
   overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  max-height: calc(100vh - 48px);
-  border-radius: 4px;
   outline: 0;
+  border-radius: 4px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .event-wrapper {
@@ -88,8 +90,8 @@ $thumb-size: 50px;
 }
 
 .event-products-wrapper {
-  height: 100%;
   width: 100%;
+  height: 100%;
 }
 
 .prod-viewport {
@@ -97,8 +99,8 @@ $thumb-size: 50px;
 }
 
 .prod-list-option {
-  margin-right: 0 !important;
   height: $prod-row-height !important;
+  margin-right: 0 !important;
 }
 
 .prod-thumb {

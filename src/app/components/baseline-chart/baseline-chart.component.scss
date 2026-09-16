@@ -6,8 +6,8 @@
 }
 
 .chart-canvas {
-  margin: 0 16px 16px;
   height: calc(100% - 80px);
+  margin: 0 16px 16px;
 }
 
 #baseline-chart {
@@ -17,8 +17,8 @@
 ul {
   display: flex;
   justify-content: center;
-  margin: 0.5em;
   height: 1em;
+  margin: 0.5em;
 
   li {
     display: flex;
@@ -29,17 +29,17 @@ ul {
 .box {
   width: 1em;
   height: 1em;
-  border: 1px solid black;
   margin: 0.5em;
+  border: 1px solid black;
 }
 
-@media (max-width: 500px) {
+@media (width <= 500px) {
   ul {
     font-size: 0.8em;
   }
 }
 
-@media (max-width: 340px) {
+@media (width <= 340px) {
   ul {
     font-size: 0.6em;
   }

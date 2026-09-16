@@ -1,3 +1,5 @@
+import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -7,12 +9,27 @@ import {
   afterNextRender,
   Injector,
 } from '@angular/core';
-import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
-import { ListSearchType } from '@models';
-
-import { NgxCsvParser } from 'ngx-csv-parser';
-import { NgxCSVParserError } from 'ngx-csv-parser';
-import * as xml2js from 'xml2js';
+import { FormsModule } from '@angular/forms';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
+import {
+  MatFormField,
+  MatInput,
+  MatInputModule,
+} from '@angular/material/input';
+import { MatTooltip } from '@angular/material/tooltip';
+import { ofType } from '@ngrx/effects';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
 import { combineLatest, from, Subject } from 'rxjs';
 import {
   map,
@@ -24,37 +41,17 @@ import {
   filter,
 } from 'rxjs/operators';
 import { SubSink } from 'subsink';
+import * as xml2js from 'xml2js';
 
-import { ActionsSubject, Store } from '@ngrx/store';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { ListSearchType } from '@models';
+import * as models from '@models';
+import * as services from '@services';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
-
-import * as models from '@models';
-import * as services from '@services';
-import { ofType } from '@ngrx/effects';
-import { AsyncPipe } from '@angular/common';
-import {
-  MatAccordion,
-  MatExpansionPanel,
-  MatExpansionPanelHeader,
-  MatExpansionPanelTitle,
-} from '@angular/material/expansion';
-import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
-import {
-  MatButtonToggleGroup,
-  MatButtonToggle,
-} from '@angular/material/button-toggle';
-import { MatTooltip } from '@angular/material/tooltip';
-import {
-  MatFormField,
-  MatInput,
-  MatInputModule,
-} from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 enum ListPanel {
   SEARCH = 'search',

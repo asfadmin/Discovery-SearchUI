@@ -1,8 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { FiltersActionType, FiltersActions } from './filters.action';
 import * as models from '@models';
 import { hyp3JobTypes, SBASOverlap } from '@models';
+
+import { FiltersActionType, FiltersActions } from './filters.action';
 import { createSimpleArraySelector } from '../selectors';
 
 export interface FiltersState {

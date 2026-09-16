@@ -1,14 +1,15 @@
 import { Component, Output, EventEmitter, inject } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MatCheckboxChange,
   MatCheckboxModule,
 } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { AppState } from '@store';
 import * as chartsStore from '@store/charts';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-timeseries-chart-config',

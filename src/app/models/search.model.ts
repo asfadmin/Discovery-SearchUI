@@ -1,10 +1,11 @@
-import { SearchType } from './search-type.model';
-import { ListSearchType } from './filter-types.model';
-import { Range } from './range.model';
+import { SBASOverlap, timeseriesChartItemState } from '@models';
+
 import { FlightDirection } from './cmr-product.model';
 import * as fromDatasets from './dataset.model';
+import { ListSearchType } from './filter-types.model';
 import { Hyp3JobStatusCode } from './hyp3';
-import { SBASOverlap, timeseriesChartItemState } from '@models';
+import { Range } from './range.model';
+import { SearchType } from './search-type.model';
 
 export interface Search {
   searchType: SearchType;

@@ -19,16 +19,19 @@
   height: 40px;
   border-radius: 6px !important;
 }
+
 .button-flex-row  {
-  flex-direction: row;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   height: 58px;
 }
+
 .div-flex {
   line-height: initial;
 }
+
 .detail-bar {
   min-width: 0;
 }

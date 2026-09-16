@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material/dialog';
-import { EventSearchDeprecationComponent } from './event-search-deprecation.component';
 import { beforeEach, describe, expect, it } from 'vitest';
+
 import testProviders from '@testing/providers';
+
+import { EventSearchDeprecationComponent } from './event-search-deprecation.component';
 
 describe('EventSearchDeprecationComponent', () => {
   let fixture: ComponentFixture<EventSearchDeprecationComponent>;

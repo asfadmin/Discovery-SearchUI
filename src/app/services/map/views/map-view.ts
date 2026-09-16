@@ -1,11 +1,10 @@
-import { Graticule as GraticuleLayer } from 'ol/layer';
 import { View } from 'ol';
+import { Extent } from 'ol/extent';
+import { Graticule as GraticuleLayer } from 'ol/layer';
+import TileLayer from 'ol/layer/WebGLTile.js';
 import * as proj from 'ol/proj';
 import * as customProj4 from 'ol/proj/proj4';
-import TileLayer from 'ol/layer/WebGLTile.js';
-
 import proj4 from 'proj4';
-import { Extent } from 'ol/extent';
 
 export class MapView {
   constructor(

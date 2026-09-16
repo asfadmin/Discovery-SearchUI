@@ -1,13 +1,15 @@
 import { Injectable, inject, computed } from '@angular/core';
-import { fromEvent } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
+import { fromEvent } from 'rxjs';
+
+import * as models from '@models';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
-import { ScenesService } from './scenes.service';
+
 import { SceneSelectService } from './scene-select.service';
-import * as models from '@models';
+import { ScenesService } from './scenes.service';
 
 @Injectable({
   providedIn: 'root',

@@ -1,5 +1,5 @@
-import { Dataset } from '../dataset.model';
 import { CMRProduct } from '../cmr-product.model';
+import { Dataset } from '../dataset.model';
 import { Range } from '../range.model';
 
 export interface Hyp3JobType {

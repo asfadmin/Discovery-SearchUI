@@ -1,6 +1,7 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { Injectable, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { interval, Subject, Observable, of } from 'rxjs';
 import {
   map,
@@ -11,15 +12,13 @@ import {
   switchMap,
   retry,
 } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-
-import { EnvironmentService } from './environment.service';
-import * as userStore from '@store/user';
 
 import * as models from '@models';
+import { AppState } from '@store';
+import * as userStore from '@store/user';
+
+import { EnvironmentService } from './environment.service';
 import { NotificationService } from './notification.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',

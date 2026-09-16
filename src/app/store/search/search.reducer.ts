@@ -1,7 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { SearchActionType, SearchActions } from './search.action';
 import { SearchType } from '@models';
+
+import { SearchActionType, SearchActions } from './search.action';
 
 export interface SearchState {
   isLoading: boolean;

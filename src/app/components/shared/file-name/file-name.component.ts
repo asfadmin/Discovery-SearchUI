@@ -1,11 +1,10 @@
 import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
+import { TruncateModule } from '@yellowspot/ng-truncate';
+import { map } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
-import { map } from 'rxjs/operators';
-
-import { ScreenSizeService } from '@services';
 import { SearchType } from '@models';
-import { TruncateModule } from '@yellowspot/ng-truncate';
+import { ScreenSizeService } from '@services';
 
 @Component({
   selector: 'app-file-name',

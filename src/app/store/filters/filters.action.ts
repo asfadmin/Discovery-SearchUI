@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 
 import * as models from '@models';
 import { SBASOverlap } from '@models';
+
 import { FiltersState } from './filters.reducer';
 
 export enum FiltersActionType {

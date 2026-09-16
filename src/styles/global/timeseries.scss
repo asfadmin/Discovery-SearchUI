@@ -9,8 +9,8 @@
 .ts-snackbar {
   // timeseries-results-menu
   @include themify($themes) {
-    background-color: themed('primary-light');
     color: themed('dark-primary-text');
+    background-color: themed('primary-light');
   }
 
   margin-bottom: 27px !important;
@@ -21,6 +21,6 @@
 .ts-invalid-point {
   // timeseries-chart
   fill: rgb(0 0 0 / 0%) !important;
-  stroke-dasharray: 2;
   stroke-width: 1;
+  stroke-dasharray: 2;
 }

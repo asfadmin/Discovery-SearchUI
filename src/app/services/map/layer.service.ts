@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-
-import ImageWMS from 'ol/source/ImageWMS';
 import ImageLayer from 'ol/layer/Image';
+import ImageWMS from 'ol/source/ImageWMS';
 
 @Injectable({
   providedIn: 'root',

@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import {
   Component,
   Input,
@@ -5,16 +6,16 @@ import {
   AfterViewInit,
   inject,
 } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { LonLat } from '@models';
 import * as services from '@services';
-import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-map-info',
   templateUrl: './map-info.component.html',
   styleUrls: ['./map-info.component.scss'],
-  imports: [DecimalPipe],
+  imports: [DecimalPipe, TranslateModule],
 })
 export class MapInfoComponent implements AfterViewInit {
   private mapService = inject(services.MapService);

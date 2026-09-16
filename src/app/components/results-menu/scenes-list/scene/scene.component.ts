@@ -1,3 +1,4 @@
+import { NgStyle, NgClass } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -6,19 +7,19 @@ import {
   EventEmitter,
   inject,
 } from '@angular/core';
-
-import * as services from '@services';
-import * as models from '@models';
-import { MatListItem } from '@angular/material/list';
-import { NgStyle, NgClass } from '@angular/common';
-import { FileNameComponent } from '@components/shared/file-name/file-name.component';
-import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
-import { MatTooltip } from '@angular/material/tooltip';
-import { SceneControlsComponent } from './scene-controls/scene-controls.component';
-import { BaselineSceneControlsComponent } from './baseline-scene-controls/baseline-scene-controls.component';
-import { ShortDatePipe, FullDatePipe } from '@pipes/short-date.pipe';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatListItem } from '@angular/material/list';
+import { MatTooltip } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { FileNameComponent } from '@components/shared/file-name/file-name.component';
+import * as models from '@models';
+import { ShortDatePipe, FullDatePipe } from '@pipes/short-date.pipe';
+import * as services from '@services';
+
+import { BaselineSceneControlsComponent } from './baseline-scene-controls/baseline-scene-controls.component';
+import { SceneControlsComponent } from './scene-controls/scene-controls.component';
 
 @Component({
   selector: 'app-scene',

@@ -1,5 +1,5 @@
-import { setupOnDemand, loggedInSentinel1Page } from 'e2e/helpers';
 import { test, expect } from 'e2e/fixtures';
+import { setupOnDemand, loggedInSentinel1Page } from 'e2e/helpers';
 
 test('On Demand: Add expired job', { tag: '@auth' }, async ({ page }) => {
   const loggedInPage = await loggedInSentinel1Page(page);

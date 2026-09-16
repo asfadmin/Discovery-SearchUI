@@ -1,10 +1,11 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { EnvironmentService } from './environment.service';
 import { UserAuth } from '@models';
+
+import { EnvironmentService } from './environment.service';
 import { NotificationService } from './notification.service';
 
 interface UserInfo {

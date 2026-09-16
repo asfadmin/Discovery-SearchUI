@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-
+import * as moment from 'moment';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import * as moment from 'moment';
 
 import { Dataset, CMRProduct } from '@models';
 

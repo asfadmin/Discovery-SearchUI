@@ -1,3 +1,12 @@
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import {
+  NgPlural,
+  NgPluralCase,
+  NgStyle,
+  DecimalPipe,
+  TitleCasePipe,
+} from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -7,6 +16,9 @@ import {
   DestroyRef,
   Signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import {
   MatDialog,
   MatDialogRef,
@@ -14,46 +26,33 @@ import {
   MatDialogContent,
   MatDialogActions,
 } from '@angular/material/dialog';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
-import { ConfirmationComponent } from './confirmation/confirmation.component';
-
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { Store } from '@ngrx/store';
-import { AppState } from '@store';
+import { TranslateModule } from '@ngx-translate/core';
 import moment from 'moment';
 import { of, combineLatest } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { ApplicationStatus } from '@models';
 
-import * as queueStore from '@store/queue';
-import * as searchStore from '@store/search';
-import * as hyp3Store from '@store/hyp3';
-import * as userStore from '@store/user';
-import * as uiStore from '@store/ui';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { Hyp3UrlComponent } from '@components/shared/hyp3-url/hyp3-url.component';
+import { ApplicationStatus } from '@models';
 import * as models from '@models';
 import * as services from '@services';
-import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
-import { ResizedDirective } from '../../../directives/resized.directive';
-import { MatIcon } from '@angular/material/icon';
-import {
-  NgPlural,
-  NgPluralCase,
-  NgStyle,
-  DecimalPipe,
-  TitleCasePipe,
-} from '@angular/common';
-import { Hyp3UrlComponent } from '@components/shared/hyp3-url/hyp3-url.component';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
-import { MatButton } from '@angular/material/button';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { CdkScrollable } from '@angular/cdk/scrolling';
+import { AppState } from '@store';
+import * as hyp3Store from '@store/hyp3';
+import * as queueStore from '@store/queue';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+import * as userStore from '@store/user';
+
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ProcessingOptionsComponent } from './processing-options/processing-options.component';
 import { ProcessingQueueJobsComponent } from './processing-queue-jobs/processing-queue-jobs.component';
 import { ProcessingSignupComponent } from './processing-signup/processing-signup.component';
-import { MatProgressBar } from '@angular/material/progress-bar';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { ResizedDirective } from '../../../directives/resized.directive';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',

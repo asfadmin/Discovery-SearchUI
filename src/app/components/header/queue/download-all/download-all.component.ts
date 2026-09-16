@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { UAParser } from 'ua-parser-js';
-import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenuItem } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { UAParser } from 'ua-parser-js';
 
 @Component({
   selector: 'app-download-all',

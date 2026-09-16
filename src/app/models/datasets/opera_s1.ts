@@ -1,4 +1,5 @@
 import moment from 'moment';
+
 import { Props } from '../filters.model';
 
 export const opera_s1 = {

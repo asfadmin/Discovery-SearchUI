@@ -1,43 +1,39 @@
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 import {
   enableProdMode,
   importProvidersFrom,
   provideZoneChangeDetection,
 } from '@angular/core';
-
-import { routes } from './app/app.module';
-import { environment } from './environments/environment';
-import { SAVER, getSaver } from '@services/saver.provider';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import {
   DateAdapter,
   MAT_DATE_LOCALE,
   MAT_DATE_FORMATS,
 } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
   MAT_MOMENT_DATE_FORMATS,
 } from '@angular/material-moment-adapter';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { provideTranslateService } from '@ngx-translate/core';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { withHashLocation, provideRouter } from '@angular/router';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import {
   NgcCookieConsentModule,
   NgcCookieConsentConfig,
 } from 'ngx-cookieconsent';
-import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { withHashLocation, provideRouter } from '@angular/router';
-import { AppComponent } from './app/app.component';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
 import { ToastrModule } from 'ngx-toastr';
+
 import {
   AsfApiService,
   AsfLanguageService,
@@ -71,11 +67,14 @@ import {
   PairService,
   SceneSelectService,
 } from '@services';
-import { metaReducers, reducers } from '@store/app.reducer';
+import { SAVER, getSaver } from '@services/saver.provider';
 import { appEffects } from '@store/app.effect';
-
-import { TranslateLoader } from '@ngx-translate/core';
+import { metaReducers, reducers } from '@store/app.reducer';
 import { StaticTranslateLoader } from 'src/translation';
+
+import { AppComponent } from './app/app.component';
+import { routes } from './app/app.module';
+import { environment } from './environments/environment';
 
 const cookieConfig: NgcCookieConsentConfig = {
   autoOpen: false,

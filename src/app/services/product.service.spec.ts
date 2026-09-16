@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import * as models from '@models';
+import { productFactory } from '@testing/product-factory';
 
 import { ProductService } from './product.service';
-import * as models from '@models';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { productFactory } from '@testing/product-factory';
 
 describe('ProductService', () => {
   let service: ProductService;

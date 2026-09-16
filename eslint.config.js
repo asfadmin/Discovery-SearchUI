@@ -3,12 +3,16 @@ const eslint = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 const prettierRecommended = require('eslint-plugin-prettier/recommended');
+const importPlugin = require('eslint-plugin-import');
+const json = require('@eslint/json');
 
-module.exports = tseslint.config(
+module.exports = tseslint.config([
   {
     files: ['**/*.ts'],
     extends: [
       eslint.configs.recommended,
+      importPlugin.flatConfigs.recommended,
+      importPlugin.flatConfigs.typescript,
       ...tseslint.configs.recommended,
       ...tseslint.configs.stylistic,
       ...angular.configs.tsRecommended,
@@ -36,6 +40,26 @@ module.exports = tseslint.config(
           caughtErrorsIgnorePattern: '^_',
         },
       ],
+      'import/order': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            ['parent', 'sibling'],
+            'index',
+            'object',
+            'type',
+          ],
+          'newlines-between': 'always', // Enforces blank lines between groups
+          alphabetize: {
+            order: 'asc', // Sort alphabetically in ascending order
+            caseInsensitive: true, // Ignore case sensitivity
+          },
+        },
+      ],
+      'import/no-duplicates': 'error',
       // ---------
       // re-enable these at some point
       // ---------
@@ -46,6 +70,11 @@ module.exports = tseslint.config(
       '@angular-eslint/no-output-on-prefix': 'off',
       '@angular-eslint/no-output-native': 'off',
       '@angular-eslint/no-uncalled-signals': 'error',
+      'import/no-unresolved': 'off',
+      'import/no-named-as-default-member': 'off',
+    },
+    settings: {
+      'import/resolver': 'typescript',
     },
   },
   {
@@ -68,6 +97,17 @@ module.exports = tseslint.config(
     },
   },
   {
+    files: ['src/assets/i18n/*.json'],
+    plugins: {
+      json: json.default,
+    },
+    language: 'json/json',
+    rules: {
+      'json/no-duplicate-keys': 'error',
+      'json/sort-keys': ['error', 'asc', { natural: true }],
+    },
+  },
+  {
     files: ['**/*'],
     extends: [prettierRecommended],
     rules: {
@@ -80,4 +120,4 @@ module.exports = tseslint.config(
       ],
     },
   },
-);
+]);

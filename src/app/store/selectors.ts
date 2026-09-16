@@ -1,4 +1,5 @@
 import { createSelectorFactory, defaultMemoize } from '@ngrx/store';
+
 import * as models from '@models';
 
 function rangeEquals(a: models.Range<any>, b: models.Range<any>): boolean {

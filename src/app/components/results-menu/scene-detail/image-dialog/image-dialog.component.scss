@@ -1,27 +1,27 @@
 @use "@angular/material" as mat;
-
 @use "asf-theme-variables" as *;
 
 $config: mat.m2-define-legacy-typography-config();
 
 .mp0-ellipsis-mobile {
-  width: 250px;
   display: inline-block;
+  width: 250px;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mp0-ellipsis {
-  width: 800px;
   display: inline-block;
+  width: 800px;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 a {
   text-decoration: none;
+
   @include themify($themes) {
     color: themed('blue-link');
   }
@@ -32,8 +32,8 @@ a {
     background-color: themed('primary-light');
   }
 
-  overflow: hidden;
   height: 100%;
+  overflow: hidden;
 
   :focus {
     outline: none;
@@ -63,18 +63,18 @@ a {
 
   .scene-detail--wrapper {
     @include themify($themes) {
+      color: themed('dark-primary-text');
       background-color: themed('primary-light');
       border-left-color: themed('primary-dark');
-      color: themed('dark-primary-text');
     }
 
+    box-sizing: border-box;
+    flex: 1 1 100%;
     min-width: 200px;
+    max-width: 25%;
+    overflow-y: auto;
     border-left-style: solid;
     border-left-width: 1px;
-    overflow-y: auto;
-    flex: 1 1 100%;
-    box-sizing: border-box;
-    max-width: 25%;
 
     .scene-detail {
       margin: 0 10px;
@@ -88,10 +88,10 @@ a {
     border-bottom-color: themed('dark-primary-text');
   }
 
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
   min-height: 60px;
   margin: 6px;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
 }
 
 .browse-map--size {
@@ -101,12 +101,12 @@ a {
 }
 
 .browse-map--layout {
-  flex-direction: row-reverse;
   box-sizing: border-box;
   display: flex;
+  flex: 1 1 0%;
+  flex-direction: row-reverse;
   place-content: flex-end;
   align-items: flex-end;
-  flex: 1 1 0%;
 }
 
 .browse-map--overlay {
@@ -134,8 +134,8 @@ a {
     color: themed('dark-primary-text');
   }
 
-  cursor: move;
   height: 24px;
+  cursor: move;
 }
 
 .close-button {
@@ -143,8 +143,8 @@ a {
     color: themed('dark-primary-text');
   }
 
-  vertical-align: top !important;
   margin-bottom: 5px;
+  vertical-align: top !important;
 }
 
 .file-list {
@@ -153,8 +153,8 @@ a {
 
 
 .detail-header {
-  font-weight: bold;
   margin-top: 8px;
+  font-weight: bold;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
@@ -163,22 +163,22 @@ a {
 }
 
 .bottom-row {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  place-content: flex-end;
+  align-items: flex-end;
   margin-top: 10px;
   font-size: 14px;
   text-align: center;
-  flex-direction: row;
-  box-sizing: border-box;
-  display: flex;
-  place-content: flex-end;
-  align-items: flex-end;
 }
 
 .close-icon {
   right: 0;
-  flex: 1 1 35px;
   box-sizing: border-box;
-  max-width: 42px;
+  flex: 1 1 35px;
   min-width: 35px;
+  max-width: 42px;
 }
 
 .thumbs {
@@ -200,8 +200,8 @@ a {
 }
 
 .download-icon {
-  height: 12px !important;
   width: 12px !important;
+  height: 12px !important;
   margin-right: 15px;
 }
 
@@ -214,9 +214,9 @@ a {
 }
 
 .on-demand-scene-names {
+  margin-bottom: 0;
   font-size: 12px;
   word-break: break-word;
-  margin-bottom: 0;
 }
 
 .footer {
@@ -224,13 +224,13 @@ a {
     border-top: 1px solid themed('primary-dark');
   }
 
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
   position: sticky;
   bottom: 0;
   z-index: 1020;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  justify-content: flex-end;
   padding: 10px;
   padding-top: 13.5px;
 }

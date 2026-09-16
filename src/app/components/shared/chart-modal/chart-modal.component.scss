@@ -1,17 +1,18 @@
 @use "@angular/material" as mat;
 @use "asf-theme-variables" as *;
+
 // $config: mat.define-legacy-typography-config();
 
 .mat-button-toggle-button {
-    border: 0;
-    background: none;
-    color: inherit;
+    width: 100%;
     padding: 0;
     margin: 0;
     font: inherit;
-    outline: none;
-    width: 100%;
+    color: inherit;
     cursor: pointer;
+    outline: none;
+    background: none;
+    border: 0;
 }
 
 .ts-criteria-button-toggle-group {
@@ -23,14 +24,15 @@
     @include themify($themes) {
         background-color: themed('background-white') !important;
     }
+
     font-size: 14px;
 }
 
 .mdc-fab--mini {
   width: 20px;
   height: 20px;
-  text-align: center;
   padding-top: 8px;
+  text-align: center;
   border-radius: 4px !important;
 }
 
@@ -38,19 +40,20 @@
   @include themify($themes) {
     color: themed('dark-primary-text') !important;
   }
-  font-size: 16px !important;
+
   margin-left: 0;
+  font-size: 16px !important;
 }
 
 .toggle-group-wrapper--layout {
-    flex-direction: row;
     box-sizing: border-box;
     display: flex;
+    flex-direction: row;
     place-content: stretch center;
     align-items: stretch;
 }
 
 .chart-config-menu-panel {
-    padding-left: 15px;
     padding-right: 15px;
+    padding-left: 15px;
 }

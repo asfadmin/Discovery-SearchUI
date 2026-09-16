@@ -1,12 +1,14 @@
 import { Component, inject } from '@angular/core';
-import * as services from '@services';
 import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
+
+import * as services from '@services';
 
 @Component({
   selector: 'app-hyp3-url',
   templateUrl: './hyp3-url.component.html',
   styleUrls: ['./hyp3-url.component.scss'],
-  imports: [MatIcon],
+  imports: [MatIcon, TranslateModule],
 })
 export class Hyp3UrlComponent {
   public hyp3 = inject(services.Hyp3ApiService);

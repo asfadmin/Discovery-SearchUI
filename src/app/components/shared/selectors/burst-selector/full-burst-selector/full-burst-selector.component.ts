@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -5,18 +6,17 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { debounceTime, filter, map } from 'rxjs';
 import { SubSink } from 'subsink';
-import * as searchStore from '@store/search';
 
-import * as filtersStore from '@store/filters';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
 import { SearchType } from '@models';
-import { AsyncPipe } from '@angular/common';
-import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
 import { JoinPipe } from '@pipes/join.pipe';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as searchStore from '@store/search';
 @Component({
   selector: 'app-full-burst-selector',
   templateUrl: './full-burst-selector.component.html',

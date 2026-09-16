@@ -6,8 +6,9 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import noUiSlider from 'nouislider';
-
 import { Observable, Subject } from 'rxjs';
 import {
   delay,
@@ -16,14 +17,12 @@ import {
   take,
   filter,
 } from 'rxjs/operators';
-import { AppState } from '@store';
-import { Store } from '@ngrx/store';
-import * as filtersStore from '@store/filters';
-import * as scenesStore from '@store/scenes';
 import { SubSink } from 'subsink';
 
 import * as models from '@models';
-import { TranslateModule } from '@ngx-translate/core';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as scenesStore from '@store/scenes';
 
 export interface BaselineSlider {
   slider: any;

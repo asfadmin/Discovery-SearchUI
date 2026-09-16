@@ -1,3 +1,4 @@
+import { CdkAccordionModule } from '@angular/cdk/accordion';
 import {
   Component,
   inject,
@@ -6,16 +7,16 @@ import {
   EnvironmentInjector,
   createComponent,
 } from '@angular/core';
-import { GdalProductInfo, GdalService } from '@services/gdal/gdal.service';
-import { CdkAccordionModule } from '@angular/cdk/accordion';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
-import { SceneFileGdalDropdownDatasetComponent } from './scene-file-gdal-dropdown-dataset/scene-file-gdal-dropdown-dataset.component';
 
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-menu/gdal-customize-menu.component';
+import { GdalProductInfo, GdalService } from '@services/gdal/gdal.service';
+
+import { SceneFileGdalDropdownDatasetComponent } from './scene-file-gdal-dropdown-dataset/scene-file-gdal-dropdown-dataset.component';
 
 @Component({
   selector: 'app-scene-file-gdal-dropdown',

@@ -1,9 +1,9 @@
 @use "asf-theme-variables" as *;
 
 .dialog-header {
-  font-weight: bold;
-  font-size: 30px;
   margin-bottom: 13px;
+  font-size: 30px;
+  font-weight: bold;
 }
 
 .close-x {
@@ -25,6 +25,7 @@
   flex-direction: row;
   justify-content: space-between;
   padding: 16px 24px;
+
   @include themify($themes) {
     background: darken(themed('background-white'), 10%);
   }
@@ -39,6 +40,7 @@
   @include themify($themes) {
     background: darken(themed('background-white'), 10%);
   }
+
   margin-bottom: 9px;
 }
 

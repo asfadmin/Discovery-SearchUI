@@ -1,13 +1,14 @@
 import { Component, input, inject, computed } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
-import { GdalCustomizeDialogComponent } from './gdal-customize-dialog/gdal-customize-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 
 import * as models from '@models';
 import { GdalProductInfo, GdalService } from '@services/gdal/gdal.service';
+
+import { GdalCustomizeDialogComponent } from './gdal-customize-dialog/gdal-customize-dialog.component';
 
 export interface GdalCustomizeDialogData {
   product: GdalProductInfo;

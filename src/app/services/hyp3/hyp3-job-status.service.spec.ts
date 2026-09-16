@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-
 import * as moment from 'moment';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import * as models from '@models';
+
 import { Hyp3JobStatusService } from './hyp3-job-status.service';
-import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('Hyp3JobStatusService', () => {
   let service: Hyp3JobStatusService;

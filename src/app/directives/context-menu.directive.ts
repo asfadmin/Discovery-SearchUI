@@ -1,4 +1,3 @@
-import { MatMenuPanel, MatMenuTrigger } from '@angular/material/menu';
 import {
   Directive,
   ElementRef,
@@ -6,6 +5,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { MatMenuPanel, MatMenuTrigger } from '@angular/material/menu';
 
 @Directive({ selector: '[contextMenuTriggerFor]' })
 export class ContextMenuTriggerDirective

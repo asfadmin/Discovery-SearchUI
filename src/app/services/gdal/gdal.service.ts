@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+
 import { CMRProduct, datasetsForGDALProduct, GDALDataset } from '@models';
 import { MapService } from '@services';
 
@@ -21,11 +22,11 @@ export interface GdalOptions {
   datasetPath: string;
   projection?: string;
   outputType?: GdalOutputType;
-  aoi?: boolean;
   minimalCommand?: boolean;
   os?: GdalOs;
   outputFilename?: string;
   gdalVersion?: GdalVersion;
+  cutlineWKT?: string;
 }
 
 export const GDAL_COMMAND_PLACEHOLDER = `gdal_translate -of GTiff \\
@@ -95,7 +96,7 @@ export class GdalService {
 
   private resolveGDALCommand(options: GdalOptions): string {
     const reproject = 'projection' in options && options.projection !== '';
-    const spatialSubset = 'aoi' in options && options.aoi;
+    const spatialSubset = 'cutlineWKT' in options && options.cutlineWKT !== '';
 
     if (spatialSubset || reproject) {
       return 'gdalwarp';
@@ -127,20 +128,20 @@ export class GdalService {
   ): string[] {
     const command = this.resolveGDALCommand(options);
     const driver =
-      this.resolveGDALVersion(options) == '>=3.13' ? 'HDF5' : 'NETCDF';
+      this.resolveGDALVersion(options) == '≥3.13' ? 'HDF5' : 'NETCDF';
     const downloadURL = `${driver}:"/vsicurl/${options.product.downloadUrl}":${options.datasetPath}`;
     const outputFileName = `-of ${this.resolveOutputFormat(options)} "${this.resolveOutputFilename(options)}"`;
     const configOptions = [];
     const optionalArgs = [];
 
     const reproject = 'projection' in options && options.projection !== '';
-    const spatialSubset = 'aoi' in options && options.aoi;
+    const spatialSubset = 'cutlineWKT' in options && options.cutlineWKT !== '';
     const minimalCommand =
       'minimalCommand' in options && options.minimalCommand;
 
     if (spatialSubset) {
       const cutlineArgs = [
-        `-cutline "${this.searchPolygon()}"`,
+        `-cutline "${options.cutlineWKT}"`,
         `-cutline_srs WGS84`,
         `-crop_to_cutline`,
       ];

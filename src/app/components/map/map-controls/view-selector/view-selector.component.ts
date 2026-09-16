@@ -1,16 +1,15 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 
-import { Store } from '@ngrx/store';
+import { MapViewType, SearchType } from '@models';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as searchStore from '@store/search';
-
-import { MatIcon } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
-import { MapViewType, SearchType } from '@models';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatTooltip } from '@angular/material/tooltip';
 
 // Declare GTM dataLayer array.
 declare global {

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { SbasFiltersType } from '@models';
-import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-sbas-search-filters',
   templateUrl: './sbas-search-filters.component.html',

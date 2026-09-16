@@ -1,18 +1,17 @@
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { SAVER, Saver } from '@services/saver.provider';
-import { DownloadStatus } from '@models/download.model';
-
-import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { catchError, distinctUntilChanged, scan } from 'rxjs/operators';
-import { CMRProduct } from '@models';
-import { NotificationService } from './notification.service';
-import { TranslateService } from '@ngx-translate/core';
-
 import { Store } from '@ngrx/store';
-import * as queueStore from '@store/queue';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError, distinctUntilChanged, scan } from 'rxjs/operators';
+
+import { CMRProduct } from '@models';
+import { DownloadStatus } from '@models/download.model';
+import { SAVER, Saver } from '@services/saver.provider';
 import { AppState } from '@store';
+import * as queueStore from '@store/queue';
+
+import { NotificationService } from './notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class DownloadService {

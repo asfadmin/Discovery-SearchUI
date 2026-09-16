@@ -1,3 +1,4 @@
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import {
   Component,
   ElementRef,
@@ -6,6 +7,7 @@ import {
   AfterViewInit,
   inject,
 } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -14,16 +16,16 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import { AsfLanguageService, NotificationService } from '@services';
+import { TranslateModule } from '@ngx-translate/core';
 import { ClipboardService } from 'ngx-clipboard';
+import Prism from 'prismjs';
+
+import { AsfLanguageService, NotificationService } from '@services';
+
+import { DocsModalComponent } from '../docs-modal/docs-modal.component';
 import { SaveSearchDialogComponent } from '../save-search-dialog';
 
-import Prism from 'prismjs';
 import 'prismjs/components/prism-python';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { DocsModalComponent } from '../docs-modal/docs-modal.component';
-import { MatButton } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
 
 export enum CodeExportType {
   ASF_SEARCH,

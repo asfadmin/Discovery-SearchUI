@@ -1,16 +1,18 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { SubSink } from 'subsink';
-import * as models from '@models';
-import { Store } from '@ngrx/store';
-import * as queueStore from '@store/queue';
-import { AppState } from '@store';
-import { PairService } from '@services';
-import { CMRProduct } from '@models';
-import { getMasterName, getScenes } from '@store/scenes';
-import { getTemporalRange } from '@store/filters';
 import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
 import { MatMenuItem } from '@angular/material/menu';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { SubSink } from 'subsink';
+
+import * as models from '@models';
+import { CMRProduct } from '@models';
+import { PairService } from '@services';
+import { AppState } from '@store';
+import { getTemporalRange } from '@store/filters';
+import * as queueStore from '@store/queue';
+import { getMasterName, getScenes } from '@store/scenes';
+
 @Component({
   selector: 'app-closest-pair',
   templateUrl: './closest-pair.component.html',

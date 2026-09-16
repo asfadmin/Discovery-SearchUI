@@ -1,3 +1,4 @@
+import { NgClass, AsyncPipe } from '@angular/common';
 import {
   Component,
   HostListener,
@@ -5,29 +6,27 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { ResizeEvent, ResizableModule } from 'angular-resizable-element';
-import { SubSink } from 'subsink';
-
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { ScreenSizeService } from '@services';
-
-import { AppState } from '@store';
-import * as uiStore from '@store/ui';
-import * as scenesStore from '@store/scenes';
-import * as searchStore from '@store/search';
+import { SubSink } from 'subsink';
 
 import * as models from '@models';
-import { NgClass, AsyncPipe } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
-import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-results-menu.component';
-import { TimeseriesResultsMenuComponent } from './timeseries-results-menu/timeseries-results-menu.component';
+import { ScreenSizeService } from '@services';
+import { AppState } from '@store';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+
 import { BaselineResultsMenuComponent } from './baseline-results-menu/baseline-results-menu.component';
-import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.component';
+import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-results-menu.component';
 import { MobileResultsMenuComponent } from './mobile-results-menu/mobile-results-menu.component';
-import { MatButton } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
+import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.component';
+import { TimeseriesResultsMenuComponent } from './timeseries-results-menu/timeseries-results-menu.component';
 
 @Component({
   selector: 'app-results-menu',

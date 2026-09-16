@@ -1,30 +1,30 @@
+import { NgPlural, NgPluralCase, DecimalPipe } from '@angular/common';
 import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 import {
   MatMenu,
   MatMenuContent,
   MatMenuItem,
   MatMenuTrigger,
 } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as queueStore from '@store/queue';
-import * as hyp3Store from '@store/hyp3';
-import * as uiStore from '@store/ui';
+import { TranslateModule } from '@ngx-translate/core';
+import { withLatestFrom } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
 import * as models from '@models';
-import { SubSink } from 'subsink';
-import { getMasterName, getScenes } from '@store/scenes';
 import { CMRProduct, Hyp3ableByProductType, SearchType } from '@models';
-import { withLatestFrom } from 'rxjs/operators';
 import { EnvironmentService, Hyp3ApiService } from '@services';
+import { AppState } from '@store';
 import {
   getSelectedDataset,
   getShouldUseFramesForReference,
 } from '@store/filters';
-import { NgPlural, NgPluralCase, DecimalPipe } from '@angular/common';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import * as hyp3Store from '@store/hyp3';
+import * as queueStore from '@store/queue';
+import { getMasterName, getScenes } from '@store/scenes';
+import * as uiStore from '@store/ui';
 
 @Component({
   selector: 'app-on-demand-add-menu',

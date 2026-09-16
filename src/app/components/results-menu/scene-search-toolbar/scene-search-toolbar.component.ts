@@ -1,21 +1,21 @@
-import { Component, inject, computed } from '@angular/core';
-
-import * as models from '@models';
-import { ScreenSizeService, PropertyService } from '@services';
-import * as scenesStore from '@store/scenes';
-import * as searchStore from '@store/search';
-import * as filtersStore from '@store/filters';
-import * as userStore from '@store/user';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import { DatasetForProductService } from '@services';
-
 import { NgStyle, NgClass, UpperCasePipe, AsyncPipe } from '@angular/common';
-
-import { TranslateModule } from '@ngx-translate/core';
+import { Component, inject, computed } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+
+import * as models from '@models';
+import {
+  ScreenSizeService,
+  PropertyService,
+  DatasetForProductService,
+} from '@services';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
+import * as scenesStore from '@store/scenes';
+import * as searchStore from '@store/search';
+import * as userStore from '@store/user';
 
 @Component({
   selector: 'app-scene-search-toolbar',

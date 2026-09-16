@@ -1,3 +1,5 @@
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import {
   Component,
   OnInit,
@@ -8,27 +10,19 @@ import {
   ViewChild,
   Signal,
 } from '@angular/core';
-import { SubSink } from 'subsink';
-import { saveAs } from 'file-saver';
-
-import { HttpClient } from '@angular/common/http';
-
+import { MatBadge } from '@angular/material/badge';
+import { MatButton } from '@angular/material/button';
+import { ThemePalette } from '@angular/material/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatSuffix } from '@angular/material/input';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import * as queueStore from '@store/queue';
-import * as userStore from '@store/user';
-import * as uiStore from '@store/ui';
-import * as searchStore from '@store/search';
+import { TranslateModule } from '@ngx-translate/core';
+import { saveAs } from 'file-saver';
+import { SubSink } from 'subsink';
 
-import { AsfLanguageService } from '@services/asf-language.service';
-
-import {
-  AuthService,
-  AsfApiService,
-  EnvironmentService,
-  ScreenSizeService,
-  UserDataService,
-} from '@services';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
 import {
   CMRProduct,
   Breakpoints,
@@ -41,17 +35,19 @@ import {
   derivedDatasets,
   datasetList,
 } from '@models';
-
-import { ThemePalette } from '@angular/material/core';
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import { MatButton } from '@angular/material/button';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { MatBadge } from '@angular/material/badge';
-import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
-import { MatSuffix } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
+import {
+  AuthService,
+  AsfApiService,
+  EnvironmentService,
+  ScreenSizeService,
+  UserDataService,
+} from '@services';
+import { AsfLanguageService } from '@services/asf-language.service';
+import { AppState } from '@store';
+import * as queueStore from '@store/queue';
+import * as searchStore from '@store/search';
+import * as uiStore from '@store/ui';
+import * as userStore from '@store/user';
 
 // Declare GTM dataLayer array.
 declare global {

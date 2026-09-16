@@ -1,6 +1,5 @@
 import { test, expect } from 'e2e/fixtures';
-import { waitForASFAPIResponse } from 'e2e/helpers';
-import { sentinel1Page } from 'e2e/helpers';
+import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
 
 test('Opera Burst ID search returns matching results', async ({ page }) => {
   await sentinel1Page(page);

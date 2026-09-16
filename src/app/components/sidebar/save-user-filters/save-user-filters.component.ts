@@ -1,18 +1,21 @@
+import { NgClass } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { GeographicFiltersType, SearchType } from '@models';
+import { MatButton } from '@angular/material/button';
 import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { map } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
+import { GeographicFiltersType, SearchType } from '@models';
+import * as models from '@models';
+import { ScreenSizeService } from '@services';
 import { AppState } from '@store';
-import * as userStore from '@store/user';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
-import * as models from '@models';
-import { SubSink } from 'subsink';
-import { map } from 'rxjs/operators';
-import { ScreenSizeService } from '@services';
-import { NgClass } from '@angular/common';
+import * as userStore from '@store/user';
+
 import { SaveUserFilterComponent } from './save-user-filter/save-user-filter.component';
-import { MatButton } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-save-user-filters',
   templateUrl: './save-user-filters.component.html',

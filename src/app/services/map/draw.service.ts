@@ -1,23 +1,21 @@
 import { Injectable, inject } from '@angular/core';
-
+import { Store } from '@ngrx/store';
+import { Feature, Map } from 'ol';
+import Circle from 'ol/geom/Circle';
+import Geometry, { Type as GeometryType } from 'ol/geom/Geometry';
+import { fromCircle } from 'ol/geom/Polygon';
+import { createBox } from 'ol/interaction/Draw.js';
+import { Draw, Modify, Snap } from 'ol/interaction.js';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
 import { BehaviorSubject } from 'rxjs';
 
-import { Feature, Map } from 'ol';
-import { Vector as VectorSource } from 'ol/source';
-import { Vector as VectorLayer } from 'ol/layer';
-import { Draw, Modify, Snap } from 'ol/interaction.js';
-import { createBox } from 'ol/interaction/Draw.js';
+import * as models from '@models';
+import { AppState } from '@store';
+import { SetGeocode } from '@store/filters';
+import { DrawNewPolygon } from '@store/map';
 
 import * as polygonStyle from './polygon.style';
-import * as models from '@models';
-import { Type as GeometryType } from 'ol/geom/Geometry';
-import Geometry from 'ol/geom/Geometry';
-import Circle from 'ol/geom/Circle';
-import { fromCircle } from 'ol/geom/Polygon';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import { DrawNewPolygon } from '@store/map';
-import { SetGeocode } from '@store/filters';
 
 // Declare GTM dataLayer array.
 declare global {

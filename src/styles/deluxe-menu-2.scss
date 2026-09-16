@@ -1,6 +1,7 @@
 @use "asf-theme-variables" as *;
 
 $light-grey: rgb(0 0 0 / 60%);
+
 .description-layout {
   display: flex;
 }
@@ -8,9 +9,10 @@ $light-grey: rgb(0 0 0 / 60%);
 .menu-item-icon {
   @include md-icon-size(100px);
 
-  font-size: 24px !important;
   height: 47px !important;
   margin-right: 0;
+  font-size: 24px !important;
+
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
@@ -31,8 +33,8 @@ $light-grey: rgb(0 0 0 / 60%);
 
 .menu-item-inner {
   display: flex;
-  margin: 5px 5px 5px 15px;
   width: 100%;
+  margin: 5px 5px 5px 15px;
 }
 
 .mat-mdc-card-actions {
@@ -44,8 +46,10 @@ $light-grey: rgb(0 0 0 / 60%);
   @include themify_non_host($themes) {
     color: themed('blue');
   }
-  font-weight: 400;
+
   font-style: italic;
+  font-weight: 400;
+
   // color: $asf-blue;
 }
 
@@ -75,6 +79,7 @@ $light-grey: rgb(0 0 0 / 60%);
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+
   font-size: 14px;
   font-weight: 400;
   transform:
@@ -89,16 +94,17 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .button-text {
+  padding: 0;
+  margin: 0;
   font-size: 16px;
+  font-style: normal;
   font-weight: 400;
+  line-height: 29px;
+  text-align: left;
+
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
-  text-align: left;
-  font-style: normal;
-  padding: 0;
-  margin: 0;
-  line-height: 29px;
 }
 
 .menu-button-wrapper {
@@ -111,8 +117,9 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .text-underline {
-  border: none;
   height: 1px;
+  border: none;
+
   @include themify($themes) {
     color: themed('dark-secondary-text');
     background-color: themed('dark-secondary-text');
@@ -121,38 +128,38 @@ $light-grey: rgb(0 0 0 / 60%);
 
 /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
 .mat-select-arrow {
+  display: inline-flex;
   width: 0;
   height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid;
   margin: 0 4px 3px 3px;
-  display: inline-flex;
+  border-top: 5px solid;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
 }
 
 .info-text {
-  font-style: italic;
-  font-size: 14px;
-  line-height: 30px;
   margin: 5px 0 15px;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 30px;
 }
 
 .item-title {
-  font-weight: bold;
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .mobile-search-item {
-  margin: 0;
-  padding: 3px 10px;
   height: 40px;
+  padding: 3px 10px;
+  margin: 0;
   line-height: 30px;
 }
 
 
 .mobile-button-wrapper {
-  //transform: scale(0.82);
-  //margin-top: -6px;
+  // transform: scale(0.82);
+  // margin-top: -6px;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version. */
@@ -191,20 +198,23 @@ $light-grey: rgb(0 0 0 / 60%);
   @include themify($themes) {
     color: themed('dark-disabled-text') !important;
   }
+
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
   font-weight: bold;
   line-height: 30px;
-  font-size: 14px;
-  margin: 0;
-  padding: 0;
 }
 
 .dataset-source {
   @include themify_non_host($themes) {
     color: themed('blue-link');
+
     a {
       color: themed('blue-link');
     }
   }
+
   padding-top: 22px;
   font-size: 12px;
 }
