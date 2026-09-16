@@ -152,7 +152,10 @@ export class ProductService {
     if (product.dataset === 'SEASAT 1') {
       return this.seasatSubproductsFromScene(product);
     }
-    if (product.dataset === 'UAVSAR') {
+    if (
+      product.dataset === 'UAVSAR' &&
+      product.metadata.additionalUrls?.length > 0
+    ) {
       return this.uavsarSubproductsFromScene(product);
     }
     if (
