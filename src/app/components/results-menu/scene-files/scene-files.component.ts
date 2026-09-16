@@ -158,6 +158,12 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         models.Props.DEPRECATED,
       )
     ) {
+      if (this.scene()?.dataset === 'AIRSAR') {
+        return {
+          translationKey: 'DATASET_DEPRECATION_NOTICE_TEMP',
+          url: 'https://asf.alaska.edu/',
+        };
+      }
       return {
         translationKey: 'DATASET_DEPRECATION_NOTICE',
         url: 'https://asf.alaska.edu/',
