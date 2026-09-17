@@ -29,7 +29,12 @@ import { SubSink } from 'subsink';
 import * as models from '@models';
 import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
 import { getStaticQueryParams } from '@models/datasets/opera_s1';
-import { AsfApiService, Hyp3ApiService, ScreenSizeService } from '@services';
+import {
+  AsfApiService,
+  Hyp3ApiService,
+  ScreenSizeService,
+  ProductService,
+} from '@services';
 import { AppState } from '@store';
 import * as filterStore from '@store/filters';
 import * as hyp3Store from '@store/hyp3';
@@ -63,6 +68,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
   private screenSize = inject(ScreenSizeService);
   private asfApiService = inject(AsfApiService);
+  private productService = inject(ProductService);
 
   @ViewChild(CdkVirtualScrollViewport, { static: false })
   scrollPort: CdkVirtualScrollViewport;
@@ -175,7 +181,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         .select(scenesStore.getSelectedSceneProducts)
         .pipe(debounceTime(0))
         .subscribe((products) => {
-          this.products = products;
+          this.products = this.sortSceneFiles(products);
           this.validJobTypesByProduct = {};
           this.products?.forEach((product) => {
             this.validJobTypesByProduct[product.id] =
@@ -359,6 +365,34 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
         .replaceAll('L1', 'L2'),
     };
   }
+
+  // Should we move this to some sort of service?
+  private sortSceneFiles(products: models.CMRProduct[]) {
+    if (products.length > 0) {
+      if (products[0].dataset === 'UAVSAR') {
+        products.sort((a, b) => {
+          const extensionA = this.productService.getUAVSARFileTypeExtension(
+            a.downloadUrl,
+          );
+          const extensionB = this.productService.getUAVSARFileTypeExtension(
+            b.downloadUrl,
+          );
+
+          const rankA = Object.keys(
+            models.uavsar.productTypeDisplays,
+          ).findIndex((ext) => ext === extensionA);
+          const rankB = Object.keys(
+            models.uavsar.productTypeDisplays,
+          ).findIndex((ext) => ext === extensionB);
+
+          return rankA - rankB;
+        });
+      }
+    }
+
+    return products;
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
