@@ -469,11 +469,14 @@
       @if (!isUserLoggedIn) {
         <div>
           @if (breakpoint === breakpoints.MOBILE) {
-            <span> <b>N/A</b> - {{ 'LOGIN_TO_VIEW' | translate }} </span>
+            <span>
+              <b>{{ 'NOT_APPLICABLE' | translate }}</b> -
+              {{ 'LOGIN_TO_VIEW' | translate }}
+            </span>
           }
           @if (breakpoint !== breakpoints.MOBILE) {
             <span>
-              <b>N/A</b> -
+              <b>{{ 'NOT_APPLICABLE' | translate }}</b> -
               {{
                 'LOGIN_TO_VIEW_NUMBER_OF_CREDITS_LEFT_THIS_MONTH' | translate
               }}

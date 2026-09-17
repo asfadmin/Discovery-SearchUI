@@ -39,7 +39,11 @@
           }
           @if (isDeprecated()) {
             <div class="deprecation-notice">
-              {{ 'DATASET_DEPRECATION_NOTICE' | translate }}
+              @if (dataset().id !== 'AIRSAR') {
+                {{ 'DATASET_DEPRECATION_NOTICE' | translate }}
+              } @else {
+                {{ 'DATASET_DEPRECATION_NOTICE_TEMP' | translate }}
+              }
 
               <br />
               {{ 'EMAIL' | translate }}

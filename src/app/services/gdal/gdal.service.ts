@@ -22,11 +22,11 @@ export interface GdalOptions {
   datasetPath: string;
   projection?: string;
   outputType?: GdalOutputType;
-  aoi?: boolean;
   minimalCommand?: boolean;
   os?: GdalOs;
   outputFilename?: string;
   gdalVersion?: GdalVersion;
+  cutlineWKT?: string;
 }
 
 export const GDAL_COMMAND_PLACEHOLDER = `gdal_translate -of GTiff \\
@@ -96,7 +96,7 @@ export class GdalService {
 
   private resolveGDALCommand(options: GdalOptions): string {
     const reproject = 'projection' in options && options.projection !== '';
-    const spatialSubset = 'aoi' in options && options.aoi;
+    const spatialSubset = 'cutlineWKT' in options && options.cutlineWKT !== '';
 
     if (spatialSubset || reproject) {
       return 'gdalwarp';
@@ -135,13 +135,13 @@ export class GdalService {
     const optionalArgs = [];
 
     const reproject = 'projection' in options && options.projection !== '';
-    const spatialSubset = 'aoi' in options && options.aoi;
+    const spatialSubset = 'cutlineWKT' in options && options.cutlineWKT !== '';
     const minimalCommand =
       'minimalCommand' in options && options.minimalCommand;
 
     if (spatialSubset) {
       const cutlineArgs = [
-        `-cutline "${this.searchPolygon()}"`,
+        `-cutline "${options.cutlineWKT}"`,
         `-cutline_srs WGS84`,
         `-crop_to_cutline`,
       ];

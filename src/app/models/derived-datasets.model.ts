@@ -40,6 +40,7 @@ export const derivedDatasets: DerivedDataset[] = [
     info_url: `${asfWebsite.home}/sar-data-sets/global-ice-sheet-mapping-orbiter-gismo`,
     download_url: `${asfWebsite.home}/data-sets/derived-data-sets/gismo/gismo-data-products`,
     picture: `${pictureFolder}/gismo.gif`,
+    deprecated: true,
   },
   {
     name: 'GLACIER_SPEED',
@@ -50,6 +51,7 @@ This dataset was produced by Evan Burgess and colleagues at the University of Ut
     info_url: `${asfWebsite.home}/sar-data-sets/glacier-speed`,
     download_url: `${asfWebsite.home}/data-sets/derived-data-sets/glacier-speed/glacier-speed-download-data`,
     picture: `${pictureFolder}/glacier_speed.jpg`,
+    deprecated: true,
   },
   {
     name: 'RADARSAT_1',
@@ -71,6 +73,7 @@ Sea-ice imagery and data products are supported under NASA’s Making Earth Syst
     info_url: `${asfWebsite.home}/sar-data-sets/sea-ice-measures`,
     download_url: `${asfWebsite.home}/data-sets/derived-data-sets/seaice-measures/sea-ice-measures-data-products/`,
     picture: `${pictureFolder}/sea_ice_measures.jpeg`,
+    deprecated: true,
   },
   {
     name: 'WETLANDS_MEASURES',
