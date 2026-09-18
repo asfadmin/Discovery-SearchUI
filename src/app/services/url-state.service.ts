@@ -1226,7 +1226,9 @@ export class UrlStateService {
   };
 
   private loadJointObservation = (observationStr: string): Action => {
-    return new filterStore.setJointObservation(observationStr === 'true');
+    return new filterStore.setJointObservation(
+      models.parseJointObservation(observationStr),
+    );
   };
 
   private loadUseFrameForBaseline = (

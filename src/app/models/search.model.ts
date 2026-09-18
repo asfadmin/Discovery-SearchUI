@@ -1,4 +1,8 @@
-import { SBASOverlap, timeseriesChartItemState } from '@models';
+import {
+  JointObservation,
+  SBASOverlap,
+  timeseriesChartItemState,
+} from '@models';
 
 import { FlightDirection } from './cmr-product.model';
 import * as fromDatasets from './dataset.model';
@@ -95,7 +99,7 @@ export interface GeographicFiltersType {
   productMaturity: string[];
   sidePolarizations: fromDatasets.DatasetPolarizations;
   frameCoverage: string[];
-  jointObservation: boolean;
+  jointObservation: JointObservation | null;
   rangeBandwidth: string[];
   instrument: string[];
   groupID: null | string;

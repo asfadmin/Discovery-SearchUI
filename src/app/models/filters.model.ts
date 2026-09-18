@@ -27,6 +27,23 @@ export enum Props {
   DEPRECATED = 'Dataset pending deprecation',
 }
 
+export enum JointObservation {
+  JOINT = 'joint',
+  SINGLE = 'single',
+}
+
+export const parseJointObservation = (
+  value: unknown,
+): JointObservation | null => {
+  if (value === true || value === 'true' || value === JointObservation.JOINT) {
+    return JointObservation.JOINT;
+  }
+  if (value === JointObservation.SINGLE) {
+    return JointObservation.SINGLE;
+  }
+  return null;
+};
+
 export const apiParamNames = {
   [Props.PATH]: 'relativeOrbit',
   [Props.FRAME]: 'frame',

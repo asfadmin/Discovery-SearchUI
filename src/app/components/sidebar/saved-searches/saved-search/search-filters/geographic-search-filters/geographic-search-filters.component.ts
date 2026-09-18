@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { GeographicFiltersType, ProductType } from '@models';
+import { GeographicFiltersType, JointObservation, ProductType } from '@models';
 import { JoinPipe } from '@pipes/join.pipe';
 import { ShortDatePipe } from '@pipes/short-date.pipe';
 
@@ -14,6 +14,7 @@ import { ShortDatePipe } from '@pipes/short-date.pipe';
 })
 export class GeographicSearchFiltersComponent {
   @Input() filters: GeographicFiltersType;
+  public jointObservationType = JointObservation;
 
   public formatTypesList(fileTypes: ProductType[]): string {
     return fileTypes.map((filterType) => filterType.apiValue).join(', ');

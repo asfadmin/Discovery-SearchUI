@@ -456,7 +456,7 @@ export class setFrameCoverage implements Action {
 export class setJointObservation implements Action {
   public readonly type = FiltersActionType.SET_JOINT_OBSERVATION;
 
-  constructor(public payload: boolean) {}
+  constructor(public payload: models.JointObservation | null) {}
 }
 
 export class setRangeBandwidth implements Action {

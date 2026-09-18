@@ -8,7 +8,6 @@ import {
   MatSelectTrigger,
   MatOption,
 } from '@angular/material/select';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -36,7 +35,6 @@ import * as filtersStore from '@store/filters';
     MatOption,
 
     MatHint,
-    MatSlideToggle,
     MatTooltip,
     KeyValuePipe,
     TranslateModule,
@@ -59,7 +57,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
   groupID: string;
   frameCoverage: string[];
   rangeBandwidth: string[];
-  jointObservation: boolean;
+  jointObservation: models.JointObservation | null;
   instruments: string[];
 
   public datasetProductTypes$ = this.store$.select(
@@ -85,6 +83,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
   public totalBandwithCount = 0;
 
   public flightDirectionTypes = models.flightDirections;
+  public jointObservationType = models.JointObservation;
   public p = models.Props;
   private subs = new SubSink();
 
@@ -197,7 +196,9 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
     this.store$.dispatch(new filtersStore.setRangeBandwidth(bandwidth));
   }
 
-  public onNewJointObservation(observation) {
+  public onNewJointObservation(
+    observation: models.JointObservation | null,
+  ): void {
     this.store$.dispatch(new filtersStore.setJointObservation(observation));
   }
   public onNewInstrument(instruments) {
