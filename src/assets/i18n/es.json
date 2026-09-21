@@ -176,6 +176,7 @@
   "DATA_TYPE": "Tipo de Dato",
   "DATASET": "Conjunto de Datos",
   "DATASET_DEPRECATION_NOTICE": "Este conjunto de datos está programado para ser eliminado de las interfaces de búsqueda.",
+  "DATASET_DEPRECATION_NOTICE_TEMP": "This dataset is scheduled to be temporarily removed from searchable interfaces.",
   "DATASET_INFO": "Información del conjunto de datos",
   "DATASET_LINKED": "conjunto_de_datos_vinculado",
   "DATASETS": "Conjuntos de datos",

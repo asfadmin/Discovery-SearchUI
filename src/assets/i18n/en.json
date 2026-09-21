@@ -176,6 +176,7 @@
   "DATA_TYPE": "Data Type",
   "DATASET": "Dataset",
   "DATASET_DEPRECATION_NOTICE": "This dataset is scheduled to be removed from searchable interfaces.",
+  "DATASET_DEPRECATION_NOTICE_TEMP": "This dataset is scheduled to be temporarily removed from searchable interfaces.",
   "DATASET_INFO": "Dataset Info",
   "DATASET_LINKED": "dataset_linked",
   "DATASETS": "Datasets",
