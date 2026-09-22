@@ -158,7 +158,10 @@ export class ProductService {
     ) {
       return this.uavsarSubproductsFromScene(product);
     }
-    if (product.dataset === 'SMAP') {
+    if (
+      product.dataset === 'SMAP' &&
+      product.metadata.additionalUrls?.length > 0
+    ) {
       return this.smapSubproductFromScene(product);
     }
     if (
