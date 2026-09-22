@@ -74,5 +74,23 @@ export const uavsar = {
       ann: 'Annotation file / Metadata',
       end: 'End File',
     },
+    groups: [
+      {
+        name: 'Slant Range',
+        files: [/Slant Range/, /Single Look Complex/, /Multi-look Complex/],
+      },
+      {
+        name: 'Visualizations',
+        files: [/Browse Image PNG/, /Browse Image GIF/, /KMZ/],
+      },
+      {
+        name: 'Ground Range',
+        files: [/GRD/, /Ground Projected Complex/],
+      },
+      {
+        name: 'Metadata',
+        files: [/Annotation file/, /End File/],
+      },
+    ],
   },
 };
