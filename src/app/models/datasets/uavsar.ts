@@ -8,13 +8,19 @@ export const uavsar = {
   properties: [Props.DATE, Props.MISSION_NAME],
   apiValue: { dataset: 'UAVSAR' },
   date: { start: new Date('2008/04/28 21:10:16 UTC') },
-  infoUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/uavsar/',
+  infoUrl: 'https://www.earthdata.nasa.gov/data/instruments/uavsar',
   citationUrl:
     'https://asf.alaska.edu/data-sets/sar-data-sets/uavsar/#uavsar_cite',
   frequency: 'L-Band',
   source: {
     name: 'NASA',
     url: 'https://www.nasa.gov/',
+  },
+  collectionMap: {
+    UAVSAR_POLSAR:
+      'https://www.earthdata.nasa.gov/data/catalog/asf-uavsar-polsar-1#toc-citation',
+    UAVSAR_RPI:
+      'https://www.earthdata.nasa.gov/data/catalog/asf-uavsar-rpi-1#toc-citation',
   },
   productTypes: [
     {
