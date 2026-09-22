@@ -19,19 +19,19 @@ export const smap = {
     'https://asf.alaska.edu/data-sets/sar-data-sets/smap/smap-how-to-cite/',
   productTypes: [
     {
-      apiValue: 'L1A_R0_V3',
+      apiValue: 'L1A_RADAR_RO',
       displayName: 'L1A Radar Receive Only Product',
     },
     {
-      apiValue: 'L1A_V2',
+      apiValue: 'L1A_RADAR',
       displayName: 'L1A Radar Product',
     },
     {
-      apiValue: 'L1B_S0_V3',
+      apiValue: 'L1B_S0_LORES',
       displayName: 'L1B S0 LoRes Product',
     },
     {
-      apiValue: 'L1C_S0_V3',
+      apiValue: 'L1C_S0_HIRES',
       displayName: 'L1C S0 HiRes Product',
     },
   ],
