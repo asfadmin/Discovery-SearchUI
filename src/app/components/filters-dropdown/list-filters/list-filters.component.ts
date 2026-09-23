@@ -223,10 +223,6 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     );
   }
 
-  public isSelected(panel: ListPanel): boolean {
-    return this.selectedPanel === panel;
-  }
-
   public selectPanel(panel: ListPanel): void {
     this.selectedPanel = panel;
   }

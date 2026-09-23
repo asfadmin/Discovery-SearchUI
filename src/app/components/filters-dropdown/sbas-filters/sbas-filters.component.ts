@@ -80,10 +80,6 @@ export class SbasFiltersComponent {
   customCollapsedHeight = '30px';
   customExpandedHeight = '30px';
 
-  public isSelected(panel: FilterPanel): boolean {
-    return this.selectedPanel === panel;
-  }
-
   public selectPanel(panel: FilterPanel): void {
     this.selectedPanel = panel;
   }

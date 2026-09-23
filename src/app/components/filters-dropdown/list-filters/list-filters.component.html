@@ -7,7 +7,7 @@
             [expanded]="defaultPanelOpenState"
             [disabled]="panelIsDisabled"
             (click)="selectPanel(panels.SEARCH)"
-            [class.raised-section]="isSelected(panels.SEARCH)"
+            [class.raised-section]="selectedPanel === panels.SEARCH"
           >
             <mat-expansion-panel-header
               [collapsedHeight]="customCollapsedHeight"
@@ -26,7 +26,7 @@
           [expanded]="defaultPanelOpenState"
           [disabled]="panelIsDisabled"
           (click)="selectPanel(panels.LIST)"
-          [class.raised-section]="isSelected(panels.LIST)"
+          [class.raised-section]="selectedPanel === panels.LIST"
         >
           <mat-expansion-panel-header
             [collapsedHeight]="customCollapsedHeight"

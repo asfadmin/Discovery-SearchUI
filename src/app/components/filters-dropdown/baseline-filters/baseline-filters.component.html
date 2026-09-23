@@ -4,7 +4,7 @@
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
       (click)="selectPanel(panels.SEARCH)"
-      [class.raised-section]="isSelected(panels.SEARCH)"
+      [class.raised-section]="selectedPanel === panels.SEARCH"
     >
       <mat-expansion-panel-header
         [collapsedHeight]="customCollapsedHeight"
@@ -25,7 +25,7 @@
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
       (click)="selectPanel(panels.MASTER)"
-      [class.raised-section]="isSelected(panels.MASTER)"
+      [class.raised-section]="selectedPanel === panels.MASTER"
     >
       <mat-expansion-panel-header
         [collapsedHeight]="customCollapsedHeight"
@@ -75,7 +75,7 @@
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
       (click)="selectPanel(panels.DATE)"
-      [class.raised-section]="isSelected(panels.DATE)"
+      [class.raised-section]="selectedPanel === panels.DATE"
     >
       <mat-expansion-panel-header
         [collapsedHeight]="customCollapsedHeight"
@@ -104,7 +104,7 @@
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
       (click)="selectPanel(panels.BASELINE)"
-      [class.raised-section]="isSelected(panels.BASELINE)"
+      [class.raised-section]="selectedPanel === panels.BASELINE"
     >
       <mat-expansion-panel-header
         [collapsedHeight]="customCollapsedHeight"

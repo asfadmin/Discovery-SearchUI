@@ -3,7 +3,7 @@
     [expanded]="defaultPanelOpenState"
     [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.SEARCH)"
-    [class.raised-section]="isSelected(panels.SEARCH)"
+    [class.raised-section]="selectedPanel === panels.SEARCH"
   >
     <mat-expansion-panel-header
       [collapsedHeight]="customCollapsedHeight"
@@ -31,7 +31,7 @@
     [expanded]="defaultPanelOpenState"
     [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.DATE_FILTER)"
-    [class.raised-section]="isSelected(panels.DATE_FILTER)"
+    [class.raised-section]="selectedPanel === panels.DATE_FILTER"
   >
     <mat-expansion-panel-header
       [collapsedHeight]="customCollapsedHeight"
@@ -51,7 +51,7 @@
     [expanded]="defaultPanelOpenState"
     [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.PROJECT_NAME)"
-    [class.raised-section]="isSelected(panels.PROJECT_NAME)"
+    [class.raised-section]="selectedPanel === panels.PROJECT_NAME"
   >
     <mat-expansion-panel-header
       [collapsedHeight]="customCollapsedHeight"

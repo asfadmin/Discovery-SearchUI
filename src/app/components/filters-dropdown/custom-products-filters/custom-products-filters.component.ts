@@ -63,10 +63,6 @@ export class CustomProductsFiltersComponent {
     hyp3Store.getHyp3JobIds,
   );
 
-  public isSelected(panel: FilterPanel): boolean {
-    return this.selectedPanel === panel;
-  }
-
   public selectPanel(panel: FilterPanel): void {
     this.selectedPanel = panel;
   }
