@@ -94,7 +94,7 @@ export class SceneGroupFilesComponent {
     for (const group of this.groups() ?? []) {
       if (group !== 'default' && byGroup[group].length > 0) {
         fileGroups.push({
-          labelKey: 'FILE_GROUP_' + group.toUpperCase(),
+          labelKey: group,
           products: byGroup[group],
           isRelatedData: false,
         });
