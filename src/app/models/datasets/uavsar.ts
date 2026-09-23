@@ -8,13 +8,19 @@ export const uavsar = {
   properties: [Props.DATE, Props.MISSION_NAME],
   apiValue: { dataset: 'UAVSAR' },
   date: { start: new Date('2008/04/28 21:10:16 UTC') },
-  infoUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/uavsar/',
+  infoUrl: 'https://www.earthdata.nasa.gov/data/instruments/uavsar',
   citationUrl:
     'https://asf.alaska.edu/data-sets/sar-data-sets/uavsar/#uavsar_cite',
   frequency: 'L-Band',
   source: {
     name: 'NASA',
     url: 'https://www.nasa.gov/',
+  },
+  collectionMap: {
+    UAVSAR_POLSAR:
+      'https://www.earthdata.nasa.gov/data/catalog/asf-uavsar-polsar-1#toc-citation',
+    UAVSAR_RPI:
+      'https://www.earthdata.nasa.gov/data/catalog/asf-uavsar-rpi-1#toc-citation',
   },
   productTypes: [
     {
@@ -74,5 +80,23 @@ export const uavsar = {
       ann: 'Annotation file / Metadata',
       end: 'End File',
     },
+    groups: [
+      {
+        name: 'FILE_GROUP_SLANT_RANGE',
+        files: [/Slant Range/, /Single Look Complex/, /Multi-look Complex/],
+      },
+      {
+        name: 'FILE_GROUP_VISUALIZATIONS',
+        files: [/Browse Image PNG/, /Browse Image GIF/, /KMZ/],
+      },
+      {
+        name: 'FILE_GROUP_GROUND_RANGE',
+        files: [/GRD/, /Ground Projected Complex/],
+      },
+      {
+        name: 'FILE_GROUP_METADATA',
+        files: [/Annotation file/, /End File/],
+      },
+    ],
   },
 };

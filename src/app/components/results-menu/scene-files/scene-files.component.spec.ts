@@ -168,24 +168,26 @@ describe('SceneFilesComponent file grouping', () => {
 
     expect(component.groups()).toEqual([
       'default',
-      'Metadata',
-      'Visualizations',
-      'Documentation',
+      'FILE_GROUP_METADATA',
+      'FILE_GROUP_VISUALIZATIONS',
+      'FILE_GROUP_DOCUMENTATION',
     ]);
 
     const displaysIn = (group: string) =>
       component.selectedSceneGroups()[group].map((p) => p.productTypeDisplay);
 
     expect(displaysIn('default')).toEqual(['L2 GSLC HDF5', 'Bin File']);
-    expect(displaysIn('Metadata')).toEqual([
+    expect(displaysIn('FILE_GROUP_METADATA')).toEqual([
       'Runconfig YAML',
       'ISO Metadata XML',
       'QA Summary CSV',
       'QA Report PDF',
       'QA Statistics HDF5',
     ]);
-    expect(displaysIn('Visualizations')).toEqual(['Browse Image PNG']);
-    expect(displaysIn('Documentation')).toEqual(['Log File']);
+    expect(displaysIn('FILE_GROUP_VISUALIZATIONS')).toEqual([
+      'Browse Image PNG',
+    ]);
+    expect(displaysIn('FILE_GROUP_DOCUMENTATION')).toEqual(['Log File']);
   });
 
   it('renders ungrouped files in an expanded Data panel and a panel per non-empty group', async () => {

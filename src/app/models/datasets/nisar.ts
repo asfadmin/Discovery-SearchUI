@@ -173,7 +173,7 @@ export const nisar = {
     },
     groups: [
       {
-        name: 'Metadata',
+        name: 'FILE_GROUP_METADATA',
         files: [
           /Runconfig YAML/,
           /ISO Metadata XML/,
@@ -183,11 +183,11 @@ export const nisar = {
         ],
       },
       {
-        name: 'Visualizations',
+        name: 'FILE_GROUP_VISUALIZATIONS',
         files: [/Browse Image PNG/, /.*PNG/, /Footprint KML/],
       },
       {
-        name: 'Documentation',
+        name: 'FILE_GROUP_DOCUMENTATION',
         files: [/Log File/],
       },
     ],

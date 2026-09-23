@@ -126,7 +126,7 @@ describe('ProductService', () => {
         .withDatasetFull(models.nisar)
         .build();
       expect(service.productTypeToGroup(product, 'Runconfig YAML')).toBe(
-        'Metadata',
+        'FILE_GROUP_METADATA',
       );
     });
 
@@ -144,7 +144,7 @@ describe('ProductService', () => {
         .withDatasetFull(models.nisar)
         .build();
       expect(service.productTypeToGroup(product, 'Browse Image PNG')).toBe(
-        'Visualizations',
+        'FILE_GROUP_VISUALIZATIONS',
       );
     });
 
@@ -154,7 +154,7 @@ describe('ProductService', () => {
         .withDatasetFull(models.nisar)
         .build();
       expect(service.productTypeToGroup(product, 'Log File')).toBe(
-        'Documentation',
+        'FILE_GROUP_DOCUMENTATION',
       );
     });
 
@@ -199,7 +199,7 @@ describe('ProductService', () => {
         .build();
 
       expect(service.productTypeToGroup(product, 'Really cool test PNG')).toBe(
-        'Visualizations',
+        'FILE_GROUP_VISUALIZATIONS',
       );
     });
   });
