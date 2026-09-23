@@ -153,7 +153,7 @@ export class ProductService {
       return this.seasatSubproductsFromScene(product);
     }
     if (product.dataset === 'ALOS') {
-        return this.alosSubproductsFromScene(product);
+      return this.alosSubproductsFromScene(product);
     }
     if (
       models.tropo.productTypes
@@ -573,21 +573,36 @@ export class ProductService {
     } as models.CMRProduct;
   }
 
+  public getAlosFileExtension(url: string) {
+    return url.split('.').pop() ?? '';
+  }
+  private getAlosProductLevel(url: string) {
+    const productLevelRegex = /.*-((?:H|L)1\.\d.*)(\.zip)/;
+
+    const productLevel = url.split(productLevelRegex);
+
+    if (productLevel.length > 1) {
+      return `${productLevel[1]} `; // L1.5, .zip
+    }
+
+    const rtcRegex = /.*(RT(?:1|2))(\.zip)/;
+    const rtc = url.split(rtcRegex);
+    if (rtc.length > 1) {
+      return `${rtc[1]} `;
+    }
+  }
+
   private alosSubproductsFromScene(product: models.CMRProduct) {
+    if (!product.metadata.collectionName) {
+      return [];
+    }
     const products = [];
-    let file_extension = this.urlToProductType(
-      product.downloadUrl,
-      models.alos.productTypeDisplays.displays,
-    );
-    product.productTypeDisplay =
-      models.alos.productTypeDisplays.displays[file_extension];
+    let file_extension = this.getAlosFileExtension(product.downloadUrl);
+    let productLevel = this.getAlosProductLevel(product.downloadUrl);
+    product.productTypeDisplay = `${productLevel}${models.alos.productTypeDisplays.displays[file_extension]}`;
     const fileID = product.downloadUrl.split('/').slice(-1)[0];
-    product.bytes = product.metadata.fileSizes[fileID].bytes;
-    const thumbnail_index = product.browses.findIndex((url) =>
-      url.toLowerCase().includes('thumbnail'),
-    );
-    if (thumbnail_index !== -1) {
-      product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
+    if (product.metadata.fileSizes instanceof Object) {
+      product.bytes = product.metadata.fileSizes[fileID].bytes;
     }
     product.browses = product.browses.filter((url) => !url.includes('low-res'));
 
@@ -608,18 +623,14 @@ export class ProductService {
       ),
       ...product.browses,
     ]) {
-        if (p === '/assets/no-browse.png') {
-            continue
-        }
-      file_extension = this.urlToProductType(
-        p,
-        models.alos.productTypeDisplays.displays,
-      );
+      if (p === '/assets/no-browse.png') {
+        continue;
+      }
+      file_extension = this.getAlosFileExtension(p);
+      productLevel = this.getAlosProductLevel(p) ?? '';
+      const display = `${productLevel}${models.alos.productTypeDisplays.displays[file_extension.toLowerCase()]}`;
 
-      const productTypeDisplay =
-        models.alos.productTypeDisplays.displays[
-          file_extension.toLowerCase()
-        ] ?? 'Missing Display';
+      const productTypeDisplay = display ?? 'Missing Display';
       if (productTypeDisplay === 'Missing Display') {
         console.log(
           `Missing product type display for file extension "${file_extension}"`,
