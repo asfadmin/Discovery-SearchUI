@@ -190,9 +190,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public productsByGroup = computed<ProductGroup[]>(() => {
     const groupedFiles = this.allProducts().reduce(
       (groupedFiles, file) => {
-        const groupKey = file.productTypeGroup
-          ? `FILE_GROUP_${file.productTypeGroup.toUpperCase()}`
-          : 'SCIENCE_DATA';
+        const groupKey = file.productTypeGroup ?? 'SCIENCE_DATA';
 
         if (!groupedFiles[groupKey]) {
           groupedFiles[groupKey] = [];
