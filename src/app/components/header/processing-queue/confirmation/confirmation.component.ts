@@ -7,6 +7,8 @@ import {
   Pipe,
   PipeTransform,
   Signal,
+  signal,
+  computed,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
@@ -80,7 +82,7 @@ export class ConfirmationComponent implements OnInit {
   data = inject<models.ConfirmationDialogData>(MAT_DIALOG_DATA);
 
   public allJobs: models.QueuedHyp3Job[] = [];
-  public jobTypesWithQueued: models.JobTypesWithQueued[] = [];
+  public jobTypesWithQueued = signal<models.JobTypesWithQueued[]>([]);
   public processingOptions: models.Hyp3ProcessingOptions;
   public projectName: Signal<string> = this.store$.selectSignal(
     hyp3Store.getProcessingProjectName,
@@ -90,11 +92,25 @@ export class ConfirmationComponent implements OnInit {
   public isQueueSubmitProcessing = false;
   public progress = null;
 
+  public amountSelected = computed(() => {
+    return this.jobTypesWithQueued()
+      .filter((jobType) => jobType.selected)
+      .map((jobType) => jobType.jobs.length)
+      .reduce((a, b) => a + b, 0);
+  });
+
+  public creditsSelected = computed(() => {
+    return this.jobTypesWithQueued()
+      .filter((jobType) => jobType.selected)
+      .map((jobType) => jobType.creditTotal)
+      .reduce((a, b) => a + b, 0);
+  });
+
   ngOnInit(): void {
-    this.jobTypesWithQueued = this.data.jobTypesWithQueued;
+    this.jobTypesWithQueued.set(this.data.jobTypesWithQueued);
     this.processingOptions = this.data.processingOptions;
     this.validateOnly = this.data.validateOnly;
-    this.allJobs = this.jobTypesWithQueued.reduce((total, jobs) => {
+    this.allJobs = this.jobTypesWithQueued().reduce((total, jobs) => {
       total = [...total, ...jobs.jobs];
 
       return total;
@@ -103,32 +119,20 @@ export class ConfirmationComponent implements OnInit {
   }
 
   public onToggleJobType(tabQueue: models.JobTypesWithQueued): void {
-    this.jobTypesWithQueued = this.jobTypesWithQueued.map((tab) => {
-      if (tab.jobType.id === tabQueue.jobType.id) {
-        return {
-          jobType: tab.jobType,
-          selected: !tab.selected,
-          jobs: tab.jobs,
-          creditTotal: tab.creditTotal,
-        };
-      } else {
-        return tab;
-      }
-    });
-  }
-
-  public amountSelected(jobTypes: models.JobTypesWithQueued[]): number {
-    return jobTypes
-      .filter((jobType) => jobType.selected)
-      .map((jobType) => jobType.jobs.length)
-      .reduce((a, b) => a + b, 0);
-  }
-
-  public creditsSelected(jobTypes: models.JobTypesWithQueued[]): number {
-    return jobTypes
-      .filter((jobType) => jobType.selected)
-      .map((jobType) => jobType.creditTotal)
-      .reduce((a, b) => a + b, 0);
+    this.jobTypesWithQueued.set(
+      this.jobTypesWithQueued().map((tab) => {
+        if (tab.jobType.id === tabQueue.jobType.id) {
+          return {
+            jobType: tab.jobType,
+            selected: !tab.selected,
+            jobs: tab.jobs,
+            creditTotal: tab.creditTotal,
+          };
+        } else {
+          return tab;
+        }
+      }),
+    );
   }
 
   public onCancelQueue(): void {
@@ -136,7 +140,7 @@ export class ConfirmationComponent implements OnInit {
   }
 
   public onSubmitQueue(): void {
-    const jobTypesWithQueued = this.jobTypesWithQueued;
+    const jobTypesWithQueued = this.jobTypesWithQueued();
 
     const hyp3JobsBatch = this.hyp3JobService.formatJobs(jobTypesWithQueued, {
       projectName: this.projectName(),
@@ -222,7 +226,7 @@ export class ConfirmationComponent implements OnInit {
               this.store$.dispatch(new searchStore.SetSearchType(searchType));
             });
 
-          this.dialogRef.close(this.jobTypesWithQueued);
+          this.dialogRef.close(this.jobTypesWithQueued());
         }),
       )
       .subscribe((resp: any) => {
