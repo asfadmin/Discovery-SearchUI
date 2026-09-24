@@ -5,7 +5,7 @@ export const uavsar = {
   name: 'UAVSAR',
   subName: '',
   beta: false,
-  properties: [Props.DATE, Props.MISSION_NAME],
+  properties: [Props.DATE, Props.MISSION_NAME, Props.SITE_DESCRIPTION],
   apiValue: { dataset: 'UAVSAR' },
   date: { start: new Date('2008/04/28 21:10:16 UTC') },
   infoUrl: 'https://www.earthdata.nasa.gov/data/instruments/uavsar',

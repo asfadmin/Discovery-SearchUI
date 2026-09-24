@@ -396,10 +396,16 @@
     }
     @if (dataset() | isRelevant: p.MISSION_NAME) {
       <li class="detail-item-margin">
-        <span class="v-mid">
-          <b>{{ 'CAMPAIGN_NAME' | translate }} </b> •
-          {{ scene().metadata.missionName }}
-        </span>
+        <span class="v-mid"
+          ><b>
+            @if (dataset() | isRelevant: p.SITE_DESCRIPTION) {
+              {{ 'SITE_DESCRIPTION' | translate }}
+            } @else {
+              {{ 'CAMPAIGN_NAME' | translate }}
+            }
+          </b>
+          • {{ scene().metadata.missionName }}</span
+        >
         @if (isGeoSearch()) {
           <mat-icon
             [matMenuTriggerFor]="addMissionMenu"
@@ -410,7 +416,11 @@
         }
         <mat-menu #addMissionMenu="matMenu">
           <button (click)="addMission()" mat-menu-item>
-            {{ 'SET_CAMPAIGN_NAME' | translate }}
+            @if (dataset() | isRelevant: p.SITE_DESCRIPTION) {
+              {{ 'SET_SITE_DESCRIPTION' | translate }}
+            } @else {
+              {{ 'SET_CAMPAIGN_NAME' | translate }}
+            }
           </button>
         </mat-menu>
       </li>
