@@ -171,8 +171,9 @@ export class MapEffects {
             );
             if (latlon_browse) {
               url = latlon_browse;
+            } else if (selectedProduct.dataset === models.datasets.NISAR.id) {
+              return;
             }
-
             // for OPERA-S1 geotiffs
             // TODO: Wait for https://github.com/openlayers/openlayers/pull/15402
             // if (loggedIn && selectedProduct.id.startsWith('OPERA') && selectedProduct.downloadUrl.endsWith('.tif')) {
