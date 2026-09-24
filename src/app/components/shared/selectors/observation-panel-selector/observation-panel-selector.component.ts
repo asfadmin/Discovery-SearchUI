@@ -57,7 +57,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
   groupID: string;
   frameCoverage: string[];
   rangeBandwidth: string[];
-  jointObservation: models.JointObservation | null;
+  jointObservation: models.JointObservation[];
   instruments: string[];
 
   public datasetProductTypes$ = this.store$.select(
@@ -196,10 +196,8 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
     this.store$.dispatch(new filtersStore.setRangeBandwidth(bandwidth));
   }
 
-  public onNewJointObservation(
-    observation: models.JointObservation | null,
-  ): void {
-    this.store$.dispatch(new filtersStore.setJointObservation(observation));
+  public onNewJointObservation(observations: models.JointObservation[]): void {
+    this.store$.dispatch(new filtersStore.setJointObservation(observations));
   }
   public onNewInstrument(instruments) {
     this.store$.dispatch(new filtersStore.setIntstrument(instruments));

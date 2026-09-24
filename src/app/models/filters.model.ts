@@ -28,20 +28,20 @@ export enum Props {
 }
 
 export enum JointObservation {
-  JOINT = 'joint',
-  SINGLE = 'single',
+  JOINT = 'Joint',
+  SINGLE = 'Single',
 }
 
-export const parseJointObservation = (
-  value: unknown,
-): JointObservation | null => {
-  if (value === true || value === 'true' || value === JointObservation.JOINT) {
-    return JointObservation.JOINT;
+export const parseJointObservation = (value: unknown): JointObservation[] => {
+  if (value === true || value === 'true') {
+    return [JointObservation.JOINT];
   }
-  if (value === JointObservation.SINGLE) {
-    return JointObservation.SINGLE;
-  }
-  return null;
+  const values = (
+    Array.isArray(value) ? value : String(value ?? '').split(',')
+  ).map((observation) => String(observation).toLowerCase());
+  return Object.values(JointObservation).filter((observation) =>
+    values.includes(observation.toLowerCase()),
+  );
 };
 
 export const apiParamNames = {

@@ -703,9 +703,10 @@ export class UrlStateService {
       },
       {
         name: 'jointObservation',
-        source: this.store$
-          .select(filterStore.getJointObservation)
-          .pipe(map((jointObservation) => ({ jointObservation }))),
+        source: this.store$.select(filterStore.getJointObservation).pipe(
+          map((observations) => observations.join(',')),
+          map((jointObservation) => ({ jointObservation })),
+        ),
         loader: this.loadJointObservation,
       },
       {

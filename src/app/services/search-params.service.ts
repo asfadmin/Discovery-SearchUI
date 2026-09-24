@@ -282,15 +282,15 @@ export class SearchParamsService {
   private jointObservation$ = this.store$
     .select(filterStore.getJointObservation)
     .pipe(
-      map((jointObservation) => {
-        switch (jointObservation) {
-          case models.JointObservation.JOINT:
-            return 'true';
-          case models.JointObservation.SINGLE:
-            return 'false';
-          default:
-            return null;
+      map((observations) => {
+        const base = Array.from(new Set(observations));
+        if (base.length !== 1) {
+          return null;
         }
+        if (base[0] === models.JointObservation.JOINT) {
+          return 'true';
+        }
+        return 'false';
       }),
       map((jointObservation) => ({ jointobservation: jointObservation })),
     );

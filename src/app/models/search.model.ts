@@ -99,7 +99,7 @@ export interface GeographicFiltersType {
   productMaturity: string[];
   sidePolarizations: fromDatasets.DatasetPolarizations;
   frameCoverage: string[];
-  jointObservation: JointObservation | null;
+  jointObservation: JointObservation[];
   rangeBandwidth: string[];
   instrument: string[];
   groupID: null | string;

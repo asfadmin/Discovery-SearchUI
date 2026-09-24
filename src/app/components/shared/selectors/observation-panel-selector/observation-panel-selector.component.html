@@ -205,10 +205,8 @@
       [(ngModel)]="jointObservation"
       [matTooltip]="'JOINT_OBSERVATION_TOOLTIP' | translate"
       matTooltipPosition="right"
+      multiple
     >
-      <mat-option [value]="null">
-        {{ 'ALL_OBSERVATIONS' | translate }}
-      </mat-option>
       <mat-option [value]="jointObservationType.JOINT">
         {{ 'JOINT_OBSERVATION' | translate }}
       </mat-option>
@@ -216,5 +214,14 @@
         {{ 'SINGLE_OBSERVATION' | translate }}
       </mat-option>
     </mat-select>
+
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.JOINT_OBSERVATION) {
+        {{ jointObservation?.length || 0 }}/2
+        {{ 'OBSERVATIONS_SELECTED' | translate }}
+      } @else {
+        {{ 'NO_OBSERVATIONS_TO_SELECT' | translate }}
+      }
+    </mat-hint>
   </mat-form-field>
 </div>
