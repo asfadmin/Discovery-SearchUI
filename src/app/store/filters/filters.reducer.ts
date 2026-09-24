@@ -49,7 +49,7 @@ export interface FiltersState {
   fullBurstIDs: null | string[];
 
   frameCoverage: string[];
-  jointObservation: boolean;
+  jointObservation: models.JointObservation[];
   rangeBandwidth: string[];
   instrument: string[];
   scienceProduct: string[];
@@ -129,7 +129,7 @@ export const initState: FiltersState = {
   useCalibrationData: false,
 
   frameCoverage: [],
-  jointObservation: false,
+  jointObservation: [],
   rangeBandwidth: [],
   instrument: [],
   scienceProduct: [],
@@ -170,7 +170,7 @@ export function filtersReducer(
         operaBurstIDs: [],
 
         frameCoverage: [],
-        jointObservation: null,
+        jointObservation: [],
         rangeBandwidth: [],
         instrument: [],
         scienceProduct: [],
@@ -457,7 +457,7 @@ export function filtersReducer(
         shortNames: [],
         frameCoverage: [],
         sidePolarizations: [],
-        jointObservation: false,
+        jointObservation: [],
         granuleList: null,
         instrument: [],
         rangeBandwidth: [],
@@ -743,7 +743,9 @@ export function filtersReducer(
           granuleList: filters.granuleList || null,
           sidePolarizations: filters.sidePolarizations || [],
           frameCoverage: filters.frameCoverage || [],
-          jointObservation: filters.jointObservation,
+          jointObservation: models.parseJointObservation(
+            filters.jointObservation,
+          ),
           rangeBandwidth: filters.rangeBandwidth || [],
           instrument: filters.instrument || [],
           groupID: filters.groupID,

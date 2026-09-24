@@ -703,9 +703,10 @@ export class UrlStateService {
       },
       {
         name: 'jointObservation',
-        source: this.store$
-          .select(filterStore.getJointObservation)
-          .pipe(map((jointObservation) => ({ jointObservation }))),
+        source: this.store$.select(filterStore.getJointObservation).pipe(
+          map((observations) => observations.join(',')),
+          map((jointObservation) => ({ jointObservation })),
+        ),
         loader: this.loadJointObservation,
       },
       {
@@ -1226,7 +1227,9 @@ export class UrlStateService {
   };
 
   private loadJointObservation = (observationStr: string): Action => {
-    return new filterStore.setJointObservation(observationStr === 'true');
+    return new filterStore.setJointObservation(
+      models.parseJointObservation(observationStr),
+    );
   };
 
   private loadUseFrameForBaseline = (

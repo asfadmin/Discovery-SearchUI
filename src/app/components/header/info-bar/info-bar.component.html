@@ -104,10 +104,9 @@
           <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ rangeBandwidth() }}
         </span>
       }
-      @if (jointObservation()) {
+      @if (jointObservation().length) {
         <span>
-          <b>{{ 'DATA_TYPE' | translate }}:</b>
-          {{ 'JOINT_OBSERVATION_ONLY' | translate }}
+          <b>{{ 'DATA_TYPE' | translate }}:</b> {{ jointObservation() }}
         </span>
       }
       @if (dataset().id === 'NISAR') {
