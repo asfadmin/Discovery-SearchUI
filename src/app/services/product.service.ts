@@ -152,6 +152,9 @@ export class ProductService {
     if (product.dataset === 'SEASAT 1') {
       return this.seasatSubproductsFromScene(product);
     }
+    if (product.dataset === 'ALOS') {
+      return this.alosSubproductsFromScene(product);
+    }
     if (
       product.dataset === 'UAVSAR' &&
       product.metadata.additionalUrls?.length > 0
@@ -751,6 +754,106 @@ export class ProductService {
     } as models.CMRProduct;
   }
 
+  public getAlosFileExtension(url: string) {
+    return url.split('.').pop() ?? '';
+  }
+  private getAlosProductLevel(url: string) {
+    const productLevelRegex = /.*-((?:H|L)1\.\d.*)(\.zip)/;
+
+    const productLevel = url.split(productLevelRegex);
+
+    if (productLevel.length > 1) {
+      return `${productLevel[1]} `; // L1.5, .zip
+    }
+
+    const rtcRegex = /.*(RT(?:1|2))(\.zip)/;
+    const rtc = url.split(rtcRegex);
+    if (rtc.length > 1) {
+      return `${rtc[1]} `;
+    }
+  }
+
+  private alosSubproductsFromScene(product: models.CMRProduct) {
+    if (!product.metadata.collectionName) {
+      return [];
+    }
+    const products = [];
+    let file_extension = this.getAlosFileExtension(product.downloadUrl);
+    let productLevel = this.getAlosProductLevel(product.downloadUrl);
+    product.productTypeDisplay = `${productLevel}${models.alos.productTypeDisplays.displays[file_extension]}`;
+    const fileID = product.downloadUrl.split('/').slice(-1)[0];
+    if (product.metadata.fileSizes instanceof Object) {
+      product.bytes = product.metadata.fileSizes[fileID].bytes;
+    }
+    product.browses = product.browses.filter((url) => !url.includes('low-res'));
+
+    const s3UrlsByProductID = product.metadata.s3Urls.reduce((prev, curr) => {
+      const subproductFileID = curr.split('/').at(-1);
+
+      prev[subproductFileID] = curr;
+
+      return prev;
+    }, {});
+
+    product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
+
+    const browses = [];
+    for (const p of [
+      ...product.metadata.additionalUrls.filter(
+        (url) => url !== product.downloadUrl,
+      ),
+      ...product.browses,
+    ]) {
+      if (p === '/assets/no-browse.png') {
+        continue;
+      }
+      file_extension = this.getAlosFileExtension(p);
+      productLevel = this.getAlosProductLevel(p) ?? '';
+      const display = `${productLevel}${models.alos.productTypeDisplays.displays[file_extension.toLowerCase()]}`;
+
+      const productTypeDisplay = display ?? 'Missing Display';
+      if (productTypeDisplay === 'Missing Display') {
+        console.log(
+          `Missing product type display for file extension "${file_extension}"`,
+        );
+      }
+
+      if (['Metadata IN'].includes(productTypeDisplay)) {
+        continue;
+      }
+
+      const fileID = p.split('/').slice(-1)[0];
+      const s3Url = s3UrlsByProductID[fileID] ?? null;
+      const fileSize = product.metadata.fileSizes[fileID]?.bytes ?? 0;
+      const subproduct = this.createSubproductForScene(
+        product,
+        p,
+        s3Url,
+        file_extension,
+        productTypeDisplay,
+        fileSize,
+        browses,
+      );
+
+      products.push(subproduct);
+    }
+
+    return products.sort((a, b) => {
+      if (
+        a.productTypeDisplay.includes('Metadata') ||
+        a.productTypeDisplay.includes('QA')
+      ) {
+        return 1;
+      } else if (
+        b.productTypeDisplay.includes('Metadata') ||
+        b.productTypeDisplay.includes('QA')
+      ) {
+        return -1;
+      }
+
+      return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
+    });
+  }
   private nisarSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
     let temp = product.downloadUrl.split('.');
