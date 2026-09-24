@@ -7,6 +7,7 @@ export enum Props {
   POLARIZATION = 'Polarization',
   ABSOLUTE_ORBIT = 'Absolute Orbit',
   MISSION_NAME = 'Mission Name',
+  SITE_DESCRIPTION = 'Site Description',
   FLIGHT_LINE = 'Flight Line',
   OFF_NADIR_ANGLE = 'Off Nadir Angle',
   FARADAY_ROTATION = 'Faraday Rotation',
