@@ -396,14 +396,16 @@
     }
     @if (dataset() | isRelevant: p.MISSION_NAME) {
       <li class="detail-item-margin">
-        <span class="v-mid">
-          @if (dataset() | isRelevant: p.SITE_DESCRIPTION) {
-            <b>{{ 'SITE_DESCRIPTION' | translate }} </b> •
-          } @else {
-            <b>{{ 'CAMPAIGN_NAME' | translate }} </b> •
-          }
-          {{ scene().metadata.missionName }}
-        </span>
+        <span class="v-mid"
+          ><b>
+            @if (dataset() | isRelevant: p.SITE_DESCRIPTION) {
+              {{ 'SITE_DESCRIPTION' | translate }}
+            } @else {
+              {{ 'CAMPAIGN_NAME' | translate }}
+            }
+          </b>
+          • {{ scene().metadata.missionName }}</span
+        >
         @if (isGeoSearch()) {
           <mat-icon
             [matMenuTriggerFor]="addMissionMenu"
