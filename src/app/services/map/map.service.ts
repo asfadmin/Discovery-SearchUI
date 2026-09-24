@@ -115,7 +115,7 @@ export class MapService implements OnDestroy {
   };
 
   private loadingBrowseSceneID = '';
-  
+
   constructor() {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
@@ -757,7 +757,7 @@ export class MapService implements OnDestroy {
       c.width = 5000;
       c.height = 5000;
       c.setAttribute('willReadFrequently', 'true');
-      const ctx = c.getContext('2d');
+      const ctx = c.getContext('2d', { willReadFrequently: true });
 
       const base_image = new Image();
       base_image.crossOrigin = 'Anonymous';
@@ -765,7 +765,9 @@ export class MapService implements OnDestroy {
 
       base_image.onload = () => {
         ctx.drawImage(base_image, 0, 0);
-        const copy = document.createElement('canvas').getContext('2d'),
+        const copy = document
+            .createElement('canvas')
+            .getContext('2d', { willReadFrequently: true }),
           pixels = ctx.getImageData(0, 0, c.width, c.height),
           l = pixels.data.length,
           bound = {
