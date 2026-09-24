@@ -114,6 +114,8 @@ export class MapService implements OnDestroy {
     units: string;
   };
 
+  private loadingBrowseSceneID = '';
+  
   constructor() {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
@@ -754,6 +756,7 @@ export class MapService implements OnDestroy {
       const c = document.createElement('canvas');
       c.width = 5000;
       c.height = 5000;
+      c.setAttribute('willReadFrequently', 'true');
       const ctx = c.getContext('2d');
 
       const base_image = new Image();
@@ -834,6 +837,7 @@ export class MapService implements OnDestroy {
     scene: models.CMRProduct = null,
   ) {
     this.setLayerText('Approximate Placement Only');
+    this.loadingBrowseSceneID = scene.id;
     if (this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
@@ -841,6 +845,9 @@ export class MapService implements OnDestroy {
     if (!url.endsWith('.tif') && !url.includes('legend')) {
       if (url.includes('OPERA') || url.includes('NISAR')) {
         this.trimImage(url).then((imageBlob: Blob) => {
+          if (scene.id !== this.loadingBrowseSceneID) {
+            return;
+          }
           const url = URL.createObjectURL(imageBlob);
           URL.revokeObjectURL(this.localBrowseImageURL);
           this.localBrowseImageURL = url;

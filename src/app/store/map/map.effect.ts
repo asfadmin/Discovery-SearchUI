@@ -172,6 +172,7 @@ export class MapEffects {
             if (latlon_browse) {
               url = latlon_browse;
             } else if (selectedProduct.dataset === models.datasets.NISAR.id) {
+              this.store$.dispatch(new ClearBrowseOverlays());
               return;
             }
             // for OPERA-S1 geotiffs
@@ -185,6 +186,8 @@ export class MapEffects {
               selectedProduct.metadata.polygon,
               selectedProduct,
             );
+          } else {
+            this.store$.dispatch(new ClearBrowseOverlays());
           }
         }),
       ),
