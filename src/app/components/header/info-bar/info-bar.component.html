@@ -142,7 +142,12 @@
       }
       @if (mission()) {
         <span>
-          <b>{{ 'CAMPAIGN' | translate }}:</b> {{ mission() }}
+          @if (dataset() | isRelevant: p.SITE_DESCRIPTION) {
+            <b>{{ 'SITE_DESCRIPTION' | translate }}:</b>
+          } @else {
+            <b>{{ 'CAMPAIGN' | translate }}:</b>
+          }
+          {{ mission() }}
         </span>
       }
       @if (searchType() !== searchTypes.DISPLACEMENT) {

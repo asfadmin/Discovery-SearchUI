@@ -1,8 +1,9 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { GeographicFiltersType, ProductType } from '@models';
+import { datasets, GeographicFiltersType, ProductType, Props } from '@models';
 import { JoinPipe } from '@pipes/join.pipe';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
 import { ShortDatePipe } from '@pipes/short-date.pipe';
 
 @Component({
@@ -10,10 +11,12 @@ import { ShortDatePipe } from '@pipes/short-date.pipe';
   templateUrl: './geographic-search-filters.component.html',
   styleUrls: ['./geographic-search-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ShortDatePipe, JoinPipe, TranslateModule],
+  imports: [ShortDatePipe, JoinPipe, IsRelevantPipe, TranslateModule],
 })
 export class GeographicSearchFiltersComponent {
   @Input() filters: GeographicFiltersType;
+  public datasets = datasets;
+  public p = Props;
 
   public formatTypesList(fileTypes: ProductType[]): string {
     return fileTypes.map((filterType) => filterType.apiValue).join(', ');

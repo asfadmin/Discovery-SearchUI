@@ -69,12 +69,14 @@
     }
     @if (filters.selectedMission) {
       <div>
-        <b>{{ 'CAMPAIGN' | translate }}:</b> {{ filters.selectedMission }}
-      </div>
-    }
-    @if (filters.selectedMission) {
-      <div>
-        <b>{{ 'CAMPAIGN' | translate }}:</b> {{ filters.selectedMission }}
+        @if (
+          datasets[filters.selectedDataset] | isRelevant: p.SITE_DESCRIPTION
+        ) {
+          <b>{{ 'SITE_DESCRIPTION' | translate }}:</b>
+        } @else {
+          <b>{{ 'CAMPAIGN' | translate }}:</b>
+        }
+        {{ filters.selectedMission }}
       </div>
     }
     @if (filters.fullBurstIDs.length) {
