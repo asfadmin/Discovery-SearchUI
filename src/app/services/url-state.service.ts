@@ -1227,9 +1227,20 @@ export class UrlStateService {
   };
 
   private loadJointObservation = (observationStr: string): Action => {
-    return new filterStore.setJointObservation(
-      models.parseJointObservation(observationStr),
-    );
+    const validObservations = Object.values(models.JointObservation);
+    // Links created before the multi-select used jointObservation=true
+    const observations =
+      observationStr === 'true'
+        ? [models.JointObservation.JOINT]
+        : observationStr
+            .split(',')
+            .filter((observation): observation is models.JointObservation =>
+              validObservations.includes(
+                observation as models.JointObservation,
+              ),
+            );
+
+    return new filterStore.setJointObservation(observations);
   };
 
   private loadUseFrameForBaseline = (

@@ -32,18 +32,6 @@ export enum JointObservation {
   SINGLE = 'Single',
 }
 
-export const parseJointObservation = (value: unknown): JointObservation[] => {
-  if (value === true || value === 'true') {
-    return [JointObservation.JOINT];
-  }
-  const values = (
-    Array.isArray(value) ? value : String(value ?? '').split(',')
-  ).map((observation) => String(observation).toLowerCase());
-  return Object.values(JointObservation).filter((observation) =>
-    values.includes(observation.toLowerCase()),
-  );
-};
-
 export const apiParamNames = {
   [Props.PATH]: 'relativeOrbit',
   [Props.FRAME]: 'frame',

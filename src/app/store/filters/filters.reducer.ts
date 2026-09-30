@@ -743,9 +743,11 @@ export function filtersReducer(
           granuleList: filters.granuleList || null,
           sidePolarizations: filters.sidePolarizations || [],
           frameCoverage: filters.frameCoverage || [],
-          jointObservation: models.parseJointObservation(
-            filters.jointObservation,
-          ),
+          jointObservation: Array.isArray(filters.jointObservation)
+            ? filters.jointObservation
+            : filters.jointObservation
+              ? [models.JointObservation.JOINT]
+              : [],
           rangeBandwidth: filters.rangeBandwidth || [],
           instrument: filters.instrument || [],
           groupID: filters.groupID,
