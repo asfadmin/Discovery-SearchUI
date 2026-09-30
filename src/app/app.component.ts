@@ -606,6 +606,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.store$.dispatch(new scenesStore.ClearScenes());
     this.store$.dispatch(new hyp3Store.SetHyp3JobIDs([]));
     this.mapService.clearDrawLayer();
+    this.mapService.clearBrowseOverlays();
     this.store$.dispatch(new uiStore.CloseResultsMenu());
     this.searchService.clear(this.searchType);
     this.store$.dispatch(new searchStore.SetSearchOutOfDate(false));
