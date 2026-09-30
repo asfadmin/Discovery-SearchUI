@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Hyp3UrlComponent } from '@components/shared/hyp3-url/hyp3-url.component';
 import * as models from '@models';
 import { JoinPipe } from '@pipes/join.pipe';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
 import { ShortDatePipe } from '@pipes/short-date.pipe';
 import * as services from '@services';
 import { AppState } from '@store';
@@ -24,6 +25,7 @@ import * as userStore from '@store/user';
     TitleCasePipe,
     ShortDatePipe,
     JoinPipe,
+    IsRelevantPipe,
     TranslateModule,
   ],
 })
@@ -33,6 +35,7 @@ export class InfoBarComponent {
   private hyp3 = inject(services.Hyp3ApiService);
 
   public searchTypes = models.SearchType;
+  public p = models.Props;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 

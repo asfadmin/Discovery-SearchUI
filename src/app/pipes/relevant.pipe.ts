@@ -4,9 +4,7 @@ import { Dataset, Props } from '@models';
 
 @Pipe({ name: 'isRelevant' })
 export class IsRelevantPipe implements PipeTransform {
-  transform(input: Dataset, prop: Props): boolean {
-    const currentDataset = input;
-
-    return currentDataset.properties.includes(prop);
+  transform(dataset: Dataset | undefined, prop: Props): boolean {
+    return dataset?.properties.includes(prop) ?? false;
   }
 }
