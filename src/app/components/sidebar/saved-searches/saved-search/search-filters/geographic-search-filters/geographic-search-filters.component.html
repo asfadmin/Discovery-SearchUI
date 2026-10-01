@@ -147,10 +147,10 @@
         <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ filters.rangeBandwidth }}
       </div>
     }
-    @if (filters.jointObservation) {
+    @if (filters.jointObservation.length) {
       <div>
-        <b>{{ 'DATA_TYPE' | translate }}:</b>
-        {{ 'JOINT_OBSERVATION_ONLY' | translate }}
+        <b>{{ 'ACQUISITION_COVERAGE' | translate }}:</b>
+        {{ filters.jointObservation }}
       </div>
     }
     @if (filters.ariaVersion) {

@@ -17,6 +17,7 @@ export const nisar = {
     Props.USE_TRACK,
     Props.INSTRUMENT,
     Props.SINGLE_PRODUCT,
+    Props.JOINT_OBSERVATION,
   ],
   apiValue: { dataset: 'NISAR' },
   date: { start: new Date('2025/08/02 03:44:43 UTC') },
