@@ -16,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { Feature } from 'ol';
+import GeoJSON from 'ol/format/GeoJSON.js';
 import WKT from 'ol/format/WKT';
 import Geometry from 'ol/geom/Geometry';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -47,12 +48,12 @@ import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 
+import { AttributionsComponent } from './attributions/attributions.component';
 import { BannersComponent } from './banners/banners.component';
 import { DisplacementLayersComponent } from './displacement-layers/displacement-layers.component';
+import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.component';
 import { LayerSelectorComponent } from './map-controls/layer-selector/layer-selector.component';
 import { MapControlsComponent } from './map-controls/map-controls.component';
-import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.component';
-import { AttributionsComponent } from './attributions/attributions.component';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -413,6 +414,36 @@ export class MapComponent implements OnInit, OnDestroy {
         this.mapService.loadPolygonFrom(wktRepresentation.toString());
       }),
     );
+
+    this.subs.add(
+      combineLatest([
+        this.store$.select(filtersStore.getSelectedDatasetId),
+        this.store$.select(searchStore.getSearchType),
+      ]).subscribe(([datasetId, searchType]) => {
+        if (searchType === models.SearchType.PAIR_SELECTION) {
+          let source = new VectorSource({});
+          if (datasetId === models.beta.id) {
+            source = new VectorSource({
+              loader: async (_extent, _resolution, projection) => {
+                const url = models.beta.frameMap.ascending;
+                const response = await fetch(url);
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                const json = await response.json();
+                const features = new GeoJSON().readFeatures(json, {
+                  featureProjection: projection,
+                });
+                return features;
+              },
+            });
+          }
+          this.mapService.updatePairSelectionSource(source);
+        } else {
+          this.mapService.updatePairSelectionSource(new VectorSource({}));
+        }
+      }),
+    );
   }
 
   public respondToActiveWkt(uuid: string) {
@@ -600,8 +631,6 @@ export class MapComponent implements OnInit, OnDestroy {
       filter((g) => g !== null),
     );
   }
-  /*
-   * */
 
   private redrawSearchPolygonWhenViewChanges(): void {
     this.subs.add(

@@ -106,6 +106,8 @@ export class MapService implements OnDestroy {
   public priorityEnabled$ = new BehaviorSubject<models.FlightDirection | null>(
     null,
   );
+  private pairSelectionLayer = new VectorLayer();
+
   public searchType: models.SearchType;
 
   public displacementRange: {
@@ -629,6 +631,7 @@ export class MapService implements OnDestroy {
         this.displacementOverview,
         this.frameSelectionOverlay,
         this.selectedOnDemandFrameOverlays,
+        this.pairSelectionLayer,
       ],
       target: 'map',
       view: this.mapView.view,
@@ -1231,6 +1234,11 @@ export class MapService implements OnDestroy {
         coordinates: [(polygon.getGeometry() as Polygon).getCoordinates()[0]],
       },
     );
+  }
+
+  public updatePairSelectionSource(source: VectorSource) {
+    this.pairSelectionLayer.setSource(source);
+    this.pairSelectionLayer.getSource().refresh();
   }
 
   ngOnDestroy() {

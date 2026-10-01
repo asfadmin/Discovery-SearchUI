@@ -131,7 +131,8 @@ export class SearchEffects {
           ([_, searchType]) =>
             searchType !== SearchType.CUSTOM_PRODUCTS &&
             searchType !== SearchType.BASELINE &&
-            searchType !== SearchType.SBAS,
+            searchType !== SearchType.SBAS &&
+            searchType !== SearchType.PAIR_SELECTION,
         ),
         map(([params, _]) => ({ ...params, output: 'COUNT' })),
         tap((_) => this.store$.dispatch(new searchStore.SearchAmountLoading())),
@@ -175,6 +176,8 @@ export class SearchEffects {
           searchRequest$ = this.customProductsQuery$();
         } else if (searchType === SearchType.DISPLACEMENT) {
           searchRequest$ = this.timeseriesQuery$();
+        } else if (searchType === SearchType.PAIR_SELECTION) {
+          searchRequest$ = this.pairSelectionQuery$();
         } else {
           this.logCountries();
           searchRequest$ = this.asfApiQuery$;
@@ -658,6 +661,11 @@ export class SearchEffects {
 
   private timeseriesQuery$() {
     return of(new TimeseriesSearchResponse({}));
+  }
+
+  private pairSelectionQuery$() {
+    // TODO: This should be an actual sbas/baseline request when the process is more refined, but needs to be called _after_ frame selection
+    return of(new searchStore.PairSelectionResponse({}));
   }
 
   private findCountries(shapeString: string) {

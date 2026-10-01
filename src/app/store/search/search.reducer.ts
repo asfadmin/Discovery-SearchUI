@@ -96,6 +96,14 @@ export function searchReducer(
       };
     }
 
+    case SearchActionType.PAIR_SELECTION_RESPONSE: {
+      return {
+        ...state,
+        isLoading: false,
+        isCanceled: false,
+      };
+    }
+
     case SearchActionType.SEARCH_ERROR: {
       return {
         ...state,

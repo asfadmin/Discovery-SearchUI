@@ -26,6 +26,7 @@ export enum Props {
   FRAME_ORDERING = 'Allow ordering frames via SBAS tooling',
   SINGLE_PRODUCT = 'Scene list toggle button only adds/removes base product',
   DEPRECATED = 'Dataset pending deprecation',
+  PAIR_SELECTION = 'Enable Pair Selection Tool',
 }
 
 export enum JointObservation {
