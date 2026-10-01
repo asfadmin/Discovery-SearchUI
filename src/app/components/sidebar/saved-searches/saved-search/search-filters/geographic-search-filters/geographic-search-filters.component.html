@@ -69,12 +69,14 @@
     }
     @if (filters.selectedMission) {
       <div>
-        <b>{{ 'CAMPAIGN' | translate }}:</b> {{ filters.selectedMission }}
-      </div>
-    }
-    @if (filters.selectedMission) {
-      <div>
-        <b>{{ 'CAMPAIGN' | translate }}:</b> {{ filters.selectedMission }}
+        @if (
+          datasets[filters.selectedDataset] | isRelevant: p.SITE_DESCRIPTION
+        ) {
+          <b>{{ 'SITE_DESCRIPTION' | translate }}:</b>
+        } @else {
+          <b>{{ 'CAMPAIGN' | translate }}:</b>
+        }
+        {{ filters.selectedMission }}
       </div>
     }
     @if (filters.fullBurstIDs.length) {
@@ -145,10 +147,10 @@
         <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ filters.rangeBandwidth }}
       </div>
     }
-    @if (filters.jointObservation) {
+    @if (filters.jointObservation.length) {
       <div>
-        <b>{{ 'DATA_TYPE' | translate }}:</b>
-        {{ 'JOINT_OBSERVATION_ONLY' | translate }}
+        <b>{{ 'ACQUISITION_COVERAGE' | translate }}:</b>
+        {{ filters.jointObservation }}
       </div>
     }
     @if (filters.ariaVersion) {

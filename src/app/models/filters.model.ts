@@ -7,6 +7,7 @@ export enum Props {
   POLARIZATION = 'Polarization',
   ABSOLUTE_ORBIT = 'Absolute Orbit',
   MISSION_NAME = 'Mission Name',
+  SITE_DESCRIPTION = 'Site Description',
   FLIGHT_LINE = 'Flight Line',
   OFF_NADIR_ANGLE = 'Off Nadir Angle',
   FARADAY_ROTATION = 'Faraday Rotation',
@@ -25,6 +26,11 @@ export enum Props {
   FRAME_ORDERING = 'Allow ordering frames via SBAS tooling',
   SINGLE_PRODUCT = 'Scene list toggle button only adds/removes base product',
   DEPRECATED = 'Dataset pending deprecation',
+}
+
+export enum JointObservation {
+  JOINT = 'Joint',
+  SINGLE = 'Single',
 }
 
 export const apiParamNames = {

@@ -104,10 +104,10 @@
           <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ rangeBandwidth() }}
         </span>
       }
-      @if (jointObservation()) {
+      @if (jointObservation().length) {
         <span>
-          <b>{{ 'DATA_TYPE' | translate }}:</b>
-          {{ 'JOINT_OBSERVATION_ONLY' | translate }}
+          <b>{{ 'ACQUISITION_COVERAGE' | translate }}:</b>
+          {{ jointObservation() }}
         </span>
       }
       @if (dataset().id === 'NISAR') {
@@ -142,7 +142,12 @@
       }
       @if (mission()) {
         <span>
-          <b>{{ 'CAMPAIGN' | translate }}:</b> {{ mission() }}
+          @if (dataset() | isRelevant: p.SITE_DESCRIPTION) {
+            <b>{{ 'SITE_DESCRIPTION' | translate }}:</b>
+          } @else {
+            <b>{{ 'CAMPAIGN' | translate }}:</b>
+          }
+          {{ mission() }}
         </span>
       }
       @if (searchType() !== searchTypes.DISPLACEMENT) {
