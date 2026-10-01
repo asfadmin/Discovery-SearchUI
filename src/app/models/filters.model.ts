@@ -28,6 +28,11 @@ export enum Props {
   DEPRECATED = 'Dataset pending deprecation',
 }
 
+export enum JointObservation {
+  JOINT = 'Joint',
+  SINGLE = 'Single',
+}
+
 export const apiParamNames = {
   [Props.PATH]: 'relativeOrbit',
   [Props.FRAME]: 'frame',

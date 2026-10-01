@@ -99,9 +99,8 @@ export class InfoBarComponent {
   public frameCoverage: Signal<string[]> = this.store$.selectSignal(
     filtersStore.getFrameCoverage,
   );
-  public jointObservation: Signal<boolean> = this.store$.selectSignal(
-    filtersStore.getJointObservation,
-  );
+  public jointObservation: Signal<models.JointObservation[]> =
+    this.store$.selectSignal(filtersStore.getJointObservation);
   public scienceProducts: Signal<string[]> = this.store$.selectSignal(
     filtersStore.getScienceProduct,
   );

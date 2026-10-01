@@ -281,7 +281,19 @@ export class SearchParamsService {
 
   private jointObservation$ = this.store$
     .select(filterStore.getJointObservation)
-    .pipe(map((jointObservation) => ({ jointobservation: jointObservation })));
+    .pipe(
+      map((observations) => {
+        const base = Array.from(new Set(observations));
+        if (base.length !== 1) {
+          return null;
+        }
+        if (base[0] === models.JointObservation.JOINT) {
+          return 'true';
+        }
+        return 'false';
+      }),
+      map((jointObservation) => ({ jointobservation: jointObservation })),
+    );
 
   private rangeBandwidth$ = this.store$
     .select(filterStore.getRangeBandwidth)
