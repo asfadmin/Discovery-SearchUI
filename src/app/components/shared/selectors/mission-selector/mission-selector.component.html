@@ -1,44 +1,56 @@
-<form [formGroup]="stateForm">
+@if (dataset() | isRelevant: p.SITE_DESCRIPTION) {
   <mat-form-field>
-    <mat-label>{{ 'FILTER_CAMPAIGN' | translate }}</mat-label>
-    <input type="text" matInput formControlName="missionFilter" />
+    <mat-label>{{ 'SITE_DESCRIPTION' | translate }}</mat-label>
+    <input
+      type="text"
+      matInput
+      [value]="selectedMission() ?? ''"
+      (change)="onSiteDescriptionChange($event)"
+    />
   </mat-form-field>
-</form>
+} @else {
+  <form [formGroup]="stateForm">
+    <mat-form-field>
+      <mat-label>{{ 'FILTER_CAMPAIGN' | translate }}</mat-label>
+      <input type="text" matInput formControlName="missionFilter" />
+    </mat-form-field>
+  </form>
 
-@if (!!selectedMission()) {
-  <div class="selected">
-    <div class="selected-row">
-      <div>
-        <span class="v-mid selected-label">
-          <b>{{ 'SELECTED' | translate }}</b> <span> • </span>
-          {{ selectedMission() }}
-        </span>
+  @if (!!selectedMission()) {
+    <div class="selected">
+      <div class="selected-row">
+        <div>
+          <span class="v-mid selected-label">
+            <b>{{ 'SELECTED' | translate }}</b> <span> • </span>
+            {{ selectedMission() }}
+          </span>
+        </div>
+        <div>
+          <mat-icon
+            (click)="setMission(null)"
+            class="clickable v-mid clear-mission-icon"
+            mat-list-icon
+            [matTooltip]="'CLEAR_SELECTED_MISSION' | translate"
+            >clear</mat-icon
+          >
+        </div>
       </div>
-      <div>
-        <mat-icon
-          (click)="setMission(null)"
-          class="clickable v-mid clear-mission-icon"
-          mat-list-icon
-          [matTooltip]="'CLEAR_SELECTED_MISSION' | translate"
-          >clear</mat-icon
-        >
-      </div>
+      <mat-divider class="selected-divider" [inset]="true"></mat-divider>
     </div>
-    <mat-divider class="selected-divider" [inset]="true"></mat-divider>
-  </div>
+  }
+
+  <cdk-virtual-scroll-viewport
+    class="mission-list-viewport"
+    minBufferPx="500"
+    maxBufferPx="600"
+    itemSize="48"
+  >
+    <mat-nav-list role="list">
+      <div *cdkVirtualFor="let mission of filteredMissions">
+        <a (click)="setMission(mission)" mat-list-item role="listitem">
+          {{ mission }}
+        </a>
+      </div>
+    </mat-nav-list>
+  </cdk-virtual-scroll-viewport>
 }
-
-<cdk-virtual-scroll-viewport
-  class="mission-list-viewport"
-  minBufferPx="500"
-  maxBufferPx="600"
-  itemSize="48"
->
-  <mat-nav-list role="list">
-    <div *cdkVirtualFor="let mission of filteredMissions">
-      <a (click)="setMission(mission)" mat-list-item role="listitem">
-        {{ mission }}
-      </a>
-    </div>
-  </mat-nav-list>
-</cdk-virtual-scroll-viewport>
