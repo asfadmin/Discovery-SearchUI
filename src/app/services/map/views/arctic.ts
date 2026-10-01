@@ -42,7 +42,7 @@ export function arctic(): MapView {
     }),
   };
 
-  const source = new WMTS(options);
+  const source = new WMTS(options) as any;
   const layer = new TileLayer({ source, extent });
 
   const graticule = new GraticuleLayer({
