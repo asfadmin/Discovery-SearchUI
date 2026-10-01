@@ -17,6 +17,7 @@ export const alos = {
     Props.FARADAY_ROTATION,
     Props.STACK_SIZE,
     Props.BASELINE_TOOL,
+    Props.USE_BEAM_MODE,
   ],
   apiValue: { dataset: 'ALOS PALSAR' },
   date: {
@@ -32,33 +33,49 @@ export const alos = {
     url: 'https://global.jaxa.jp/',
   },
   productTypes: [
+    // {
+    //   apiValue: 'L1.0',
+    //   displayName: 'Level 1.0',
+    // },
+    // {
+    //   apiValue: 'L1.1',
+    //   displayName: 'Level 1.1 Complex',
+    // },
+    // {
+    //   apiValue: 'L1.5',
+    //   displayName: 'Level 1.5 Image',
+    // },
+    // {
+    //   apiValue: 'L2.2',
+    //   displayName: 'Level 2.2',
+    // },
+    // {
+    //   apiValue: 'RTC_LOW_RES',
+    //   displayName: 'Low-Res Terrain Corrected',
+    // },
+    // {
+    //   apiValue: 'RTC_HI_RES',
+    //   displayName: 'Hi-Res Terrain Corrected',
+    // },
+    // {
+    //   apiValue: 'KMZ',
+    //   displayName: 'GoogleEarth KMZ',
+    // },
     {
-      apiValue: 'L1.0',
-      displayName: 'Level 1.0',
+      apiValue: 'L1A_RADAR_RO',
+      displayName: 'Level 1A Radar RO',
     },
     {
-      apiValue: 'L1.1',
-      displayName: 'Level 1.1 Complex',
+      apiValue: 'L1B_S0_LORES',
+      displayName: 'Level 1B Low Resolution',
     },
     {
-      apiValue: 'L1.5',
-      displayName: 'Level 1.5 Image',
+      apiValue: 'L1C_S0_HIRES',
+      displayName: 'Level 1C High Resolution',
     },
     {
-      apiValue: 'L2.2',
-      displayName: 'Level 2.2',
-    },
-    {
-      apiValue: 'RTC_LOW_RES',
-      displayName: 'Low-Res Terrain Corrected',
-    },
-    {
-      apiValue: 'RTC_HI_RES',
-      displayName: 'Hi-Res Terrain Corrected',
-    },
-    {
-      apiValue: 'KMZ',
-      displayName: 'GoogleEarth KMZ',
+      apiValue: 'L1A_RADAR',
+      displayName: 'Level 1A Radar',
     },
   ],
   beamModes: ['DSN', 'FBS', 'FBD', 'PLR', 'WB1', 'WB2'],
@@ -73,6 +90,15 @@ export const alos = {
     'VV+VH',
     'quadrature',
   ],
+  productTypeDisplays: {
+    displays: {
+      xml: 'ISO Metadata XML',
+      kml: 'Metadata KML',
+      kmz: 'Metadata KMZ',
+      jpg: 'Browse Image JPEG',
+      zip: 'Zip Archive',
+    },
+  },
   platforms: [],
   description: 'PALSAR_DESC',
   icon: '/assets/icons/satellite_alt_black_48dp.svg',

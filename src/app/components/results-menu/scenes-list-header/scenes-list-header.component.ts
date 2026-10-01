@@ -178,6 +178,11 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     return this.currentDataset().id;
   });
 
+  public addByFileType = computed(() => {
+    return ['OPERA-S1', 'SEASAT', 'UAVSAR', 'NISAR', 'ALOS'].includes(
+      this.currentDatasetID(),
+    );
+  });
   public datasetGroups = computed(
     () => this.currentDataset()?.productTypeDisplays?.groups,
   );
