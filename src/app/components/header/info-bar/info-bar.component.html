@@ -106,7 +106,8 @@
       }
       @if (jointObservation().length) {
         <span>
-          <b>{{ 'DATA_TYPE' | translate }}:</b> {{ jointObservation() }}
+          <b>{{ 'ACQUISITION_COVERAGE' | translate }}:</b>
+          {{ jointObservation() }}
         </span>
       }
       @if (dataset().id === 'NISAR') {
