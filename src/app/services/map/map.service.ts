@@ -44,7 +44,6 @@ import { DrawService } from './draw.service';
 import { LayerService } from './layer.service';
 import { LegacyAreaFormatService } from '../legacy-area-format.service';
 import * as polygonStyle from './polygon.style';
-// import * as tileStyle from 'ol/style'
 import * as views from './views';
 
 @Injectable({
@@ -948,7 +947,7 @@ export class MapService implements OnDestroy {
           tileSize: [256, 256],
           maxZoom: 12,
           interpolate: false,
-        });
+        }) as any;
         this.displacementRange = response.scale_range;
 
         // Eventually let users define this part somehow

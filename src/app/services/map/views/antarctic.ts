@@ -34,7 +34,7 @@ export function antarctic(): MapView {
     }),
   };
 
-  const source = new WMTS(options);
+  const source = new WMTS(options) as any;
 
   const layer = new TileLayer({ source, extent });
 
