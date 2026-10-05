@@ -185,10 +185,21 @@
 
                       <br />
                       {{ 'EMAIL' | translate }}
-                      <a class="link" href="mailto:uso@alaska.edu"
-                        >uso&#64;alaska.edu
+                      <a class="link" href="mailto:uso@asf.alaska.edu"
+                        >uso&#64;asf.alaska.edu
                       </a>
                       {{ 'FOR_MORE_INFO' | translate }}
+                      <a
+                        class="link"
+                        href="https://www.earthdata.nasa.gov/news/selected-historical-asf-datasets-moving-request-only-access"
+                        target="_blank"
+                        [attr.aria-label]="
+                          'DATASET_DEPRECATION_LINK_ARIA' | translate
+                        "
+                        (click)="$event.stopPropagation()"
+                      >
+                        {{ 'DATASET_DEPRECATION_LINK_TEXT' | translate }}
+                      </a>
                     </div>
                   }
                   <div
@@ -213,6 +224,7 @@
                         onOpenDerivedDataset(dataset.download_url, dataset.name)
                       "
                       mat-button
+                      [disabled]="dataset.deprecated"
                     >
                       {{ 'DOWNLOAD' | translate }}
                     </button>

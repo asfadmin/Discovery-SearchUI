@@ -9,6 +9,8 @@
 }
 
 .dataset-deprecated {
+  cursor: default;
+
   @include themify($themes) {
     background: color.adjust(themed('warn'), $lightness: 20%) !important;
   }
