@@ -51,6 +51,16 @@
                 >uso&#64;asf.alaska.edu
               </a>
               {{ 'FOR_MORE_INFO' | translate }}
+              <a
+                class="link"
+                href="https://www.earthdata.nasa.gov/news/selected-historical-asf-datasets-moving-request-only-access"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="'DATASET_DEPRECATION_LINK_ARIA' | translate"
+                (click)="$event.stopPropagation()"
+              >
+                {{ 'DATASET_DEPRECATION_LINK_TEXT' | translate }}
+              </a>
             </div>
           }
         </span>

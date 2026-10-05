@@ -175,6 +175,8 @@
   "DATA_FILTERS": "Filtros de Fecha",
   "DATA_TYPE": "Tipo de Dato",
   "DATASET": "Conjunto de Datos",
+  "DATASET_DEPRECATION_LINK_ARIA": "Más información sobre el acceso a conjuntos de datos heredados (se abre en una pestaña nueva)",
+  "DATASET_DEPRECATION_LINK_TEXT": "Leer el anuncio",
   "DATASET_DEPRECATION_NOTICE": "Este conjunto de datos fue eliminado de las interfaces de búsqueda.",
   "DATASET_DEPRECATION_NOTICE_TEMP": "Este conjunto de datos fue eliminado temporalmente de las interfaces de búsqueda.",
   "DATASET_INFO": "Información del conjunto de datos",
