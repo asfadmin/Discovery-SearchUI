@@ -21,6 +21,7 @@ import { startWith, map, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import * as models from '@models';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
@@ -54,6 +55,7 @@ export const _filter = (opt: string[], value: string): string[] => {
     MatNavList,
     CdkVirtualForOf,
     MatListItem,
+    IsRelevantPipe,
     TranslateModule,
   ],
 })
@@ -62,6 +64,8 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
   private fb = inject(UntypedFormBuilder);
 
   public dataset$ = this.store$.select(filtersStore.getSelectedDataset);
+  public dataset = this.store$.selectSignal(filtersStore.getSelectedDataset);
+  public p = models.Props;
 
   public missionsByDataset = this.store$.selectSignal(
     filtersStore.getMissionsByDataset,
@@ -136,6 +140,11 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
 
   public setMission(mission: string): void {
     this.store$.dispatch(new filtersStore.SelectMission(mission));
+  }
+
+  public onSiteDescriptionChange(event: Event): void {
+    const siteDescription = (event.target as HTMLInputElement).value.trim();
+    this.setMission(siteDescription || null);
   }
 
   ngOnDestroy() {

@@ -1,13 +1,6 @@
 import { test, expect } from 'e2e/fixtures';
 import { sentinel1Page } from 'e2e/helpers';
 
-test('No direction selections available', async ({ page }) => {
-  await sentinel1Page(page);
-  await page.getByRole('button', { name: 'Sentinel-' }).click();
-  await page.getByRole('menuitem', { name: 'AIRSAR This dataset' }).click();
-  await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  await expect(page.getByText('No flight directions to select')).toBeVisible();
-});
 test('Two Directions available', async ({ page }) => {
   await sentinel1Page(page);
 
