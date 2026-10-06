@@ -1,5 +1,5 @@
 import { NgClass, AsyncPipe } from '@angular/common';
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
@@ -40,7 +40,7 @@ import { HeaderButtonsComponent } from '../header-buttons/header-buttons.compone
     TranslateModule,
   ],
 })
-export class PairSelectionHeaderComponent implements OnInit {
+export class PairSelectionHeaderComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(services.ScreenSizeService);
   prop = inject(services.PropertyService);
@@ -61,12 +61,6 @@ export class PairSelectionHeaderComponent implements OnInit {
       dataset.properties.includes(models.Props.PAIR_SELECTION),
     );
   });
-
-  public ngOnInit(): void {
-    this.store$.dispatch(
-      new filterStore.SetSelectedDataset(this.pairSelectionDatasets()[0].id), //TODO: This should go in a state effect
-    );
-  }
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());

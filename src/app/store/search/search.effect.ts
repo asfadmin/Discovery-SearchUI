@@ -473,6 +473,24 @@ export class SearchEffects {
     ),
   );
 
+  public setPairSelectionDefaults = createEffect(() =>
+    this.actions$.pipe(
+      ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
+      filter((action) => action.payload === models.SearchType.PAIR_SELECTION),
+      switchMap((_action) => {
+        const output: any[] = [
+          new filtersStore.SetSelectedDataset(
+            models.datasetList.find((dataset) =>
+              dataset.properties.includes(models.Props.PAIR_SELECTION),
+            )?.id,
+          ),
+        ];
+
+        return output;
+      }),
+    ),
+  );
+
   public clearResultsWhenSearchTypeChanges = createEffect(() =>
     this.actions$.pipe(
       ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
