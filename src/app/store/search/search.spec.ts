@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { ToastrService } from 'ngx-toastr';
-import { ReplaySubject } from 'rxjs';
+import { firstValueFrom, ReplaySubject } from 'rxjs';
 import { describe, it, expect, beforeEach } from 'vitest';
 
 import { SearchType } from '@models';
@@ -41,13 +41,15 @@ describe('SearchEffects', () => {
     effects = TestBed.inject(SearchEffects);
   });
 
-  it('should switch the dataset automatically when switching to pair selection', () => {
-    actions$.next(new SearchActions.SetSearchType(SearchType.PAIR_SELECTION));
+  it('should switch the dataset automatically when switching to pair selection', async () => {
+    const watchedEffect = firstValueFrom(effects.setPairSelectionDefaults);
 
-    effects.setPairSelectionDefaults.subscribe((action) => {
-      expect(action).toEqual(
-        new filtersStore.SetSelectedDataset(beta.id + '2'),
-      );
-    });
+    actions$.next(
+      new SearchActions.SetSearchTypeAfterSave(SearchType.PAIR_SELECTION),
+    );
+
+    await expect(watchedEffect).resolves.toEqual(
+      new filtersStore.SetSelectedDataset(beta.id),
+    );
   });
 });
