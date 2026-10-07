@@ -13,7 +13,7 @@
             (selectedChange)="onDatasetChange($event)"
             [datasets]="pairSelectionDatasets()"
             (click)="closeAOIOptions()"
-            class="breadcrumb dataset-selector--layout"
+            class="breadcrumb dataset-selector-layout"
           >
           </app-dataset-selector>
         </div>
@@ -26,7 +26,7 @@
       <div>
         <div class="fx-row">
           @if (breakpoint === breakpoints.FULL) {
-            <div class="breadcrumb date-selector--layout">
+            <div class="breadcrumb date-selector-layout">
               <app-date-selector></app-date-selector>
             </div>
           }
