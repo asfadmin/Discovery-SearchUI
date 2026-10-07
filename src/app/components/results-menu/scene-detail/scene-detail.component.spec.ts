@@ -4,6 +4,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { nisar, sentinel_1 } from '@models/datasets';
+import { EnvironmentService } from '@services';
+import { env } from '@services/env';
 import * as scenesStore from '@store/scenes';
 import { productFactory } from '@testing/product-factory';
 import testProviders from '@testing/providers';
@@ -16,6 +18,11 @@ describe('SceneDetailComponent', () => {
   let store: MockStore;
 
   beforeEach(() => {
+    const mockEnvService = {
+      isProd: true,
+      maturity: env.defaultEnv,
+      envs: env,
+    };
     TestBed.configureTestingModule({
       imports: [
         SceneDetailComponent,
@@ -23,7 +30,10 @@ describe('SceneDetailComponent', () => {
           positionClass: 'toast-bottom-right',
         }),
       ],
-      providers: [...testProviders],
+      providers: [
+        ...testProviders,
+        { provide: EnvironmentService, useValue: mockEnvService },
+      ],
     });
 
     store = TestBed.inject(MockStore);
