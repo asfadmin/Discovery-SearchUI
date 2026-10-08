@@ -1,4 +1,3 @@
-<!--suppress ALL -->
 @if (breakpoint$ | async; as breakpoint) {
   <div>
     <div
@@ -30,14 +29,14 @@
       <mat-menu #searchTypeMenu="matMenu" class="search-type-menu">
         @for (
           type of searchTypeSelectors.search;
-          track type;
+          track type.nameKey;
           let last = $last
         ) {
           @if (
             !(
-              type.nameKey === 'DISPLACEMENT' &&
+              type.searchType === searchTypes.DISPLACEMENT &&
               breakpoint === breakpoints.MOBILE
-            )
+            ) && !(type.searchType === searchTypes.PAIR_SELECTION && env.isProd)
           ) {
             <button
               class="menu-item"

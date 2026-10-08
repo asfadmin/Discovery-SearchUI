@@ -29,6 +29,9 @@
           @if (searchType === searchTypes.CUSTOM_PRODUCTS) {
             <app-hyp3-header> </app-hyp3-header>
           }
+          @if (searchType === searchTypes.PAIR_SELECTION) {
+            <app-pair-selection-header></app-pair-selection-header>
+          }
           @if (breakpoint !== breakpoints.MOBILE) {
             <app-info-bar></app-info-bar>
           }

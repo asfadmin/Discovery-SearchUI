@@ -57,7 +57,7 @@ export class BrowseMapService {
       url: `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=bFwkahiCrAA0526OlsHS`,
       wrapX: mapOptions.wrapX,
       tileSize: [512, 512],
-    });
+    }) as any;
 
     const map_layer = new TileLayer({ source: mapSource });
 

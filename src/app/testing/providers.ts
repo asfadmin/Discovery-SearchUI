@@ -4,6 +4,8 @@ import { EnvironmentProviders, Provider } from '@angular/core';
 import { provideMockStore } from '@ngrx/store/testing';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 
+import { EnvironmentService } from '@services';
+import { env } from '@services/env';
 import { initState as filtersInit } from '@store/filters/filters.reducer';
 import { initState as hyp3Init } from '@store/hyp3/hyp3.reducer';
 import { initState as queueInit } from '@store/queue/queue.reducer';
@@ -12,6 +14,12 @@ import { initState as searchInit } from '@store/search/search.reducer';
 import { initState as userInit } from '@store/user/user.reducer';
 import { StaticTranslateLoader } from 'src/translation';
 
+const mockEnvService = {
+  isProd: true,
+  maturity: env.defaultEnv,
+  currentEnv: env.test,
+  envs: env,
+};
 const testProviders: (Provider | EnvironmentProviders)[] = [
   provideHttpClientTesting(),
   provideMockStore({
@@ -34,6 +42,7 @@ const testProviders: (Provider | EnvironmentProviders)[] = [
       useClass: StaticTranslateLoader,
     },
   }),
+  { provide: EnvironmentService, useValue: mockEnvService },
 ];
 
 export default testProviders;

@@ -359,7 +359,7 @@ export class UserEffects {
 
       if (
         migrated.searchType === models.SearchType.LIST ||
-        !migrated.filters.dateRange
+        !migrated.filters?.dateRange
       ) {
         return migrated;
       }
@@ -379,7 +379,7 @@ export class UserEffects {
   }
 
   private migrateSubtypesToPlatforms(search: any): any {
-    if (!search.filters.subtypes) {
+    if (!search.filters?.subtypes) {
       return search;
     }
     const { subtypes, ...rest } = search.filters;

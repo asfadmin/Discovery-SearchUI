@@ -7,6 +7,7 @@ export enum SearchType {
   DISPLACEMENT = 'Displacement',
   SARVIEWS_EVENTS = 'Event Search',
   DERIVED_DATASETS = 'Derived Datasets',
+  PAIR_SELECTION = 'Pair Selection',
 }
 
 export const SearchTypeTranslation = {
@@ -18,6 +19,7 @@ export const SearchTypeTranslation = {
   'On Demand': 'ON_DEMAND',
   'Event Search': 'EVENT_SEARCH',
   'Derived Datasets': 'DERIVED_DATASETS',
+  'Pair Selection': 'PAIR_SELECTION',
 };
 
 export enum IconType {

@@ -131,7 +131,8 @@ export class SearchEffects {
           ([_, searchType]) =>
             searchType !== SearchType.CUSTOM_PRODUCTS &&
             searchType !== SearchType.BASELINE &&
-            searchType !== SearchType.SBAS,
+            searchType !== SearchType.SBAS &&
+            searchType !== SearchType.PAIR_SELECTION,
         ),
         map(([params, _]) => ({ ...params, output: 'COUNT' })),
         tap((_) => this.store$.dispatch(new searchStore.SearchAmountLoading())),
@@ -175,6 +176,8 @@ export class SearchEffects {
           searchRequest$ = this.customProductsQuery$();
         } else if (searchType === SearchType.DISPLACEMENT) {
           searchRequest$ = this.timeseriesQuery$();
+        } else if (searchType === SearchType.PAIR_SELECTION) {
+          searchRequest$ = this.pairSelectionQuery$();
         } else {
           this.logCountries();
           searchRequest$ = this.asfApiQuery$;
@@ -470,6 +473,24 @@ export class SearchEffects {
     ),
   );
 
+  public setPairSelectionDefaults = createEffect(() =>
+    this.actions$.pipe(
+      ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
+      filter((action) => action.payload === models.SearchType.PAIR_SELECTION),
+      switchMap((_action) => {
+        const output: any[] = [
+          new filtersStore.SetSelectedDataset(
+            models.datasetList.find((dataset) =>
+              dataset.properties.includes(models.Props.PAIR_SELECTION),
+            )?.id,
+          ),
+        ];
+
+        return output;
+      }),
+    ),
+  );
+
   public clearResultsWhenSearchTypeChanges = createEffect(() =>
     this.actions$.pipe(
       ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
@@ -658,6 +679,11 @@ export class SearchEffects {
 
   private timeseriesQuery$() {
     return of(new TimeseriesSearchResponse({}));
+  }
+
+  private pairSelectionQuery$() {
+    // TODO: This should be an actual sbas/baseline request when the process is more refined, but needs to be called _after_ frame selection
+    return of(new searchStore.PairSelectionResponse({}));
   }
 
   private findCountries(shapeString: string) {

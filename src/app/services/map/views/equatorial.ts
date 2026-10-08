@@ -15,7 +15,7 @@ function equatorialView(url: string): MapView {
     url,
     wrapX: models.mapOptions.wrapX,
     tileSize: [512, 512],
-  });
+  }) as any;
 
   const layer = new TileLayer({ source });
 

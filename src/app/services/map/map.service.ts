@@ -43,8 +43,8 @@ import { WktService } from '../wkt.service';
 import { DrawService } from './draw.service';
 import { LayerService } from './layer.service';
 import { LegacyAreaFormatService } from '../legacy-area-format.service';
+import { PairSelectionService } from './pair-selection.service';
 import * as polygonStyle from './polygon.style';
-// import * as tileStyle from 'ol/style'
 import * as views from './views';
 
 @Injectable({
@@ -54,6 +54,7 @@ export class MapService implements OnDestroy {
   private wktService = inject(WktService);
   private legacyAreaFormat = inject(LegacyAreaFormatService);
   private drawService = inject(DrawService);
+  private pairSelectionService = inject(PairSelectionService);
   private store$ = inject<Store<AppState>>(Store);
   private browseOverlayService = inject(BrowseOverlayService);
   private layerService = inject(LayerService);
@@ -107,6 +108,7 @@ export class MapService implements OnDestroy {
   public priorityEnabled$ = new BehaviorSubject<models.FlightDirection | null>(
     null,
   );
+
   public searchType: models.SearchType;
 
   public displacementRange: {
@@ -630,6 +632,7 @@ export class MapService implements OnDestroy {
         this.displacementOverview,
         this.frameSelectionOverlay,
         this.selectedOnDemandFrameOverlays,
+        this.pairSelectionService.layer,
       ],
       target: 'map',
       view: this.mapView.view,
@@ -948,7 +951,7 @@ export class MapService implements OnDestroy {
           tileSize: [256, 256],
           maxZoom: 12,
           interpolate: false,
-        });
+        }) as any;
         this.displacementRange = response.scale_range;
 
         // Eventually let users define this part somehow
