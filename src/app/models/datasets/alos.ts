@@ -62,20 +62,20 @@ export const alos = {
     //   displayName: 'GoogleEarth KMZ',
     // },
     {
-      apiValue: 'L1A_RADAR_RO',
-      displayName: 'Level 1A Radar RO',
+      apiValue: 'L1.0',
+      displayName: 'Level 1.0',
     },
     {
-      apiValue: 'L1B_S0_LORES',
-      displayName: 'Level 1B Low Resolution',
+      apiValue: 'L1.1',
+      displayName: 'Level 1.1',
     },
     {
-      apiValue: 'L1C_S0_HIRES',
-      displayName: 'Level 1C High Resolution',
+      apiValue: 'L1.5',
+      displayName: 'Level 1.5',
     },
     {
-      apiValue: 'L1A_RADAR',
-      displayName: 'Level 1A Radar',
+      apiValue: 'RTC',
+      displayName: 'Alos RTC',
     },
   ],
   beamModes: ['DSN', 'FBS', 'FBD', 'PLR', 'WB1', 'WB2'],

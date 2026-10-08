@@ -80,6 +80,13 @@ export class ProductService {
           product?.metadata?.opera?.bytes?.[product.file]?.bytes || 0;
       }
 
+      if (
+        product.dataset === 'ALOS' &&
+        product.metadata.additionalUrls?.length > 0
+      ) {
+        product.id = product.id.split('-')[0];
+      }
+
       return product;
     });
 
