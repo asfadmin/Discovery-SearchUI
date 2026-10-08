@@ -27,6 +27,7 @@ export interface Environment {
   cmr_provider?: string;
   force_token?: string;
   displacement_api: string;
+  displacement_bucket_maturity: 'uat' | 'prod';
 }
 
 @Injectable({
