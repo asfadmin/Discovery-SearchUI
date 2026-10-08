@@ -16,7 +16,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { Feature } from 'ol';
-import GeoJSON from 'ol/format/GeoJSON.js';
 import WKT from 'ol/format/WKT';
 import Geometry from 'ol/geom/Geometry';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -39,6 +38,7 @@ import {
   ScreenSizeService,
   WktService,
 } from '@services';
+import { PairSelectionService } from '@services/map/pair-selection.service';
 import * as polygonStyle from '@services/map/polygon.style';
 import { AppState } from '@store';
 import { getTimeseriesChartStates } from '@store/charts';
@@ -92,6 +92,7 @@ export class MapComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
   private pointHistoryService = inject(PointHistoryService);
   private disclaimerService = inject(DisplacementDisclaimerService);
+  private pairSelectionService = inject(PairSelectionService);
 
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
@@ -421,26 +422,13 @@ export class MapComponent implements OnInit, OnDestroy {
         this.store$.select(searchStore.getSearchType),
       ]).subscribe(([datasetId, searchType]) => {
         if (searchType === models.SearchType.PAIR_SELECTION) {
-          let source = new VectorSource({});
           if (datasetId === models.beta.id) {
-            source = new VectorSource({
-              loader: async (_extent, _resolution, projection) => {
-                const url = models.beta.frameMap.ascending;
-                const response = await fetch(url);
-                if (!response.ok) {
-                  throw new Error('Network response was not ok');
-                }
-                const json = await response.json();
-                const features = new GeoJSON().readFeatures(json, {
-                  featureProjection: projection,
-                });
-                return features;
-              },
-            });
+            this.pairSelectionService.loadFramePreview(
+              models.datasets[datasetId],
+            );
           }
-          this.mapService.updatePairSelectionSource(source);
         } else {
-          this.mapService.updatePairSelectionSource(new VectorSource({}));
+          this.pairSelectionService.clearFramePreview();
         }
       }),
     );
