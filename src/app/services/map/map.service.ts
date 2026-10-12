@@ -16,6 +16,7 @@ import Polygon from 'ol/geom/Polygon';
 import Select, { SelectEvent } from 'ol/interaction/Select';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
 import LayerGroup from 'ol/layer/Group';
+import CanvasTileLayer from 'ol/layer/Tile.js';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import TileLayer from 'ol/layer/WebGLTile.js';
 import * as proj from 'ol/proj';
@@ -746,7 +747,7 @@ export class MapService implements OnDestroy {
     const mapLayers = this.map.getLayers();
     mapLayers.setAt(0, this.mapView.layer);
 
-    const controlLayer = new TileLayer({
+    const controlLayer = new CanvasTileLayer({
       source: this.mapView.layer.getSource(),
     });
     this.overviewMap.getOverviewMap().getLayers().setAt(0, controlLayer);

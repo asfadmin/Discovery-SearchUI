@@ -1,7 +1,7 @@
 import { View } from 'ol';
 import { Extent } from 'ol/extent';
 import { Graticule as GraticuleLayer } from 'ol/layer';
-import TileLayer from 'ol/layer/WebGLTile.js';
+import TileLayer from 'ol/layer/Tile.js';
 import * as proj from 'ol/proj';
 import { WMTS } from 'ol/source';
 import { Options as WMTS_Options } from 'ol/source/WMTS';
@@ -42,7 +42,7 @@ export function arctic(): MapView {
     }),
   };
 
-  const source = new WMTS(options) as any;
+  const source = new WMTS(options);
   const layer = new TileLayer({ source, extent });
 
   const graticule = new GraticuleLayer({

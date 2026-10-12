@@ -2,7 +2,7 @@ import { View } from 'ol';
 import { Graticule as GraticuleLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/WebGLTile.js';
 import * as proj from 'ol/proj';
-import { XYZ } from 'ol/source';
+import { ImageTile } from 'ol/source';
 import { Stroke, Text } from 'ol/style';
 
 import * as models from '@models';
@@ -11,11 +11,11 @@ import { MapView, Projection } from './map-view';
 
 function equatorialView(url: string): MapView {
   const projection = new Projection('EPSG:3857');
-  const source = new XYZ({
+  const source = new ImageTile({
     url,
     wrapX: models.mapOptions.wrapX,
     tileSize: [512, 512],
-  }) as any;
+  });
 
   const layer = new TileLayer({ source });
 

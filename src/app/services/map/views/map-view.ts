@@ -1,6 +1,7 @@
 import { View } from 'ol';
 import { Extent } from 'ol/extent';
 import { Graticule as GraticuleLayer } from 'ol/layer';
+import CanvasTileLayer from 'ol/layer/Tile.js';
 import TileLayer from 'ol/layer/WebGLTile.js';
 import * as proj from 'ol/proj';
 import * as customProj4 from 'ol/proj/proj4';
@@ -10,7 +11,7 @@ export class MapView {
   constructor(
     public projection: Projection,
     public view: View,
-    public layer: TileLayer,
+    public layer: TileLayer | CanvasTileLayer,
     public gridlines?: GraticuleLayer,
   ) {}
 }

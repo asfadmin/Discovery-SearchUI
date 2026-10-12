@@ -6,7 +6,7 @@ import { Layer, Vector } from 'ol/layer';
 import ImageLayer from 'ol/layer/Image';
 import TileLayer from 'ol/layer/WebGLTile.js';
 import Projection from 'ol/proj/Projection';
-import { XYZ } from 'ol/source';
+import { ImageTile } from 'ol/source';
 import Static from 'ol/source/ImageStatic.js';
 import VectorSource from 'ol/source/Vector';
 import View from 'ol/View.js';
@@ -53,11 +53,11 @@ export class BrowseMapService {
       wkt,
     );
 
-    const mapSource = new XYZ({
+    const mapSource = new ImageTile({
       url: `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=bFwkahiCrAA0526OlsHS`,
       wrapX: mapOptions.wrapX,
       tileSize: [512, 512],
-    }) as any;
+    });
 
     const map_layer = new TileLayer({ source: mapSource });
 
