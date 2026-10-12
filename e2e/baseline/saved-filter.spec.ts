@@ -20,7 +20,7 @@ test(
     await loggedInPage
       .getByRole('region', { name: 'Scene' })
       .getByLabel('Scene')
-      .fill('R1_65192_ST6_F111');
+      .fill('ALOS2592361150-250512');
     await loggedInPage
       .locator('app-filters-dropdown')
       .getByRole('button', { name: 'Filters panel search button' })
