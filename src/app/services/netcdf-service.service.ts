@@ -12,10 +12,6 @@ import { setTimeseriesValid } from '@store/charts';
   providedIn: 'root',
 })
 export class NetcdfService {
-  private buckets = {
-    prod: 'asf-cumulus-prod-opera-products',
-    uat: 'asf-cumulus-test-opera-products',
-  };
   private env = inject(EnvironmentService);
   private http = inject(HttpClient);
   private notificationService = inject(NotificationService);
@@ -37,10 +33,7 @@ export class NetcdfService {
   }
 
   private get bucket() {
-    return (
-      this.buckets[this.env.currentEnv.displacement_bucket_maturity] ??
-      this.buckets.prod
-    );
+    return this.env.currentEnv.displacement_bucket;
   }
 
   private getTargetCache(flightDir: FlightDirection) {

@@ -8,7 +8,7 @@ export const env = {
     user_data: 'https://appdata.asf.alaska.edu',
     bulk_download: 'https://bulk-download.asf.alaska.edu',
     displacement_api: 'https://d2qmcvu7qty7vn.cloudfront.net',
-    displacement_bucket_maturity: 'prod',
+    displacement_bucket: 'asf-cumulus-prod-opera-products',
   },
   test: {
     api: 'https://api-test.asf.alaska.edu',
@@ -20,7 +20,7 @@ export const env = {
     user_data: 'https://appdata-test.asf.alaska.edu',
     bulk_download: 'https://bulk-download.asf.alaska.edu',
     displacement_api: 'https://d2qmcvu7qty7vn.cloudfront.net',
-    displacement_bucket_maturity: 'uat',
+    displacement_bucket: 'asf-cumulus-prod-opera-products',
   },
   defaultEnv: 'test',
 };
