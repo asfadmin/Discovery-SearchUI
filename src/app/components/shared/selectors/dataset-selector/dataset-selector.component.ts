@@ -98,6 +98,13 @@ export class DatasetSelectorComponent {
   }
 
   public onSelectionChange(dataset: string): void {
+    const isDeprecated = this.datasets()
+      ?.find((d) => d.id === dataset)
+      ?.properties.includes(models.Props.DEPRECATED);
+    if (isDeprecated) {
+      return;
+    }
+
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'dataset-selected',

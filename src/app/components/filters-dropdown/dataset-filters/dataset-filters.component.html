@@ -212,7 +212,11 @@
           [expandedHeight]="customExpandedHeight"
         >
           <mat-panel-title>
-            {{ 'CAMPAIGN_SELECTOR' | translate }}
+            @if (actualDataset() | isRelevant: p.SITE_DESCRIPTION) {
+              {{ 'SITE_DESCRIPTION' | translate }}
+            } @else {
+              {{ 'CAMPAIGN_SELECTOR' | translate }}
+            }
           </mat-panel-title>
         </mat-expansion-panel-header>
         <app-mission-selector></app-mission-selector>

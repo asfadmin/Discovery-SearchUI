@@ -13,10 +13,6 @@ import { waitForASFAPIResponse, sentinel1Page } from 'e2e/helpers';
   { menuSelector: 'ARIA S1 GUNW', expected: 'ARIA S1 GUNW' },
   { menuSelector: 'SMAP', expected: 'SMAP' },
   { menuSelector: 'UAVSAR', expected: 'UAVSAR' },
-  { menuSelector: 'RADARSAT-1', expected: 'RADARSAT-1' },
-  { menuSelector: 'ERS This dataset', expected: 'ERS' },
-  { menuSelector: 'JERS-1', expected: 'JERS' },
-  { menuSelector: 'AIRSAR', expected: 'AIRSAR' },
   { menuSelector: 'SEASAT', expected: 'SEASAT' },
 ].forEach(({ menuSelector, expected }) => {
   test(`Validate available dataset: ${expected}`, async ({ page }) => {
