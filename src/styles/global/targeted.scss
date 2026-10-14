@@ -295,10 +295,14 @@
   }
 }
 
-.ol-custom-scale-line {
-  width: auto;
+// Fixed size so the map controls don't resize on every zoom. Fits the
+// longest label (e.g. "2000 km").
+$scale-line-width: 70px;
 
+.ol-custom-scale-line {
   // USED IN map
+  box-sizing: border-box;
+  width: $scale-line-width;
   height: 14px;
   color: $asf-primary-light;
   text-align: center;
@@ -306,6 +310,33 @@
   border-color: $asf-primary-light;
   border-style: solid;
   border-width: 0 2px;
+}
+
+.ol-custom-scale-line-inner {
+  // OpenLayers sets this width inline to match the distance
+  width: auto !important;
+}
+
+.ol-custom-scale-line-limit {
+  // Short shake when the map can't zoom any further (see map.service.ts)
+  animation: scale-line-limit-shake 400ms ease-in-out;
+}
+
+@keyframes scale-line-limit-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20%,
+  60% {
+    transform: translateX(-3px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(3px);
+  }
 }
 
 .sbas-column-1 {
