@@ -682,7 +682,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       filter(
         (_) =>
           this.searchType !== SearchType.CUSTOM_PRODUCTS &&
-          this.searchType !== SearchType.DISPLACEMENT,
+          this.searchType !== SearchType.DISPLACEMENT &&
+          this.searchType !== SearchType.PAIR_SELECTION,
       ),
       map((params) => ({ ...params, output: 'COUNT' })),
       tap((_) => this.store$.dispatch(new searchStore.SearchAmountLoading())),

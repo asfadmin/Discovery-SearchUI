@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { v1 as uuid } from 'uuid';
 
@@ -123,6 +123,7 @@ export class SavedSearchService {
       dateRange,
     })),
   );
+  private currentPairSelectionSearch$ = of(null); //TODO: Setup saved search functionality for pair selection workflows.
 
   private searchType$ = this.store$.select(getSearchType);
 
@@ -138,6 +139,7 @@ export class SavedSearchService {
           [models.SearchType.CUSTOM_PRODUCTS]: this.currentCustomProductSearch$,
           [models.SearchType.DERIVED_DATASETS]: this.currentGeographicSearch$,
           [models.SearchType.DISPLACEMENT]: this.currentDisplacementSearch$,
+          [models.SearchType.PAIR_SELECTION]: this.currentPairSelectionSearch$,
         })[searchType],
     ),
   );

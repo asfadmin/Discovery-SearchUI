@@ -38,6 +38,7 @@ import {
   ScreenSizeService,
   WktService,
 } from '@services';
+import { PairSelectionService } from '@services/map/pair-selection.service';
 import * as polygonStyle from '@services/map/polygon.style';
 import { AppState } from '@store';
 import { getTimeseriesChartStates } from '@store/charts';
@@ -47,12 +48,12 @@ import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 
+import { AttributionsComponent } from './attributions/attributions.component';
 import { BannersComponent } from './banners/banners.component';
 import { DisplacementLayersComponent } from './displacement-layers/displacement-layers.component';
+import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.component';
 import { LayerSelectorComponent } from './map-controls/layer-selector/layer-selector.component';
 import { MapControlsComponent } from './map-controls/map-controls.component';
-import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.component';
-import { AttributionsComponent } from './attributions/attributions.component';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -91,6 +92,7 @@ export class MapComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
   private pointHistoryService = inject(PointHistoryService);
   private disclaimerService = inject(DisplacementDisclaimerService);
+  private pairSelectionService = inject(PairSelectionService);
 
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
@@ -413,6 +415,23 @@ export class MapComponent implements OnInit, OnDestroy {
         this.mapService.loadPolygonFrom(wktRepresentation.toString());
       }),
     );
+
+    this.subs.add(
+      combineLatest([
+        this.store$.select(filtersStore.getSelectedDatasetId),
+        this.store$.select(searchStore.getSearchType),
+      ]).subscribe(([datasetId, searchType]) => {
+        if (searchType === models.SearchType.PAIR_SELECTION) {
+          if (datasetId === models.beta.id) {
+            this.pairSelectionService.loadFramePreview(
+              models.datasets[datasetId],
+            );
+          }
+        } else {
+          this.pairSelectionService.clearFramePreview();
+        }
+      }),
+    );
   }
 
   public respondToActiveWkt(uuid: string) {
@@ -600,8 +619,6 @@ export class MapComponent implements OnInit, OnDestroy {
       filter((g) => g !== null),
     );
   }
-  /*
-   * */
 
   private redrawSearchPolygonWhenViewChanges(): void {
     this.subs.add(

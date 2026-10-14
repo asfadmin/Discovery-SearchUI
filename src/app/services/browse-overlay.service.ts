@@ -454,7 +454,7 @@ export class BrowseOverlayService {
     const static_image_source = new Static({
       url: _png_url,
       projection: rotateProjection('EPSG:27700', Math.PI / 4, img.getExtent()),
-      // imageExtent: img.getExtent(),
+      imageExtent: img.getExtent(),
       // imageExtent: ext,
       // imageExtent: extent.map(f => f),
       // imageExtent: olExtent.boundingExtent(
