@@ -38,7 +38,7 @@ import {
   ScreenSizeService,
   WktService,
 } from '@services';
-import { PairSelectionService } from '@services/map/pair-selection.service';
+// import { PairSelectionService } from '@services/map/pair-selection.service';
 import * as polygonStyle from '@services/map/polygon.style';
 import { AppState } from '@store';
 import { getTimeseriesChartStates } from '@store/charts';
@@ -92,7 +92,7 @@ export class MapComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
   private pointHistoryService = inject(PointHistoryService);
   private disclaimerService = inject(DisplacementDisclaimerService);
-  private pairSelectionService = inject(PairSelectionService);
+  // private pairSelectionService = inject(PairSelectionService);
 
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
@@ -416,22 +416,22 @@ export class MapComponent implements OnInit, OnDestroy {
       }),
     );
 
-    this.subs.add(
-      combineLatest([
-        this.store$.select(filtersStore.getSelectedDatasetId),
-        this.store$.select(searchStore.getSearchType),
-      ]).subscribe(([datasetId, searchType]) => {
-        if (searchType === models.SearchType.PAIR_SELECTION) {
-          if (datasetId === models.beta.id) {
-            this.pairSelectionService.loadFramePreview(
-              models.datasets[datasetId],
-            );
-          }
-        } else {
-          this.pairSelectionService.clearFramePreview();
-        }
-      }),
-    );
+    // this.subs.add(
+    //   combineLatest([
+    //     this.store$.select(filtersStore.getSelectedDatasetId),
+    //     this.store$.select(searchStore.getSearchType),
+    //   ]).subscribe(([datasetId, searchType]) => {
+    //     if (searchType === models.SearchType.PAIR_SELECTION) {
+    //       if (datasetId === models.beta.id) {
+    //         this.pairSelectionService.loadFramePreview(
+    //           models.datasets[datasetId],
+    //         );
+    //       }
+    //     } else {
+    //       this.pairSelectionService.clearFramePreview();
+    //     }
+    //   }),
+    // );
   }
 
   public respondToActiveWkt(uuid: string) {
