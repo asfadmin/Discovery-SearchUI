@@ -75,6 +75,7 @@ export class MapService implements OnDestroy {
   private mapView: views.MapView;
   private map: Map;
   private scaleLine: ScaleLine;
+  private wasAtZoomLimit: boolean | null = null;
 
   private polygonLayer: VectorLayer<VectorSource>;
   public displacmentLayer: VectorLayer<VectorSource>;
@@ -205,6 +206,7 @@ export class MapService implements OnDestroy {
   private projectedPosition;
 
   public zoom$ = new Subject<number>();
+  public zoomLimitReached$ = new Subject<void>();
   public center$ = new Subject<models.LonLat>();
   public epsg$ = new Subject<string>();
   public hasCoherenceLayer$ = new BehaviorSubject<string>(null);
@@ -256,10 +258,24 @@ export class MapService implements OnDestroy {
   }
 
   private zoom(amount: number): void {
-    this.map.getView().animate({
-      zoom: this.map.getView().getZoom() + amount,
+    const view = this.map.getView();
+
+    if (this.isAtZoomLimit(view, amount)) {
+      this.zoomLimitReached$.next();
+      return;
+    }
+
+    view.animate({
+      zoom: view.getZoom() + amount,
       duration: 150,
     });
+  }
+
+  private isAtZoomLimit(view: View, direction: number): boolean {
+    const zoom = view.getZoom();
+    return direction > 0
+      ? zoom >= view.getMaxZoom()
+      : zoom <= view.getMinZoom();
   }
 
   public loadPolygonFrom(polygon: string): boolean {
@@ -694,6 +710,31 @@ export class MapService implements OnDestroy {
     this.drawService.getLayer().setZIndex(100);
     this.focusLayer.setZIndex(99);
     this.selectedLayer.setZIndex(98);
+
+    newMap.on('moveend', () => {
+      const view = newMap.getView();
+      const isAtZoomLimit =
+        this.isAtZoomLimit(view, 1) || this.isAtZoomLimit(view, -1);
+
+      // Skip the first moveend so the label doesn't shake on page load
+      if (isAtZoomLimit && this.wasAtZoomLimit === false) {
+        this.zoomLimitReached$.next();
+      }
+      this.wasAtZoomLimit = isAtZoomLimit;
+    });
+
+    newMap.getViewport().addEventListener(
+      'wheel',
+      (e: WheelEvent) => {
+        if (
+          e.deltaY !== 0 &&
+          this.isAtZoomLimit(newMap.getView(), e.deltaY < 0 ? 1 : -1)
+        ) {
+          this.zoomLimitReached$.next();
+        }
+      },
+      { passive: true },
+    );
 
     newMap.on('moveend', (e) => {
       const currentMap = e.map;
