@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import * as models from '@models';
 import { nisar, sentinel_1 } from '@models/datasets';
-import { ProductService } from '@services';
+import { ProductService } from '@services/product.service';
 import { SAVER } from '@services/saver.provider';
 import * as scenesStore from '@store/scenes';
 import { productFactory } from '@testing/product-factory';

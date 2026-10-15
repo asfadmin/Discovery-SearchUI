@@ -54,7 +54,6 @@ export class SearchTypeSelectorComponent {
   @ViewChild(MatMenu) searchMenu: MatMenu;
   @ViewChild('firstItem') firstItem: ElementRef;
   @Input() selected: string;
-  param = { value: ' world' };
 
   public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;
@@ -124,6 +123,14 @@ export class SearchTypeSelectorComponent {
         descriptionKeys: ['DISPLACEMENT_DESCRIPTION'],
         helpUrl: 'https://docs.asf.alaska.edu/vertex/displacement/',
         icon: 'track_changes',
+        iconType: models.IconType.MATERIAL,
+      },
+      {
+        searchType: models.SearchType.PAIR_SELECTION,
+        nameKey: 'PAIR_SELECTION',
+        descriptionKeys: ['PAIR_SELECTION_DESCRIPTION'],
+        helpUrl: 'https://docs.asf.alaska.edu/vertex/displacement/',
+        icon: 'build',
         iconType: models.IconType.MATERIAL,
       },
     ],
