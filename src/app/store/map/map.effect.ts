@@ -24,7 +24,7 @@ import {
   SearchParamsService,
 } from '@services';
 import { AppState } from '@store';
-import { getSelectedDataset } from '@store/filters';
+import { getPathFrameRanges, getSelectedDataset } from '@store/filters';
 import { getAreResultsLoaded, getProducts } from '@store/scenes';
 import {
   ScenesActionType,
@@ -272,8 +272,9 @@ export class MapEffects {
         filter(([params, _]) => params.intersectsWith || params.bbox),
         map(([params, _]) => ({ ...params, output: 'geojson' })),
         withLatestFrom(this.drawService.polygon$),
+        withLatestFrom(this.store$.select(getPathFrameRanges)),
         tap((_) => this.store$.dispatch(new SetFrameMapLoading(true))),
-        switchMap(([params, polygon]) => {
+        switchMap(([[params, polygon], pathFrameRanges]) => {
           // TODO: this can pass in the params to the api service for a SearchAPI endpoint later
           return this.http.get(beta.frameMap.ascending).pipe(
             catchError((resp) => {
@@ -293,6 +294,7 @@ export class MapEffects {
                 features,
                 params,
                 polygon,
+                pathFrameRanges,
               );
             }),
           );

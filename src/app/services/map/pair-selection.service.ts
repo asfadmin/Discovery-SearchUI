@@ -38,7 +38,7 @@ export class PairSelectionService {
     this.source.clear();
   }
 
-  private isWithinRange(value, range: Range<number | null>) {
+  private isWithinRange(value, range: Range<number | undefined>) {
     if (range === null || range == undefined) {
       return true;
     }
@@ -54,9 +54,13 @@ export class PairSelectionService {
     return true;
   }
 
-  public tempAriaMapFilter(features: Feature[], params: any, polygon) {
+  public tempAriaMapFilter(
+    features: Feature[],
+    _params: any,
+    polygon,
+    pathFrameRange,
+  ) {
     const baseCoords = [(polygon.getGeometry() as Polygon).getCoordinates()[0]];
-
     return features.filter((a) => {
       const frame = +a.get('id');
       const path = +a.get('path');
@@ -75,8 +79,8 @@ export class PairSelectionService {
         return false;
       }
       if (
-        this.isWithinRange(frame, params.frameRange) &&
-        this.isWithinRange(path, params.pathRange)
+        this.isWithinRange(frame, pathFrameRange.frameRange) &&
+        this.isWithinRange(path, pathFrameRange.pathRange)
       ) {
         return true;
       } else {
