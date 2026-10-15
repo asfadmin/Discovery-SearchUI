@@ -296,14 +296,18 @@
 }
 
 // Fixed size so the map controls don't resize on every zoom. Fits the
-// longest label (e.g. "2000 km").
-$scale-line-width: 70px;
+// longest label (e.g. "2000 km") and keeps the lat/lon row from making
+// the displacement toolbar wider than its buttons.
+$scale-line-width: 52px;
 
 .ol-custom-scale-line {
   // USED IN map
   box-sizing: border-box;
   width: $scale-line-width;
   height: 14px;
+
+  // Same size as the map control labels, so "2000 km" has room in the box
+  font-size: 11px;
   color: $asf-primary-light;
   text-align: center;
   background: $asf-primary-dark;
@@ -317,8 +321,8 @@ $scale-line-width: 70px;
   width: auto !important;
 }
 
-.ol-custom-scale-line-limit {
-  // Short shake when the map can't zoom any further (see map.service.ts)
+.scale-line-limit .ol-custom-scale-line-inner {
+  // Short shake when the map can't zoom any further (see map-info component)
   animation: scale-line-limit-shake 400ms ease-in-out;
 }
 

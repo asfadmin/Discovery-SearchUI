@@ -73,7 +73,6 @@ export class MapService implements OnDestroy {
   private mapView: views.MapView;
   private map: Map;
   private scaleLine: ScaleLine;
-  private scaleLineTarget: HTMLElement;
   private wasAtZoomLimit: boolean | null = null;
 
   private polygonLayer: VectorLayer<VectorSource>;
@@ -204,6 +203,7 @@ export class MapService implements OnDestroy {
   private projectedPosition;
 
   public zoom$ = new Subject<number>();
+  public zoomLimitReached$ = new Subject<void>();
   public center$ = new Subject<models.LonLat>();
   public epsg$ = new Subject<string>();
   public hasCoherenceLayer$ = new BehaviorSubject<string>(null);
@@ -258,7 +258,7 @@ export class MapService implements OnDestroy {
     const view = this.map.getView();
 
     if (this.isAtZoomLimit(view, amount)) {
-      this.shakeScaleLine();
+      this.zoomLimitReached$.next();
       return;
     }
 
@@ -273,28 +273,6 @@ export class MapService implements OnDestroy {
     return direction > 0
       ? zoom >= view.getMaxZoom()
       : zoom <= view.getMinZoom();
-  }
-
-  // Shakes the scale line label to show the map can't zoom any further
-  private shakeScaleLine(): void {
-    const label = this.scaleLineTarget?.querySelector<HTMLElement>(
-      '.ol-custom-scale-line-inner',
-    );
-    const limitClass = 'ol-custom-scale-line-limit';
-    const reduceMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    ).matches;
-
-    if (!label || reduceMotion || label.classList.contains(limitClass)) {
-      return;
-    }
-
-    label.addEventListener(
-      'animationend',
-      () => label.classList.remove(limitClass),
-      { once: true },
-    );
-    label.classList.add(limitClass);
   }
 
   public loadPolygonFrom(polygon: string): boolean {
@@ -736,7 +714,7 @@ export class MapService implements OnDestroy {
 
       // Skip the first moveend so the label doesn't shake on page load
       if (isAtZoomLimit && this.wasAtZoomLimit === false) {
-        this.shakeScaleLine();
+        this.zoomLimitReached$.next();
       }
       this.wasAtZoomLimit = isAtZoomLimit;
     });
@@ -748,7 +726,7 @@ export class MapService implements OnDestroy {
           e.deltaY !== 0 &&
           this.isAtZoomLimit(newMap.getView(), e.deltaY < 0 ? 1 : -1)
         ) {
-          this.shakeScaleLine();
+          this.zoomLimitReached$.next();
         }
       },
       { passive: true },
@@ -1236,7 +1214,6 @@ export class MapService implements OnDestroy {
   }
 
   public addScaleLine(latlonElement) {
-    this.scaleLineTarget = latlonElement;
     this.scaleLine = new ScaleLine({
       target: latlonElement,
       className: 'ol-custom-scale-line',
