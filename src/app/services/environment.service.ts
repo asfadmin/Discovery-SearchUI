@@ -75,6 +75,10 @@ export class EnvironmentService {
     this.$store.dispatch(new SetSearchOutOfDate(true));
   }
 
+  public setDisplacementBucket(bucket: string): void {
+    this.envs['test'].displacement_bucket = bucket;
+  }
+
   public setEnvs(envs: any): void {
     this.envs = envs as Environments;
     this.$store.dispatch(new SetSearchOutOfDate(true));

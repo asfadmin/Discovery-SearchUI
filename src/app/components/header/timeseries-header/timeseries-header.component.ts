@@ -1,6 +1,7 @@
 import { NgOptimizedImage, AsyncPipe } from '@angular/common';
 import { Component, inject, Signal, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatInputModule } from '@angular/material/input';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { map } from 'rxjs/operators';
@@ -9,7 +10,11 @@ import { DrawSelectorComponent } from '@components/shared/aoi-options/draw-selec
 import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
 import { MapDrawModeType, MapInteractionModeType } from '@models';
 import * as models from '@models';
-import { ScreenSizeService, ThemingService } from '@services';
+import {
+  EnvironmentService,
+  ScreenSizeService,
+  ThemingService,
+} from '@services';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
@@ -18,7 +23,6 @@ import * as uiStore from '@store/ui';
 
 import { TimeseriesChartFlightDirectionToggleComponent } from '../../timeseries-chart/timeseries-chart-flight-direction-toggle/timeseries-chart-flight-direction-toggle.component';
 import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
-
 @Component({
   selector: 'app-timeseries-header',
   templateUrl: './timeseries-header.component.html',
@@ -31,18 +35,23 @@ import { HeaderButtonsComponent } from '../header-buttons/header-buttons.compone
     HeaderButtonsComponent,
     AsyncPipe,
     TranslateModule,
+    MatInputModule,
   ],
 })
 export class TimeseriesHeaderComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
   private themingService = inject(ThemingService);
+  private envService = inject(EnvironmentService);
 
   public breakpoint = toSignal(this.screenSize.breakpoint$);
   public breakpoints = models.Breakpoints;
   public isDarkMode$ = this.themingService.theme$.pipe(
     map((theme) => theme === 'dark'),
   );
+  public get isProd() {
+    return this.envService.isProd;
+  }
   public isKioskMode: Signal<boolean> = this.store$.selectSignal(
     searchStore.getKioskMode,
   );
@@ -67,5 +76,11 @@ export class TimeseriesHeaderComponent {
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());
+  }
+
+  public onSetBucket(event: Event): void {
+    this.envService.setDisplacementBucket(
+      (event.target as HTMLInputElement).value.trim(),
+    );
   }
 }
