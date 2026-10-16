@@ -27,6 +27,7 @@ export interface Environment {
   cmr_provider?: string;
   force_token?: string;
   displacement_api: string;
+  displacement_bucket: string;
 }
 
 @Injectable({
@@ -72,6 +73,10 @@ export class EnvironmentService {
     this.maturity = maturity;
     localStorage.setItem(this.maturityKey, this.maturity);
     this.$store.dispatch(new SetSearchOutOfDate(true));
+  }
+
+  public setDisplacementBucket(bucket: string): void {
+    this.envs['test'].displacement_bucket = bucket;
   }
 
   public setEnvs(envs: any): void {

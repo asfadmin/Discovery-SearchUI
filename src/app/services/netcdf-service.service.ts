@@ -16,7 +16,6 @@ export class NetcdfService {
   private http = inject(HttpClient);
   private notificationService = inject(NotificationService);
   private store$ = inject<Store<AppState>>(Store);
-  private bucket = 'asf-cumulus-prod-opera-products';
   private timeSeriesEndpoint = '/timeseries';
   private frameIntersectionEndpoint = '/frame_intersection';
 
@@ -32,6 +31,11 @@ export class NetcdfService {
   private get apiUrl() {
     return this.env.currentEnv.displacement_api;
   }
+
+  private get bucket() {
+    return this.env.currentEnv.displacement_bucket;
+  }
+
   private getTargetCache(flightDir: FlightDirection) {
     return flightDir === FlightDirection.ASCENDING
       ? this.ascendingCache
