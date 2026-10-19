@@ -1,0 +1,87 @@
+.noshow {
+  display: none;
+  width: 1px;
+  color: transparent;
+}
+
+.filters-toggle-row {
+  align-items: center;
+}
+
+.mobile-filters-button {
+  margin-left: 5px;
+}
+
+::ng-deep .on-demand-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 10px;
+
+  .mdc-form-field.mat-internal-form-field {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    gap: 5px !important;
+    align-items: flex-start !important;
+  }
+}
+
+.dataset-selector-layout {
+  position: relative;
+  top: -4px;
+  box-sizing: border-box !important;
+  flex: 1 1 130px !important;
+  min-width: 130px !important;
+  max-width: 130px !important;
+}
+
+$width: 330px;
+
+.date-selector-layout {
+  box-sizing: border-box;
+  flex: 1 1 $width;
+  min-width: $width;
+  max-width: $width;
+}
+
+.more-horiz {
+  margin-left: 0 !important;
+}
+
+.on-demand-mode-toggle-wrapper {
+  position: absolute;
+  top: 70px;
+  left: -18px;
+  width: 200px;
+  cursor: pointer;
+  transform: scale(0.8);
+}
+
+.dataset-header-wrapper {
+  position: relative;
+  height: 0;
+}
+
+.download-frame-map {
+  position: absolute;
+  top: 1px;
+  left: 137px;
+  z-index: 10;
+}
+
+.search-controls {
+  display: flex;
+}
+
+.search-controls {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  align-items: flex-end;
+  min-width: auto;
+  height: 70px;
+  padding-bottom: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+  font-size: 16px;
+  line-height: 17px;
+}

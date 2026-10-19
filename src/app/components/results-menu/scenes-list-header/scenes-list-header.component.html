@@ -445,13 +445,7 @@
                   {{ 'ADD_BY_GROUP' | translate }}
                 </button>
               }
-              @if (
-                (searchType() === SearchTypes.DATASET &&
-                  (currentDatasetID() === 'OPERA-S1' ||
-                    currentDatasetID() === 'NISAR' ||
-                    currentDatasetID() === 'SEASAT')) ||
-                currentDatasetID() === 'UAVSAR'
-              ) {
+              @if (searchType() === SearchTypes.DATASET && addByFileType()) {
                 <button
                   mat-menu-item
                   [matMenuTriggerFor]="addAllProductsOfType"

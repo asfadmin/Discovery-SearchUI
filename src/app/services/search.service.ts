@@ -92,6 +92,9 @@ export class SearchService {
       const seriesStates = filters.seriesStates;
       this.pointHistoryService.addPoints(Object.values(seriesStates));
     }
+    if (search.searchType === models.SearchType.PAIR_SELECTION) {
+      return;
+    }
 
     this.store$.dispatch(new filterStore.SetSavedSearch(search));
   }
