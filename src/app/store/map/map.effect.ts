@@ -16,7 +16,6 @@ import {
 
 import { SearchType } from '@models';
 import * as models from '@models';
-import { beta } from '@models/datasets';
 import {
   DrawService,
   MapService,
@@ -276,28 +275,34 @@ export class MapEffects {
         tap((_) => this.store$.dispatch(new SetFrameMapLoading(true))),
         switchMap(([[params, polygon], pathFrameRanges]) => {
           // TODO: this can pass in the params to the api service for a SearchAPI endpoint later
-          return this.http.get(beta.frameMap.ascending).pipe(
-            catchError((resp) => {
-              const { error } = resp;
-              if (!resp.ok || (error && error.includes('VALIDATION_ERROR'))) {
-                return of(0);
-              }
+          return this.http
+            .get(
+              models.datasets['SENTINEL-1 INTERFEROGRAM (BETA)'].frameMap
+                .ascending,
+            )
+            .pipe(
+              catchError((resp) => {
+                const { error } = resp;
 
-              return of(-1);
-            }),
-            map((response) => {
-              const features = new GeoJSON().readFeatures(response, {
-                featureProjection: this.mapService.epsg(),
-              });
-              // TODO: for now this is just acting like how SearchAPI would be filtering
-              return this.pairSelectionService.tempAriaMapFilter(
-                features,
-                params,
-                polygon,
-                pathFrameRanges,
-              );
-            }),
-          );
+                if (!resp.ok || (error && error.includes('VALIDATION_ERROR'))) {
+                  return of(0);
+                }
+
+                return of(-1);
+              }),
+              map((response) => {
+                const features = new GeoJSON().readFeatures(response, {
+                  featureProjection: this.mapService.epsg(),
+                });
+                // TODO: for now this is just acting like how SearchAPI would be filtering
+                return this.pairSelectionService.tempAriaMapFilter(
+                  features,
+                  params,
+                  polygon,
+                  pathFrameRanges,
+                );
+              }),
+            );
         }),
         map((features) => {
           this.pairSelectionService.loadFramePreview(features);
