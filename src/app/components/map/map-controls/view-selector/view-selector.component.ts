@@ -50,7 +50,7 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
       this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
         this.isDisplacementSearch = searchType === SearchType.DISPLACEMENT;
 
-        const unavailable = 'NOT_AVAILABLE_IN_DISPLACEMENT_SEARCH';
+        const unavailable = 'VIEW_NOT_AVAILABLE_FOR_SEARCH';
         this.arcticLabel = this.isDisplacementSearch
           ? unavailable
           : 'ARCTIC_MAP_PROJECTION';
