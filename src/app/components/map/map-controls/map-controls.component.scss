@@ -107,6 +107,12 @@ label {
   @include themify($themes) {
     background: themed('background-white');
   }
+
+  // Same look as the unavailable polar views in view-selector
+  &.mat-button-toggle-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
 
 .move-handle {
@@ -220,6 +226,13 @@ label {
 
 .tool-bar-common {
   margin-left: 10px;
+}
+
+// Displacement has fewer buttons, so the lat/lon row (with the scale line
+// at its widest) can be 8px wider than this row. The margin keeps the
+// toolbar from resizing on zoom.
+.displacement-tool-bar {
+  margin-right: 8px;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
