@@ -415,23 +415,6 @@ export class MapComponent implements OnInit, OnDestroy {
         this.mapService.loadPolygonFrom(wktRepresentation.toString());
       }),
     );
-
-    // this.subs.add(
-    //   combineLatest([
-    //     this.store$.select(filtersStore.getSelectedDatasetId),
-    //     this.store$.select(searchStore.getSearchType),
-    //   ]).subscribe(([datasetId, searchType]) => {
-    //     if (searchType === models.SearchType.PAIR_SELECTION) {
-    //       if (datasetId === models.beta.id) {
-    //         this.pairSelectionService.loadFramePreview(
-    //           models.datasets[datasetId],
-    //         );
-    //       }
-    //     } else {
-    //       this.pairSelectionService.clearFramePreview();
-    //     }
-    //   }),
-    // );
   }
 
   public respondToActiveWkt(uuid: string) {

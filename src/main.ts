@@ -28,13 +28,13 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { withHashLocation, provideRouter } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import {
   NgcCookieConsentModule,
   NgcCookieConsentConfig,
 } from 'ngx-cookieconsent';
 import { ToastrModule } from 'ngx-toastr';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import {
   AsfApiService,
@@ -184,12 +184,12 @@ bootstrapApplication(AppComponent, {
     provideAnimations(),
     provideRouter(routes, withHashLocation()),
     provideStoreDevtools({
-      maxAge: 25, // Retains last 25 states
-      logOnly: !isDevMode(), // Restrict extension to log-only mode
-      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
-      trace: true, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
-      traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
-      connectInZone: true, // If set to true, the connection is established within the Angular zone
+      maxAge: 25,
+      logOnly: !isDevMode(),
+      autoPause: true,
+      trace: true,
+      traceLimit: 75,
+      connectInZone: true,
     }),
   ],
 }).catch((err) => console.error(err));
