@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import intersect from '@turf/intersect';
 import { Feature } from 'ol';
+import { Polygon } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Stroke, Style } from 'ol/style';
-import intersect from '@turf/intersect';
-import { Polygon } from 'ol/geom';
+
 import { Range } from '@models';
 
 @Injectable({
