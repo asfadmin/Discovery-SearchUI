@@ -16,6 +16,9 @@ test(
       .getByRole('menuitem', { name: 'List List search allows you' })
       .click();
     await page.getByRole('textbox', { name: 'List of scene names' }).click();
+    await page.waitForResponse((response) =>
+      response.url().includes('output=COUNT'),
+    );
     await page
       .getByRole('textbox', { name: 'List of scene names' })
       .fill(
