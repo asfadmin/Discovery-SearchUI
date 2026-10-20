@@ -13,9 +13,7 @@
           <div class="fx-col visible-toggle">
             <div
               class="fx-row icon-bar tool-bar-common"
-              [class.displacement-tool-bar]="
-                searchType() === searchTypes.DISPLACEMENT
-              "
+              [class.spread-buttons]="searchType() === searchTypes.DISPLACEMENT"
             >
               <div class="fx-empty group-margin">
                 <div class="map-view-button--layout button-group-label">
@@ -156,7 +154,12 @@
               }
             </div>
             <div class="fx-empty lat-lon">
-              <app-map-info [mousePos]="mousePos"></app-map-info>
+              <app-map-info
+                [mousePos]="mousePos"
+                [reserveScaleLineWidth]="
+                  searchType() === searchTypes.DISPLACEMENT
+                "
+              ></app-map-info>
             </div>
           </div>
         </div>

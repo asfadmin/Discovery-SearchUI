@@ -226,13 +226,19 @@ label {
 
 .tool-bar-common {
   margin-left: 10px;
-}
 
-// Displacement has fewer buttons, so the lat/lon row (with the scale line
-// at its widest) can be 8px wider than this row. The margin keeps the
-// toolbar from resizing on zoom.
-.displacement-tool-bar {
-  margin-right: 8px;
+  // Displacement reserves the scale line's max width (see map-info), so its
+  // lat/lon row is wider than its few buttons. Spread the buttons over that
+  // width instead of leaving a gap at the end. Each group keeps its own width
+  // (not fx-empty's equal share), so its label stays centered over it.
+  &.spread-buttons {
+    justify-content: space-between;
+    width: auto;
+
+    > * {
+      flex: none;
+    }
+  }
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */

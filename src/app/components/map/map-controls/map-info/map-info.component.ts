@@ -21,6 +21,7 @@ export class MapInfoComponent implements AfterViewInit {
   private mapService = inject(services.MapService);
 
   @ViewChild('mapScaleComp', { static: true }) mapScale;
+  @Input() public reserveScaleLineWidth = false;
   @Input() public mousePos: LonLat;
 
   ngAfterViewInit() {
