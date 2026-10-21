@@ -17,6 +17,7 @@ export const alos = {
     Props.FARADAY_ROTATION,
     Props.STACK_SIZE,
     Props.BASELINE_TOOL,
+    Props.USE_BEAM_MODE,
   ],
   apiValue: { dataset: 'ALOS PALSAR' },
   date: {
@@ -60,6 +61,22 @@ export const alos = {
       apiValue: 'KMZ',
       displayName: 'GoogleEarth KMZ',
     },
+    // {
+    //   apiValue: 'L1.0',
+    //   displayName: 'Level 1.0',
+    // },
+    // {
+    //   apiValue: 'L1.1',
+    //   displayName: 'Level 1.1',
+    // },
+    // {
+    //   apiValue: 'L1.5',
+    //   displayName: 'Level 1.5',
+    // },
+    // {
+    //   apiValue: 'RTC',
+    //   displayName: 'Alos RTC',
+    // },
   ],
   beamModes: ['DSN', 'FBS', 'FBD', 'PLR', 'WB1', 'WB2'],
   polarizations: [
@@ -73,6 +90,15 @@ export const alos = {
     'VV+VH',
     'quadrature',
   ],
+  productTypeDisplays: {
+    displays: {
+      xml: 'ISO Metadata XML',
+      kml: 'Metadata KML',
+      kmz: 'Metadata KMZ',
+      jpg: 'Browse Image JPEG',
+      zip: 'Zip Archive',
+    },
+  },
   platforms: [],
   description: 'PALSAR_DESC',
   icon: '/assets/icons/satellite_alt_black_48dp.svg',

@@ -16,6 +16,7 @@ import Polygon from 'ol/geom/Polygon';
 import Select, { SelectEvent } from 'ol/interaction/Select';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
 import LayerGroup from 'ol/layer/Group';
+import CanvasTileLayer from 'ol/layer/Tile.js';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import TileLayer from 'ol/layer/WebGLTile.js';
 import * as proj from 'ol/proj';
@@ -43,8 +44,8 @@ import { WktService } from '../wkt.service';
 import { DrawService } from './draw.service';
 import { LayerService } from './layer.service';
 import { LegacyAreaFormatService } from '../legacy-area-format.service';
+import { PairSelectionService } from './pair-selection.service';
 import * as polygonStyle from './polygon.style';
-// import * as tileStyle from 'ol/style'
 import * as views from './views';
 
 @Injectable({
@@ -54,6 +55,7 @@ export class MapService implements OnDestroy {
   private wktService = inject(WktService);
   private legacyAreaFormat = inject(LegacyAreaFormatService);
   private drawService = inject(DrawService);
+  private pairSelectionService = inject(PairSelectionService);
   private store$ = inject<Store<AppState>>(Store);
   private browseOverlayService = inject(BrowseOverlayService);
   private layerService = inject(LayerService);
@@ -107,6 +109,7 @@ export class MapService implements OnDestroy {
   public priorityEnabled$ = new BehaviorSubject<models.FlightDirection | null>(
     null,
   );
+
   public searchType: models.SearchType;
 
   public displacementRange: {
@@ -630,6 +633,7 @@ export class MapService implements OnDestroy {
         this.displacementOverview,
         this.frameSelectionOverlay,
         this.selectedOnDemandFrameOverlays,
+        this.pairSelectionService.layer,
       ],
       target: 'map',
       view: this.mapView.view,
@@ -743,7 +747,7 @@ export class MapService implements OnDestroy {
     const mapLayers = this.map.getLayers();
     mapLayers.setAt(0, this.mapView.layer);
 
-    const controlLayer = new TileLayer({
+    const controlLayer = new CanvasTileLayer({
       source: this.mapView.layer.getSource(),
     });
     this.overviewMap.getOverviewMap().getLayers().setAt(0, controlLayer);
@@ -948,7 +952,7 @@ export class MapService implements OnDestroy {
           tileSize: [256, 256],
           maxZoom: 12,
           interpolate: false,
-        });
+        }) as any;
         this.displacementRange = response.scale_range;
 
         // Eventually let users define this part somehow

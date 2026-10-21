@@ -15,6 +15,7 @@ import { Hyp3HeaderComponent } from './hyp3-header/hyp3-header.component';
 import { InfoBarComponent } from './info-bar/info-bar.component';
 import { ListHeaderComponent } from './list-header/list-header.component';
 import { LogoComponent } from './logo/logo.component';
+import { PairSelectionHeaderComponent } from './pair-selection-header/pair-selection-header.component';
 import { TimeseriesHeaderComponent } from './timeseries-header/timeseries-header.component';
 
 @Component({
@@ -29,6 +30,7 @@ import { TimeseriesHeaderComponent } from './timeseries-header/timeseries-header
     BaselineHeaderComponent,
     Hyp3HeaderComponent,
     InfoBarComponent,
+    PairSelectionHeaderComponent,
     MatProgressBar,
     AsyncPipe,
   ],
