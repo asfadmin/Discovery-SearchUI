@@ -12,9 +12,13 @@ test(
 
     await nisarPage(page);
     await page.getByRole('button', { name: 'Geographic Search' }).click();
+    const countRequest = page.waitForResponse((response) =>
+      response.url().includes('output=COUNT'),
+    );
     await page
       .getByRole('menuitem', { name: 'List List search allows you' })
       .click();
+    await countRequest;
     await page.getByRole('textbox', { name: 'List of scene names' }).click();
     await page
       .getByRole('textbox', { name: 'List of scene names' })
@@ -71,9 +75,13 @@ test(
 test('Test GDAL Dialog', { tag: '@visual' }, async ({ page }) => {
   await nisarPage(page);
   await page.getByRole('button', { name: 'Geographic Search' }).click();
+  const countRequest = page.waitForResponse((response) =>
+    response.url().includes('output=COUNT'),
+  );
   await page
     .getByRole('menuitem', { name: 'List List search allows you' })
     .click();
+  await countRequest;
   await page.getByRole('textbox', { name: 'List of scene names' }).click();
   await page
     .getByRole('textbox', { name: 'List of scene names' })

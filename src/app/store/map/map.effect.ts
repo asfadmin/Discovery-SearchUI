@@ -202,6 +202,7 @@ export class MapEffects {
             if (latlon_browse) {
               url = latlon_browse;
             } else if (selectedProduct.dataset === models.datasets.NISAR.id) {
+              this.mapService.clearBrowseOverlays();
               this.store$.dispatch(new ClearBrowseOverlays());
               return;
             }
