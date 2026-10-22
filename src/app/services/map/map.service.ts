@@ -255,6 +255,15 @@ export class MapService implements OnDestroy {
     this.timeseriesHover.setActive(false);
   }
 
+  public isAtZoomLimit(direction: 'in' | 'out'): boolean {
+    const view = this.map.getView();
+    const zoom = view.getZoom();
+
+    return direction === 'in'
+      ? zoom >= view.getMaxZoom()
+      : zoom <= view.getMinZoom();
+  }
+
   private zoom(amount: number): void {
     this.map.getView().animate({
       zoom: this.map.getView().getZoom() + amount,

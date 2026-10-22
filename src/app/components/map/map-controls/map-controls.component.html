@@ -11,7 +11,10 @@
       <div class="fx-col">
         <div class="fx-row">
           <div class="fx-col visible-toggle">
-            <div class="fx-row icon-bar tool-bar-common">
+            <div
+              class="fx-row icon-bar tool-bar-common"
+              [class.spread-buttons]="searchType() === searchTypes.DISPLACEMENT"
+            >
               <div class="fx-empty group-margin">
                 <div class="map-view-button--layout button-group-label">
                   <label>&nbsp;{{ 'MAP_VIEW' | translate }}</label>
@@ -34,14 +37,24 @@
                       <mat-button-toggle
                         class="control-mat-button-toggle"
                         (click)="zoomIn()"
-                        [matTooltip]="'ZOOM_IN' | translate"
+                        [disabled]="isAtMaxZoom"
+                        disabledInteractive
+                        [matTooltip]="
+                          (isAtMaxZoom ? 'MAX_ZOOM_REACHED' : 'ZOOM_IN')
+                            | translate
+                        "
                       >
                         <mat-icon class="control-icon">add</mat-icon>
                       </mat-button-toggle>
                       <mat-button-toggle
                         class="control-mat-button-toggle"
                         (click)="zoomOut()"
-                        [matTooltip]="'ZOOM_OUT' | translate"
+                        [disabled]="isAtMinZoom"
+                        disabledInteractive
+                        [matTooltip]="
+                          (isAtMinZoom ? 'MIN_ZOOM_REACHED' : 'ZOOM_OUT')
+                            | translate
+                        "
                       >
                         <mat-icon class="control-icon">remove</mat-icon>
                       </mat-button-toggle>
@@ -141,7 +154,12 @@
               }
             </div>
             <div class="fx-empty lat-lon">
-              <app-map-info [mousePos]="mousePos"></app-map-info>
+              <app-map-info
+                [mousePos]="mousePos"
+                [reserveScaleLineWidth]="
+                  searchType() === searchTypes.DISPLACEMENT
+                "
+              ></app-map-info>
             </div>
           </div>
         </div>

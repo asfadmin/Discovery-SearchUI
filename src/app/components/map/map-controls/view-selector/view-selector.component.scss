@@ -45,6 +45,13 @@
   display: inline-block;
 }
 
+// Polar views are shown but unavailable for Displacement Search.
+// No pointer-events: none, so the tooltip still explains why.
+.unavailable-view {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .view-menu-icon {
   margin-right: 12px;
 }

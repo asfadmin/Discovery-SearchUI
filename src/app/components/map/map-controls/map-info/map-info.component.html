@@ -7,5 +7,5 @@
       <b>{{ 'LON' | translate }}</b> {{ mousePos?.lon | number: '2.1-4' }}°
     </div>
   </div>
-  <div #mapScaleComp></div>
+  <div #mapScaleComp [class.reserved-scale-line]="reserveScaleLineWidth"></div>
 </div>

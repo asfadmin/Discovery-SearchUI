@@ -72,6 +72,8 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   );
   public velocityOverlayOpacity: number;
   public showToolBar = true;
+  public isAtMaxZoom = false;
+  public isAtMinZoom = false;
   public toolBarWidth = 571;
 
   private subs = new SubSink();
@@ -104,6 +106,13 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.mapService.mousePosition$.subscribe((mp) => (this.mousePos = mp)),
+    );
+
+    this.subs.add(
+      this.mapService.zoom$.subscribe(() => {
+        this.isAtMaxZoom = this.mapService.isAtZoomLimit('in');
+        this.isAtMinZoom = this.mapService.isAtZoomLimit('out');
+      }),
     );
 
     this.subs.add(
@@ -153,11 +162,21 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     }
   }
 
+  // The zoom buttons use disabledInteractive (so the tooltip still shows),
+  // which means clicks still arrive here at the zoom limits
   public zoomIn(): void {
+    if (this.isAtMaxZoom) {
+      return;
+    }
+
     this.mapService.zoomIn();
   }
 
   public zoomOut(): void {
+    if (this.isAtMinZoom) {
+      return;
+    }
+
     this.mapService.zoomOut();
   }
 
