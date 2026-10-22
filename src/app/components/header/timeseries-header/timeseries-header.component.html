@@ -61,6 +61,22 @@
             {{ 'INCIDENCE_ANGLE' | translate }}: 29° &ndash; 46°
           </span>
         </span>
+        @if (!isProd) {
+          <span class="set-bucket-wrapper">
+            <form>
+              <mat-form-field style="min-width: 300px">
+                <mat-label>S3 Bucket</mat-label
+                ><input
+                  type="text"
+                  (input)="onSetBucket($event)"
+                  [value]="'asf-cumulus-prod-opera-products'"
+                  matInput
+                  name="S3 Bucket"
+                />
+              </mat-form-field>
+            </form>
+          </span>
+        }
       </div>
       <div class="icon-cluster">
         <app-header-buttons> </app-header-buttons>
