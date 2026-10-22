@@ -49,12 +49,11 @@ export const opera_s1 = {
     },
     {
       apiValue: 'DISP-S1-STATIC',
-      displayName:
-        'L3 Co-registered Surface Displacement Static Layer (DISP-S1-STATIC)',
+      displayName: 'L3 Surface Displacement Static Layer (DISP-S1-STATIC)',
     },
     {
       apiValue: 'DIST-ALERT-S1',
-      displayName: 'DIST ALERT Products (DIST-ALERT-S1)',
+      displayName: 'L3 Surface Disturbance Alert (DIST-ALERT-S1)',
     },
   ],
   beamModes: ['IW', 'EW'],
