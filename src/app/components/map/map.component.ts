@@ -312,12 +312,16 @@ export class MapComponent implements OnInit, OnDestroy {
         this.store$.select(scenesStore.getFilterMaster), // frame id for things
         this.store$.select(filtersStore.getSelectedDataset),
       ]).subscribe(([shouldUseFramesForReference, filterMaster, dataset]) => {
-        // TODO: load in frame map instead of grabbing previous frame map feature
-        this.mapService.sbasFrameMode(
-          !shouldUseFramesForReference,
-          filterMaster,
-          dataset,
-        );
+        if (
+          dataset.properties.includes(models.Props.PAIR_SELECTION) &&
+          this.searchType() === models.SearchType.SBAS
+        ) {
+          this.mapService.sbasFrameMode(
+            !shouldUseFramesForReference,
+            filterMaster,
+            dataset,
+          );
+        }
       }),
     );
 
