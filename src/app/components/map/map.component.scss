@@ -1,4 +1,4 @@
-@use "asf-theme-variables" as *;
+@use 'asf-theme-variables' as *;
 
 .map {
   position: fixed;
@@ -6,20 +6,20 @@
 }
 
 .on-demand-popup-menu {
-    position: absolute;
-    bottom: 12px;
-    left: -50px;
-    min-width: 200px;
-    padding: 15px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 1px 4px rgb(0 0 0 / 20%);
+  position: absolute;
+  bottom: 12px;
+  left: -50px;
+  min-width: 200px;
+  padding: 15px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 20%);
 }
 
 .hidden {
-    z-index: -9999;
-    opacity: 0.0;
+  z-index: -9999;
+  opacity: 0;
 }
 
 .map-header {
@@ -173,7 +173,9 @@ button {
   border: none;
 }
 
-::ng-deep.map .ol-overviewmap.ol-custom-overviewmap.ol-unselectable.ol-control button {
+::ng-deep.map
+  .ol-overviewmap.ol-custom-overviewmap.ol-unselectable.ol-control
+  button {
   visibility: hidden !important;
 }
 
@@ -220,5 +222,15 @@ button {
     width: 18px;
     height: 18px;
     font-size: 18px;
+  }
+}
+.multi-frame {
+  display: flex;
+  flex-direction: column;
+  max-height: 20vh;
+  overflow-y: auto;
+  button {
+    width: 100%;
+    justify-content: flex-start;
   }
 }

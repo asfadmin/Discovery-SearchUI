@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnDestroy, inject, EventEmitter } from '@angular/core';
+import { Injectable, inject, EventEmitter, signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import intersect from '@turf/intersect';
@@ -31,7 +31,6 @@ import {
 import { ViewOptions } from 'ol/View';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { first, map, sampleTime, tap } from 'rxjs/operators';
-import { SubSink } from 'subsink';
 
 import * as models from '@models';
 import { BrowseOverlayService, PointHistoryService } from '@services';
@@ -51,7 +50,7 @@ import * as views from './views';
 @Injectable({
   providedIn: 'root',
 })
-export class MapService implements OnDestroy {
+export class MapService {
   private wktService = inject(WktService);
   private legacyAreaFormat = inject(LegacyAreaFormatService);
   private drawService = inject(DrawService);
@@ -71,7 +70,7 @@ export class MapService implements OnDestroy {
     ),
   );
   public focusedAriaFrame$ = new Subject<Feature>();
-  private subs = new SubSink();
+  public selectedMultipleFrame$ = signal<Feature[]>([]);
   private mapView: views.MapView;
   private map: Map;
   private scaleLine: ScaleLine;
@@ -110,7 +109,7 @@ export class MapService implements OnDestroy {
     null,
   );
 
-  public searchType: models.SearchType;
+  public searchType = this.store$.selectSignal(searchStore.getSearchType);
 
   public displacementRange: {
     range: number[];
@@ -119,24 +118,9 @@ export class MapService implements OnDestroy {
 
   private loadingBrowseSceneID = '';
 
-  constructor() {
-    this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
-        this.searchType = searchType;
-      }),
-    );
-  }
-
   private selectClick = new Select({
     condition: click,
-    style: function (feature) {
-      if (feature.get('dir')) {
-        // only frame overlay has this defined
-        return polygonStyle.selected;
-      } else {
-        return polygonStyle.hidden;
-      }
-    },
+    style: null,
     layers: (l) => l.get('selectable'),
   });
 
@@ -186,15 +170,6 @@ export class MapService implements OnDestroy {
   private selectedLayer = new VectorLayer({
     source: this.selectedSource,
     style: polygonStyle.invalid,
-  });
-
-  private focusSource = new VectorSource({
-    wrapX: models.mapOptions.wrapX,
-  });
-
-  private focusLayer = new VectorLayer({
-    source: this.focusSource,
-    style: polygonStyle.hover,
   });
 
   private mousePositionSubject$ = new BehaviorSubject<models.LonLat>({
@@ -303,7 +278,7 @@ export class MapService implements OnDestroy {
   }
 
   public setDrawStyle(style: models.DrawPolygonStyle): void {
-    if (this.searchType == 'Displacement') {
+    if (this.searchType() == models.SearchType.DISPLACEMENT) {
       this.drawService.setDrawStyle(models.DrawPolygonStyle.VALID_DISPLACEMENT);
       this.drawService.getLayer().setVisible(false);
     } else {
@@ -427,7 +402,6 @@ export class MapService implements OnDestroy {
 
   public clearDrawLayer(): void {
     this.drawService.clear();
-    this.clearFocusedScene();
     this.clearSelectedScene();
     // this.frameSelectionOverlay.setSource(null);
   }
@@ -484,15 +458,6 @@ export class MapService implements OnDestroy {
 
     features.forEach((feature) => this.selectedSource.addFeature(feature));
   }
-  public clearFocusedScene(): void {
-    this.focusSource.clear();
-    this.selectHover.getFeatures().clear();
-  }
-
-  public setFocusedFeature(feature): void {
-    this.focusSource.clear();
-    this.focusSource.addFeature(feature);
-  }
 
   public zoomToResults(): void {
     const extent = this.polygonLayer.getSource().getExtent();
@@ -541,10 +506,33 @@ export class MapService implements OnDestroy {
           },
         },
       });
+      this.map.removeOverlay(this.map.getOverlayById('multipleFrameMenu'));
       this.map.addOverlay(OnDemandMapPopupMenuOverlay);
     } else {
       this.map.removeOverlay(this.map.getOverlayById('customOnDemandMenu'));
       // this.map.addLayer(this.selectedOnDemandFrameOverlays)
+    }
+  }
+
+  public setMultipleFrameOverlay(container: HTMLElement = null) {
+    if (container) {
+      const multipleFrameSelectionPopupMenuOverlay = new Overlay({
+        element: container,
+        position: this.projectedPosition,
+        id: 'multipleFrameMenu',
+        autoPan: {
+          animation: {
+            duration: 250,
+          },
+        },
+      });
+      this.map.removeOverlay(this.map.getOverlayById('customOnDemandMenu'));
+      this.map.addOverlay(multipleFrameSelectionPopupMenuOverlay);
+      this.selectHover.setActive(false);
+      this.selectHover.clearSelection();
+    } else {
+      this.map.removeOverlay(this.map.getOverlayById('multipleFrameMenu'));
+      this.selectHover.setActive(true);
     }
   }
   public sbasFrameMode(
@@ -574,20 +562,36 @@ export class MapService implements OnDestroy {
     });
   }
   private handleSelect(e: SelectEvent) {
-    // only do this for the frame selector
-    if (e.target.getFeatures().getArray()[0]?.get('dir')) {
+    const features = [];
+    this.map.forEachFeatureAtPixel(
+      e.mapBrowserEvent.pixel,
+      (feature, _layer) => {
+        if (feature.get('filename') || feature.get('dir')) {
+          features.push(feature);
+        }
+      },
+    );
+    if (
+      features.length > 1 ||
+      this.searchType() === models.SearchType.PAIR_SELECTION
+    ) {
+      this.selectedSource.refresh();
+      // this.selectHover.setActive(false);
+      this.selectedMultipleFrame$.set(features);
+    } else if (e.selected.length > 0) {
+      this.handleFeature(e.selected[0]);
+    }
+  }
+
+  public handleFeature(feature: Feature) {
+    if (feature?.get('dir')) {
       this.selectedSource.clear();
-      this.selectedSource.addFeature(e.selected[0]); // handle multiple things here.
-      const feat = e.target.getFeatures().getArray()[0];
+      this.selectedSource.addFeature(feature); // handle multiple things here.
       // const id = feat.get('id');
       // console.log(`Id selected: ${id}`);
-      this.focusedAriaFrame$.next(feat);
+      this.focusedAriaFrame$.next(feature);
     } else {
-      e.target
-        .getFeatures()
-        .forEach((feature) =>
-          this.newSelectedScene$.next(feature.get('filename')),
-        );
+      this.newSelectedScene$.next(feature.get('filename'));
     }
   }
 
@@ -625,7 +629,6 @@ export class MapService implements OnDestroy {
       layers: [
         this.mapView.layer,
         this.drawService.getLayer(),
-        this.focusLayer,
         this.selectedLayer,
         this.mapView?.gridlines,
         this.pinnedProducts,
@@ -692,7 +695,6 @@ export class MapService implements OnDestroy {
     });
 
     this.drawService.getLayer().setZIndex(100);
-    this.focusLayer.setZIndex(99);
     this.selectedLayer.setZIndex(98);
 
     newMap.on('moveend', (e) => {
@@ -1236,9 +1238,5 @@ export class MapService implements OnDestroy {
         coordinates: [(polygon.getGeometry() as Polygon).getCoordinates()[0]],
       },
     );
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 }

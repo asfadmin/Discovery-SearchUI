@@ -4,9 +4,10 @@ import { Feature } from 'ol';
 import { Polygon } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { Fill, Stroke, Style } from 'ol/style';
 
 import { Range } from '@models';
+
+import { framePreview } from './polygon.style';
 
 @Injectable({
   providedIn: 'root',
@@ -19,15 +20,34 @@ export class PairSelectionService {
 
     this.layer = new VectorLayer<VectorSource>({
       source: this.source,
-      style: new Style({
-        fill: new Fill({
-          color: '#FFFFFF33',
-        }),
-        stroke: new Stroke({
-          color: 'black',
-        }),
-      }),
+      style: framePreview,
+      properties: {
+        selectable: true,
+      },
     });
+  }
+
+  public selectFrame(_id: string) {
+    return;
+  }
+
+  // make private
+  public onInteract() {
+    // check if interaction is overlapping multiple frames
+    // if no just select it
+    // if yes, bring up menu with multiple frame options available
+    return;
+  }
+
+  public previewFrame(_id: string) {
+    // finds frame feature by id in vector layer
+    // sets frame to certain style
+    return;
+  }
+
+  public clearPreviewFrame() {
+    // go through all features and remove frame preview styling
+    return;
   }
 
   public loadFramePreview(frames: Feature[]) {
