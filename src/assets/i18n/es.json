@@ -522,6 +522,7 @@
   "METERS_30": "30 metros",
   "MIN_DAYS": "Días mínimos",
   "MINIMAL_COMMAND": "Usar archivo de configuración",
+  "MINIMAL_COMMAND_IS_DISABLED": "Config file generation is disabled on Windows.",
   "MORE": "Más",
   "MORE_INFO": "Más Información",
   "MORE_LIKE_THIS": "Más Como Esto",

@@ -146,9 +146,18 @@
           </mat-form-field>
         </span>
         <span class="option checkbox">
-          <mat-checkbox [(ngModel)]="minimalCommand">{{
-            'MINIMAL_COMMAND' | translate
-          }}</mat-checkbox>
+          <mat-checkbox
+            [(ngModel)]="minimalCommand"
+            [(ngModel)]="minimalCommand"
+            [disabled]="outputOS() === 'Windows'"
+            disabledInteractive
+            [matTooltip]="
+              outputOS() === 'Windows'
+                ? ('MINIMAL_COMMAND_IS_DISABLED' | translate)
+                : null
+            "
+            >{{ 'MINIMAL_COMMAND' | translate }}</mat-checkbox
+          >
         </span>
       </div>
     </div>
