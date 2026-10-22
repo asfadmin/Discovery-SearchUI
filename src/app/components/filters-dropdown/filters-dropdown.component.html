@@ -38,7 +38,10 @@
       class="filters-list"
       [class.filters-list-mobile]="breakpoint() === breakpoints.MOBILE"
     >
-      @if (searchType() === searchTypes.DATASET) {
+      @if (
+        searchType() === searchTypes.DATASET ||
+        searchType() === searchTypes.PAIR_SELECTION
+      ) {
         @if (frameSelectionEnabled$ | async) {
           <app-frame-order-filters></app-frame-order-filters>
         } @else {

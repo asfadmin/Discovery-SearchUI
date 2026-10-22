@@ -286,6 +286,19 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         .pipe(filter((userAuth) => !!userAuth?.token))
         .subscribe((_) => this.store$.dispatch(new userStore.LoadProfile())),
     );
+    this.subs.add(
+      this.searchParams$.getlatestParams
+        .pipe(
+          distinctUntilChanged((previous, current) => {
+            return JSON.stringify(previous) === JSON.stringify(current);
+          }),
+          debounceTime(200),
+          filter((_) => this.searchType === SearchType.PAIR_SELECTION),
+        )
+        .subscribe(() => {
+          this.store$.dispatch(new searchStore.SetSearchOutOfDate(true));
+        }),
+    );
 
     this.subs.add(
       this.store$

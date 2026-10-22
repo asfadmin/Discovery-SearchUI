@@ -178,7 +178,6 @@ export class DrawService {
       this.drawEndCallback(e.feature);
 
       this.isDrawing$.next(false);
-      // e.feature.setGeometryName('andy');
       this.polygon$.next(e.feature);
       this.store$.dispatch(new DrawNewPolygon());
       this.store$.dispatch(new SetGeocode(''));

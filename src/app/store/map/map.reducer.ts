@@ -15,6 +15,7 @@ export interface MapState {
   velocityOverlayOpacity: number;
   coherenceOverlayOpacity: number;
   overviewMapOpen: boolean;
+  frameMapLoading: boolean;
 }
 
 export const initState: MapState = {
@@ -29,6 +30,7 @@ export const initState: MapState = {
   coherenceOverlayOpacity: 1.0,
 
   overviewMapOpen: false,
+  frameMapLoading: false,
 };
 
 export function mapReducer(state = initState, action: MapActions): MapState {
@@ -111,6 +113,12 @@ export function mapReducer(state = initState, action: MapActions): MapState {
       return {
         ...state,
         overviewMapOpen: action.payload,
+      };
+    }
+    case MapActionType.SET_FRAME_MAP_LOADING: {
+      return {
+        ...state,
+        frameMapLoading: action.payload,
       };
     }
 
