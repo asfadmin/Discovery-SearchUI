@@ -49,7 +49,7 @@ export const opera_s1 = {
     },
     {
       apiValue: 'DISP-S1-STATIC',
-      displayName: 'L3 Surface Displacement Static Layer (DISP-S1-STATIC)',
+      displayName: 'L3 Surface Displacement Static Layers (DISP-S1-STATIC)',
     },
     {
       apiValue: 'DIST-ALERT-S1',
