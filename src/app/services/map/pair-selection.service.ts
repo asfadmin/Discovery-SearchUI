@@ -1,12 +1,12 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import GeoJSON from 'ol/format/GeoJSON.js';
+import { Injectable } from '@angular/core';
+import intersect from '@turf/intersect';
+import { Feature } from 'ol';
+import { Polygon } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Stroke, Style } from 'ol/style';
-import { map, Subscription } from 'rxjs';
 
-import { Dataset } from '@models';
+import { Range } from '@models';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +14,6 @@ import { Dataset } from '@models';
 export class PairSelectionService {
   private source: VectorSource;
   public layer: VectorLayer<VectorSource>;
-  private http = inject(HttpClient);
-
-  private request: Subscription;
   constructor() {
     this.source = new VectorSource();
 
@@ -33,27 +30,63 @@ export class PairSelectionService {
     });
   }
 
-  public loadFramePreview(dataset: Dataset, _params: URLSearchParams = null) {
-    const url = dataset?.frameMap.ascending; // TODO: define these better, and include params with
-    if (this.request) {
-      this.request.unsubscribe();
-    }
-    this.request = this.http
-      .get(url)
-      .pipe(
-        map((test) => {
-          const features = new GeoJSON().readFeatures(test, {
-            featureProjection: 'EPSG:3857', // TODO: Adjust to views later
-          });
-          return features;
-        }),
-      )
-      .subscribe((features) => {
-        this.source.clear();
-        this.source.addFeatures(features);
-      });
+  public loadFramePreview(frames: Feature[]) {
+    this.source.clear();
+    this.source.addFeatures(frames);
   }
+
   public clearFramePreview() {
     this.source.clear();
+  }
+
+  private isWithinRange(value, range: Range<number | undefined>) {
+    if (range === null || range == undefined) {
+      return true;
+    }
+    if (range?.start !== null) {
+      if (range?.end !== null) {
+        return value >= range?.start && value <= range?.end;
+      } else {
+        return value >= range?.start;
+      }
+    } else if (range?.end !== null) {
+      return value <= range.end;
+    }
+    return true;
+  }
+
+  public tempAriaMapFilter(
+    features: Feature[],
+    _params: any,
+    polygon,
+    pathFrameRange,
+  ) {
+    const baseCoords = [(polygon.getGeometry() as Polygon).getCoordinates()[0]];
+    return features.filter((a) => {
+      const frame = +a.get('id');
+      const path = +a.get('path');
+      if (
+        !intersect(
+          {
+            type: 'Polygon',
+            coordinates: [(a.getGeometry() as Polygon).getCoordinates()[0]],
+          },
+          {
+            type: 'Polygon',
+            coordinates: baseCoords,
+          },
+        )
+      ) {
+        return false;
+      }
+      if (
+        this.isWithinRange(frame, pathFrameRange.frameRange) &&
+        this.isWithinRange(path, pathFrameRange.pathRange)
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
   }
 }
