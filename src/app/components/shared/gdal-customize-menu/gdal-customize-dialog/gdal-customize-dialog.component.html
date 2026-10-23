@@ -62,7 +62,7 @@
             [matTooltip]="
               !gdalService.isCropToAOIAvailable()
                 ? ('CROP_TO_AOI_DISABLED' | translate)
-                : null
+                : ('CROP_TO_AOI_TOOLTIP' | translate)
             "
             >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
           >
@@ -76,7 +76,9 @@
                 [disabled]="!cropToAOI()"
                 disabledInteractive
                 [matTooltip]="
-                  !cropToAOI() ? ('CROP_TO_AOI_IS_DISABLED' | translate) : null
+                  !cropToAOI()
+                    ? ('CROP_TO_AOI_IS_DISABLED' | translate)
+                    : ('CROP_TO_AOI_TOOLTIP' | translate)
                 "
                 [(ngModel)]="cutlineWKT"
               />
@@ -100,7 +102,10 @@
         <span class="option short">
           <mat-form-field>
             <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
-            <mat-select [(ngModel)]="outputFormat">
+            <mat-select
+              [(ngModel)]="outputFormat"
+              [matTooltip]="'OUTPUT_FORMAT_TOOLTIP' | translate"
+            >
               @for (format of outputFormats; track format) {
                 <mat-option [value]="format"> {{ format }} </mat-option>
               }
@@ -116,6 +121,7 @@
               matInput
               name="outputFilenameInput"
               [(ngModel)]="outputFilename"
+              [matTooltip]="'OUTPUT_FILENAME_TOOLTIP' | translate"
             />
           </mat-form-field>
         </span>
@@ -138,7 +144,10 @@
         <span class="option">
           <mat-form-field>
             <mat-label> {{ 'OUTPUT_OS' | translate }}</mat-label>
-            <mat-select [(ngModel)]="outputOS">
+            <mat-select
+              [(ngModel)]="outputOS"
+              [matTooltip]="'OUTPUT_OS_TOOLTIP' | translate"
+            >
               @for (os of outputOSList; track os) {
                 <mat-option [value]="os"> {{ os }} </mat-option>
               }
@@ -154,7 +163,7 @@
             [matTooltip]="
               outputOS() === 'Windows'
                 ? ('MINIMAL_COMMAND_IS_DISABLED' | translate)
-                : null
+                : ('MINIMAL_COMMAND_TOOLTIP' | translate)
             "
             >{{ 'MINIMAL_COMMAND' | translate }}</mat-checkbox
           >
