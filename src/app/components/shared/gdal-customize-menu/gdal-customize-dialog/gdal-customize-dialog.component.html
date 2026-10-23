@@ -18,35 +18,40 @@
   </span>
   <div class="dataset-list-card">
     <h2>1. {{ 'SELECT_A_DATASET' | translate }}</h2>
-    <mat-radio-group [(ngModel)]="selectedDataset" class="dataset-list">
+    <mat-button-toggle-group
+      [(ngModel)]="selectedDataset"
+      vertical
+      class="dataset-list"
+    >
       @for (dataset of data.datasets; track dataset) {
-        <div class="gdal-dataset" [aria-label]="dataset.name">
-          <span class="gdal-dataset-name">
-            {{ dataset.name }}
-          </span>
-          @if (dataset.type) {
-            <span class="gdal-dataset-chip">
-              {{ dataset.type }}
+        <mat-button-toggle
+          class="dataset-button"
+          [value]="dataset.path"
+          [aria-label]="('SELECT' | translate) + ' ' + dataset.name"
+          [matTooltip]="('SELECT' | translate) + ' ' + dataset.name"
+        >
+          <div class="gdal-dataset" [aria-label]="dataset.name">
+            <span class="gdal-dataset-name">
+              {{ dataset.name }}
             </span>
-          }
-          @if (dataset.unit) {
-            <span class="gdal-dataset-chip">
-              {{ dataset.unit }}
+            @if (dataset.type) {
+              <span class="gdal-dataset-chip">
+                {{ dataset.type }}
+              </span>
+            }
+            @if (dataset.unit) {
+              <span class="gdal-dataset-chip">
+                {{ dataset.unit }}
+              </span>
+            }
+            <span class="flex-grow"></span>
+            <span class="gdal-dataset-path">
+              {{ dataset.path }}
             </span>
-          }
-          <span class="flex-grow"></span>
-          <span class="gdal-dataset-path">
-            {{ dataset.path }}
-          </span>
-          <mat-radio-button
-            [value]="dataset.path"
-            [aria-label]="('SELECT' | translate) + ' ' + dataset.name"
-            [matTooltip]="('SELECT' | translate) + ' ' + dataset.name"
-          >
-          </mat-radio-button>
-        </div>
+          </div>
+        </mat-button-toggle>
       }
-    </mat-radio-group>
+    </mat-button-toggle-group>
   </div>
 
   <div class="blur-overlay-container">

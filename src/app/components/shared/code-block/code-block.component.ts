@@ -1,3 +1,4 @@
+import { KeyValuePipe } from '@angular/common';
 import {
   Component,
   computed,
@@ -7,6 +8,11 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import {
+  MatButtonToggle,
+  MatButtonToggleGroup,
+} from '@angular/material/button-toggle';
 import { TranslateModule } from '@ngx-translate/core';
 import Prism from 'prismjs';
 
@@ -14,12 +20,6 @@ import { CopyToClipboardComponent } from '../copy-to-clipboard';
 
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-python';
-import { KeyValuePipe } from '@angular/common';
-import {
-  MatButtonToggle,
-  MatButtonToggleGroup,
-} from '@angular/material/button-toggle';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-code-block',

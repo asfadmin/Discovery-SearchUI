@@ -8,6 +8,10 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
+import {
+  MatButtonToggle,
+  MatButtonToggleGroup,
+} from '@angular/material/button-toggle';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -43,6 +47,8 @@ import {
   imports: [
     TranslateModule,
     MatExpansionModule,
+    MatButtonToggleGroup,
+    MatButtonToggle,
     MatRadioGroup,
     MatRadioButton,
     MatTooltip,
