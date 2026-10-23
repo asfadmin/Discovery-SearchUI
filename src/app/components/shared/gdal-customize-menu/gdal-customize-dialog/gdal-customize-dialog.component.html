@@ -56,8 +56,6 @@
       <div class="options-list">
         <span class="option checkbox">
           <mat-checkbox
-            [disabled]="!gdalService.isCropToAOIAvailable()"
-            disabledInteractive
             [(ngModel)]="cropToAOI"
             [matTooltip]="
               !gdalService.isCropToAOIAvailable()
@@ -67,7 +65,7 @@
             >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
           >
         </span>
-        @if (gdalService.isCropToAOIAvailable()) {
+        @if (gdalService.isCropToAOIAvailable() || cropToAOI()) {
           <span class="option cutline">
             <mat-form-field>
               <mat-label>{{ 'AREA_OF_INTEREST_WKT' | translate }}</mat-label>

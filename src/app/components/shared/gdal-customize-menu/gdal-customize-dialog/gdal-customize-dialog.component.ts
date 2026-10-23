@@ -101,7 +101,8 @@ export class GdalCustomizeDialogComponent {
         outputFormat: this.outputFormat(),
         outputExtension: this.outputExtension(),
       },
-      cutlineWKT: this.cropToAOI() ? this.cutlineWKT() : '',
+      cutlineWKT:
+        this.cropToAOI() && this.cutlineWKT() ? this.cutlineWKT() : '',
       minimalCommand: this.minimalCommand(),
       os: this.outputOS(),
       outputFilename: this.outputFilename(),
