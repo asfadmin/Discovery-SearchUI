@@ -157,7 +157,6 @@
         <span class="option checkbox">
           <mat-checkbox
             [(ngModel)]="minimalCommand"
-            [(ngModel)]="minimalCommand"
             [disabled]="outputOS() === 'Windows'"
             disabledInteractive
             [matTooltip]="
@@ -165,8 +164,23 @@
                 ? ('MINIMAL_COMMAND_IS_DISABLED' | translate)
                 : ('MINIMAL_COMMAND_TOOLTIP' | translate)
             "
-            >{{ 'MINIMAL_COMMAND' | translate }}</mat-checkbox
           >
+            {{ 'MINIMAL_COMMAND' | translate }}
+          </mat-checkbox>
+        </span>
+        <span class="option checkbox">
+          <mat-checkbox
+            [(ngModel)]="nisarDriver"
+            [disabled]="outputOS() === 'Windows'"
+            disabledInteractive
+            [matTooltip]="
+              outputOS() === 'Windows'
+                ? ('JPL_NISAR_DRIVER_IS_DISABLED' | translate)
+                : ('JPL_NISAR_DRIVER_TOOLTIP' | translate)
+            "
+          >
+            {{ 'JPL_NISAR_DRIVER' | translate }}
+          </mat-checkbox>
         </span>
       </div>
     </div>
@@ -182,6 +196,29 @@
         language="bash"
       >
       </app-code-block>
+
+      @if (nisarDriver()) {
+        <p>{{ 'JPL_NISAR_DRIVER_HELP_BODY' | translate }}</p>
+        <app-code-block
+          [isCommand]="true"
+          defaultTab="INSTALL_NISAR_DRIVER_VIA_CONDA"
+          [codeContentByTab]="{
+            INSTALL_NISAR_DRIVER_VIA_CONDA:
+              'conda install -c nisar-forge -c conda-forge gdal-driver-nisar',
+            INSTALL_NISAR_DRIVER_VIA_MAMBA:
+              'mamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
+            INSTALL_NISAR_DRIVER_VIA_MICROMAMBA:
+              'micromamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
+            INSTALL_NISAR_DRIVER_VIA_PIXI:
+              'pixi global install -c nisar-forge -c conda-forge gdal-driver-nisar',
+          }"
+          copyPrompt="COPY_TO_CLIPBOARD"
+          copyMessage="COPIED_TO_CLIPBOARD"
+          language="bash"
+        >
+        </app-code-block>
+      }
+
       <div><br /></div>
       <app-docs-modal
         class="info-text"

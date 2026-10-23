@@ -26,6 +26,7 @@ export interface GdalOptions {
   os?: GdalOs;
   outputFilename?: string;
   gdalVersion?: GdalVersion;
+  nisarDriver?: boolean;
   cutlineWKT?: string;
 }
 
@@ -127,8 +128,11 @@ export class GdalService {
     qgisArgs = false,
   ): string[] {
     const command = this.resolveGDALCommand(options);
-    const driver =
-      this.resolveGDALVersion(options) == '≥3.13' ? 'HDF5' : 'NETCDF';
+    const driver = options.nisarDriver
+      ? 'NISAR'
+      : this.resolveGDALVersion(options) == '≥3.13'
+        ? 'HDF5'
+        : 'NETCDF';
     const downloadURL = `${driver}:"/vsicurl/${options.product.downloadUrl}":${options.datasetPath}`;
     const outputFileName = `-of ${this.resolveOutputFormat(options)} "${this.resolveOutputFilename(options)}"`;
     const configOptions = [];

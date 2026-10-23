@@ -86,6 +86,7 @@ export class GdalCustomizeDialogComponent {
   cropToAOI = signal<boolean>(false);
   cutlineWKT = signal<string>(this.gdalService.searchPolygon());
   minimalCommand = signal<boolean>(false);
+  nisarDriver = signal<boolean>(false);
   outputOSList = GDAL_OS;
   outputOS = signal<GdalOs>(this.getOS());
   outputType = signal<string>('gdal');
@@ -107,6 +108,7 @@ export class GdalCustomizeDialogComponent {
       os: this.outputOS(),
       outputFilename: this.outputFilename(),
       gdalVersion: this.gdalVersion(),
+      nisarDriver: this.nisarDriver(),
     };
   });
   gdalCommand = computed(() =>

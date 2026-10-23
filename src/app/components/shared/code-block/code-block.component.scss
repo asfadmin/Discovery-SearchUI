@@ -21,10 +21,17 @@
   }
 }
 
+.code-header.hoverable {
+  padding-top: 1em;
+}
+
+.code-header.tabbed {
+  padding-top: 0.5em;
+}
+
 .code-header {
   display: flex;
   align-items: center;
-  padding-top: 1em;
   padding-bottom: 0.25em;
   margin-bottom: 0.4em;
   font-size: 16px;
@@ -45,7 +52,25 @@
   }
 }
 
-.code-header:hover {
+.code-header-description {
+  @include mat.button-toggle-overrides(
+    (
+      height: 16px,
+      shape: 15px,
+      label-text-size: 16px,
+      divider-color: transparent,
+    )
+  );
+  @include themify($themes) {
+    @include mat.button-toggle-overrides(
+      (
+        text-color: themed('dark-secondary-text'),
+      )
+    );
+  }
+}
+
+.code-header.hoverable:hover {
   @include themify($themes) {
     background-color: themed('dark-focused');
   }
