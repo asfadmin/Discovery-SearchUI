@@ -105,7 +105,9 @@
               [matTooltip]="'OUTPUT_FORMAT_TOOLTIP' | translate"
             >
               @for (format of outputFormats; track format) {
-                <mat-option [value]="format"> {{ format }} </mat-option>
+                <mat-option [value]="format">
+                  {{ format.toUpperCase() | translate }}
+                </mat-option>
               }
             </mat-select>
           </mat-form-field>
