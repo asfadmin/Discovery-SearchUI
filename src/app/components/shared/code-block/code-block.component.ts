@@ -36,7 +36,7 @@ import 'prismjs/components/prism-python';
 })
 export class CodeBlockComponent {
   codeDescription = input<string>();
-  codeContent = input<string>();
+  codeContent = input<string | string[]>();
   codeContentByTab = input<Record<string, string | undefined>>();
   defaultTab = input<string>();
   copyPrompt = input<string>('COPY_TO_CLIPBOARD');
@@ -46,8 +46,10 @@ export class CodeBlockComponent {
 
   codeBlock = viewChild<ElementRef | null>('codeBlock');
   currentTab = signal<string>('');
-  codeValue = computed<string>(
-    () => this.codeContent() ?? this.codeContentByTab()[this.currentTab()],
+  codeValue = computed<string>(() =>
+    [this.codeContent() ?? this.codeContentByTab()[this.currentTab()]]
+      .flat()
+      .join('\n'),
   );
 
   constructor() {

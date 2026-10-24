@@ -19,8 +19,9 @@
   <div class="dataset-list-card">
     <h2>1. {{ 'SELECT_A_DATASET' | translate }}</h2>
     <mat-button-toggle-group
-      [(ngModel)]="selectedDataset"
+      [(ngModel)]="selectedDatasets"
       vertical
+      multiple
       class="dataset-list"
     >
       @for (dataset of data.datasets; track dataset) {
@@ -125,8 +126,14 @@
             <input
               matInput
               name="outputFilenameInput"
+              [disabled]="multiVariableExport()"
               [(ngModel)]="outputFilename"
-              [matTooltip]="'OUTPUT_FILENAME_TOOLTIP' | translate"
+              [matTooltip]="
+                (multiVariableExport()
+                  ? 'OUTPUT_FILENAME_TOOLTIP_DISABLED'
+                  : 'OUTPUT_FILENAME_TOOLTIP'
+                ) | translate
+              "
             />
           </mat-form-field>
         </span>
@@ -259,7 +266,7 @@
       </div>
     }
 
-    @if (!selectedDataset()) {
+    @if (!selectedDatasets()) {
       <div
         class="blur-overlay"
         [matTooltip]="'SELECT_A_DATASET_TO_CONTINUE' | translate"
@@ -270,7 +277,7 @@
 </div>
 
 <div class="footer">
-  @if (selectedDataset()) {
+  @if (selectedDatasets()) {
     <app-copy-to-clipboard
       [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
       [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"

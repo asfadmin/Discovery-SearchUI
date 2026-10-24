@@ -615,6 +615,7 @@
   "ORGANIZATION": "Organization",
   "OUTPUT_FILENAME": "Output Filename",
   "OUTPUT_FILENAME_TOOLTIP": "Set the name of your output file.",
+  "OUTPUT_FILENAME_TOOLTIP_DISABLED": "Cannot set output filename when multiple datasets are selected.",
   "OUTPUT_FORMAT": "File Format",
   "OUTPUT_FORMAT_TOOLTIP": "Select the output format of your file.",
   "OUTPUT_OS": "Operating System",
