@@ -37,6 +37,25 @@ h1 {
   flex-direction: row;
   gap: 0.5em;
   align-items: center;
+  padding: 10px 10px 10px 10px;
+  border-radius: 15px;
+}
+
+.gdal-dataset:hover {
+  @include themify($themes) {
+    background-color: themed('accent');
+  }
+}
+
+.dataset-button {
+  @include mat.button-toggle-overrides(
+    (
+      height: 26px,
+      label-text-size: 16px,
+      divider-color: transparent,
+      selected-state-background-color: transparent,
+    )
+  );
 }
 
 .gdal-dataset-name {
@@ -53,7 +72,7 @@ h1 {
 
   max-width: 100%;
   height: fit-content;
-  padding: 0.4em;
+  padding: 0em 0.4em 0em 0.4em;
   text-overflow: ellipsis;
   font-size: 0.8rem;
   font-style: italic;
@@ -99,8 +118,11 @@ h1 {
 .dataset-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 0 1em;
+  @include mat.button-toggle-overrides(
+    (
+      divider-color: transparent,
+    )
+  );
 }
 
 .options-list-card {

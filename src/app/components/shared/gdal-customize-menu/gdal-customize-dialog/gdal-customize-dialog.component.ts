@@ -8,12 +8,15 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
+import {
+  MatButtonToggle,
+  MatButtonToggleGroup,
+} from '@angular/material/button-toggle';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
@@ -43,8 +46,8 @@ import {
   imports: [
     TranslateModule,
     MatExpansionModule,
-    MatRadioGroup,
-    MatRadioButton,
+    MatButtonToggleGroup,
+    MatButtonToggle,
     MatTooltip,
     MatCheckbox,
     MatFormField,
@@ -68,7 +71,7 @@ export class GdalCustomizeDialogComponent {
   readonly data = inject<GdalCustomizeDialogData>(MAT_DIALOG_DATA);
   datasets = this.data.datasets;
   gdalService = inject(GdalService);
-  selectedDataset = signal<string | null>(null);
+  selectedDatasets = signal<string[] | null>(null);
   selectedProjection = signal<string>('');
   outputFormats = GDAL_FORMATS;
   outputFormat = signal<GdalFormats>('GTiff');
@@ -86,41 +89,60 @@ export class GdalCustomizeDialogComponent {
   cropToAOI = signal<boolean>(false);
   cutlineWKT = signal<string>(this.gdalService.searchPolygon());
   minimalCommand = signal<boolean>(false);
+  nisarDriver = signal<boolean>(false);
   outputOSList = GDAL_OS;
   outputOS = signal<GdalOs>(this.getOS());
   outputType = signal<string>('gdal');
   outputFilename = signal<string>('');
   gdalVersions = GDAL_VERSIONS;
   gdalVersion = signal<GdalVersion>(this.gdalVersions[0]);
-  gdalOptions: Signal<GdalOptions> = computed(() => {
-    return {
-      product: this.data.product,
-      datasetPath: this.selectedDataset(),
-      projection: this.selectedProjection(),
-      outputType: {
-        outputFormat: this.outputFormat(),
-        outputExtension: this.outputExtension(),
-      },
-      cutlineWKT: this.cropToAOI() ? this.cutlineWKT() : '',
-      minimalCommand: this.minimalCommand(),
-      os: this.outputOS(),
-      outputFilename: this.outputFilename(),
-      gdalVersion: this.gdalVersion(),
-    };
-  });
-  gdalCommand = computed(() =>
-    this.selectedDataset()
-      ? this.gdalService.generateGDALCommand(this.gdalOptions())
-      : GDAL_COMMAND_PLACEHOLDER,
+
+  multiVariableExport = computed(
+    () => (this.selectedDatasets() ?? []).length > 1,
   );
+  gdalOptions: Signal<GdalOptions[]> = computed(() => {
+    return this.selectedDatasets().map((selectedDataset) => {
+      return {
+        product: this.data.product,
+        datasetPath: selectedDataset,
+        projection: this.selectedProjection(),
+        outputType: {
+          outputFormat: this.outputFormat(),
+          outputExtension: this.outputExtension(),
+        },
+        cutlineWKT:
+          this.cropToAOI() && this.cutlineWKT() ? this.cutlineWKT() : '',
+        minimalCommand: this.minimalCommand(),
+        os: this.outputOS(),
+        outputFilename: !this.multiVariableExport()
+          ? this.outputFilename()
+          : this.gdalService.resolveOutputFilename({
+              product: this.data.product,
+              datasetPath: selectedDataset,
+            }),
+        gdalVersion: this.gdalVersion(),
+        nisarDriver: this.nisarDriver(),
+      };
+    });
+  });
+  gdalCommands = computed(() =>
+    this.selectedDatasets()
+      ? this.gdalOptions().map((gdalOptions) =>
+          this.gdalService.generateGDALCommand(gdalOptions),
+        )
+      : [GDAL_COMMAND_PLACEHOLDER],
+  );
+  gdalCommand = computed(() => this.gdalCommands().join('\n'));
   gdalRC = computed(() =>
-    this.selectedDataset()
-      ? this.gdalService.generateGdalrc(this.gdalOptions())
+    this.selectedDatasets()
+      ? this.gdalService.generateGdalrc(this.gdalOptions()[0])
       : '',
   );
-  qgisCommand = computed(() =>
-    this.selectedDataset()
-      ? this.gdalService.generateQGISScript(this.gdalOptions())
+  qgisCommands = computed(() =>
+    this.selectedDatasets()
+      ? this.gdalOptions().map((gdalOptions) =>
+          this.gdalService.generateQGISScript(gdalOptions),
+        )
       : '',
   );
   homeDirectory = computed(() =>
@@ -145,14 +167,12 @@ machine urs.earthdata.nasa.gov
 
   constructor() {
     effect(() => {
-      if (this.selectedDataset() !== '') {
-        this.outputFilename.set(
-          this.gdalService.resolveOutputFilename({
-            product: this.data.product,
-            datasetPath: this.selectedDataset(),
-          }),
-        );
-      }
+      this.outputFilename.set(
+        this.gdalService.resolveOutputFilename({
+          product: this.data.product,
+          datasetPath: this.selectedDatasets()[0],
+        }),
+      );
     });
   }
 }
