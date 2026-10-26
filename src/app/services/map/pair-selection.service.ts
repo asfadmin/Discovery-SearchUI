@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import intersect from '@turf/intersect';
 import { Feature } from 'ol';
-import { Polygon } from 'ol/geom';
+import { Geometry, Polygon } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Stroke, Style } from 'ol/style';
@@ -56,12 +56,12 @@ export class PairSelectionService {
   }
 
   public tempAriaMapFilter(
-    features: Feature[],
+    features: Feature<Geometry>[],
     _params: any,
     polygon,
     pathFrameRange,
   ) {
-    const baseCoords = [(polygon.getGeometry() as Polygon).getCoordinates()[0]];
+    const baseCoords = [polygon.getGeometry().getCoordinates()[0]];
     return features.filter((a) => {
       const frame = +a.get('id');
       const path = +a.get('path');

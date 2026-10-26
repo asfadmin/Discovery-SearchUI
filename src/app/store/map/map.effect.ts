@@ -1,49 +1,22 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import GeoJSON from 'ol/format/GeoJSON';
-import { of } from 'rxjs';
-import {
-  filter,
-  map,
-  tap,
-  withLatestFrom,
-  catchError,
-  switchMap,
-  debounceTime,
-} from 'rxjs/operators';
+import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { SearchType } from '@models';
 import * as models from '@models';
-import {
-  DrawService,
-  MapService,
-  PairSelectionService,
-  SearchParamsService,
-} from '@services';
+import { MapService, PairSelectionService } from '@services';
 import { AppState } from '@store';
-import { getPathFrameRanges, getSelectedDataset } from '@store/filters';
-import { getAreResultsLoaded, getProducts } from '@store/scenes';
+import { getSelectedDataset } from '@store/filters';
+import { getProducts } from '@store/scenes';
 import {
   ScenesActionType,
   SetSelectedScene,
 } from '@store/scenes/scenes.action';
-import {
-  getareResultsOutOfDate,
-  getSearchType,
-  SearchActionType,
-  SetSearchOutOfDate,
-  SetSearchType,
-} from '@store/search';
-import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
+import { getSearchType, SearchActionType, SetSearchType } from '@store/search';
 import { getIsUserLoggedIn } from '@store/user';
 
-import {
-  ClearBrowseOverlays,
-  SetCoherenceOverlayOpacity,
-  SetFrameMapLoading,
-} from './map.action';
+import { ClearBrowseOverlays, SetCoherenceOverlayOpacity } from './map.action';
 
 import { MapActionType, SetBrowseOverlayOpacity } from '.';
 
@@ -51,11 +24,8 @@ import { MapActionType, SetBrowseOverlayOpacity } from '.';
 export class MapEffects {
   private actions$ = inject(Actions);
   private mapService = inject(MapService);
-  private drawService = inject(DrawService);
   private store$ = inject<Store<AppState>>(Store);
   private pairSelectionService = inject(PairSelectionService);
-  private searchParams = inject(SearchParamsService);
-  private http = inject(HttpClient);
 
   public onSetBrowseOpacity = createEffect(
     () =>
@@ -219,98 +189,6 @@ export class MapEffects {
           } else {
             this.store$.dispatch(new ClearBrowseOverlays());
           }
-        }),
-      ),
-    { dispatch: false },
-  );
-
-  public OnDrawNewPolygon = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(MapActionType.DRAW_NEW_POLYGON),
-        withLatestFrom(
-          this.store$.select(getareResultsOutOfDate),
-          this.store$.select(getSearchType),
-          this.store$.select(getIsFiltersMenuOpen),
-          this.store$.select(getIsResultsMenuOpen),
-          (_, outOfDate, searchType, filtersOpen, resultsOpen) => ({
-            outOfDate,
-            searchType,
-            filtersOpen,
-            resultsOpen,
-          }),
-        ),
-        filter(({ outOfDate }) => !outOfDate),
-        filter(
-          ({ searchType }) =>
-            searchType === models.SearchType.DATASET ||
-            searchType === models.SearchType.PAIR_SELECTION,
-        ),
-        map(({ filtersOpen, resultsOpen }) => !filtersOpen && resultsOpen),
-        withLatestFrom(this.store$.select(getAreResultsLoaded)),
-        withLatestFrom(this.store$.select(getSearchType)),
-        tap(([loaded, searchType]) => {
-          if (loaded || searchType === models.SearchType.PAIR_SELECTION) {
-            return this.store$.dispatch(new SetSearchOutOfDate(true));
-          }
-        }),
-      ),
-    { dispatch: false },
-  );
-
-  public onUpdateMap = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(SearchActionType.SET_SEARCH_OUT_OF_DATE),
-        filter((x) => x.payload),
-        withLatestFrom(this.searchParams.getlatestParams),
-        map(([_, y]) => y),
-        debounceTime(200),
-        withLatestFrom(this.store$.select(getSearchType)),
-        filter(([_, searchType]) => searchType === SearchType.PAIR_SELECTION),
-        filter(([params, _]) => params.intersectsWith || params.bbox),
-        map(([params, _]) => ({ ...params, output: 'geojson' })),
-        withLatestFrom(this.drawService.polygon$),
-        withLatestFrom(this.store$.select(getPathFrameRanges)),
-        tap((_) => this.store$.dispatch(new SetFrameMapLoading(true))),
-        switchMap(([[params, polygon], pathFrameRanges]) => {
-          // TODO: this can pass in the params to the api service for a SearchAPI endpoint later
-          return this.http
-            .get(
-              models.datasets['SENTINEL-1 INTERFEROGRAM (BETA)'].frameMap
-                .ascending,
-            )
-            .pipe(
-              catchError((resp) => {
-                const { error } = resp;
-
-                if (!resp.ok || (error && error.includes('VALIDATION_ERROR'))) {
-                  return of(0);
-                }
-
-                return of(-1);
-              }),
-              map((response) => {
-                const features = new GeoJSON().readFeatures(response, {
-                  featureProjection: this.mapService.epsg(),
-                });
-                // TODO: for now this is just acting like how SearchAPI would be filtering
-                return this.pairSelectionService.tempAriaMapFilter(
-                  features,
-                  params,
-                  polygon,
-                  pathFrameRanges,
-                );
-              }),
-            );
-        }),
-        map((features) => {
-          this.pairSelectionService.loadFramePreview(features);
-
-          return [
-            this.store$.dispatch(new SetFrameMapLoading(false)),
-            this.store$.dispatch(new SetSearchOutOfDate(false)),
-          ];
         }),
       ),
     { dispatch: false },
