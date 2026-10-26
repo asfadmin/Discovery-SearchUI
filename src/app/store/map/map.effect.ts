@@ -5,22 +5,15 @@ import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { SearchType } from '@models';
 import * as models from '@models';
-import { MapService } from '@services';
+import { MapService, PairSelectionService } from '@services';
 import { AppState } from '@store';
 import { getSelectedDataset } from '@store/filters';
-import { getAreResultsLoaded, getProducts } from '@store/scenes';
+import { getProducts } from '@store/scenes';
 import {
   ScenesActionType,
   SetSelectedScene,
 } from '@store/scenes/scenes.action';
-import {
-  getareResultsOutOfDate,
-  getSearchType,
-  SearchActionType,
-  SetSearchOutOfDate,
-  SetSearchType,
-} from '@store/search';
-import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
+import { getSearchType, SearchActionType, SetSearchType } from '@store/search';
 import { getIsUserLoggedIn } from '@store/user';
 
 import { ClearBrowseOverlays, SetCoherenceOverlayOpacity } from './map.action';
@@ -32,6 +25,7 @@ export class MapEffects {
   private actions$ = inject(Actions);
   private mapService = inject(MapService);
   private store$ = inject<Store<AppState>>(Store);
+  private pairSelectionService = inject(PairSelectionService);
 
   public onSetBrowseOpacity = createEffect(
     () =>
@@ -66,17 +60,23 @@ export class MapEffects {
     { dispatch: false },
   );
 
-  public onSearchTypeChanged2 = createEffect(
+  public clearMapArtifacts = createEffect(
     () =>
       this.actions$.pipe(
         ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
         withLatestFrom(this.store$.select(getSearchType)),
-        tap(([action, search_type]) => {
+        tap(([action, searchType]) => {
           if (
-            search_type === SearchType.DISPLACEMENT &&
+            searchType === SearchType.DISPLACEMENT &&
             action.payload !== SearchType.DISPLACEMENT
           ) {
             this.mapService.clearTimeseriesOverlay();
+          }
+          if (
+            searchType === SearchType.PAIR_SELECTION &&
+            action.payload !== SearchType.PAIR_SELECTION
+          ) {
+            this.pairSelectionService.clearFramePreview();
           }
         }),
       ),
@@ -189,35 +189,6 @@ export class MapEffects {
             );
           } else {
             this.store$.dispatch(new ClearBrowseOverlays());
-          }
-        }),
-      ),
-    { dispatch: false },
-  );
-
-  public OnDrawNewPolygon = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(MapActionType.DRAW_NEW_POLYGON),
-        withLatestFrom(
-          this.store$.select(getareResultsOutOfDate),
-          this.store$.select(getSearchType),
-          this.store$.select(getIsFiltersMenuOpen),
-          this.store$.select(getIsResultsMenuOpen),
-          (_, outOfDate, searchType, filtersOpen, resultsOpen) => ({
-            outOfDate,
-            searchType,
-            filtersOpen,
-            resultsOpen,
-          }),
-        ),
-        filter(({ outOfDate }) => !outOfDate),
-        filter(({ searchType }) => searchType === models.SearchType.DATASET),
-        map(({ filtersOpen, resultsOpen }) => !filtersOpen && resultsOpen),
-        withLatestFrom(this.store$.select(getAreResultsLoaded)),
-        tap(([loaded, _]) => {
-          if (loaded) {
-            return this.store$.dispatch(new SetSearchOutOfDate(true));
           }
         }),
       ),
