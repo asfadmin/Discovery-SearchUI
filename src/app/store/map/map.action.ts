@@ -20,7 +20,6 @@ export enum MapActionType {
   CLEAR_BROWSE_OVERLAYS = '[Map] Clear All Browse Overlays On Map',
   DRAW_NEW_POLYGON = '[Map] Set has user drawn new polygon',
   TOGGLE_OVERVIEW_MAP = '[Map] Toggle Overview Map',
-  SET_FRAME_MAP_LOADING = '[Map] Set frame map loading status',
 }
 
 export class SetStreetView implements Action {
@@ -103,12 +102,6 @@ export class ToggleOverviewMap implements Action {
   constructor(public payload: boolean) {}
 }
 
-export class SetFrameMapLoading implements Action {
-  public readonly type = MapActionType.SET_FRAME_MAP_LOADING;
-
-  constructor(public payload: boolean) {}
-}
-
 export type MapActions =
   | SetMapView
   | SetStreetView
@@ -124,5 +117,4 @@ export type MapActions =
   | SetCoherenceOverlayOpacity
   | ClearBrowseOverlays
   | DrawNewPolygon
-  | ToggleOverviewMap
-  | SetFrameMapLoading;
+  | ToggleOverviewMap;
