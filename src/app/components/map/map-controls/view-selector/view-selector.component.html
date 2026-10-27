@@ -1,18 +1,18 @@
 <div class="projection-container">
-  <button
-    mat-stroked-button
-    (click)="onArcticSelected()"
-    class="view-select-button"
-    [class.selected]="view === types.ARCTIC"
-    [class.clickable]="view !== types.ARCTIC && !isDisplacementSearch"
-    [class.unavailable-view]="isDisplacementSearch"
-    [attr.aria-disabled]="isDisplacementSearch"
-    [value]="types.ARCTIC"
-    [attr.aria-label]="arcticLabel | translate"
-    [matTooltip]="arcticLabel | translate"
-  >
-    <mat-icon svgIcon="arctic" class="view-btn view-select-icon"> </mat-icon>
-  </button>
+  @if (!isDisplacementSearch) {
+    <button
+      mat-stroked-button
+      (click)="onArcticSelected()"
+      class="view-select-button"
+      [class.selected]="view === types.ARCTIC"
+      [class.clickable]="view !== types.ARCTIC"
+      [value]="types.ARCTIC"
+      [attr.aria-label]="'ARCTIC_MAP_PROJECTION' | translate"
+      [matTooltip]="'ARCTIC_MAP_PROJECTION' | translate"
+    >
+      <mat-icon svgIcon="arctic" class="view-btn view-select-icon"> </mat-icon>
+    </button>
+  }
 
   <button
     mat-stroked-button
@@ -28,18 +28,21 @@
     </mat-icon>
   </button>
 
-  <button
-    mat-stroked-button
-    (click)="onAntarcticSelected()"
-    class="view-select-button"
-    [class.selected]="view === types.ANTARCTIC"
-    [class.clickable]="view !== types.ANTARCTIC && !isDisplacementSearch"
-    [class.unavailable-view]="isDisplacementSearch"
-    [attr.aria-disabled]="isDisplacementSearch"
-    [attr.aria-label]="antarcticLabel | translate"
-    [value]="types.ANTARCTIC"
-    [matTooltip]="antarcticLabel | translate"
-  >
-    <mat-icon svgIcon="antarctic" class="view-btn view-select-icon"></mat-icon>
-  </button>
+  @if (!isDisplacementSearch) {
+    <button
+      mat-stroked-button
+      (click)="onAntarcticSelected()"
+      class="view-select-button"
+      [class.selected]="view === types.ANTARCTIC"
+      [class.clickable]="view !== types.ANTARCTIC"
+      [attr.aria-label]="'ANTARCTIC_MAP_PROJECTION' | translate"
+      [value]="types.ANTARCTIC"
+      [matTooltip]="'ANTARCTIC_MAP_PROJECTION' | translate"
+    >
+      <mat-icon
+        svgIcon="antarctic"
+        class="view-btn view-select-icon"
+      ></mat-icon>
+    </button>
+  }
 </div>

@@ -30,8 +30,6 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
   public view: MapViewType;
   public types = MapViewType;
   public isDisplacementSearch = false;
-  public arcticLabel = 'ARCTIC_MAP_PROJECTION';
-  public antarcticLabel = 'ANTARCTIC_MAP_PROJECTION';
   private subs = new SubSink();
 
   ngOnInit() {
@@ -49,14 +47,6 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
         this.isDisplacementSearch = searchType === SearchType.DISPLACEMENT;
-
-        const unavailable = 'VIEW_NOT_AVAILABLE_FOR_SEARCH';
-        this.arcticLabel = this.isDisplacementSearch
-          ? unavailable
-          : 'ARCTIC_MAP_PROJECTION';
-        this.antarcticLabel = this.isDisplacementSearch
-          ? unavailable
-          : 'ANTARCTIC_MAP_PROJECTION';
 
         // Auto-switch to equatorial view if switching to Displacement Search from a polar view
         if (
@@ -79,11 +69,6 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
     this.onNewProjection(MapViewType.ANTARCTIC);
 
   public onNewProjection(view: MapViewType): void {
-    // Polar views are shown but unavailable for Displacement Search
-    if (this.isDisplacementSearch && view !== MapViewType.EQUATORIAL) {
-      return;
-    }
-
     this.store$.dispatch(new mapStore.SetMapView(view));
   }
 

@@ -20,10 +20,7 @@
   max-width: 85px;
 }
 
-// The scale line is 68-164px wide: OpenLayers' default minWidth of 64px with
-// 1-2-5 steps, plus its 2px borders. Reserving the max keeps the row from
-// resizing on zoom. flex keeps the scale line at its real width inside it.
 .reserved-scale-line {
   display: flex;
-  min-width: 164px;
+  min-width: 104px;
 }

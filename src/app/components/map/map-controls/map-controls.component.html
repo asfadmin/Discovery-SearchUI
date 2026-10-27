@@ -37,24 +37,14 @@
                       <mat-button-toggle
                         class="control-mat-button-toggle"
                         (click)="zoomIn()"
-                        [disabled]="isAtMaxZoom"
-                        disabledInteractive
-                        [matTooltip]="
-                          (isAtMaxZoom ? 'MAX_ZOOM_REACHED' : 'ZOOM_IN')
-                            | translate
-                        "
+                        [matTooltip]="'ZOOM_IN' | translate"
                       >
                         <mat-icon class="control-icon">add</mat-icon>
                       </mat-button-toggle>
                       <mat-button-toggle
                         class="control-mat-button-toggle"
                         (click)="zoomOut()"
-                        [disabled]="isAtMinZoom"
-                        disabledInteractive
-                        [matTooltip]="
-                          (isAtMinZoom ? 'MIN_ZOOM_REACHED' : 'ZOOM_OUT')
-                            | translate
-                        "
+                        [matTooltip]="'ZOOM_OUT' | translate"
                       >
                         <mat-icon class="control-icon">remove</mat-icon>
                       </mat-button-toggle>

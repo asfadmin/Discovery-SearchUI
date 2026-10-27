@@ -107,12 +107,6 @@ label {
   @include themify($themes) {
     background: themed('background-white');
   }
-
-  // Same look as the unavailable polar views in view-selector
-  &.mat-button-toggle-disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
 }
 
 .move-handle {
@@ -227,10 +221,6 @@ label {
 .tool-bar-common {
   margin-left: 10px;
 
-  // Displacement reserves the scale line's max width (see map-info), so its
-  // lat/lon row is wider than its few buttons. Spread the buttons over that
-  // width instead of leaving a gap at the end. Each group keeps its own width
-  // (not fx-empty's equal share), so its label stays centered over it.
   &.spread-buttons {
     justify-content: space-between;
     width: auto;
