@@ -27,29 +27,6 @@ export class PairSelectionService {
     });
   }
 
-  public selectFrame(_id: string) {
-    return;
-  }
-
-  // make private
-  public onInteract() {
-    // check if interaction is overlapping multiple frames
-    // if no just select it
-    // if yes, bring up menu with multiple frame options available
-    return;
-  }
-
-  public previewFrame(_id: string) {
-    // finds frame feature by id in vector layer
-    // sets frame to certain style
-    return;
-  }
-
-  public clearPreviewFrame() {
-    // go through all features and remove frame preview styling
-    return;
-  }
-
   public loadFramePreview(frames: Feature[]) {
     this.source.clear();
     this.source.addFeatures(frames);

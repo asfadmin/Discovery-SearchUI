@@ -1,19 +1,14 @@
 <mat-action-list class="multi-frame">
-  @for (feature of this.features(); track $index) {
+  @for (item of this.displayedFeatures(); track $index) {
     <li>
       <button
-        (click)="handleClick(feature)"
+        (click)="handleClick(item.feature)"
         matButton
-        (mouseenter)="hoverPreview(feature)"
-        (mouseleave)="hoverPreviewLeave(feature)"
+        (mouseenter)="hoverPreview(item.feature)"
+        (mouseleave)="hoverPreviewLeave(item.feature)"
       >
         Select:
-        <!-- TODO: Figure out a better way of representing feature properties -->
-        <!-- TODO: also bring in the filename component? -->
-        {{
-          (feature.get('filename') | slice: 0 : 20) ??
-            `Frame ID ${feature.get('id')}`
-        }}
+        {{ item.display }}
       </button>
     </li>
   }

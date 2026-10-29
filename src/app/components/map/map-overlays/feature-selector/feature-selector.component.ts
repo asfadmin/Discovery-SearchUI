@@ -1,5 +1,4 @@
-import { SlicePipe } from '@angular/common';
-import { Component, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { MatActionList } from '@angular/material/list';
 import { Feature, getUid } from 'ol';
 
@@ -8,7 +7,7 @@ import * as polygonStyle from '@services/map/polygon.style';
 
 @Component({
   selector: 'app-feature-selector',
-  imports: [SlicePipe, MatActionList],
+  imports: [MatActionList],
   templateUrl: './feature-selector.component.html',
   styleUrl: './feature-selector.component.scss',
 })
@@ -17,6 +16,16 @@ export class FeatureSelectorComponent {
 
   public features = input<Feature[]>();
   public callFeature = output<Feature>();
+
+  public displayedFeatures = computed(() => {
+    return this.features().map((feature) => ({
+      feature,
+      id: getUid(feature),
+      display:
+        feature.get('filename')?.slice(0, 20) ??
+        `Frame ID ${feature.get('id')}`,
+    }));
+  });
 
   public featureCache = {};
 
