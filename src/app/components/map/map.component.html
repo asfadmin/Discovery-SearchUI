@@ -18,32 +18,17 @@
 </div>
 
 <div
-  #FramePopup
-  class="ol-popup multi-frame"
-  [class.on-demand-popup-menu]="this.selectedFrameOptions().length > 0"
+  #MultiFeaturePopup
+  class="ol-popup"
   [class.hidden]="this.selectedFrameOptions().length === 0"
+  [class.multi-feature-menu]="this.selectedFrameOptions().length !== 0"
 >
-  <mat-action-list>
-    @for (feature of this.selectedFrameOptions(); track $index) {
-      <li>
-        <button
-          (click)="callFeature(feature)"
-          matButton
-          (mouseenter)="hoverPreview(feature)"
-          (mouseleave)="hoverPreviewLeave(feature)"
-        >
-          Select:
-          <!-- TODO: Figure out a better way of representing feature properties -->
-          <!-- TODO: also bring in the filename component? -->
-          {{
-            (feature.get('filename') | slice: 0 : 20) ??
-              `Frame ID ${feature.get('id')}`
-          }}
-        </button>
-      </li>
-    }
-  </mat-action-list>
+  <app-feature-selector
+    [features]="this.selectedFrameOptions()"
+    (callFeature)="callFeature($event)"
+  />
 </div>
+
 <div class="map-header">
   <div
     class="header-controls fx-row"

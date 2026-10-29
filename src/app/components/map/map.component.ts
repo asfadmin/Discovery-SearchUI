@@ -1,4 +1,4 @@
-import { AsyncPipe, SlicePipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -15,11 +15,10 @@ import {
 import { MatButton, MatFabButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
-import { MatActionList } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { Feature, getUid } from 'ol';
+import { Feature } from 'ol';
 import WKT from 'ol/format/WKT';
 import Geometry from 'ol/geom/Geometry';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -57,6 +56,7 @@ import { DisplacementLayersComponent } from './displacement-layers/displacement-
 import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.component';
 import { LayerSelectorComponent } from './map-controls/layer-selector/layer-selector.component';
 import { MapControlsComponent } from './map-controls/map-controls.component';
+import { FeatureSelectorComponent } from './map-overlays/feature-selector/feature-selector.component';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -84,8 +84,7 @@ enum FullscreenControls {
     AsyncPipe,
     TranslateModule,
     MatTooltipModule,
-    SlicePipe,
-    MatActionList,
+    FeatureSelectorComponent,
   ],
 })
 export class MapComponent implements OnInit, OnDestroy {
@@ -104,8 +103,8 @@ export class MapComponent implements OnInit, OnDestroy {
   @ViewChild('browsetooltip', { static: false }) browseDisclaimer: ElementRef;
   @ViewChild('AriaPopup', { static: false })
   ariaPopup: ElementRef<HTMLDivElement>;
-  @ViewChild('FramePopup', { static: false })
-  framePopup: ElementRef<HTMLDivElement>;
+  @ViewChild('MultiFeaturePopup', { static: false })
+  multiFeaturePopup: ElementRef<HTMLDivElement>;
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
@@ -417,7 +416,7 @@ export class MapComponent implements OnInit, OnDestroy {
       () => {
         if (this.selectedFrameOptions().length > 0) {
           this.mapService.setMultipleFrameOverlay(
-            this.framePopup.nativeElement,
+            this.multiFeaturePopup.nativeElement,
           );
         }
       },
@@ -706,22 +705,8 @@ export class MapComponent implements OnInit, OnDestroy {
       this.mapService.setMultipleFrameOverlay();
     }
     this.mapService.handleFeature(feature);
-    this.hoverPreviewLeave(feature);
   }
 
-  public featureCache = {};
-  public hoverPreview(feature: Feature) {
-    this.featureCache[getUid(feature)] = feature.getStyle();
-    feature.setStyle(polygonStyle.hoverPreview);
-  }
-
-  public hoverPreviewLeave(feature: Feature) {
-    const id = getUid(feature);
-    if (this.featureCache.hasOwnProperty(id)) {
-      feature.setStyle(this.featureCache[id]);
-      delete this.featureCache[id];
-    }
-  }
   // TODO: figure out how to close preview when clicking something else.
   public closePreview() {
     this.mapService.setMultipleFrameOverlay(null);

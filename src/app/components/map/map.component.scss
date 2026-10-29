@@ -224,13 +224,14 @@ button {
     font-size: 18px;
   }
 }
-.multi-frame {
-  display: flex;
-  flex-direction: column;
-  max-height: 20vh;
-  overflow-y: auto;
-  button {
-    width: 100%;
-    justify-content: flex-start;
-  }
+
+.multi-feature-menu {
+  position: absolute;
+  bottom: 12px;
+  left: -50px;
+  min-width: 200px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 20%);
 }
