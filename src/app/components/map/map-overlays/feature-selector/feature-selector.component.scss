@@ -1,0 +1,12 @@
+.multi-frame {
+  display: flex;
+  flex-direction: column;
+  max-height: 20vh;
+  overflow-y: auto;
+  padding: 15px;
+  button {
+    width: 100%;
+    justify-content: flex-start;
+    cursor: pointer;
+  }
+}

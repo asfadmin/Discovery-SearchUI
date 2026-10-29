@@ -1,0 +1,15 @@
+<mat-action-list class="multi-frame">
+  @for (item of this.displayedFeatures(); track $index) {
+    <li>
+      <button
+        (click)="handleClick(item.feature)"
+        matButton
+        (mouseenter)="hoverPreview(item.feature)"
+        (mouseleave)="hoverPreviewLeave(item.feature)"
+      >
+        Select:
+        {{ item.display }}
+      </button>
+    </li>
+  }
+</mat-action-list>

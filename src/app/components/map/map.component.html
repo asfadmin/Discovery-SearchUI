@@ -17,6 +17,18 @@
   </button>
 </div>
 
+<div
+  #MultiFeaturePopup
+  class="ol-popup"
+  [class.hidden]="this.selectedFrameOptions().length === 0"
+  [class.multi-feature-menu]="this.selectedFrameOptions().length !== 0"
+>
+  <app-feature-selector
+    [features]="this.selectedFrameOptions()"
+    (callFeature)="callFeature($event)"
+  />
+</div>
+
 <div class="map-header">
   <div
     class="header-controls fx-row"
