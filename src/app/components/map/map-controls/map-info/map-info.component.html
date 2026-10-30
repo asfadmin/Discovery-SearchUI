@@ -1,11 +1,14 @@
 <div class="fx-row">
   <div class="map-info--layout">
     <div class="lat--layout lat-lon-data">
-      <b>{{ 'LAT' | translate }}</b> {{ mousePos?.lat | number: '2.1-4' }}°
+      <b>{{ 'LAT' | translate }}</b> {{ mousePos()?.lat | number: '2.1-4' }}°
     </div>
     <div class="lon--layout">
-      <b>{{ 'LON' | translate }}</b> {{ mousePos?.lon | number: '2.1-4' }}°
+      <b>{{ 'LON' | translate }}</b> {{ mousePos()?.lon | number: '2.1-4' }}°
     </div>
   </div>
-  <div #mapScaleComp [class.reserved-scale-line]="reserveScaleLineWidth"></div>
+  <div
+    #mapScaleComp
+    [class.reserved-scale-line]="reserveScaleLineWidth()"
+  ></div>
 </div>
