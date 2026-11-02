@@ -169,6 +169,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   // private selectedScene: string;
   @Input() isLoading = true;
+  public allSeriesFailed = false;
   private showLines = true;
   private xAxisTitle = '';
   private yAxisTitle1 = '';
@@ -310,9 +311,15 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   ): void {
     const cache = this.netcdfService.getCache(this.flightDirection);
 
-    const validPoints = Object.values(chartStates).filter(
+    const seriesStates = Object.values(chartStates);
+    const validPoints = seriesStates.filter(
       (value) => value?.frames?.findIndex((frame) => frame.valid) > -1,
     );
+    this.allSeriesFailed =
+      seriesStates.length > 0 &&
+      seriesStates.every((series) =>
+        series?.frames?.every((frame) => frame.valid === false),
+      );
     const allPointsData: {
       point: object;
       state: models.timeseriesChartItemState;

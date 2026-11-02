@@ -90,10 +90,10 @@
 
 <div #noData [class.no-data]="data?.length > 0">
   <div class="message-container">
-    {{ 'LOADING' | translate }}
+    {{ (allSeriesFailed ? 'TIMESERIES_LOAD_FAILED' : 'LOADING') | translate }}
   </div>
 
   <div class="icon-container">
-    <mat-icon>downloading</mat-icon>
+    <mat-icon>{{ allSeriesFailed ? 'error_outline' : 'downloading' }}</mat-icon>
   </div>
 </div>

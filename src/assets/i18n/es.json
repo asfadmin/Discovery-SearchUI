@@ -901,6 +901,7 @@
   "THE_MAP": "El mapa",
   "THIS_INTERFACE_IS_POWERED_BY_A_ROBUST_API_YOU_CAN_USE_THAT_API_DIRECTLY_ALLOWING": "Esta interfaz está impulsada por una API robusta. Puede usar esa API directamente permitiendo",
   "TILE_ID": "ID de Tile",
+  "TIMESERIES_LOAD_FAILED": "No se pudieron cargar los datos de los puntos seleccionados",
   "TO": "de",
   "TO_A": "a un",
   "TO_DOWNLOADS": "a descargas",

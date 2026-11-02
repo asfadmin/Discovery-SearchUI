@@ -346,9 +346,10 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
             .getTimeSeries(frame, this.flightDirection)
             .pipe(first())
             .subscribe((data) => {
-              if (data) {
-                allPointsData.push(data);
+              if (!data) {
+                return;
               }
+              allPointsData.push(data);
               // temporarily set the frame here since we're not grabbing it beforehand like before
               this.store$.dispatch(
                 chartStore.setFrames({
