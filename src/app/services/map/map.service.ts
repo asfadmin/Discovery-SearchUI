@@ -948,6 +948,7 @@ export class MapService implements OnDestroy {
 
         const overview_source = new XYZ({
           url: `${base_url}/{z}/{x}/{y}.png`,
+          crossOrigin: 'anonymous',
           wrapX: models.mapOptions.wrapX,
           tileSize: [256, 256],
           maxZoom: 12,
