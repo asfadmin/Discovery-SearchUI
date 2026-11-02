@@ -61,6 +61,7 @@
       divider-color: transparent,
     )
   );
+
   @include themify($themes) {
     @include mat.button-toggle-overrides(
       (

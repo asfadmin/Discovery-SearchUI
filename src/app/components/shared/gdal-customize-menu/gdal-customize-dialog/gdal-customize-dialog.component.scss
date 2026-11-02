@@ -37,7 +37,7 @@ h1 {
   flex-direction: row;
   gap: 0.5em;
   align-items: center;
-  padding: 10px 10px 10px 10px;
+  padding: 10px;
   border-radius: 15px;
 }
 
@@ -72,7 +72,7 @@ h1 {
 
   max-width: 100%;
   height: fit-content;
-  padding: 0em 0.4em 0em 0.4em;
+  padding: 0 0.4em;
   text-overflow: ellipsis;
   font-size: 0.8rem;
   font-style: italic;
@@ -118,6 +118,7 @@ h1 {
 .dataset-list {
   display: flex;
   flex-direction: column;
+
   @include mat.button-toggle-overrides(
     (
       divider-color: transparent,
