@@ -7,6 +7,7 @@ import {
   effect,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { disabled, form, FormField } from '@angular/forms/signals';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import {
   MatButtonToggle,
@@ -41,6 +42,20 @@ import {
   GdalCustomizeDialogData,
 } from '../gdal-customize-menu.component';
 
+interface GdalConfigModel {
+  selectedDatasets: string[] | null;
+  selectedProjection: string;
+  outputFormat: GdalFormats;
+  cropToAOI: boolean;
+  cutlineWKT: string;
+  minimalCommand: boolean;
+  nisarDriver: boolean;
+  outputOS: GdalOs;
+  outputType: string;
+  outputFilename: string;
+  gdalVersion: GdalVersion;
+}
+
 @Component({
   selector: 'app-gdal-customize-dialog',
   imports: [
@@ -58,6 +73,7 @@ import {
     MatButton,
     MatInput,
     MatIcon,
+    FormField,
     FormsModule,
     DocsModalComponent,
     CodeBlockComponent,
@@ -71,62 +87,83 @@ export class GdalCustomizeDialogComponent {
   readonly data = inject<GdalCustomizeDialogData>(MAT_DIALOG_DATA);
   datasets = this.data.datasets;
   gdalService = inject(GdalService);
-  selectedDatasets = signal<string[] | null>(null);
-  selectedProjection = signal<string>('');
   outputFormats = GDAL_FORMATS;
-  outputFormat = signal<GdalFormats>('GTiff');
+  outputOSList = GDAL_OS;
+  gdalVersions = GDAL_VERSIONS;
+
+  gdalConfigModel = signal<GdalConfigModel>({
+    selectedDatasets: null,
+    selectedProjection: '',
+    outputFormat: 'GTiff',
+    cropToAOI: false,
+    cutlineWKT: this.gdalService.searchPolygon(),
+    minimalCommand: false,
+    nisarDriver: false,
+    outputOS: this.getOS(),
+    outputType: 'gdal',
+    outputFilename: '',
+    gdalVersion: this.gdalVersions[0],
+  });
+
+  gdalConfigForm = form(this.gdalConfigModel, (schemaPath) => {
+    disabled(
+      schemaPath.cutlineWKT,
+      ({ valueOf }) => !valueOf(schemaPath.cropToAOI),
+    );
+    disabled(schemaPath.outputFilename, () => this.multiVariableExport());
+    disabled(
+      schemaPath.minimalCommand,
+      ({ valueOf }) => valueOf(schemaPath.outputOS) == 'Windows',
+    );
+    disabled(
+      schemaPath.nisarDriver,
+      ({ valueOf }) => valueOf(schemaPath.outputOS) == 'Windows',
+    );
+  });
+
   outputExtension = computed(() => {
-    switch (this.outputFormat()) {
+    switch (this.gdalConfigForm.outputFormat().value()) {
       case 'GTiff':
       case 'COG': {
         return '.tif';
       }
       default: {
-        return `.${this.outputFormat().toLowerCase()}`;
+        return `.${this.gdalConfigForm.outputFormat().value().toLowerCase()}`;
       }
     }
   });
-  cropToAOI = signal<boolean>(false);
-  cutlineWKT = signal<string>(this.gdalService.searchPolygon());
-  minimalCommand = signal<boolean>(false);
-  nisarDriver = signal<boolean>(false);
-  outputOSList = GDAL_OS;
-  outputOS = signal<GdalOs>(this.getOS());
-  outputType = signal<string>('gdal');
-  outputFilename = signal<string>('');
-  gdalVersions = GDAL_VERSIONS;
-  gdalVersion = signal<GdalVersion>(this.gdalVersions[0]);
 
   multiVariableExport = computed(
-    () => (this.selectedDatasets() ?? []).length > 1,
+    () => (this.gdalConfigForm.selectedDatasets().value() ?? []).length > 1,
   );
   gdalOptions: Signal<GdalOptions[]> = computed(() => {
-    return this.selectedDatasets().map((selectedDataset) => {
+    const config = this.gdalConfigModel();
+    return config.selectedDatasets.map((selectedDataset) => {
       return {
         product: this.data.product,
         datasetPath: selectedDataset,
-        projection: this.selectedProjection(),
+        projection: config.selectedProjection,
         outputType: {
-          outputFormat: this.outputFormat(),
+          outputFormat: config.outputFormat,
           outputExtension: this.outputExtension(),
         },
         cutlineWKT:
-          this.cropToAOI() && this.cutlineWKT() ? this.cutlineWKT() : '',
-        minimalCommand: this.minimalCommand(),
-        os: this.outputOS(),
+          config.cropToAOI && config.cutlineWKT ? config.cutlineWKT : '',
+        minimalCommand: config.minimalCommand,
+        os: config.outputOS,
         outputFilename: !this.multiVariableExport()
-          ? this.outputFilename()
+          ? config.outputFilename
           : this.gdalService.resolveOutputFilename({
               product: this.data.product,
               datasetPath: selectedDataset,
             }),
-        gdalVersion: this.gdalVersion(),
-        nisarDriver: this.nisarDriver(),
+        gdalVersion: config.gdalVersion,
+        nisarDriver: config.nisarDriver,
       };
     });
   });
   gdalCommands = computed(() =>
-    this.selectedDatasets()
+    this.gdalConfigForm.selectedDatasets().value()
       ? this.gdalOptions().map((gdalOptions) =>
           this.gdalService.generateGDALCommand(gdalOptions),
         )
@@ -134,19 +171,19 @@ export class GdalCustomizeDialogComponent {
   );
   gdalCommand = computed(() => this.gdalCommands().join('\n'));
   gdalRC = computed(() =>
-    this.selectedDatasets()
+    this.gdalConfigForm.selectedDatasets().value()
       ? this.gdalService.generateGdalrc(this.gdalOptions()[0])
       : '',
   );
   qgisCommands = computed(() =>
-    this.selectedDatasets()
+    this.gdalConfigForm.selectedDatasets().value()
       ? this.gdalOptions().map((gdalOptions) =>
           this.gdalService.generateQGISScript(gdalOptions),
         )
       : '',
   );
   homeDirectory = computed(() =>
-    this.outputOS() == 'Windows' ? '%USERPROFILE%' : '~',
+    this.gdalConfigForm.outputOS().value() == 'Windows' ? '%USERPROFILE%' : '~',
   );
 
   netrcContent = `\
@@ -167,12 +204,14 @@ machine urs.earthdata.nasa.gov
 
   constructor() {
     effect(() => {
-      this.outputFilename.set(
-        this.gdalService.resolveOutputFilename({
-          product: this.data.product,
-          datasetPath: this.selectedDatasets()[0],
-        }),
-      );
+      if (!this.gdalConfigForm.outputFilename().dirty()) {
+        this.gdalConfigForm.outputFilename().value.set(
+          this.gdalService.resolveOutputFilename({
+            product: this.data.product,
+            datasetPath: this.gdalConfigForm.selectedDatasets().value()[0],
+          }),
+        );
+      }
     });
   }
 }

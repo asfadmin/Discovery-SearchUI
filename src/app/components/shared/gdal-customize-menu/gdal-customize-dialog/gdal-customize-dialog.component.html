@@ -19,7 +19,7 @@
   <div class="dataset-list-card">
     <h2>1. {{ 'SELECT_A_DATASET' | translate }}</h2>
     <mat-button-toggle-group
-      [(ngModel)]="selectedDatasets"
+      [formField]="gdalConfigForm.selectedDatasets"
       vertical
       multiple
       class="dataset-list"
@@ -62,7 +62,7 @@
       <div class="options-list">
         <span class="option checkbox">
           <mat-checkbox
-            [(ngModel)]="cropToAOI"
+            [formField]="gdalConfigForm.cropToAOI"
             [matTooltip]="
               !gdalService.isCropToAOIAvailable()
                 ? ('CROP_TO_AOI_DISABLED' | translate)
@@ -71,20 +71,22 @@
             >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
           >
         </span>
-        @if (gdalService.isCropToAOIAvailable() || cropToAOI()) {
+        @if (
+          gdalService.isCropToAOIAvailable() ||
+          gdalConfigForm.cropToAOI().value()
+        ) {
           <span class="option cutline">
             <mat-form-field>
               <mat-label>{{ 'AREA_OF_INTEREST_WKT' | translate }}</mat-label>
               <input
                 matInput
-                [disabled]="!cropToAOI()"
                 disabledInteractive
                 [matTooltip]="
-                  !cropToAOI()
+                  gdalConfigForm.cutlineWKT().disabled()
                     ? ('CROP_TO_AOI_IS_DISABLED' | translate)
                     : ('CROP_TO_AOI_TOOLTIP' | translate)
                 "
-                [(ngModel)]="cutlineWKT"
+                [formField]="gdalConfigForm.cutlineWKT"
               />
             </mat-form-field>
           </span>
@@ -96,18 +98,17 @@
               class="reproject"
               matInput
               [matTooltip]="'REPROJECT_TOOLTIP' | translate"
-              [(ngModel)]="selectedProjection"
+              [formField]="gdalConfigForm.selectedProjection"
             />
           </mat-form-field>
         </span>
       </div>
-      <h3>{{ 'CONFIGURE_GDAL_OUTPUTFILE' | translate }}</h3>
       <div class="options-list">
         <span class="option short">
           <mat-form-field>
             <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
             <mat-select
-              [(ngModel)]="outputFormat"
+              [formField]="gdalConfigForm.outputFormat"
               [matTooltip]="'OUTPUT_FORMAT_TOOLTIP' | translate"
             >
               @for (format of outputFormats; track format) {
@@ -125,11 +126,9 @@
             >
             <input
               matInput
-              name="outputFilenameInput"
-              [disabled]="multiVariableExport()"
-              [(ngModel)]="outputFilename"
+              [formField]="gdalConfigForm.outputFilename"
               [matTooltip]="
-                (multiVariableExport()
+                (gdalConfigForm.outputFilename().disabled()
                   ? 'OUTPUT_FILENAME_TOOLTIP_DISABLED'
                   : 'OUTPUT_FILENAME_TOOLTIP'
                 ) | translate
@@ -144,7 +143,7 @@
           <mat-form-field>
             <mat-label> {{ 'GDAL_VERSION' | translate }}</mat-label>
             <mat-select
-              [(ngModel)]="gdalVersion"
+              [formField]="gdalConfigForm.gdalVersion"
               [matTooltip]="'GDAL_313_ADMONITION' | translate"
             >
               @for (version of gdalVersions; track version) {
@@ -157,7 +156,7 @@
           <mat-form-field>
             <mat-label> {{ 'OUTPUT_OS' | translate }}</mat-label>
             <mat-select
-              [(ngModel)]="outputOS"
+              [formField]="gdalConfigForm.outputOS"
               [matTooltip]="'OUTPUT_OS_TOOLTIP' | translate"
             >
               @for (os of outputOSList; track os) {
@@ -168,11 +167,10 @@
         </span>
         <span class="option checkbox">
           <mat-checkbox
-            [(ngModel)]="minimalCommand"
-            [disabled]="outputOS() === 'Windows'"
+            [formField]="gdalConfigForm.minimalCommand"
             disabledInteractive
             [matTooltip]="
-              outputOS() === 'Windows'
+              gdalConfigForm.minimalCommand().disabled()
                 ? ('MINIMAL_COMMAND_IS_DISABLED' | translate)
                 : ('MINIMAL_COMMAND_TOOLTIP' | translate)
             "
@@ -182,11 +180,10 @@
         </span>
         <span class="option checkbox">
           <mat-checkbox
-            [(ngModel)]="nisarDriver"
-            [disabled]="outputOS() === 'Windows'"
+            [formField]="gdalConfigForm.nisarDriver"
             disabledInteractive
             [matTooltip]="
-              outputOS() === 'Windows'
+              gdalConfigForm.nisarDriver().disabled()
                 ? ('JPL_NISAR_DRIVER_IS_DISABLED' | translate)
                 : ('JPL_NISAR_DRIVER_TOOLTIP' | translate)
             "
@@ -209,7 +206,7 @@
       >
       </app-code-block>
 
-      @if (nisarDriver()) {
+      @if (gdalConfigForm.nisarDriver().value()) {
         <p>{{ 'JPL_NISAR_DRIVER_HELP_BODY' | translate }}</p>
         <app-code-block
           [isCommand]="true"
@@ -239,7 +236,7 @@
       ></app-docs-modal>
     </div>
 
-    @if (outputType() === 'gdal') {
+    @if (gdalConfigForm.outputType().value() === 'gdal') {
       <div class="gdal-output-card">
         <h2>4. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
         <div class="gdal-output-list">
@@ -252,7 +249,7 @@
             language="bash"
           >
           </app-code-block>
-          @if (minimalCommand()) {
+          @if (gdalConfigForm.minimalCommand().value()) {
             <app-code-block
               [codeDescription]="`${homeDirectory()}/.gdal/gdalrc`"
               [codeContent]="gdalRC()"
@@ -266,7 +263,7 @@
       </div>
     }
 
-    @if (!selectedDatasets()) {
+    @if (!gdalConfigForm.selectedDatasets().value()) {
       <div
         class="blur-overlay"
         [matTooltip]="'SELECT_A_DATASET_TO_CONTINUE' | translate"
@@ -277,7 +274,7 @@
 </div>
 
 <div class="footer">
-  @if (selectedDatasets()) {
+  @if (gdalConfigForm.selectedDatasets().value()) {
     <app-copy-to-clipboard
       [prompt]="'EXPORT_GDAL_CLIPBOARD' | translate"
       [message]="'EXPORTED_GDAL_CLIPBOARD' | translate"
