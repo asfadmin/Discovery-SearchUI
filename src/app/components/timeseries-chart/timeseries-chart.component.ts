@@ -15,6 +15,7 @@ import {
   ViewChildren,
   ViewEncapsulation,
   inject,
+  signal,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -169,7 +170,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   // private selectedScene: string;
   @Input() isLoading = true;
-  public allSeriesFailed = false;
+  public allSeriesFailed = signal(false);
   private showLines = true;
   private xAxisTitle = '';
   private yAxisTitle1 = '';
@@ -315,11 +316,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const validPoints = seriesStates.filter(
       (value) => value?.frames?.findIndex((frame) => frame.valid) > -1,
     );
-    this.allSeriesFailed =
+    this.allSeriesFailed.set(
       seriesStates.length > 0 &&
-      seriesStates.every((series) =>
-        series?.frames?.every((frame) => frame.valid === false),
-      );
+        seriesStates.every((series) =>
+          series?.frames?.every((frame) => frame.valid === false),
+        ),
+    );
     const allPointsData: {
       point: object;
       state: models.timeseriesChartItemState;
