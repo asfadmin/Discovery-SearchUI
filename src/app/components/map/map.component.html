@@ -26,6 +26,7 @@
   <app-feature-selector
     [features]="this.selectedFrameOptions()"
     (callFeature)="callFeature($event)"
+    (close)="closePreview()"
   />
 </div>
 

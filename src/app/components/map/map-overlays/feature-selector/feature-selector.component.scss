@@ -1,12 +1,21 @@
-.multi-frame {
+.frame-options {
   display: flex;
   flex-direction: column;
   max-height: 20vh;
   overflow-y: auto;
   padding: 15px;
+  max-width: auto;
+}
+.frame-options-title {
+  padding-top: 5px;
+  padding-left: 15px;
+  padding-right: 5px;
+}
+.close {
+  display: flex;
+  justify-content: flex-end;
+  height: 20px;
   button {
-    width: 100%;
-    justify-content: flex-start;
-    cursor: pointer;
+    padding: 0;
   }
 }

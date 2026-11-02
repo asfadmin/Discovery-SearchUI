@@ -1,15 +1,20 @@
-<mat-action-list class="multi-frame">
-  @for (item of this.displayedFeatures(); track $index) {
-    <li>
-      <button
+<div class="close">
+  <button matIconButton (click)="closeMenu()">x</button>
+</div>
+<h3 class="frame-options-title">Select from overlapping features</h3>
+<hr />
+<div class="frame-options">
+  <mat-action-list>
+    @for (item of this.displayedFeatures(); track $index) {
+      <mat-list-item
         (click)="handleClick(item.feature)"
-        matButton
         (mouseenter)="hoverPreview(item.feature)"
         (mouseleave)="hoverPreviewLeave(item.feature)"
       >
-        Select:
-        {{ item.display }}
-      </button>
-    </li>
-  }
-</mat-action-list>
+        <span matListItemTitle>
+          {{ item.display }}
+        </span>
+      </mat-list-item>
+    }
+  </mat-action-list>
+</div>
