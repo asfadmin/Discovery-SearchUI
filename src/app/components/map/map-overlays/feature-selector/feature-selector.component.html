@@ -1,9 +1,9 @@
 <div class="close">
   <button matIconButton (click)="closeMenu()">x</button>
 </div>
-<h3 class="frame-options-title">Select from overlapping features</h3>
+<h3 class="feature-options-title">Select from overlapping features</h3>
 <hr />
-<div class="frame-options">
+<div class="feature-options">
   <mat-action-list>
     @for (item of this.displayedFeatures(); track $index) {
       <mat-list-item
