@@ -3,7 +3,7 @@
     class="code-header clickable"
     [class.hoverable]="!codeContentByTab()"
     [class.tabbed]="codeContentByTab()"
-    (click)="clipboard.onCopyIconClicked($event)"
+    (click)="!codeContentByTab() ? clipboard.onCopyIconClicked($event) : null"
   >
     @if (!codeContentByTab()) {
       <span class="code-header-description"> {{ codeDescription() }} </span>
