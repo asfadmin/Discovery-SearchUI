@@ -6,10 +6,9 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 
-import { MapViewType, SearchType } from '@models';
+import { MapViewType } from '@models';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
-import * as searchStore from '@store/search';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -29,7 +28,6 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
 
   public view: MapViewType;
   public types = MapViewType;
-  public isDisplacementSearch = false;
   private subs = new SubSink();
 
   ngOnInit() {
@@ -41,21 +39,6 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
           event: 'map-view',
           'map-view': this.view,
         });
-      }),
-    );
-
-    this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
-        this.isDisplacementSearch = searchType === SearchType.DISPLACEMENT;
-
-        // Auto-switch to equatorial view if switching to Displacement Search from a polar view
-        if (
-          this.isDisplacementSearch &&
-          (this.view === MapViewType.ARCTIC ||
-            this.view === MapViewType.ANTARCTIC)
-        ) {
-          this.store$.dispatch(new mapStore.SetMapView(MapViewType.EQUATORIAL));
-        }
       }),
     );
   }

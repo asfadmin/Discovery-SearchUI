@@ -29,7 +29,6 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { ResizeEvent, ResizableModule } from 'angular-resizable-element';
-import { Geometry } from 'ol/geom';
 import {
   distinctUntilChanged,
   filter,
@@ -47,6 +46,7 @@ import { AoiIconPipe } from '@pipes/aoi-icon.pipe';
 import {
   DisplacementDisclaimerService,
   DrawService,
+  MapService,
   NetcdfService,
   PointHistoryService,
   ScreenSizeService,
@@ -115,6 +115,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   private screenSize = inject(ScreenSizeService);
   pointHistoryService = inject(PointHistoryService);
   private drawService = inject(DrawService);
+  private mapService = inject(MapService);
   private netcdfService = inject(NetcdfService);
   private wktService = inject(WktService);
   private dialog = inject(MatDialog);
@@ -260,10 +261,15 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
             !!polygon &&
             this.searchType() === models.SearchType.DISPLACEMENT
           ) {
-            const temp = polygon.getGeometry().clone() as Geometry;
-            temp.transform('EPSG:3857', 'EPSG:4326');
+            const wkt = this.wktService.featureToWkt(
+              polygon,
+              this.mapService.epsg(),
+            );
+            const geometry = this.wktService
+              .wktToFeature(wkt, 'EPSG:4326')
+              .getGeometry();
             this.pointHistoryService.addPoint(
-              temp,
+              geometry,
               minSeriesNumber,
               '',
               this.drawService.currentDrawMode,
