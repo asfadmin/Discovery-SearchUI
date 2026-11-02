@@ -1182,6 +1182,7 @@ export class MapService implements OnDestroy {
       target: latlonElement,
       className: 'ol-custom-scale-line',
       units: 'metric',
+      maxWidth: 100,
     });
     this.map.addControl(this.scaleLine);
   }
