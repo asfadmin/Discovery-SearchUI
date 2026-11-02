@@ -68,7 +68,12 @@
                 ? ('CROP_TO_AOI_DISABLED' | translate)
                 : ('CROP_TO_AOI_TOOLTIP' | translate)
             "
-            >{{ 'CROP_TO_AOI' | translate }}</mat-checkbox
+            >{{
+              (gdalService.isCropToAOIAvailable()
+                ? 'CROP_TO_AOI'
+                : 'CROP_TO_WKT_POLYGON_STRING'
+              ) | translate
+            }}</mat-checkbox
           >
         </span>
         @if (
@@ -84,7 +89,10 @@
                 [matTooltip]="
                   gdalConfigForm.cutlineWKT().disabled()
                     ? ('CROP_TO_AOI_IS_DISABLED' | translate)
-                    : ('CROP_TO_AOI_TOOLTIP' | translate)
+                    : ((gdalService.isCropToAOIAvailable()
+                        ? 'CROP_TO_AOI_TOOLTIP'
+                        : 'CROP_TO_WKT_POLYGON_STRING'
+                      ) | translate)
                 "
                 [formField]="gdalConfigForm.cutlineWKT"
               />
@@ -103,6 +111,7 @@
           </mat-form-field>
         </span>
       </div>
+      <h3>{{ 'CONFIGURE_GDAL_OUTPUTFILE' | translate }}</h3>
       <div class="options-list">
         <span class="option short">
           <mat-form-field>
