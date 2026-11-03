@@ -3,6 +3,7 @@ import {
   computed,
   effect,
   inject,
+  Injector,
   input,
   OnInit,
   output,
@@ -12,7 +13,6 @@ import { MatListModule } from '@angular/material/list';
 import { Feature, getUid } from 'ol';
 import { StyleLike } from 'ol/style/Style';
 
-import { MapService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
 
 @Component({
@@ -22,14 +22,13 @@ import * as polygonStyle from '@services/map/polygon.style';
   styleUrl: './feature-selector.component.scss',
 })
 export class FeatureSelectorComponent implements OnInit {
-  public mapService = inject(MapService);
-
+  private injector = inject(Injector);
   public features = input<Feature[]>();
   public callFeature = output<Feature>();
   public close = output();
 
   public displayedFeatures = computed(() => {
-    return this.features().map((feature) => ({
+    return this.features()?.map((feature) => ({
       feature,
       id: getUid(feature),
       display: feature.get('filename') ?? `Frame ID ${feature.get('id')}`,
@@ -42,13 +41,18 @@ export class FeatureSelectorComponent implements OnInit {
   >();
 
   public ngOnInit(): void {
-    effect(() => {
-      if (this.features()?.length === 0) {
-        for (const item of this.featureCache.values()) {
-          this.hoverPreviewLeave(item.feature);
+    effect(
+      () => {
+        if (this.features()?.length === 0) {
+          for (const item of this.featureCache.values()) {
+            this.hoverPreviewLeave(item.feature);
+          }
         }
-      }
-    });
+      },
+      {
+        injector: this.injector,
+      },
+    );
   }
 
   public hoverPreview(feature: Feature) {
