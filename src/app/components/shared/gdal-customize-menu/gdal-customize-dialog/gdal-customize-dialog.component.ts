@@ -90,6 +90,17 @@ export class GdalCustomizeDialogComponent {
   outputFormats = GDAL_FORMATS;
   outputOSList = GDAL_OS;
   gdalVersions = GDAL_VERSIONS;
+  enableCutlineWKTString = computed(() => {
+    if (this.gdalConfigForm.cutlineWKT().disabled()) {
+      return 'CROP_TO_AOI_IS_DISABLED';
+    }
+
+    if (this.gdalService.isCropToAOIAvailable()) {
+      return 'CROP_TO_AOI_TOOLTIP';
+    }
+
+    return 'CROP_TO_WKT_POLYGON_STRING';
+  });
 
   gdalConfigModel = signal<GdalConfigModel>({
     selectedDatasets: null,

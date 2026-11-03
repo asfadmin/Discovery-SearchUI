@@ -123,16 +123,24 @@ export class GdalService {
     return options.gdalVersion ?? '<3.13';
   }
 
+  public resolveGDALDriver(options): string {
+    if (options.nisarDriver) {
+      return 'NISAR';
+    }
+
+    if (this.resolveGDALVersion(options) == '≥3.13') {
+      return 'HDF5';
+    }
+
+    return 'NETCDF';
+  }
+
   public generateGDALTranslateArguments(
     options: GdalOptions,
     qgisArgs = false,
   ): string[] {
     const command = this.resolveGDALCommand(options);
-    const driver = options.nisarDriver
-      ? 'NISAR'
-      : this.resolveGDALVersion(options) == '≥3.13'
-        ? 'HDF5'
-        : 'NETCDF';
+    const driver = this.resolveGDALDriver(options);
     const datasetPath =
       driver === 'NISAR' ? options.datasetPath.slice(1) : options.datasetPath;
     const downloadURL = `${driver}:"/vsicurl/${options.product.downloadUrl}":${datasetPath}`;
