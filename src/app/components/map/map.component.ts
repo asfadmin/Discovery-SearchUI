@@ -699,7 +699,6 @@ export class MapComponent implements OnInit, OnDestroy {
     return features;
   }
   public callFeature(feature: Feature) {
-    console.log(feature);
     if (feature?.get('dir')) {
       this.buildOnDemandStackWithFeature(feature);
       this.mapService.setMultipleFrameOverlay();
@@ -707,7 +706,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapService.handleFeature(feature);
   }
 
-  // TODO: figure out how to close preview when clicking something else.
   public closePreview() {
     this.mapService.setMultipleFrameOverlay(null);
   }

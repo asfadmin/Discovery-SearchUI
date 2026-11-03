@@ -403,6 +403,7 @@ export class MapService {
   public clearDrawLayer(): void {
     this.drawService.clear();
     this.clearSelectedScene();
+    this.setMultipleFrameOverlay();
     // this.frameSelectionOverlay.setSource(null);
   }
 
@@ -520,14 +521,19 @@ export class MapService {
         element: container,
         position: this.projectedPosition,
         id: 'multipleFrameMenu',
+        positioning: 'top-right',
         autoPan: {
           animation: {
             duration: 250,
           },
         },
+        stopEvent: true,
       });
       this.map.removeOverlay(this.map.getOverlayById('customOnDemandMenu'));
       this.map.addOverlay(multipleFrameSelectionPopupMenuOverlay);
+      this.map.once('click', () => {
+        this.setMultipleFrameOverlay(null);
+      });
       this.selectHover.setActive(false);
       this.selectHover.clearSelection();
     } else {
@@ -586,9 +592,7 @@ export class MapService {
   public handleFeature(feature: Feature) {
     if (feature?.get('dir')) {
       this.selectedSource.clear();
-      this.selectedSource.addFeature(feature); // handle multiple things here.
-      // const id = feat.get('id');
-      // console.log(`Id selected: ${id}`);
+      this.selectedSource.addFeature(feature);
       this.focusedAriaFrame$.next(feature);
     } else {
       this.newSelectedScene$.next(feature.get('filename'));

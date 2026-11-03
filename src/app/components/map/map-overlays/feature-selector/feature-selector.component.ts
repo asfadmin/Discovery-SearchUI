@@ -1,10 +1,19 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  OnInit,
+  output,
+} from '@angular/core';
+import { MatIconButton } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { Feature, getUid } from 'ol';
+import { StyleLike } from 'ol/style/Style';
 
 import { MapService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
-import { MatIconButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-feature-selector',
@@ -12,7 +21,7 @@ import { MatIconButton } from '@angular/material/button';
   templateUrl: './feature-selector.component.html',
   styleUrl: './feature-selector.component.scss',
 })
-export class FeatureSelectorComponent {
+export class FeatureSelectorComponent implements OnInit {
   public mapService = inject(MapService);
 
   public features = input<Feature[]>();
@@ -27,24 +36,43 @@ export class FeatureSelectorComponent {
     }));
   });
 
-  public featureCache = {};
+  public featureCache = new Map<
+    string,
+    { feature: Feature; style: StyleLike }
+  >();
+
+  public ngOnInit(): void {
+    effect(() => {
+      if (this.features()?.length === 0) {
+        for (const item of this.featureCache.values()) {
+          this.hoverPreviewLeave(item.feature);
+        }
+      }
+    });
+  }
 
   public hoverPreview(feature: Feature) {
-    this.featureCache[getUid(feature)] = feature.getStyle();
+    this.featureCache.set(getUid(feature), {
+      feature,
+      style: feature.getStyle(),
+    });
     feature.setStyle(polygonStyle.hoverPreview);
   }
 
   public hoverPreviewLeave(feature: Feature) {
     const id = getUid(feature);
-    if (this.featureCache.hasOwnProperty(id)) {
-      feature.setStyle(this.featureCache[id]);
-      delete this.featureCache[id];
+    const cached = this.featureCache.get(id);
+    if (cached) {
+      feature.setStyle(cached.style);
+      this.featureCache.delete(id);
     }
   }
+
   public handleClick(feature: Feature) {
     this.hoverPreviewLeave(feature);
     this.callFeature.emit(feature);
   }
+
   public closeMenu() {
     this.close.emit();
   }

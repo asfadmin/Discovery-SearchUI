@@ -159,7 +159,7 @@ export const hoverPreview = new Style({
     color: 'rgba(255, 255, 255, 0.2)',
   }),
   stroke: new Stroke({
-    color: '#ff0000',
+    color: 'rgba(255, 5, 5, 0.8)',
     width: 4,
   }),
   zIndex: 11,
