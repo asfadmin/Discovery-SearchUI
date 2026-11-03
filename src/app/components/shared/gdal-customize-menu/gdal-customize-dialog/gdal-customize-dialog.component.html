@@ -28,8 +28,8 @@
         <mat-button-toggle
           class="dataset-button"
           [value]="dataset.path"
-          [aria-label]="('SELECT' | translate) + ' ' + dataset.name"
-          [matTooltip]="('SELECT' | translate) + ' ' + dataset.name"
+          aria-label="{{ 'SELECT' | translate }} {{ dataset.name }}"
+          matTooltip="{{ 'SELECT' | translate }} {{ dataset.name }}"
         >
           <div class="gdal-dataset" [aria-label]="dataset.name">
             <span class="gdal-dataset-name">
