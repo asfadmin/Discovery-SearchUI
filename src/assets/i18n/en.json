@@ -107,6 +107,7 @@
   "CLIPBOARD_UPDATED": "Clipboard Updated",
   "CLOSE": "Close",
   "COG": "Cloud Optimized GeoTiff",
+  "COHERENCE_DISABLED": "Coherence Layers are disabled due to maintenance",
   "COHERENCE_LAYER": "Coherence Layer",
   "COLLAPSE_PANEL": "Collapse panel",
   "CONFIGURE_DISPLACEMENT_CHART": "Configure Displacement chart",
