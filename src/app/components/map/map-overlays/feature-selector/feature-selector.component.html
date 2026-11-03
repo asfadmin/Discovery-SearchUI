@@ -1,6 +1,13 @@
 <div cdkDragHandle class="draggable feature-header">
   <h3 class="feature-options-title">
-    {{ 'SELECT_FROM_OVERLAPPING' | translate }}
+    @switch (searchType()) {
+      @case (searchTypes.PAIR_SELECTION) {
+        {{ 'SELECT_FROM_OVERLAPPING_FRAME' | translate }}
+      }
+      @default {
+        {{ 'SELECT_FROM_OVERLAPPING' | translate }}
+      }
+    }
   </h3>
   <button matIconButton (click)="closeMenu()">x</button>
 </div>
@@ -15,6 +22,16 @@
       >
         <span matListItemTitle>
           {{ item.display }}
+        </span>
+        <span matListItemLine>
+          @switch (searchType()) {
+            @case (searchTypes.PAIR_SELECTION) {
+              {{ item.description }}
+            }
+            @default {
+              {{ item.description | fullDate }}
+            }
+          }
         </span>
       </mat-list-item>
     }

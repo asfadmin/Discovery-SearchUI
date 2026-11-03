@@ -46,6 +46,7 @@ import { LegacyAreaFormatService } from '../legacy-area-format.service';
 import { PairSelectionService } from './pair-selection.service';
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
+import { Coordinate } from 'ol/coordinate';
 
 @Injectable({
   providedIn: 'root',
@@ -177,7 +178,7 @@ export class MapService {
     lat: 0,
   });
 
-  private projectedPosition;
+  private projectedPosition: Coordinate;
 
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();

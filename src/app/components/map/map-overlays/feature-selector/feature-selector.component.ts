@@ -1,61 +1,66 @@
 import { CdkDragHandle } from '@angular/cdk/drag-drop';
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  Injector,
-  input,
-  OnInit,
-  output,
-} from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconButton } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Feature, getUid } from 'ol';
 import { StyleLike } from 'ol/style/Style';
 
+import { SearchType } from '@models';
+import { FullDatePipe } from '@pipes/short-date.pipe';
+import { ScenesService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
+import { getSearchType } from '@store/search';
 
 @Component({
   selector: 'app-feature-selector',
-  imports: [MatListModule, MatIconButton, TranslatePipe, CdkDragHandle],
+  imports: [
+    MatListModule,
+    MatIconButton,
+    TranslatePipe,
+    CdkDragHandle,
+    FullDatePipe,
+  ],
   templateUrl: './feature-selector.component.html',
   styleUrl: './feature-selector.component.scss',
 })
-export class FeatureSelectorComponent implements OnInit {
-  private injector = inject(Injector);
+export class FeatureSelectorComponent {
   public features = input<Feature[]>();
   public callFeature = output<Feature>();
   public close = output();
+  private sceneService = inject(ScenesService);
+  private store = inject(Store);
 
+  private scenes = toSignal(this.sceneService.scenes$);
+  public searchType = this.store.selectSignal(getSearchType);
   public displayedFeatures = computed(() => {
-    return this.features()?.map((feature) => ({
-      feature,
-      id: getUid(feature),
-      display: feature.get('filename') ?? `Frame ID ${feature.get('id')}`,
-    }));
+    return this.features()?.map((feature) => {
+      let description: any;
+
+      if (feature.get('filename')) {
+        description = this.scenes().find(
+          (x) => x.name === feature.get('filename'),
+        )?.metadata?.date;
+      }
+      if (feature.get('dir')) {
+        description = `Track: ${feature.get('path')}`;
+      }
+      return {
+        feature,
+        id: getUid(feature),
+        display: feature.get('filename') ?? `Frame ID ${feature.get('id')}`,
+        description: description,
+      };
+    });
   });
 
   public featureCache = new Map<
     string,
     { feature: Feature; style: StyleLike }
   >();
-
-  public ngOnInit(): void {
-    effect(
-      () => {
-        if (this.features()?.length === 0) {
-          for (const item of this.featureCache.values()) {
-            this.hoverPreviewLeave(item.feature);
-          }
-        }
-      },
-      {
-        injector: this.injector,
-      },
-    );
-  }
+  public searchTypes = SearchType;
 
   public hoverPreview(feature: Feature) {
     this.featureCache.set(getUid(feature), {
