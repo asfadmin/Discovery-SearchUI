@@ -43,7 +43,7 @@ import {
 } from '../gdal-customize-menu.component';
 
 interface GdalConfigModel {
-  selectedDatasets: string[] | null;
+  selectedDatasets: string[];
   selectedProjection: string;
   outputFormat: GdalFormats;
   cropToAOI: boolean;
@@ -103,7 +103,7 @@ export class GdalCustomizeDialogComponent {
   });
 
   gdalConfigModel = signal<GdalConfigModel>({
-    selectedDatasets: null,
+    selectedDatasets: [],
     selectedProjection: '',
     outputFormat: 'GTiff',
     cropToAOI: false,
