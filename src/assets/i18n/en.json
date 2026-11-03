@@ -856,6 +856,7 @@
   "SET_FULL_BURST_ID_TO_SEARCH": "Set full burst ID to search",
   "SET_OPERA_BURST_ID_TO_SEARCH": "Set OPERA burst ID to search",
   "SET_SITE_DESCRIPTION": "Set site description",
+  "SETUP_GDALRC": "To configure GDAL to access NISAR data through EDC place a file with the following content in '~/.gdal/gdalrc'.",
   "SETUP_NETRC": "Authentication with NASA Earthdata Cloud (EDC) is required to download NISAR data. Place a file named 'netrc' in your home or user directory to allow GDAL to authenticate with EDC.",
   "SHARE_SAVE": "Share/Save",
   "SHARE_SAVE_INFORMATION": "Share this search with others and manage your searches",

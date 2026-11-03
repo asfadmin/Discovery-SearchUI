@@ -252,6 +252,18 @@
       >
       </app-code-block>
 
+      @if (gdalConfigForm.minimalCommand().value()) {
+        <p>{{ 'SETUP_GDALRC' | translate }}</p>
+        <app-code-block
+          [codeDescription]="`${homeDirectory()}/.gdal/gdalrc`"
+          [codeContent]="gdalRC()"
+          copyPrompt="EXPORT_GDALRC_CLIPBOARD"
+          copyMessage="EXPORTED_GDALRC_CLIPBOARD"
+          language="bash"
+        >
+        </app-code-block>
+      }
+
       <div><br /></div>
       <app-docs-modal
         class="info-text"
@@ -273,21 +285,14 @@
             language="bash"
           >
           </app-code-block>
-          @if (gdalConfigForm.minimalCommand().value()) {
-            <app-code-block
-              [codeDescription]="`${homeDirectory()}/.gdal/gdalrc`"
-              [codeContent]="gdalRC()"
-              copyPrompt="EXPORT_GDALRC_CLIPBOARD"
-              copyMessage="EXPORTED_GDALRC_CLIPBOARD"
-              language="bash"
-            >
-            </app-code-block>
-          }
         </div>
       </div>
     }
 
-    @if (!gdalConfigForm.selectedDatasets().value()) {
+    @if (
+      !gdalConfigForm.selectedDatasets().value() ||
+      gdalConfigForm.selectedDatasets().value().length === 0
+    ) {
       <div
         class="blur-overlay"
         [matTooltip]="'SELECT_A_DATASET_TO_CONTINUE' | translate"
