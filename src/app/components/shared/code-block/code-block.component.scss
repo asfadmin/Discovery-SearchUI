@@ -29,6 +29,10 @@
   padding-top: 0.5em;
 }
 
+.tab-container {
+  overflow-y: scroll;
+}
+
 .code-header {
   display: flex;
   align-items: center;
