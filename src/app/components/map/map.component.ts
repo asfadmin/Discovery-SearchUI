@@ -1,3 +1,4 @@
+import { CdkDrag } from '@angular/cdk/drag-drop';
 import { AsyncPipe } from '@angular/common';
 import {
   Component,
@@ -57,7 +58,6 @@ import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.c
 import { LayerSelectorComponent } from './map-controls/layer-selector/layer-selector.component';
 import { MapControlsComponent } from './map-controls/map-controls.component';
 import { FeatureSelectorComponent } from './map-overlays/feature-selector/feature-selector.component';
-import { CdkDrag } from '@angular/cdk/drag-drop';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -107,6 +107,7 @@ export class MapComponent implements OnInit, OnDestroy {
   ariaPopup: ElementRef<HTMLDivElement>;
   @ViewChild('MultiFeaturePopup', { static: false })
   multiFeaturePopup: ElementRef<HTMLDivElement>;
+  @ViewChild(CdkDrag) dragReference!: CdkDrag;
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
@@ -417,6 +418,7 @@ export class MapComponent implements OnInit, OnDestroy {
     effect(
       () => {
         if (this.selectedFrameOptions().length > 0) {
+          this.dragReference.reset();
           this.mapService.setMultipleFrameOverlay(
             this.multiFeaturePopup.nativeElement,
           );
