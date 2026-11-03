@@ -258,6 +258,8 @@ export class MapService {
   }
 
   public setLayer(layer: VectorLayer<VectorSource>): void {
+    this.setMultipleFrameOverlay();
+
     let previousVisible = true;
     if (this.polygonLayer) {
       previousVisible = this.polygonLayer.isVisible();
@@ -538,6 +540,7 @@ export class MapService {
       this.selectHover.clearSelection();
     } else {
       this.map.removeOverlay(this.map.getOverlayById('multipleFrameMenu'));
+      this.selectedMultipleFrame$.set([]);
       this.selectHover.setActive(true);
     }
   }
