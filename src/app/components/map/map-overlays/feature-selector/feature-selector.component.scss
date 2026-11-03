@@ -13,7 +13,22 @@
   padding-top: 0;
   padding-right: 5px;
   padding-left: 15px;
-  margin-top: 0;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.feature-options-list {
+  padding-top: 0;
+}
+
+.feature-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.divider {
+  margin-bottom: 0;
 }
 
 .close {
@@ -31,4 +46,8 @@
       )
     );
   }
+}
+
+.draggable {
+  cursor: move;
 }

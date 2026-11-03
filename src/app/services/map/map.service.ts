@@ -524,11 +524,6 @@ export class MapService {
         position: this.projectedPosition,
         id: 'multipleFrameMenu',
         positioning: 'top-right',
-        autoPan: {
-          animation: {
-            duration: 250,
-          },
-        },
         stopEvent: true,
       });
       this.map.removeOverlay(this.map.getOverlayById('customOnDemandMenu'));

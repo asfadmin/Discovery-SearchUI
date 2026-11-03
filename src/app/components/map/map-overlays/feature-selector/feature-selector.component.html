@@ -1,14 +1,12 @@
-<div cdkDragHandle>
-  <div class="close">
-    <button matIconButton (click)="closeMenu()">x</button>
-  </div>
+<div cdkDragHandle class="draggable feature-header">
   <h3 class="feature-options-title">
     {{ 'SELECT_FROM_OVERLAPPING' | translate }}
   </h3>
+  <button matIconButton (click)="closeMenu()">x</button>
 </div>
-<hr />
+<hr class="divider" />
 <div class="feature-options">
-  <mat-action-list>
+  <mat-action-list class="feature-options-list">
     @for (item of this.displayedFeatures(); track $index) {
       <mat-list-item
         (click)="handleClick(item.feature)"
