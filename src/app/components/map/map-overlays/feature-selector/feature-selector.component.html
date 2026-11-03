@@ -1,9 +1,11 @@
-<div class="close">
-  <button matIconButton (click)="closeMenu()">x</button>
+<div cdkDragHandle>
+  <div class="close">
+    <button matIconButton (click)="closeMenu()">x</button>
+  </div>
+  <h3 class="feature-options-title">
+    {{ 'SELECT_FROM_OVERLAPPING' | translate }}
+  </h3>
 </div>
-<h3 class="feature-options-title">
-  {{ 'SELECT_FROM_OVERLAPPING' | translate }}
-</h3>
 <hr />
 <div class="feature-options">
   <mat-action-list>

@@ -57,6 +57,7 @@ import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.c
 import { LayerSelectorComponent } from './map-controls/layer-selector/layer-selector.component';
 import { MapControlsComponent } from './map-controls/map-controls.component';
 import { FeatureSelectorComponent } from './map-overlays/feature-selector/feature-selector.component';
+import { CdkDrag } from '@angular/cdk/drag-drop';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -85,6 +86,7 @@ enum FullscreenControls {
     TranslateModule,
     MatTooltipModule,
     FeatureSelectorComponent,
+    CdkDrag,
   ],
 })
 export class MapComponent implements OnInit, OnDestroy {

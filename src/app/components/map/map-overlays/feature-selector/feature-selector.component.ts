@@ -1,3 +1,4 @@
+import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import {
   Component,
   computed,
@@ -18,7 +19,7 @@ import * as polygonStyle from '@services/map/polygon.style';
 
 @Component({
   selector: 'app-feature-selector',
-  imports: [MatListModule, MatIconButton, TranslatePipe],
+  imports: [MatListModule, MatIconButton, TranslatePipe, CdkDragHandle],
   templateUrl: './feature-selector.component.html',
   styleUrl: './feature-selector.component.scss',
 })
