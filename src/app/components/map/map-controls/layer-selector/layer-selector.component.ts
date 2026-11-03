@@ -15,6 +15,7 @@ import { MapService, ScreenSizeService } from '@services';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as searchStore from '@store/search';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-layer-selector',
@@ -29,6 +30,7 @@ import * as searchStore from '@store/search';
     MatMenuItem,
     MatDivider,
     MatCheckbox,
+    MatTooltip,
 
     MatRadioButton,
     AsyncPipe,
