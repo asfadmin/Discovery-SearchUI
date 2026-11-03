@@ -6,6 +6,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/list';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatRadioButton } from '@angular/material/radio';
+import { MatTooltip } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
@@ -15,7 +16,6 @@ import { MapService, ScreenSizeService } from '@services';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as searchStore from '@store/search';
-import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-layer-selector',

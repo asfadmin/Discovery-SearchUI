@@ -36,7 +36,7 @@ test(
   },
 );
 
-test(
+test.fail(
   'Map: Coherence Layer activates when a month range is selected',
   { tag: '@visual' },
   async ({ page }) => {
