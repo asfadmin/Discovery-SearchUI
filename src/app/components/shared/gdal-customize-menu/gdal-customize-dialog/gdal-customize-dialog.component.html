@@ -205,7 +205,44 @@
 
     <div class="gdal-configure-card">
       <h2>3. {{ 'CONFIGURE_ENVIRONMENT' | translate }}</h2>
-      <p>{{ 'EXPORT_GDAL_HELP_BODY' | translate }}</p>
+      @if (gdalConfigForm.nisarDriver().value()) {
+        <p>{{ 'JPL_NISAR_DRIVER_HELP_BODY' | translate }}</p>
+        <app-code-block
+          [isCommand]="true"
+          defaultTab="INSTALL_VIA_CONDA"
+          [codeContentByTab]="{
+            INSTALL_VIA_CONDA:
+              'conda install -c nisar-forge -c conda-forge gdal-driver-nisar',
+            INSTALL_VIA_MAMBA:
+              'mamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
+            INSTALL_VIA_MICROMAMBA:
+              'micromamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
+            INSTALL_VIA_PIXI:
+              'pixi global install -c nisar-forge -c conda-forge gdal-driver-nisar',
+          }"
+          copyPrompt="COPY_TO_CLIPBOARD"
+          copyMessage="COPIED_TO_CLIPBOARD"
+          language="bash"
+        >
+        </app-code-block>
+      } @else {
+        <p>{{ 'INSTALL_GDAL' | translate }}</p>
+        <app-code-block
+          [isCommand]="true"
+          defaultTab="INSTALL_VIA_CONDA"
+          [codeContentByTab]="{
+            INSTALL_VIA_CONDA: 'conda install -c conda-forge gdal',
+            INSTALL_VIA_MAMBA: 'mamba install -c conda-forge gdal',
+            INSTALL_VIA_MICROMAMBA: 'micromamba install -c conda-forge gdal',
+            INSTALL_VIA_PIXI: 'pixi global install -c conda-forge gdal',
+          }"
+          copyPrompt="COPY_TO_CLIPBOARD"
+          copyMessage="COPIED_TO_CLIPBOARD"
+          language="bash"
+        >
+        </app-code-block>
+      }
+      <p>{{ 'SETUP_NETRC' | translate }}</p>
       <app-code-block
         [codeDescription]="`${homeDirectory()}/.netrc`"
         [codeContent]="netrcContent"
@@ -214,28 +251,6 @@
         language="bash"
       >
       </app-code-block>
-
-      @if (gdalConfigForm.nisarDriver().value()) {
-        <p>{{ 'JPL_NISAR_DRIVER_HELP_BODY' | translate }}</p>
-        <app-code-block
-          [isCommand]="true"
-          defaultTab="INSTALL_NISAR_DRIVER_VIA_CONDA"
-          [codeContentByTab]="{
-            INSTALL_NISAR_DRIVER_VIA_CONDA:
-              'conda install -c nisar-forge -c conda-forge gdal-driver-nisar',
-            INSTALL_NISAR_DRIVER_VIA_MAMBA:
-              'mamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
-            INSTALL_NISAR_DRIVER_VIA_MICROMAMBA:
-              'micromamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
-            INSTALL_NISAR_DRIVER_VIA_PIXI:
-              'pixi global install -c nisar-forge -c conda-forge gdal-driver-nisar',
-          }"
-          copyPrompt="COPY_TO_CLIPBOARD"
-          copyMessage="COPIED_TO_CLIPBOARD"
-          language="bash"
-        >
-        </app-code-block>
-      }
 
       <div><br /></div>
       <app-docs-modal
