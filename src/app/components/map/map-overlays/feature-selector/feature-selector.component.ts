@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Feature, getUid } from 'ol';
 import { StyleLike } from 'ol/style/Style';
 
@@ -17,7 +18,7 @@ import * as polygonStyle from '@services/map/polygon.style';
 
 @Component({
   selector: 'app-feature-selector',
-  imports: [MatListModule, MatIconButton],
+  imports: [MatListModule, MatIconButton, TranslatePipe],
   templateUrl: './feature-selector.component.html',
   styleUrl: './feature-selector.component.scss',
 })

@@ -813,6 +813,7 @@
   "SELECT": "Select",
   "SELECT_A_DATASET": "Seleccione un conjunto de datos para exportar.",
   "SELECT_A_DATASET_TO_CONTINUE": "Seleccione un conjunto de datos para continuar.",
+  "SELECT_FROM_OVERLAPPING": "Select an overlapping bounding box",
   "SELECT_MAX_RESULTS": "Seleccionar máximo de resultados",
   "SELECTED": "Seleccionado",
   "SENTINEL_1_BURST_DESC": "Los productos Sentinel-1 BURST son las respuestas de pulso del radar individuales que componen las 3 sub-franjas de cada producto Sentinel-1 SLC.",
