@@ -576,7 +576,7 @@ export class MapService {
       this.searchType() === models.SearchType.PAIR_SELECTION
     ) {
       this.selectedSource.refresh();
-      // this.selectHover.setActive(false);
+      this.selectClick.getFeatures().clear();
       this.selectedMultipleFrame$.set(features);
     } else if (e.selected.length > 0) {
       this.handleFeature(e.selected[0]);
