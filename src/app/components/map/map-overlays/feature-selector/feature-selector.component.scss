@@ -3,22 +3,26 @@
 .feature-options {
   display: flex;
   flex-direction: column;
-  max-height: 20vh;
-  overflow-y: auto;
-  padding-bottom: 2vhpx;
   max-width: auto;
+  max-height: 20vh;
+  padding-bottom: 2vh;
+  overflow-y: auto;
 }
+
 .feature-options-title {
   padding-top: 0;
-  margin-top: 0;
-  padding-left: 15px;
   padding-right: 5px;
+  padding-left: 15px;
+  margin-top: 0;
 }
+
 .close {
   display: flex;
   justify-content: flex-end;
+
   button {
     padding: 0;
+
     @include mat.icon-button-overrides(
       (
         icon-size: 1.3rem,
