@@ -1,7 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import {
   Component,
-  Input,
+  input,
   ViewChild,
   AfterViewInit,
   inject,
@@ -21,7 +21,8 @@ export class MapInfoComponent implements AfterViewInit {
   private mapService = inject(services.MapService);
 
   @ViewChild('mapScaleComp', { static: true }) mapScale;
-  @Input() public mousePos: LonLat;
+  public reserveScaleLineWidth = input(false);
+  public mousePos = input<LonLat>();
 
   ngAfterViewInit() {
     this.mapService.addScaleLine(this.mapScale.nativeElement);

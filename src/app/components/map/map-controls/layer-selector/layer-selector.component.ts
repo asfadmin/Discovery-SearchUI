@@ -6,6 +6,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/list';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatRadioButton } from '@angular/material/radio';
+import { MatTooltip } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
@@ -29,6 +30,7 @@ import * as searchStore from '@store/search';
     MatMenuItem,
     MatDivider,
     MatCheckbox,
+    MatTooltip,
 
     MatRadioButton,
     AsyncPipe,
