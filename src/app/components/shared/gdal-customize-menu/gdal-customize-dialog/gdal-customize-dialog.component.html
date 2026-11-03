@@ -290,8 +290,7 @@
     }
 
     @if (
-      !gdalConfigForm.selectedDatasets().value() ||
-      gdalConfigForm.selectedDatasets().value().length === 0
+      gdalConfigForm.selectedDatasets().value()?.length === 0
     ) {
       <div
         class="blur-overlay"
