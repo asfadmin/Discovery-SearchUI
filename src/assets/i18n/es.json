@@ -295,7 +295,6 @@
   "EXPORT_GDAL_CLIPBOARD": "Copiar el fragmento de código GDAL para extraer el conjunto de datos.",
   "EXPORT_GDAL_DATASET": "Exportar conjuntos de datos con GDAL",
   "EXPORT_GDAL_HELP": "¿Qué es esto?",
-  "EXPORT_GDAL_HELP_BODY": "Para usar esta función debe tener GDAL instalado y colocar el siguiente archivo .netrc en su directorio de usuario.",
   "EXPORT_GDAL_HELP_LINK": "Haga clic aquí para obtener más información sobre el uso de GDAL con datos NISAR.",
   "EXPORT_GDAL_HELP_SUMMARY": "Cómo usar GDAL para realizar operaciones de extracción de subconjuntos.",
   "EXPORT_GDALRC_CLIPBOARD": "Copiar la configuración 'gdalrc' al portapapeles.",
