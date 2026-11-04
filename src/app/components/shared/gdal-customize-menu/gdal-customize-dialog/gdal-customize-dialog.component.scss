@@ -43,7 +43,7 @@ h1 {
 
 .gdal-dataset:hover {
   @include themify($themes) {
-    background-color: themed('accent');
+    background-color: themed('dark-focused');
   }
 }
 
