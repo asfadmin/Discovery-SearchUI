@@ -16,13 +16,16 @@ test(
       .getByRole('menuitem', { name: 'List List search allows you' })
       .click();
     await page.getByRole('textbox', { name: 'List of scene names' }).click();
+    const countRequest = page.waitForResponse((response) =>
+      response.url().includes('output=COUNT'),
+    );
     await page
       .getByRole('textbox', { name: 'List of scene names' })
       .fill(
         'NISAR_L2_PR_GCOV_028_128_D_076_4005_DHDH_A_20260822T021004_20260822T021029_P05023_N_P_J_001',
       );
 
-    await page.waitForTimeout(500);
+    await countRequest;
 
     const searchResponse = waitForASFAPIResponse(page);
     const searchButton = page
@@ -77,13 +80,18 @@ test('Test GDAL Dialog', { tag: '@visual' }, async ({ page }) => {
     .getByRole('menuitem', { name: 'List List search allows you' })
     .click();
   await page.getByRole('textbox', { name: 'List of scene names' }).click();
+
+  const countRequest = page.waitForResponse((response) =>
+    response.url().includes('output=COUNT'),
+  );
+
   await page
     .getByRole('textbox', { name: 'List of scene names' })
     .fill(
       'NISAR_L2_PR_GCOV_028_128_D_076_4005_DHDH_A_20260822T021004_20260822T021029_P05023_N_P_J_001',
     );
 
-  await page.waitForTimeout(500);
+  await countRequest;
 
   const searchResponse = waitForASFAPIResponse(page);
   const searchButton = page
