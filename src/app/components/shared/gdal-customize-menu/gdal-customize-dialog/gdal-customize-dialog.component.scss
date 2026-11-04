@@ -15,6 +15,23 @@
   right: 0.4em;
 }
 
+.error {
+  @include themify($themes) {
+    color: themed('err');
+  }
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  border-radius: 15px;
+  box-shadow: 0 3px 2px rgb(0 0 0 / 15%);
+
+  margin: 0.5em;
+  padding: 0.5em;
+}
+
 .gdal-export-wrapper {
   height: 100%;
   padding: 1em;
@@ -23,6 +40,11 @@
 
 h1 {
   text-align: center;
+}
+
+h2 {
+  margin: 0;
+  padding: 0;
 }
 
 .subtitle {
@@ -100,8 +122,13 @@ h1 {
   white-space: nowrap;
 }
 
-.flex-grow {
+.flex-break {
   flex-basis: 100%;
+  height: 0;
+}
+
+.flex-grow {
+  flex-grow: 1;
   height: 0;
 }
 
