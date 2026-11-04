@@ -196,6 +196,9 @@ export class GdalCustomizeDialogComponent {
   homeDirectory = computed(() =>
     this.gdalConfigForm.outputOS().value() == 'Windows' ? '%USERPROFILE%' : '~',
   );
+  isWindows = computed(
+    () => this.gdalConfigForm.outputOS().value() === 'Windows',
+  );
 
   netrcContent = `\
 machine urs.earthdata.nasa.gov
@@ -222,6 +225,16 @@ machine urs.earthdata.nasa.gov
             datasetPath: this.gdalConfigForm.selectedDatasets().value()[0],
           }),
         );
+      }
+    });
+
+    effect(() => {
+      if (this.isWindows()) {
+        this.gdalConfigModel.update((m) => ({
+          ...m,
+          minimalCommand: false,
+          nisarDriver: false,
+        }));
       }
     });
   }
