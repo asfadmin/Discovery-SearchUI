@@ -13,6 +13,7 @@
   position: absolute;
   top: 0;
   right: 0.4em;
+  z-index: 10;
 }
 
 .gdal-export-wrapper {
@@ -37,7 +38,9 @@ h1 {
   flex-flow: row wrap;
   gap: 0 0.5em;
   align-items: center;
-  padding: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 48px 10px 10px;
   border-radius: 15px;
 }
 
@@ -48,6 +51,8 @@ h1 {
 }
 
 .dataset-button {
+  position: relative;
+
   @include mat.button-toggle-overrides(
     (
       height: 26px,
@@ -98,6 +103,23 @@ h1 {
   font-size: 0.75rem;
   text-align: right;
   white-space: nowrap;
+}
+
+.gdal-dataset-check {
+  position: absolute;
+  top: 50%;
+  right: 30px;
+  pointer-events: none;
+  transform: translateY(-50%);
+
+  @include themify($themes) {
+    // unchecked: the box outline
+    --mat-pseudo-checkbox-full-unselected-icon-color: #{themed('dark-secondary-text')};
+
+    // checked: box fill and tick
+    --mat-pseudo-checkbox-full-selected-icon-color: #{themed('primary')};
+    --mat-pseudo-checkbox-full-selected-checkmark-color: #{themed('light-primary-text')};
+  }
 }
 
 .flex-grow {
