@@ -1,5 +1,12 @@
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  inject,
+  computed,
+} from '@angular/core';
 import {
   MatCardHeader,
   MatCardTitle,
@@ -74,6 +81,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public scene: models.CMRProduct;
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
+  public selectedScene = this.store$.selectSignal(scenesStore.getSelectedScene);
   public dataset: models.Dataset;
   public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;
@@ -88,9 +96,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public asfWebsite = models.asfWebsite;
   public productTypeDocsUrl: string | null = null;
 
-  // NISAR products processed with CRID 5023+ are provisional calibrated data;
-  // earlier CRIDs remain labelled uncalibrated with the pre-calibration docs
-  public nisarCalibration(): { label: string; url: string } | null {
+  public nisarCalibration = computed(() => {
+    this.selectedScene();
+
     if (this.dataset?.id !== 'NISAR') {
       return null;
     }
@@ -99,10 +107,17 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       this.scene?.metadata?.nisar?.crid?.replace(/\D/g, '') ?? '',
     );
 
+    if (crid >= 5036) {
+      return {
+        label: 'VALIDATED',
+        url: 'https://nisar-docs.asf.alaska.edu/nisar-known-issues/',
+      };
+    }
+
     return crid >= calibratedCrid
       ? { label: 'PROVISIONAL', url: provisionalIssuesUrl }
       : { label: 'UNCALIBRATED', url: betaIssuesUrl };
-  }
+  });
 
   public isBrowseOverlayEnabled$: Observable<boolean> =
     this.browseOverlayService.isBrowseOverlayEnabled$;
