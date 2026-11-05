@@ -46,7 +46,7 @@
           </div>
           <mat-pseudo-checkbox
             class="gdal-dataset-check"
-            [state]="toggle.checked ? 'checked' : 'unchecked'"
+            [state]="gdalConfigForm.selectedDatasets().value().includes(dataset.path) ? 'checked' : 'unchecked'"
           />
         </mat-button-toggle>
       }
