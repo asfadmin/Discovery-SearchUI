@@ -2,6 +2,7 @@ import { HttpClient, provideHttpClient } from '@angular/common/http';
 import {
   enableProdMode,
   importProvidersFrom,
+  isDevMode,
   provideZoneChangeDetection,
 } from '@angular/core';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -27,6 +28,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { withHashLocation, provideRouter } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import {
   NgcCookieConsentModule,
@@ -181,5 +183,13 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(),
     provideAnimations(),
     provideRouter(routes, withHashLocation()),
+    provideStoreDevtools({
+      maxAge: 25,
+      logOnly: !isDevMode(),
+      autoPause: true,
+      trace: true,
+      traceLimit: 75,
+      connectInZone: true,
+    }),
   ],
 }).catch((err) => console.error(err));
