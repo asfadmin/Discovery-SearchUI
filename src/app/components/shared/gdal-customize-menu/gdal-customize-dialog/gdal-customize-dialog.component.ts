@@ -14,6 +14,7 @@ import {
   MatButtonToggleGroup,
 } from '@angular/material/button-toggle';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { MatPseudoCheckbox } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
@@ -59,6 +60,7 @@ interface GdalConfigModel {
 @Component({
   selector: 'app-gdal-customize-dialog',
   imports: [
+    MatPseudoCheckbox,
     TranslateModule,
     MatExpansionModule,
     MatButtonToggleGroup,
@@ -193,8 +195,9 @@ export class GdalCustomizeDialogComponent {
         )
       : '',
   );
-  homeDirectory = computed(() =>
-    this.gdalConfigForm.outputOS().value() == 'Windows' ? '%USERPROFILE%' : '~',
+  homeDirectory = computed(() => (this.isWindows() ? '%USERPROFILE%' : '~'));
+  isWindows = computed(
+    () => this.gdalConfigForm.outputOS().value() === 'Windows',
   );
 
   netrcContent = `\
@@ -222,6 +225,16 @@ machine urs.earthdata.nasa.gov
             datasetPath: this.gdalConfigForm.selectedDatasets().value()[0],
           }),
         );
+      }
+    });
+
+    effect(() => {
+      if (this.isWindows()) {
+        this.gdalConfigModel.update((m) => ({
+          ...m,
+          minimalCommand: false,
+          nisarDriver: false,
+        }));
       }
     });
   }

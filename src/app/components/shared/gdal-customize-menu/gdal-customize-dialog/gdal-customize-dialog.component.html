@@ -17,38 +17,43 @@
     ></app-docs-modal>
   </span>
   <div class="dataset-list-card">
-    <h2>1. {{ 'SELECT_A_DATASET' | translate }}</h2>
+    <h2>1. {{ 'SELECT_DATASETS' | translate }}</h2>
     <mat-button-toggle-group
       [formField]="gdalConfigForm.selectedDatasets"
       vertical
       multiple
+      hideMultipleSelectionIndicator
       class="dataset-list"
     >
-      @for (dataset of data.datasets; track dataset) {
+      @for (dataset of data.datasets; track dataset.path) {
         <mat-button-toggle
+          #toggle
           class="dataset-button"
           [value]="dataset.path"
           [aria-label]="`${('SELECT' | translate)} ${dataset.name}`"
           [matTooltip]="`${('SELECT' | translate)} ${dataset.name}`"
         >
-          <div class="gdal-dataset" [aria-label]="dataset.name">
-            <span class="gdal-dataset-name">
-              {{ dataset.name }}
-            </span>
-            @if (dataset.type) {
-              <span class="gdal-dataset-chip">
-                {{ dataset.type }}
-              </span>
-            }
-            @if (dataset.unit) {
-              <span class="gdal-dataset-chip">
-                {{ dataset.unit }}
-              </span>
-            }
+          <div class="gdal-dataset">
+            <div class="gdal-dataset-info">
+              <span class="gdal-dataset-name">{{ dataset.name }}</span>
+              @if (dataset.type) {
+                <span class="gdal-dataset-chip">{{ dataset.type }}</span>
+              }
+              @if (dataset.unit) {
+                <span class="gdal-dataset-chip">{{ dataset.unit }}</span>
+              }
+              <span class="flex-break"></span>
+              <span class="gdal-dataset-path">{{ dataset.path }}</span>
+            </div>
             <span class="flex-grow"></span>
-            <span class="gdal-dataset-path">
-              {{ dataset.path }}
-            </span>
+            <mat-pseudo-checkbox
+              class="gdal-dataset-check"
+              [state]="
+                gdalConfigForm.selectedDatasets().value().includes(dataset.path)
+                  ? 'checked'
+                  : 'unchecked'
+              "
+            />
           </div>
         </mat-button-toggle>
       }

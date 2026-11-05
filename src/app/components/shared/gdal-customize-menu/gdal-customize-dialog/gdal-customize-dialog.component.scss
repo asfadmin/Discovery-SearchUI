@@ -13,6 +13,7 @@
   position: absolute;
   top: 0;
   right: 0.4em;
+  z-index: 10;
 }
 
 .gdal-export-wrapper {
@@ -32,12 +33,22 @@ h1 {
   font-style: italic;
 }
 
-.gdal-dataset {
+.gdal-dataset-info {
   display: flex;
+  flex-direction: row;
   flex-flow: row wrap;
   gap: 0 0.5em;
   align-items: center;
-  padding: 10px;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.gdal-dataset {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.3em 1em;
   border-radius: 15px;
 }
 
@@ -48,6 +59,8 @@ h1 {
 }
 
 .dataset-button {
+  position: relative;
+
   @include mat.button-toggle-overrides(
     (
       height: 26px,
@@ -60,6 +73,8 @@ h1 {
 
 .gdal-dataset-name {
   max-width: 100%;
+  flex-shrink: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -74,7 +89,7 @@ h1 {
   height: fit-content;
   padding: 0 0.4em;
   text-overflow: ellipsis;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-style: italic;
   white-space: nowrap;
   background: rgb(0 0 0 / 7.5%);
@@ -100,7 +115,28 @@ h1 {
   white-space: nowrap;
 }
 
+.gdal-dataset-check {
+  @include themify($themes) {
+    // unchecked: the box outline
+    --mat-pseudo-checkbox-full-unselected-icon-color: #{themed(
+        'dark-secondary-text'
+      )};
+
+    // checked: box fill and tick
+    --mat-pseudo-checkbox-full-selected-icon-color: #{themed('primary')};
+    --mat-pseudo-checkbox-full-selected-checkmark-color: #{themed(
+        'light-primary-text'
+      )};
+  }
+}
+
 .flex-grow {
+  height: 0;
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+.flex-break {
   flex-basis: 100%;
   height: 0;
 }
