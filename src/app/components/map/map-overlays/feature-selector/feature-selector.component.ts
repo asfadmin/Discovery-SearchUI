@@ -38,19 +38,24 @@ export class FeatureSelectorComponent {
   public displayedFeatures = computed(() => {
     return this.features()?.map((feature) => {
       let description: any;
+      let display: string;
 
       if (feature.get('filename')) {
         description = this.scenes().find(
           (x) => x.name === feature.get('filename'),
         )?.metadata?.date;
+        display = feature.get('filename');
       }
+
       if (feature.get('dir')) {
         description = `Track: ${feature.get('path')}`;
+        display = `Frame ID ${feature.get('id')}`;
       }
+
       return {
         feature,
         id: getUid(feature),
-        display: feature.get('filename') ?? `Frame ID ${feature.get('id')}`,
+        display: display,
         description: description,
       };
     });

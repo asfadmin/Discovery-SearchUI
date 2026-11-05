@@ -24,8 +24,8 @@
           {{ item.display }}
         </span>
         <span matListItemLine>
-          @switch (searchType()) {
-            @case (searchTypes.PAIR_SELECTION) {
+          @switch (typeof item.display) {
+            @case ('string') {
               {{ item.description }}
             }
             @default {
