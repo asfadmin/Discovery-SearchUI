@@ -33,50 +33,50 @@ export const alos = {
     url: 'https://global.jaxa.jp/',
   },
   productTypes: [
-    // {
-    //   apiValue: 'L1.0',
-    //   displayName: 'Level 1.0',
-    // },
-    // {
-    //   apiValue: 'L1.1',
-    //   displayName: 'Level 1.1 Complex',
-    // },
-    // {
-    //   apiValue: 'L1.5',
-    //   displayName: 'Level 1.5 Image',
-    // },
-    // {
-    //   apiValue: 'L2.2',
-    //   displayName: 'Level 2.2',
-    // },
-    // {
-    //   apiValue: 'RTC_LOW_RES',
-    //   displayName: 'Low-Res Terrain Corrected',
-    // },
-    // {
-    //   apiValue: 'RTC_HI_RES',
-    //   displayName: 'Hi-Res Terrain Corrected',
-    // },
-    // {
-    //   apiValue: 'KMZ',
-    //   displayName: 'GoogleEarth KMZ',
-    // },
     {
       apiValue: 'L1.0',
       displayName: 'Level 1.0',
     },
     {
       apiValue: 'L1.1',
-      displayName: 'Level 1.1',
+      displayName: 'Level 1.1 Complex',
     },
     {
       apiValue: 'L1.5',
-      displayName: 'Level 1.5',
+      displayName: 'Level 1.5 Image',
     },
     {
-      apiValue: 'RTC',
-      displayName: 'Alos RTC',
+      apiValue: 'L2.2',
+      displayName: 'Level 2.2',
     },
+    {
+      apiValue: 'RTC_LOW_RES',
+      displayName: 'Low-Res Terrain Corrected',
+    },
+    {
+      apiValue: 'RTC_HI_RES',
+      displayName: 'Hi-Res Terrain Corrected',
+    },
+    {
+      apiValue: 'KMZ',
+      displayName: 'GoogleEarth KMZ',
+    },
+    // {
+    //   apiValue: 'L1.0',
+    //   displayName: 'Level 1.0',
+    // },
+    // {
+    //   apiValue: 'L1.1',
+    //   displayName: 'Level 1.1',
+    // },
+    // {
+    //   apiValue: 'L1.5',
+    //   displayName: 'Level 1.5',
+    // },
+    // {
+    //   apiValue: 'RTC',
+    //   displayName: 'Alos RTC',
+    // },
   ],
   beamModes: ['DSN', 'FBS', 'FBD', 'PLR', 'WB1', 'WB2'],
   polarizations: [

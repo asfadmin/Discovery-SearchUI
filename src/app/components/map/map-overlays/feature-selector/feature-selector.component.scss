@@ -1,0 +1,46 @@
+@use '@angular/material' as mat;
+
+.feature-options {
+  display: flex;
+  flex-direction: column;
+  max-width: auto;
+  max-height: 20vh;
+  overflow-y: auto;
+}
+
+.feature-options-title {
+  padding-top: 0;
+  padding-right: 5px;
+  padding-left: 15px;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.feature-options-list {
+  padding-top: 0;
+}
+
+.feature-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.divider {
+  margin-bottom: 0;
+}
+
+.close-button {
+  padding: 0;
+  @include mat.icon-button-overrides(
+    (
+      icon-size: 1.3rem,
+      touch-target-size: 2rem,
+      state-layer-size: 2rem,
+    )
+  );
+}
+
+.draggable {
+  cursor: move;
+}
