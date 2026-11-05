@@ -23,29 +23,23 @@
 
 .feature-header {
   display: flex;
-  justify-content: space-between;
   align-items: baseline;
+  justify-content: space-between;
 }
 
 .divider {
   margin-bottom: 0;
 }
 
-.close {
-  display: flex;
-  justify-content: flex-end;
-
-  button {
-    padding: 0;
-
-    @include mat.icon-button-overrides(
-      (
-        icon-size: 1.3rem,
-        touch-target-size: 2rem,
-        state-layer-size: 2rem,
-      )
-    );
-  }
+.close-button {
+  padding: 0;
+  @include mat.icon-button-overrides(
+    (
+      icon-size: 1.3rem,
+      touch-target-size: 2rem,
+      state-layer-size: 2rem,
+    )
+  );
 }
 
 .draggable {

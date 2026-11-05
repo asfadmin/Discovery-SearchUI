@@ -231,10 +231,11 @@ button {
   left: -50px;
   min-width: 200px;
   max-width: 15vw;
+  border-radius: 10px;
+
   @include themify($themes) {
     background-color: themed('background-white');
     border: 1px solid themed('dark-dividers');
     box-shadow: -2px 0 4px themed('dark-dividers');
   }
-  border-radius: 10px;
 }
