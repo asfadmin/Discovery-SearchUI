@@ -6,6 +6,7 @@ import intersect from '@turf/intersect';
 import lineIntersect from '@turf/line-intersect';
 import { Collection, Feature, Map, Overlay, View } from 'ol';
 import { OverviewMap, ScaleLine } from 'ol/control';
+import { Coordinate } from 'ol/coordinate';
 import { click, pointerMove } from 'ol/events/condition';
 import { Extent, isEmpty } from 'ol/extent';
 import GeoJSON from 'ol/format/GeoJSON.js';
@@ -46,7 +47,6 @@ import { LegacyAreaFormatService } from '../legacy-area-format.service';
 import { PairSelectionService } from './pair-selection.service';
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
-import { Coordinate } from 'ol/coordinate';
 
 @Injectable({
   providedIn: 'root',
@@ -580,8 +580,6 @@ export class MapService {
       features.length > 1 ||
       this.searchType() === models.SearchType.PAIR_SELECTION
     ) {
-      this.selectedSource.refresh();
-      this.selectClick.getFeatures().clear();
       this.selectedMultipleFrame$.set(features);
     } else if (e.selected.length > 0) {
       this.handleFeature(e.selected[0]);
