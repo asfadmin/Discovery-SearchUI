@@ -196,7 +196,7 @@ export class GdalCustomizeDialogComponent {
       : '',
   );
   homeDirectory = computed(() =>
-    this.gdalConfigForm.outputOS().value() == 'Windows' ? '%USERPROFILE%' : '~',
+    this.isWindows() ? '%USERPROFILE%' : '~',
   );
   isWindows = computed(
     () => this.gdalConfigForm.outputOS().value() === 'Windows',
