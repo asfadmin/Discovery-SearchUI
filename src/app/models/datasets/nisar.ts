@@ -201,7 +201,8 @@ export const L1L2BrowseCollectionMapping = {
   ROFF: { collection: 'NISAR_L2_GOFF', productType: 'GOFF' },
 };
 
-export const calibratedCrid = 5023;
+export const firstProvisionalCrid = 5023;
+export const firstValidatedCrid = 5036;
 export const provisionalIssuesUrl =
   'https://nisar-docs.asf.alaska.edu/provisional-known-issues/';
 export const betaIssuesUrl =

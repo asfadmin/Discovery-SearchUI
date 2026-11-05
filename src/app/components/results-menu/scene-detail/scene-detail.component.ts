@@ -27,9 +27,10 @@ import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.com
 import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
 import * as models from '@models';
 import {
-  calibratedCrid,
   provisionalIssuesUrl,
   betaIssuesUrl,
+  firstValidatedCrid,
+  firstProvisionalCrid,
 } from '@models/datasets/nisar';
 import {
   AuthService,
@@ -106,17 +107,20 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     const crid = Number(
       this.scene?.metadata?.nisar?.crid?.replace(/\D/g, '') ?? '',
     );
-
-    if (crid >= 5036) {
-      return {
-        label: 'VALIDATED',
-        url: 'https://nisar-docs.asf.alaska.edu/nisar-known-issues/',
-      };
+    switch (true) {
+      case crid >= firstValidatedCrid: {
+        return {
+          label: 'VALIDATED',
+          url: 'https://nisar-docs.asf.alaska.edu/nisar-known-issues/',
+        };
+      }
+      case crid >= firstProvisionalCrid: {
+        return { label: 'PROVISIONAL', url: provisionalIssuesUrl };
+      }
+      default: {
+        return { label: 'UNCALIBRATED', url: betaIssuesUrl };
+      }
     }
-
-    return crid >= calibratedCrid
-      ? { label: 'PROVISIONAL', url: provisionalIssuesUrl }
-      : { label: 'UNCALIBRATED', url: betaIssuesUrl };
   });
 
   public isBrowseOverlayEnabled$: Observable<boolean> =
