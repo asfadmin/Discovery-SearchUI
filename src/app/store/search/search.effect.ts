@@ -453,7 +453,8 @@ export class SearchEffects {
       filter(
         (action) =>
           action.payload === models.SearchType.DATASET ||
-          action.payload === models.SearchType.DISPLACEMENT,
+          action.payload === models.SearchType.DISPLACEMENT ||
+          action.payload === models.SearchType.PAIR_SELECTION,
       ),
       switchMap((action) => {
         const output: any[] = [

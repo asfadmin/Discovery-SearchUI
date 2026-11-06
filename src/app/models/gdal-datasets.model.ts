@@ -87,7 +87,7 @@ export function datasetsForGDALProduct(
             },
           ),
           {
-            path: '//science/LSAR/GCOV/grids/frequencyA/numberOfLooks',
+            path: '//science/LSAR/GCOV/grids/frequencyB/numberOfLooks',
             name: 'Frequency B Number of Looks',
             type: 'Float32',
             ancillary: true,

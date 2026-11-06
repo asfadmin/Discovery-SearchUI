@@ -1,9 +1,19 @@
 import { NgClass, AsyncPipe } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { httpResource } from '@angular/common/http';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  Injector,
+  OnInit,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import GeoJSON from 'ol/format/GeoJSON';
 
 import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
 import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
@@ -40,11 +50,16 @@ import { HeaderButtonsComponent } from '../header-buttons/header-buttons.compone
     TranslateModule,
   ],
 })
-export class PairSelectionHeaderComponent {
+export class PairSelectionHeaderComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(services.ScreenSizeService);
   prop = inject(services.PropertyService);
   frameMapService = inject(services.FrameMapService);
+  private injector = inject(Injector);
+  private drawService = inject(services.DrawService);
+  private searchParams = inject(services.SearchParamsService);
+  private pairSelectionService = inject(services.PairSelectionService);
+  private mapService = inject(services.MapService);
 
   public datasets = models.datasetList;
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
@@ -56,11 +71,34 @@ export class PairSelectionHeaderComponent {
   public dataset = this.store$.selectSignal(filterStore.getSelectedDataset);
   public p = models.Props;
 
+  private searchPolygon = toSignal(this.drawService.polygon$);
+  private latestParams = toSignal(this.searchParams.getlatestParams);
   public pairSelectionDatasets = computed(() => {
     return this.datasets.filter((dataset) =>
       dataset.properties.includes(models.Props.PAIR_SELECTION),
     );
   });
+
+  public frameMapRequest = httpResource.text(() => {
+    const polygon = this.searchPolygon();
+    const params = this.latestParams();
+    if (polygon === null) {
+      return;
+    }
+    return {
+      url: models.datasets['SENTINEL-1 INTERFEROGRAM (BETA)'].frameMap
+        .ascending,
+      params: {
+        ...params,
+        polygon,
+        output: 'something',
+      },
+    };
+  });
+
+  public testingPathRange = this.store$.selectSignal(
+    filterStore.getPathFrameRanges,
+  );
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());
@@ -73,5 +111,35 @@ export class PairSelectionHeaderComponent {
 
   public onDatasetChange(dataset: string): void {
     this.store$.dispatch(new filterStore.SetSelectedDataset(dataset));
+  }
+
+  public ngOnInit(): void {
+    effect(
+      () => {
+        if (
+          !this.frameMapRequest.hasValue() &&
+          !this.frameMapRequest.isLoading()
+        ) {
+          return;
+        }
+
+        const features = new GeoJSON().readFeatures(
+          this.frameMapRequest.value(),
+          {
+            featureProjection: this.mapService.epsg(),
+          },
+        );
+        // TODO: for now this is just acting like how SearchAPI would be filtering
+        const filteredFeatures = this.pairSelectionService.tempAriaMapFilter(
+          features,
+          this.latestParams(),
+          this.searchPolygon(),
+          this.testingPathRange(),
+        );
+
+        this.pairSelectionService.loadFramePreview(filteredFeatures);
+      },
+      { injector: this.injector },
+    );
   }
 }

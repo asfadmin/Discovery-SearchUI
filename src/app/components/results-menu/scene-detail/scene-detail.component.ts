@@ -1,5 +1,12 @@
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  inject,
+  computed,
+} from '@angular/core';
 import {
   MatCardHeader,
   MatCardTitle,
@@ -20,9 +27,10 @@ import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.com
 import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
 import * as models from '@models';
 import {
-  calibratedCrid,
   provisionalIssuesUrl,
   betaIssuesUrl,
+  firstValidatedCrid,
+  firstProvisionalCrid,
 } from '@models/datasets/nisar';
 import {
   AuthService,
@@ -74,6 +82,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public scene: models.CMRProduct;
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
+  public selectedScene = this.store$.selectSignal(scenesStore.getSelectedScene);
   public dataset: models.Dataset;
   public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;
@@ -88,9 +97,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public asfWebsite = models.asfWebsite;
   public productTypeDocsUrl: string | null = null;
 
-  // NISAR products processed with CRID 5023+ are provisional calibrated data;
-  // earlier CRIDs remain labelled uncalibrated with the pre-calibration docs
-  public nisarCalibration(): { label: string; url: string } | null {
+  public nisarCalibration = computed(() => {
+    this.selectedScene();
+
     if (this.dataset?.id !== 'NISAR') {
       return null;
     }
@@ -98,11 +107,21 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     const crid = Number(
       this.scene?.metadata?.nisar?.crid?.replace(/\D/g, '') ?? '',
     );
-
-    return crid >= calibratedCrid
-      ? { label: 'PROVISIONAL', url: provisionalIssuesUrl }
-      : { label: 'UNCALIBRATED', url: betaIssuesUrl };
-  }
+    switch (true) {
+      case crid >= firstValidatedCrid: {
+        return {
+          label: 'VALIDATED',
+          url: 'https://nisar-docs.asf.alaska.edu/nisar-known-issues/',
+        };
+      }
+      case crid >= firstProvisionalCrid: {
+        return { label: 'PROVISIONAL', url: provisionalIssuesUrl };
+      }
+      default: {
+        return { label: 'UNCALIBRATED', url: betaIssuesUrl };
+      }
+    }
+  });
 
   public isBrowseOverlayEnabled$: Observable<boolean> =
     this.browseOverlayService.isBrowseOverlayEnabled$;

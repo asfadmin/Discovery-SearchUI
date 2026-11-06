@@ -39,6 +39,7 @@ export class ProductMaturitySelectorComponent implements OnInit, OnDestroy {
   public selectedMaturity: string[] = [];
 
   maturities: productMaturity[] = [
+    { value: 'VALIDATED', viewValue: 'VALIDATED' },
     { value: 'PROVISIONAL', viewValue: 'PROVISIONAL' },
     { value: 'BETA', viewValue: 'BETA_DISPLAY' },
   ];
