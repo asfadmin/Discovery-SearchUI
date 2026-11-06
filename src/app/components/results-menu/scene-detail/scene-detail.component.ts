@@ -26,12 +26,7 @@ import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/c
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
 import * as models from '@models';
-import {
-  provisionalIssuesUrl,
-  betaIssuesUrl,
-  firstValidatedCrid,
-  firstProvisionalCrid,
-} from '@models/datasets/nisar';
+import { validated, provisional, uncalibrated } from '@models/datasets/nisar';
 import {
   AuthService,
   BrowseOverlayService,
@@ -107,18 +102,16 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     const crid = Number(
       this.scene?.metadata?.nisar?.crid?.replace(/\D/g, '') ?? '',
     );
+
     switch (true) {
-      case crid >= firstValidatedCrid: {
-        return {
-          label: 'VALIDATED',
-          url: 'https://nisar-docs.asf.alaska.edu/nisar-known-issues/',
-        };
+      case crid >= validated.firstCrid: {
+        return validated;
       }
-      case crid >= firstProvisionalCrid: {
-        return { label: 'PROVISIONAL', url: provisionalIssuesUrl };
+      case crid >= provisional.firstCrid: {
+        return provisional;
       }
       default: {
-        return { label: 'UNCALIBRATED', url: betaIssuesUrl };
+        return uncalibrated;
       }
     }
   });
