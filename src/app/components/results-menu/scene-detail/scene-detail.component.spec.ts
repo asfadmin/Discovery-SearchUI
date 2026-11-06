@@ -109,7 +109,7 @@ describe('SceneDetailComponent', () => {
       ['X05010', 'UNCALIBRATED'],
       ['X05022', 'UNCALIBRATED'],
       ['X05023', 'PROVISIONAL'],
-      ['X06001', 'PROVISIONAL'],
+      ['X06001', 'VALIDATED'],
       [null, 'UNCALIBRATED'],
     ])('labels NISAR scenes with crid %s as %s', (crid, label) => {
       selectNisarScene(crid as string | null);
