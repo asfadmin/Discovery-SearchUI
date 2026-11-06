@@ -292,6 +292,9 @@
               INSTALL_VIA_MAMBA: 'mamba install -c conda-forge gdal',
               INSTALL_VIA_MICROMAMBA: 'micromamba install -c conda-forge gdal',
               INSTALL_VIA_PIXI: 'pixi global install -c conda-forge gdal',
+              INSTALL_VIA_APT: 'sudo apt install gdal-bin',
+              INSTALL_VIA_PACMAN: 'sudo pacman -S gdal',
+              RUN_VIA_NIX: 'nix-shell -p gdal',
             }"
             copyPrompt="COPY_TO_CLIPBOARD"
             copyMessage="COPIED_TO_CLIPBOARD"
