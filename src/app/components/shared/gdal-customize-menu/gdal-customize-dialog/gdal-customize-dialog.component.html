@@ -16,63 +16,81 @@
       url="https://nisar-docs.asf.alaska.edu/vertex#vertex-gdal-snippet-exporter"
     ></app-docs-modal>
   </span>
-  <div class="dataset-list-card">
+  <div class="dataset-list-card step-card expanded">
     <div class="header-container">
-      <h2>1. {{ 'SELECT_A_DATASET' | translate }}</h2>
+      <h2>1. {{ 'SELECT_DATASETS' | translate }}</h2>
       <span class="flex-grow"></span>
       <mat-icon
-        [fontIcon]="this.datasetSelected() ? 'check' : 'close'"
+        [fontIcon]="this.datasetSelected() ? 'check' : 'error'"
+        [matTooltip]="datasetSelectedTooltip() | translate"
         [class.error]="!this.datasetSelected()"
       ></mat-icon>
     </div>
-    <mat-button-toggle-group
-      [formField]="gdalConfigForm.selectedDatasets"
-      vertical
-      multiple
-      class="dataset-list"
-    >
-      @for (dataset of data.datasets; track dataset) {
-        <mat-button-toggle
-          class="dataset-button"
-          [value]="dataset.path"
-          [aria-label]="`${('SELECT' | translate)} ${dataset.name}`"
-          [matTooltip]="`${('SELECT' | translate)} ${dataset.name}`"
-        >
-          <div class="gdal-dataset" [aria-label]="dataset.name">
-            <span class="gdal-dataset-name">
-              {{ dataset.name }}
-            </span>
-            @if (dataset.type) {
-              <span class="gdal-dataset-chip">
-                {{ dataset.type }}
-              </span>
-            }
-            @if (dataset.unit) {
-              <span class="gdal-dataset-chip">
-                {{ dataset.unit }}
-              </span>
-            }
-            <span class="flex-break"></span>
-            <span class="gdal-dataset-path">
-              {{ dataset.path }}
-            </span>
-          </div>
-        </mat-button-toggle>
-      }
-    </mat-button-toggle-group>
+    <div class="step-card-content dataset-selector">
+      <mat-button-toggle-group
+        [formField]="gdalConfigForm.selectedDatasets"
+        vertical
+        multiple
+        hideMultipleSelectionIndicator
+        class="dataset-list"
+      >
+        @for (dataset of data.datasets; track dataset.path) {
+          <mat-button-toggle
+            #toggle
+            class="dataset-button"
+            [value]="dataset.path"
+            [aria-label]="`${('SELECT' | translate)} ${dataset.name}`"
+            [matTooltip]="`${('SELECT' | translate)} ${dataset.name}`"
+          >
+            <div class="gdal-dataset">
+              <div class="gdal-dataset-info">
+                <span class="gdal-dataset-name">{{ dataset.name }}</span>
+                @if (dataset.type) {
+                  <span class="gdal-dataset-chip">{{ dataset.type }}</span>
+                }
+                @if (dataset.unit) {
+                  <span class="gdal-dataset-chip">{{ dataset.unit }}</span>
+                }
+                <span class="flex-break"></span>
+                <span class="gdal-dataset-path">{{ dataset.path }}</span>
+              </div>
+              <span class="flex-grow"></span>
+              <mat-pseudo-checkbox
+                class="gdal-dataset-check"
+                [state]="
+                  gdalConfigForm
+                    .selectedDatasets()
+                    .value()
+                    .includes(dataset.path)
+                    ? 'checked'
+                    : 'unchecked'
+                "
+              />
+            </div>
+          </mat-button-toggle>
+        }
+      </mat-button-toggle-group>
+    </div>
   </div>
 
-  <div class="blur-overlay-container">
-    <div class="options-list-card">
-      <div class="header-container">
-        <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
-        <span class="flex-grow"></span>
-        <mat-icon
-          [fontIcon]="
-            this.datasetSelected() ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
-          "
-        ></mat-icon>
-      </div>
+  <div
+    class="options-list-card step-card"
+    [class.expanded]="this.datasetSelected()"
+    [matTooltip]="
+      (!this.datasetSelected() ? 'SELECT_A_DATASET_TO_CONTINUE' : null)
+        | translate
+    "
+  >
+    <div class="header-container">
+      <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
+      <span class="flex-grow"></span>
+      <mat-icon
+        [fontIcon]="
+          this.datasetSelected() ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+        "
+      ></mat-icon>
+    </div>
+    <div class="step-card-content">
       @if (this.datasetSelected()) {
         <h3>{{ 'CONFIGURE_GEOSPATIAL_OPTIONS' | translate }}</h3>
         <div class="options-list">
@@ -222,18 +240,27 @@
         </div>
       }
     </div>
+  </div>
 
-    <div class="gdal-configure-card">
-      <div class="header-container">
-        <h2>3. {{ 'CONFIGURE_ENVIRONMENT' | translate }}</h2>
-        <span class="flex-grow"></span>
-        <mat-icon
-          [fontIcon]="
-            this.datasetSelected() ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
-          "
-        ></mat-icon>
-      </div>
+  <div
+    class="gdal-configure-card step-card"
+    [class.expanded]="this.datasetSelected()"
+    [matTooltip]="
+      (!this.datasetSelected() ? 'SELECT_A_DATASET_TO_CONTINUE' : null)
+        | translate
+    "
+  >
+    <div class="header-container">
+      <h2>3. {{ 'CONFIGURE_ENVIRONMENT' | translate }}</h2>
+      <span class="flex-grow"></span>
+      <mat-icon
+        [fontIcon]="
+          this.datasetSelected() ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+        "
+      ></mat-icon>
+    </div>
 
+    <div class="step-card-content">
       @if (this.datasetSelected()) {
         @if (gdalConfigForm.nisarDriver().value()) {
           <p>{{ 'JPL_NISAR_DRIVER_HELP_BODY' | translate }}</p>
@@ -302,36 +329,40 @@
         ></app-docs-modal>
       }
     </div>
-
-    @if (gdalConfigForm.outputType().value() === 'gdal') {
-      <div class="gdal-output-card">
-        <div class="header-container">
-          <h2>4. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
-          <span class="flex-grow"></span>
-          <mat-icon
-            [fontIcon]="
-              this.datasetSelected()
-                ? 'keyboard_arrow_down'
-                : 'keyboard_arrow_up'
-            "
-          ></mat-icon>
-        </div>
-        @if (this.datasetSelected()) {
-          <div class="gdal-output-list">
-            <app-code-block
-              [codeDescription]="'GDAL_COMMAND_DESCRIPTION' | translate"
-              [codeContent]="gdalCommand()"
-              copyPrompt="EXPORT_GDAL_CLIPBOARD"
-              copyMessage="EXPORTED_GDAL_CLIPBOARD"
-              [isCommand]="true"
-              language="bash"
-            >
-            </app-code-block>
-          </div>
-        }
-      </div>
-    }
   </div>
+  @if (gdalConfigForm.outputType().value() === 'gdal') {
+    <div
+      class="gdal-output-card step-card"
+      [class.expanded]="this.datasetSelected()"
+      [matTooltip]="
+        (!this.datasetSelected() ? 'SELECT_A_DATASET_TO_CONTINUE' : null)
+          | translate
+      "
+    >
+      <div class="header-container">
+        <h2>4. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
+        <span class="flex-grow"></span>
+        <mat-icon
+          [fontIcon]="
+            this.datasetSelected() ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+          "
+        ></mat-icon>
+      </div>
+      @if (this.datasetSelected()) {
+        <div class="gdal-output-list">
+          <app-code-block
+            [codeDescription]="'GDAL_COMMAND_DESCRIPTION' | translate"
+            [codeContent]="gdalCommand()"
+            copyPrompt="EXPORT_GDAL_CLIPBOARD"
+            copyMessage="EXPORTED_GDAL_CLIPBOARD"
+            [isCommand]="true"
+            language="bash"
+          >
+          </app-code-block>
+        </div>
+      }
+    </div>
+  }
 </div>
 
 <div class="footer">

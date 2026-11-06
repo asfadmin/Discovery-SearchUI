@@ -14,6 +14,7 @@ import {
   MatButtonToggleGroup,
 } from '@angular/material/button-toggle';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { MatPseudoCheckbox } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
@@ -59,6 +60,7 @@ interface GdalConfigModel {
 @Component({
   selector: 'app-gdal-customize-dialog',
   imports: [
+    MatPseudoCheckbox,
     TranslateModule,
     MatExpansionModule,
     MatButtonToggleGroup,
@@ -182,12 +184,24 @@ export class GdalCustomizeDialogComponent {
         )
       : '',
   );
-  homeDirectory = computed(() =>
-    this.gdalConfigForm.outputOS().value() == 'Windows' ? '%USERPROFILE%' : '~',
+  homeDirectory = computed(() => (this.isWindows() ? '%USERPROFILE%' : '~'));
+  isWindows = computed(
+    () => this.gdalConfigForm.outputOS().value() === 'Windows',
   );
   datasetSelected = computed(
     () => this.gdalConfigForm.selectedDatasets().value()?.length > 0,
   );
+  datasetSelectedTooltip = computed(() => {
+    if (this.datasetSelected()) {
+      if (this.multiVariableExport()) {
+        return 'DATASETS_SELECTED';
+      }
+
+      return 'DATASET_SELECTED';
+    }
+
+    return 'SELECT_A_DATASET_TO_CONTINUE';
+  });
   enableCutlineWKTString = computed(() => {
     if (this.gdalConfigForm.cutlineWKT().disabled()) {
       return 'CROP_TO_AOI_IS_DISABLED';
@@ -225,6 +239,16 @@ machine urs.earthdata.nasa.gov
             datasetPath: this.gdalConfigForm.selectedDatasets().value()[0],
           }),
         );
+      }
+    });
+
+    effect(() => {
+      if (this.isWindows()) {
+        this.gdalConfigModel.update((m) => ({
+          ...m,
+          minimalCommand: false,
+          nisarDriver: false,
+        }));
       }
     });
   }

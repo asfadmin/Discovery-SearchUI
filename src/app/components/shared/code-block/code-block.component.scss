@@ -5,7 +5,7 @@
   position: relative;
   padding: 0 1em;
   border-radius: 15px;
-  box-shadow: 0 0 15px rgb(0 0 0 / 30%);
+  // box-shadow: 0 0 15px rgb(0 0 0 / 30%);
 }
 
 .code {
@@ -21,8 +21,12 @@
   }
 }
 
+.code-header {
+  padding: 0em 0.5em;
+}
+
 .code-header.hoverable {
-  padding-top: 1em;
+  padding-top: 0.5em;
 }
 
 .code-header.tabbed {

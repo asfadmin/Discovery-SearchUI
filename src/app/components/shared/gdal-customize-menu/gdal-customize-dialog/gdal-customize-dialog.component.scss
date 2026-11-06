@@ -13,6 +13,42 @@
   position: absolute;
   top: 0;
   right: 0.4em;
+  z-index: 10;
+}
+
+.error {
+  @include themify($themes) {
+    color: themed('err');
+  }
+}
+
+.step-card.expanded {
+  padding: 0.1em 0.5em 1em 0.5em;
+}
+
+.step-card-content {
+  padding: 0em 1em;
+}
+
+.step-card-content.dataset-selector {
+  padding: 0;
+}
+
+.step-card {
+  box-shadow: 0 0 5px rgb(0 0 0 / 30%);
+  padding: 0 0.5em;
+  margin: 0.5em 0;
+  border-radius: 15px;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  border-radius: 15px;
+
+  margin: 0.5em;
+  padding: 0.5em;
 }
 
 .error {
@@ -42,7 +78,12 @@ h1 {
   text-align: center;
 }
 
+<<<<<<< HEAD
 h2 {
+=======
+h2,
+h3 {
+>>>>>>> bb3a2366f (feat: remove blur in favor of step by step ui in GDAL snippet exporter)
   margin: 0;
   padding: 0;
 }
@@ -54,18 +95,27 @@ h2 {
   font-style: italic;
 }
 
-.gdal-dataset {
+.gdal-dataset-info {
   display: flex;
+  flex-shrink: 1;
   flex-flow: row wrap;
   gap: 0 0.5em;
   align-items: center;
-  padding: 10px;
+  min-width: 0;
+}
+
+.gdal-dataset {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.3em 1em;
   border-radius: 15px;
 }
 
 .gdal-dataset:hover {
   @include themify($themes) {
-    background-color: themed('accent');
+    background-color: themed('dark-focused');
   }
 }
 
@@ -81,6 +131,8 @@ h2 {
 }
 
 .gdal-dataset-name {
+  flex-shrink: 1;
+  min-width: 0;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -96,7 +148,7 @@ h2 {
   height: fit-content;
   padding: 0 0.4em;
   text-overflow: ellipsis;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-style: italic;
   white-space: nowrap;
   background: rgb(0 0 0 / 7.5%);
@@ -122,6 +174,30 @@ h2 {
   white-space: nowrap;
 }
 
+<<<<<<< HEAD
+=======
+.gdal-dataset-check {
+  @include themify($themes) {
+    // unchecked: the box outline
+    --mat-pseudo-checkbox-full-unselected-icon-color: #{themed(
+        'dark-secondary-text'
+      )};
+
+    // checked: box fill and tick
+    --mat-pseudo-checkbox-full-selected-icon-color: #{themed('primary')};
+    --mat-pseudo-checkbox-full-selected-checkmark-color: #{themed(
+        'light-primary-text'
+      )};
+  }
+}
+
+.flex-grow {
+  flex-grow: 1;
+  max-width: 100%;
+  height: 0;
+}
+
+>>>>>>> bb3a2366f (feat: remove blur in favor of step by step ui in GDAL snippet exporter)
 .flex-break {
   flex-basis: 100%;
   height: 0;
@@ -225,23 +301,6 @@ h2 {
 
 .short {
   width: 15ch;
-}
-
-.blur-overlay-container {
-  position: relative;
-}
-
-.blur-overlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background-color: color-mix(
-    in srgb,
-    var('--mat-dialog-container-color') 30%,
-    transparent
-  );
-  backdrop-filter: blur(1px);
 }
 
 .footer {
