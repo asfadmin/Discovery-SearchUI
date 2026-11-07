@@ -253,6 +253,31 @@ export class GdalCustomizeDialogComponent {
 
     return 'CROP_TO_WKT_POLYGON_STRING';
   });
+  configureError = computed(
+    () =>
+      this.gdalConfigForm.geospatial().invalid() ||
+      this.gdalConfigForm.environment().invalid() ||
+      this.gdalConfigForm.output().invalid(),
+  );
+  configureIcon = computed(() => {
+    if (this.configureError()) {
+      return 'error';
+    }
+
+    if (this.datasetSelected()) {
+      if (
+        this.gdalConfigForm.geospatial().dirty() ||
+        this.gdalConfigForm.environment().dirty() ||
+        this.gdalConfigForm.output().dirty()
+      ) {
+        return 'check';
+      }
+
+      return 'keyboard_arrow_down';
+    }
+
+    return 'keyboard_arrow_up';
+  });
 
   netrcContent = `\
 machine urs.earthdata.nasa.gov

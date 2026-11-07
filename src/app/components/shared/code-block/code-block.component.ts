@@ -1,6 +1,7 @@
 import { KeyValuePipe } from '@angular/common';
 import {
   Component,
+  ComponentRef,
   computed,
   effect,
   ElementRef,
@@ -44,6 +45,9 @@ export class CodeBlockComponent {
   language = input.required<string>();
   isCommand = input<boolean>(false);
 
+  copyButton = viewChild<ComponentRef<CopyToClipboardComponent> | null>(
+    'clipboard',
+  );
   codeBlock = viewChild<ElementRef | null>('codeBlock');
   currentTab = signal<string>('');
   codeValue = computed<string>(() =>
@@ -51,6 +55,7 @@ export class CodeBlockComponent {
       .flat()
       .join('\n'),
   );
+  copied = this.copyButton().instance.copied.asReadonly();
 
   constructor() {
     effect(() => {

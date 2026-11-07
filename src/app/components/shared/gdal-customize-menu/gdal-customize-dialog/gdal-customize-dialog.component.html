@@ -90,9 +90,8 @@
       <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
       <span class="flex-grow"></span>
       <mat-icon
-        [fontIcon]="
-          this.datasetSelected() ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
-        "
+        [fontIcon]="this.configureIcon()"
+        [class.error]="this.configureError()"
       ></mat-icon>
     </div>
     <div class="step-card-content">
