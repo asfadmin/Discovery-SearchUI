@@ -20,6 +20,11 @@
     <div class="header-container">
       <h2>1. {{ 'SELECT_DATASETS' | translate }}</h2>
       <span class="flex-grow"></span>
+      @for (error of gdalConfigForm.selectedDatasets().errors(); track error) {
+        <div class="gdal-dataset-error">
+          <mat-error>{{ error.message | translate }}</mat-error>
+        </div>
+      }
       <mat-icon
         [fontIcon]="this.datasetSelected() ? 'check' : 'error'"
         [matTooltip]="datasetSelectedTooltip() | translate"
@@ -92,11 +97,39 @@
     </div>
     <div class="step-card-content">
       @if (this.datasetSelected()) {
-        <h3>{{ 'CONFIGURE_GEOSPATIAL_OPTIONS' | translate }}</h3>
+        <div class="header-container subheader-container">
+          <h3>{{ 'CONFIGURE_GEOSPATIAL_OPTIONS' | translate }}</h3>
+          <span class="flex-grow"></span>
+          <mat-icon
+            [fontIcon]="
+              this.gdalConfigForm.geospatial().valid() ? null : 'error'
+            "
+            [class.error]="this.gdalConfigForm.geospatial().invalid()"
+          ></mat-icon>
+        </div>
         <div class="options-list">
+          <span class="option reproject">
+            <mat-form-field>
+              <mat-label> {{ 'REPROJECT' | translate }}</mat-label>
+              <input
+                class="reproject"
+                matInput
+                [matTooltip]="'REPROJECT_TOOLTIP' | translate"
+                [formField]="gdalConfigForm.geospatial.selectedProjection"
+              />
+              @for (
+                error of gdalConfigForm.geospatial
+                  .selectedProjection()
+                  .errors();
+                track error
+              ) {
+                <mat-error> {{ error.message | translate }}</mat-error>
+              }
+            </mat-form-field>
+          </span>
           <span class="option checkbox">
             <mat-checkbox
-              [formField]="gdalConfigForm.cropToAOI"
+              [formField]="gdalConfigForm.geospatial.cropToAOI"
               [matTooltip]="
                 !gdalService.isCropToAOIAvailable()
                   ? ('CROP_TO_AOI_DISABLED' | translate)
@@ -112,7 +145,7 @@
           </span>
           @if (
             gdalService.isCropToAOIAvailable() ||
-            gdalConfigForm.cropToAOI().value()
+            gdalConfigForm.geospatial.cropToAOI().value()
           ) {
             <span class="option cutline">
               <mat-form-field>
@@ -121,30 +154,32 @@
                   matInput
                   disabledInteractive
                   [matTooltip]="enableCutlineWKTString() | translate"
-                  [formField]="gdalConfigForm.cutlineWKT"
+                  [formField]="gdalConfigForm.geospatial.cutlineWKT"
                 />
+                @for (
+                  error of gdalConfigForm.geospatial.cutlineWKT().errors();
+                  track error
+                ) {
+                  <mat-error> {{ error.message | translate }}</mat-error>
+                }
               </mat-form-field>
             </span>
           }
-          <span class="option reproject">
-            <mat-form-field>
-              <mat-label> {{ 'REPROJECT' | translate }}</mat-label>
-              <input
-                class="reproject"
-                matInput
-                [matTooltip]="'REPROJECT_TOOLTIP' | translate"
-                [formField]="gdalConfigForm.selectedProjection"
-              />
-            </mat-form-field>
-          </span>
         </div>
-        <h3>{{ 'CONFIGURE_GDAL_OUTPUTFILE' | translate }}</h3>
+        <div class="header-container subheader-container">
+          <h3>{{ 'CONFIGURE_GDAL_OUTPUTFILE' | translate }}</h3>
+          <span class="flex-grow"></span>
+          <mat-icon
+            [fontIcon]="this.gdalConfigForm.output().valid() ? null : 'error'"
+            [class.error]="this.gdalConfigForm.output().invalid()"
+          ></mat-icon>
+        </div>
         <div class="options-list">
           <span class="option short">
             <mat-form-field>
               <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
               <mat-select
-                [formField]="gdalConfigForm.outputFormat"
+                [formField]="gdalConfigForm.output.format"
                 [matTooltip]="'OUTPUT_FORMAT_TOOLTIP' | translate"
               >
                 @for (format of outputFormats; track format) {
@@ -162,9 +197,9 @@
               >
               <input
                 matInput
-                [formField]="gdalConfigForm.outputFilename"
+                [formField]="gdalConfigForm.output.filename"
                 [matTooltip]="
-                  (gdalConfigForm.outputFilename().disabled()
+                  (gdalConfigForm.output.filename().disabled()
                     ? 'OUTPUT_FILENAME_TOOLTIP_DISABLED'
                     : 'OUTPUT_FILENAME_TOOLTIP'
                   ) | translate
@@ -173,23 +208,23 @@
             </mat-form-field>
           </span>
         </div>
-        <div class="header-container">
+        <div class="header-container subheader-container">
           <h3>{{ 'CONFIGURE_GDAL_ENVIRONMENT' | translate }}</h3>
           <span class="flex-grow"></span>
           <mat-icon
             [fontIcon]="
-              this.datasetSelected()
-                ? 'keyboard_arrow_down'
-                : 'keyboard_arrow_up'
+              this.gdalConfigForm.environment().valid() ? null : 'error'
             "
+            [class.error]="this.gdalConfigForm.environment().invalid()"
           ></mat-icon>
         </div>
+        <span class="flex-grow"></span>
         <div class="options-list">
           <span class="option short">
             <mat-form-field>
               <mat-label> {{ 'GDAL_VERSION' | translate }}</mat-label>
               <mat-select
-                [formField]="gdalConfigForm.gdalVersion"
+                [formField]="gdalConfigForm.environment.gdalVersion"
                 [matTooltip]="'GDAL_313_ADMONITION' | translate"
               >
                 @for (version of gdalVersions; track version) {
@@ -202,7 +237,7 @@
             <mat-form-field>
               <mat-label> {{ 'OUTPUT_OS' | translate }}</mat-label>
               <mat-select
-                [formField]="gdalConfigForm.outputOS"
+                [formField]="gdalConfigForm.environment.os"
                 [matTooltip]="'OUTPUT_OS_TOOLTIP' | translate"
               >
                 @for (os of outputOSList; track os) {
@@ -213,10 +248,10 @@
           </span>
           <span class="option checkbox">
             <mat-checkbox
-              [formField]="gdalConfigForm.minimalCommand"
+              [formField]="gdalConfigForm.environment.minimalCommand"
               disabledInteractive
               [matTooltip]="
-                gdalConfigForm.minimalCommand().disabled()
+                gdalConfigForm.environment.minimalCommand().disabled()
                   ? ('MINIMAL_COMMAND_IS_DISABLED' | translate)
                   : ('MINIMAL_COMMAND_TOOLTIP' | translate)
               "
@@ -226,10 +261,10 @@
           </span>
           <span class="option checkbox">
             <mat-checkbox
-              [formField]="gdalConfigForm.nisarDriver"
+              [formField]="gdalConfigForm.environment.nisarDriver"
               disabledInteractive
               [matTooltip]="
-                gdalConfigForm.nisarDriver().disabled()
+                gdalConfigForm.environment.nisarDriver().disabled()
                   ? ('JPL_NISAR_DRIVER_IS_DISABLED' | translate)
                   : ('JPL_NISAR_DRIVER_TOOLTIP' | translate)
               "
@@ -262,7 +297,7 @@
 
     <div class="step-card-content">
       @if (this.datasetSelected()) {
-        @if (gdalConfigForm.nisarDriver().value()) {
+        @if (gdalConfigForm.environment.nisarDriver().value()) {
           <p>{{ 'JPL_NISAR_DRIVER_HELP_BODY' | translate }}</p>
           <app-code-block
             [isCommand]="true"
@@ -312,7 +347,7 @@
         >
         </app-code-block>
 
-        @if (gdalConfigForm.minimalCommand().value()) {
+        @if (gdalConfigForm.environment.minimalCommand().value()) {
           <p>{{ 'SETUP_GDALRC' | translate }}</p>
           <app-code-block
             [codeDescription]="`${homeDirectory()}/.gdal/gdalrc`"
@@ -333,7 +368,7 @@
       }
     </div>
   </div>
-  @if (gdalConfigForm.outputType().value() === 'gdal') {
+  @if (gdalConfigForm.output.type().value() === 'gdal') {
     <div
       class="gdal-output-card step-card"
       [class.expanded]="this.datasetSelected()"

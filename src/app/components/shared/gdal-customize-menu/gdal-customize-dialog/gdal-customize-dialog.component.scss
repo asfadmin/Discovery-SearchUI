@@ -23,11 +23,11 @@
 }
 
 .step-card.expanded {
-  padding: 0.1em 0.5em 1em 0.5em;
+  padding: 0.1em 0.5em 1em;
 }
 
 .step-card-content {
-  padding: 0em 1em;
+  padding: 0 1em;
 }
 
 .step-card-content.dataset-selector {
@@ -35,20 +35,23 @@
 }
 
 .step-card {
-  box-shadow: 0 0 5px rgb(0 0 0 / 30%);
   padding: 0 0.5em;
   margin: 0.5em 0;
   border-radius: 15px;
+  box-shadow: 0 0 5px rgb(0 0 0 / 30%);
 }
 
 .header-container {
   display: flex;
-  align-items: center;
   flex-direction: row;
-  border-radius: 15px;
-
-  margin: 0.5em;
+  align-items: center;
   padding: 0.5em;
+  margin: 0.5em;
+
+  .subheader-container {
+    padding: 0;
+    margin: 0;
+  }
 }
 
 .error {
@@ -69,8 +72,8 @@ h1 {
 
 h2,
 h3 {
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 
 .subtitle {
@@ -174,6 +177,10 @@ h3 {
         'light-primary-text'
       )};
   }
+}
+
+.gdal-dataset-error {
+  padding: 0 0.5em;
 }
 
 .flex-grow {

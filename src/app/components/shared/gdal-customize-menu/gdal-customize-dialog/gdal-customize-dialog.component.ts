@@ -7,7 +7,13 @@ import {
   effect,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { disabled, form, FormField } from '@angular/forms/signals';
+import {
+  disabled,
+  form,
+  FormField,
+  minLength,
+  pattern,
+} from '@angular/forms/signals';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import {
   MatButtonToggle,
@@ -18,7 +24,12 @@ import { MatPseudoCheckbox } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
-import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatError,
+} from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
@@ -45,16 +56,23 @@ import {
 
 interface GdalConfigModel {
   selectedDatasets: string[];
-  selectedProjection: string;
-  outputFormat: GdalFormats;
-  cropToAOI: boolean;
-  cutlineWKT: string;
-  minimalCommand: boolean;
-  nisarDriver: boolean;
-  outputOS: GdalOs;
-  outputType: string;
-  outputFilename: string;
-  gdalVersion: GdalVersion;
+
+  geospatial: {
+    selectedProjection: string;
+    cropToAOI: boolean;
+    cutlineWKT: string;
+  };
+  output: {
+    format: GdalFormats;
+    filename: string;
+    type: string;
+  };
+  environment: {
+    nisarDriver: boolean;
+    minimalCommand: boolean;
+    os: GdalOs;
+    gdalVersion: GdalVersion;
+  };
 }
 
 @Component({
@@ -75,6 +93,7 @@ interface GdalConfigModel {
     MatButton,
     MatInput,
     MatIcon,
+    MatError,
     FormField,
     FormsModule,
     DocsModalComponent,
@@ -95,42 +114,61 @@ export class GdalCustomizeDialogComponent {
 
   gdalConfigModel = signal<GdalConfigModel>({
     selectedDatasets: [],
-    selectedProjection: '',
-    outputFormat: 'GTiff',
-    cropToAOI: false,
-    cutlineWKT: this.gdalService.searchPolygon(),
-    minimalCommand: false,
-    nisarDriver: false,
-    outputOS: this.getOS(),
-    outputType: 'gdal',
-    outputFilename: '',
-    gdalVersion: this.gdalVersions[0],
+    geospatial: {
+      selectedProjection: '',
+      cropToAOI: false,
+      cutlineWKT: this.gdalService.searchPolygon(),
+    },
+    output: {
+      format: 'GTiff',
+      filename: '',
+      type: 'gdal',
+    },
+    environment: {
+      minimalCommand: false,
+      nisarDriver: false,
+      os: this.getOS(),
+      gdalVersion: this.gdalVersions[0],
+    },
   });
 
   gdalConfigForm = form(this.gdalConfigModel, (schemaPath) => {
     disabled(
-      schemaPath.cutlineWKT,
-      ({ valueOf }) => !valueOf(schemaPath.cropToAOI),
+      schemaPath.geospatial.cutlineWKT,
+      ({ valueOf }) => !valueOf(schemaPath.geospatial.cropToAOI),
     );
-    disabled(schemaPath.outputFilename, () => this.multiVariableExport());
+    disabled(schemaPath.output.filename, () => this.multiVariableExport());
     disabled(
-      schemaPath.minimalCommand,
-      ({ valueOf }) => valueOf(schemaPath.outputOS) == 'Windows',
+      schemaPath.environment.minimalCommand,
+      ({ valueOf }) => valueOf(schemaPath.environment.os) == 'Windows',
     );
     disabled(
-      schemaPath.nisarDriver,
-      ({ valueOf }) => valueOf(schemaPath.outputOS) == 'Windows',
+      schemaPath.environment.nisarDriver,
+      ({ valueOf }) => valueOf(schemaPath.environment.os) == 'Windows',
+    );
+    minLength(schemaPath.selectedDatasets, 1, {
+      message: 'SELECT_A_DATASET_TO_CONTINUE',
+    });
+    pattern(
+      schemaPath.geospatial.selectedProjection,
+      /\b(?:EPSG:\d{4}|WGS84)\b/,
+      { message: 'REPROJECT_ERROR' },
+    );
+    pattern(
+      schemaPath.geospatial.cutlineWKT,
+      /POLYGON [(]{2}(\d+(?:\.\d+)?)\s(\d+(?:\.\d+)?)((,\s(\d+(?:\.\d+)?)\s(\d+(?:\.\d+)?)))*[)]{2}/, //https://stackoverflow.com/a/69107967
+      { message: 'CROP_TO_WKT_POLYGON_STRING_ERROR' },
     );
   });
 
   outputExtension = computed(() => {
-    switch (this.gdalConfigForm.outputFormat().value()) {
+    switch (this.gdalConfigForm.output.format().value()) {
       case 'GTiff':
       case 'COG': {
         return '.tif';
       }
       default: {
-        return `.${this.gdalConfigForm.outputFormat().value().toLowerCase()}`;
+        return `.${this.gdalConfigForm.output.format().value().toLowerCase()}`;
       }
     }
   });
@@ -144,23 +182,25 @@ export class GdalCustomizeDialogComponent {
       return {
         product: this.data.product,
         datasetPath: selectedDataset,
-        projection: config.selectedProjection,
+        projection: config.geospatial.selectedProjection,
         outputType: {
-          outputFormat: config.outputFormat,
+          outputFormat: config.output.format,
           outputExtension: this.outputExtension(),
         },
         cutlineWKT:
-          config.cropToAOI && config.cutlineWKT ? config.cutlineWKT : '',
-        minimalCommand: config.minimalCommand,
-        os: config.outputOS,
+          config.geospatial.cropToAOI && config.geospatial.cutlineWKT
+            ? config.geospatial.cutlineWKT
+            : '',
+        minimalCommand: config.environment.minimalCommand,
+        os: config.environment.os,
         outputFilename: !this.multiVariableExport()
-          ? config.outputFilename
+          ? config.output.filename
           : this.gdalService.resolveOutputFilename({
               product: this.data.product,
               datasetPath: selectedDataset,
             }),
-        gdalVersion: config.gdalVersion,
-        nisarDriver: config.nisarDriver,
+        gdalVersion: config.environment.gdalVersion,
+        nisarDriver: config.environment.nisarDriver,
       };
     });
   });
@@ -186,7 +226,7 @@ export class GdalCustomizeDialogComponent {
   );
   homeDirectory = computed(() => (this.isWindows() ? '%USERPROFILE%' : '~'));
   isWindows = computed(
-    () => this.gdalConfigForm.outputOS().value() === 'Windows',
+    () => this.gdalConfigForm.environment.os().value() === 'Windows',
   );
   datasetSelected = computed(
     () => this.gdalConfigForm.selectedDatasets().value()?.length > 0,
@@ -203,7 +243,7 @@ export class GdalCustomizeDialogComponent {
     return 'SELECT_A_DATASET_TO_CONTINUE';
   });
   enableCutlineWKTString = computed(() => {
-    if (this.gdalConfigForm.cutlineWKT().disabled()) {
+    if (this.gdalConfigForm.geospatial.cutlineWKT().disabled()) {
       return 'CROP_TO_AOI_IS_DISABLED';
     }
 
@@ -232,8 +272,8 @@ machine urs.earthdata.nasa.gov
 
   constructor() {
     effect(() => {
-      if (!this.gdalConfigForm.outputFilename().dirty()) {
-        this.gdalConfigForm.outputFilename().value.set(
+      if (!this.gdalConfigForm.output.filename().dirty()) {
+        this.gdalConfigForm.output.filename().value.set(
           this.gdalService.resolveOutputFilename({
             product: this.data.product,
             datasetPath: this.gdalConfigForm.selectedDatasets().value()[0],
