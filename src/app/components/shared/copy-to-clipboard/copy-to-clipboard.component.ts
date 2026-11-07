@@ -6,6 +6,7 @@ import {
   inject,
   input,
   effect,
+  signal,
 } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
@@ -36,6 +37,8 @@ export class CopyToClipboardComponent implements OnDestroy {
   copyIcon = input<string>('file_copy');
   svgIcon = input<string | undefined>(undefined);
 
+  copied = signal<boolean>(false);
+
   @ViewChild('copyTooltip', { static: true }) copyTooltip: ElementRef;
 
   display = '';
@@ -62,6 +65,8 @@ export class CopyToClipboardComponent implements OnDestroy {
     );
 
     e.stopPropagation();
+
+    this.copied.set(true);
   }
 
   public onCopyFromMenu(prompt: string, message: string, value: string) {

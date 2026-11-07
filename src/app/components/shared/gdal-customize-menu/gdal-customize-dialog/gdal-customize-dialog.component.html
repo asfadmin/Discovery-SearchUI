@@ -16,263 +16,376 @@
       url="https://nisar-docs.asf.alaska.edu/vertex#vertex-gdal-snippet-exporter"
     ></app-docs-modal>
   </span>
-  <div class="dataset-list-card">
-    <h2>1. {{ 'SELECT_DATASETS' | translate }}</h2>
-    <mat-button-toggle-group
-      [formField]="gdalConfigForm.selectedDatasets"
-      vertical
-      multiple
-      hideMultipleSelectionIndicator
-      class="dataset-list"
-    >
-      @for (dataset of data.datasets; track dataset.path) {
-        <mat-button-toggle
-          #toggle
-          class="dataset-button"
-          [value]="dataset.path"
-          [aria-label]="`${('SELECT' | translate)} ${dataset.name}`"
-          [matTooltip]="`${('SELECT' | translate)} ${dataset.name}`"
-        >
-          <div class="gdal-dataset">
-            <div class="gdal-dataset-info">
-              <span class="gdal-dataset-name">{{ dataset.name }}</span>
-              @if (dataset.type) {
-                <span class="gdal-dataset-chip">{{ dataset.type }}</span>
-              }
-              @if (dataset.unit) {
-                <span class="gdal-dataset-chip">{{ dataset.unit }}</span>
-              }
-              <span class="flex-break"></span>
-              <span class="gdal-dataset-path">{{ dataset.path }}</span>
-            </div>
-            <span class="flex-grow"></span>
-            <mat-pseudo-checkbox
-              class="gdal-dataset-check"
-              [state]="
-                gdalConfigForm.selectedDatasets().value().includes(dataset.path)
-                  ? 'checked'
-                  : 'unchecked'
-              "
-            />
-          </div>
-        </mat-button-toggle>
+  <div class="dataset-list-card step-card expanded">
+    <div class="header-container">
+      <h2>1. {{ 'SELECT_DATASETS' | translate }}</h2>
+      <span class="flex-grow"></span>
+      @for (error of gdalConfigForm.selectedDatasets().errors(); track error) {
+        <div class="gdal-dataset-error">
+          <mat-error>{{ error.message | translate }}</mat-error>
+        </div>
       }
-    </mat-button-toggle-group>
+      <mat-icon
+        [fontIcon]="this.datasetSelected() ? 'check' : 'error'"
+        [matTooltip]="datasetSelectedTooltip() | translate"
+        [class.error]="!this.datasetSelected()"
+      ></mat-icon>
+    </div>
+    <div class="step-card-content dataset-selector">
+      <mat-button-toggle-group
+        [formField]="gdalConfigForm.selectedDatasets"
+        vertical
+        multiple
+        hideMultipleSelectionIndicator
+        class="dataset-list"
+      >
+        @for (dataset of data.datasets; track dataset.path) {
+          <mat-button-toggle
+            #toggle
+            class="dataset-button"
+            [value]="dataset.path"
+            [aria-label]="`${('SELECT' | translate)} ${dataset.name}`"
+            [matTooltip]="`${('SELECT' | translate)} ${dataset.name}`"
+          >
+            <div class="gdal-dataset">
+              <div class="gdal-dataset-info">
+                <span class="gdal-dataset-name">{{ dataset.name }}</span>
+                @if (dataset.type) {
+                  <span class="gdal-dataset-chip">{{ dataset.type }}</span>
+                }
+                @if (dataset.unit) {
+                  <span class="gdal-dataset-chip">{{ dataset.unit }}</span>
+                }
+                <span class="flex-break"></span>
+                <span class="gdal-dataset-path">{{ dataset.path }}</span>
+              </div>
+              <span class="flex-grow"></span>
+              <mat-pseudo-checkbox
+                class="gdal-dataset-check"
+                [state]="
+                  gdalConfigForm
+                    .selectedDatasets()
+                    .value()
+                    .includes(dataset.path)
+                    ? 'checked'
+                    : 'unchecked'
+                "
+              />
+            </div>
+          </mat-button-toggle>
+        }
+      </mat-button-toggle-group>
+    </div>
   </div>
 
-  <div class="blur-overlay-container">
-    <div class="options-list-card">
+  <div
+    class="options-list-card step-card"
+    [class.expanded]="this.datasetSelected()"
+    [matTooltip]="
+      (!this.datasetSelected() ? 'SELECT_A_DATASET_TO_CONTINUE' : null)
+        | translate
+    "
+  >
+    <div class="header-container">
       <h2>2. {{ 'CONFIGURE_GDAL_OPTIONS' | translate }}</h2>
-      <h3>{{ 'CONFIGURE_GEOSPATIAL_OPTIONS' | translate }}</h3>
-      <div class="options-list">
-        <span class="option checkbox">
-          <mat-checkbox
-            [formField]="gdalConfigForm.cropToAOI"
-            [matTooltip]="
-              !gdalService.isCropToAOIAvailable()
-                ? ('CROP_TO_AOI_DISABLED' | translate)
-                : ('CROP_TO_AOI_TOOLTIP' | translate)
+      <span class="flex-grow"></span>
+      <mat-icon
+        [fontIcon]="this.configureIcon()"
+        [class.error]="this.configureError()"
+      ></mat-icon>
+    </div>
+    <div class="step-card-content">
+      @if (this.datasetSelected()) {
+        <div class="header-container subheader-container">
+          <h3>{{ 'CONFIGURE_GEOSPATIAL_OPTIONS' | translate }}</h3>
+          <span class="flex-grow"></span>
+          <mat-icon
+            [fontIcon]="
+              this.gdalConfigForm.geospatial().valid() ? null : 'error'
             "
-            >{{
-              (gdalService.isCropToAOIAvailable()
-                ? 'CROP_TO_AOI'
-                : 'CROP_TO_WKT_POLYGON_STRING'
-              ) | translate
-            }}</mat-checkbox
-          >
-        </span>
-        @if (
-          gdalService.isCropToAOIAvailable() ||
-          gdalConfigForm.cropToAOI().value()
-        ) {
-          <span class="option cutline">
+            [class.error]="this.gdalConfigForm.geospatial().invalid()"
+          ></mat-icon>
+        </div>
+        <div class="options-list">
+          <span class="option reproject">
             <mat-form-field>
-              <mat-label>{{ 'AREA_OF_INTEREST_WKT' | translate }}</mat-label>
+              <mat-label> {{ 'REPROJECT' | translate }}</mat-label>
+              <input
+                class="reproject"
+                matInput
+                [matTooltip]="'REPROJECT_TOOLTIP' | translate"
+                [formField]="gdalConfigForm.geospatial.selectedProjection"
+              />
+              @for (
+                error of gdalConfigForm.geospatial
+                  .selectedProjection()
+                  .errors();
+                track error
+              ) {
+                <mat-error> {{ error.message | translate }}</mat-error>
+              }
+            </mat-form-field>
+          </span>
+          <span class="option checkbox">
+            <mat-checkbox
+              [formField]="gdalConfigForm.geospatial.cropToAOI"
+              [matTooltip]="
+                !gdalService.isCropToAOIAvailable()
+                  ? ('CROP_TO_AOI_DISABLED' | translate)
+                  : ('CROP_TO_AOI_TOOLTIP' | translate)
+              "
+              >{{
+                (gdalService.isCropToAOIAvailable()
+                  ? 'CROP_TO_AOI'
+                  : 'CROP_TO_WKT_POLYGON_STRING'
+                ) | translate
+              }}</mat-checkbox
+            >
+          </span>
+          @if (
+            gdalService.isCropToAOIAvailable() ||
+            gdalConfigForm.geospatial.cropToAOI().value()
+          ) {
+            <span class="option cutline">
+              <mat-form-field>
+                <mat-label>{{ 'AREA_OF_INTEREST_WKT' | translate }}</mat-label>
+                <input
+                  matInput
+                  disabledInteractive
+                  [matTooltip]="enableCutlineWKTString() | translate"
+                  [formField]="gdalConfigForm.geospatial.cutlineWKT"
+                />
+                @for (
+                  error of gdalConfigForm.geospatial.cutlineWKT().errors();
+                  track error
+                ) {
+                  <mat-error> {{ error.message | translate }}</mat-error>
+                }
+              </mat-form-field>
+            </span>
+          }
+        </div>
+        <div class="header-container subheader-container">
+          <h3>{{ 'CONFIGURE_GDAL_OUTPUTFILE' | translate }}</h3>
+          <span class="flex-grow"></span>
+          <mat-icon
+            [fontIcon]="this.gdalConfigForm.output().valid() ? null : 'error'"
+            [class.error]="this.gdalConfigForm.output().invalid()"
+          ></mat-icon>
+        </div>
+        <div class="options-list">
+          <span class="option short">
+            <mat-form-field>
+              <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
+              <mat-select
+                [formField]="gdalConfigForm.output.format"
+                [matTooltip]="'OUTPUT_FORMAT_TOOLTIP' | translate"
+              >
+                @for (format of outputFormats; track format) {
+                  <mat-option [value]="format">
+                    {{ format.toUpperCase() | translate }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </span>
+          <span class="option filename">
+            <mat-form-field>
+              <mat-label class="filename">
+                {{ 'OUTPUT_FILENAME' | translate }}</mat-label
+              >
               <input
                 matInput
-                disabledInteractive
-                [matTooltip]="enableCutlineWKTString() | translate"
-                [formField]="gdalConfigForm.cutlineWKT"
+                [formField]="gdalConfigForm.output.filename"
+                [matTooltip]="
+                  (gdalConfigForm.output.filename().disabled()
+                    ? 'OUTPUT_FILENAME_TOOLTIP_DISABLED'
+                    : 'OUTPUT_FILENAME_TOOLTIP'
+                  ) | translate
+                "
               />
             </mat-form-field>
           </span>
-        }
-        <span class="option reproject">
-          <mat-form-field>
-            <mat-label> {{ 'REPROJECT' | translate }}</mat-label>
-            <input
-              class="reproject"
-              matInput
-              [matTooltip]="'REPROJECT_TOOLTIP' | translate"
-              [formField]="gdalConfigForm.selectedProjection"
-            />
-          </mat-form-field>
-        </span>
-      </div>
-      <h3>{{ 'CONFIGURE_GDAL_OUTPUTFILE' | translate }}</h3>
-      <div class="options-list">
-        <span class="option short">
-          <mat-form-field>
-            <mat-label> {{ 'OUTPUT_FORMAT' | translate }}</mat-label>
-            <mat-select
-              [formField]="gdalConfigForm.outputFormat"
-              [matTooltip]="'OUTPUT_FORMAT_TOOLTIP' | translate"
-            >
-              @for (format of outputFormats; track format) {
-                <mat-option [value]="format">
-                  {{ format.toUpperCase() | translate }}
-                </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </span>
-        <span class="option filename">
-          <mat-form-field>
-            <mat-label class="filename">
-              {{ 'OUTPUT_FILENAME' | translate }}</mat-label
-            >
-            <input
-              matInput
-              [formField]="gdalConfigForm.outputFilename"
+        </div>
+        <div class="header-container subheader-container">
+          <h3>{{ 'CONFIGURE_GDAL_ENVIRONMENT' | translate }}</h3>
+          <span class="flex-grow"></span>
+          <mat-icon
+            [fontIcon]="
+              this.gdalConfigForm.environment().valid() ? null : 'error'
+            "
+            [class.error]="this.gdalConfigForm.environment().invalid()"
+          ></mat-icon>
+        </div>
+        <span class="flex-grow"></span>
+        <div class="options-list">
+          <span class="option short">
+            <mat-form-field>
+              <mat-label> {{ 'GDAL_VERSION' | translate }}</mat-label>
+              <mat-select
+                [formField]="gdalConfigForm.environment.gdalVersion"
+                [matTooltip]="'GDAL_313_ADMONITION' | translate"
+              >
+                @for (version of gdalVersions; track version) {
+                  <mat-option [value]="version"> {{ version }} </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </span>
+          <span class="option">
+            <mat-form-field>
+              <mat-label> {{ 'OUTPUT_OS' | translate }}</mat-label>
+              <mat-select
+                [formField]="gdalConfigForm.environment.os"
+                [matTooltip]="'OUTPUT_OS_TOOLTIP' | translate"
+              >
+                @for (os of outputOSList; track os) {
+                  <mat-option [value]="os"> {{ os }} </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </span>
+          <span class="option checkbox">
+            <mat-checkbox
+              [formField]="gdalConfigForm.environment.minimalCommand"
+              disabledInteractive
               [matTooltip]="
-                (gdalConfigForm.outputFilename().disabled()
-                  ? 'OUTPUT_FILENAME_TOOLTIP_DISABLED'
-                  : 'OUTPUT_FILENAME_TOOLTIP'
-                ) | translate
+                gdalConfigForm.environment.minimalCommand().disabled()
+                  ? ('MINIMAL_COMMAND_IS_DISABLED' | translate)
+                  : ('MINIMAL_COMMAND_TOOLTIP' | translate)
               "
-            />
-          </mat-form-field>
-        </span>
-      </div>
-      <h3>{{ 'CONFIGURE_GDAL_ENVIRONMENT' | translate }}</h3>
-      <div class="options-list">
-        <span class="option short">
-          <mat-form-field>
-            <mat-label> {{ 'GDAL_VERSION' | translate }}</mat-label>
-            <mat-select
-              [formField]="gdalConfigForm.gdalVersion"
-              [matTooltip]="'GDAL_313_ADMONITION' | translate"
             >
-              @for (version of gdalVersions; track version) {
-                <mat-option [value]="version"> {{ version }} </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </span>
-        <span class="option">
-          <mat-form-field>
-            <mat-label> {{ 'OUTPUT_OS' | translate }}</mat-label>
-            <mat-select
-              [formField]="gdalConfigForm.outputOS"
-              [matTooltip]="'OUTPUT_OS_TOOLTIP' | translate"
+              {{ 'MINIMAL_COMMAND' | translate }}
+            </mat-checkbox>
+          </span>
+          <span class="option checkbox">
+            <mat-checkbox
+              [formField]="gdalConfigForm.environment.nisarDriver"
+              disabledInteractive
+              [matTooltip]="
+                gdalConfigForm.environment.nisarDriver().disabled()
+                  ? ('JPL_NISAR_DRIVER_IS_DISABLED' | translate)
+                  : ('JPL_NISAR_DRIVER_TOOLTIP' | translate)
+              "
             >
-              @for (os of outputOSList; track os) {
-                <mat-option [value]="os"> {{ os }} </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </span>
-        <span class="option checkbox">
-          <mat-checkbox
-            [formField]="gdalConfigForm.minimalCommand"
-            disabledInteractive
-            [matTooltip]="
-              gdalConfigForm.minimalCommand().disabled()
-                ? ('MINIMAL_COMMAND_IS_DISABLED' | translate)
-                : ('MINIMAL_COMMAND_TOOLTIP' | translate)
-            "
-          >
-            {{ 'MINIMAL_COMMAND' | translate }}
-          </mat-checkbox>
-        </span>
-        <span class="option checkbox">
-          <mat-checkbox
-            [formField]="gdalConfigForm.nisarDriver"
-            disabledInteractive
-            [matTooltip]="
-              gdalConfigForm.nisarDriver().disabled()
-                ? ('JPL_NISAR_DRIVER_IS_DISABLED' | translate)
-                : ('JPL_NISAR_DRIVER_TOOLTIP' | translate)
-            "
-          >
-            {{ 'JPL_NISAR_DRIVER' | translate }}
-          </mat-checkbox>
-        </span>
-      </div>
+              {{ 'JPL_NISAR_DRIVER' | translate }}
+            </mat-checkbox>
+          </span>
+        </div>
+      }
     </div>
+  </div>
 
-    <div class="gdal-configure-card">
+  <div
+    class="gdal-configure-card step-card"
+    [class.expanded]="this.datasetSelected()"
+    [matTooltip]="
+      (!this.datasetSelected() ? 'SELECT_A_DATASET_TO_CONTINUE' : null)
+        | translate
+    "
+  >
+    <div class="header-container">
       <h2>3. {{ 'CONFIGURE_ENVIRONMENT' | translate }}</h2>
-      @if (gdalConfigForm.nisarDriver().value()) {
-        <p>{{ 'JPL_NISAR_DRIVER_HELP_BODY' | translate }}</p>
-        <app-code-block
-          [isCommand]="true"
-          defaultTab="INSTALL_VIA_CONDA"
-          [codeContentByTab]="{
-            INSTALL_VIA_CONDA:
-              'conda install -c nisar-forge -c conda-forge gdal-driver-nisar',
-            INSTALL_VIA_MAMBA:
-              'mamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
-            INSTALL_VIA_MICROMAMBA:
-              'micromamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
-            INSTALL_VIA_PIXI:
-              'pixi global install -c nisar-forge -c conda-forge gdal-driver-nisar',
-          }"
-          copyPrompt="COPY_TO_CLIPBOARD"
-          copyMessage="COPIED_TO_CLIPBOARD"
-          language="bash"
-        >
-        </app-code-block>
-      } @else {
-        <p>{{ 'INSTALL_GDAL' | translate }}</p>
-        <app-code-block
-          [isCommand]="true"
-          defaultTab="INSTALL_VIA_CONDA"
-          [codeContentByTab]="{
-            INSTALL_VIA_CONDA: 'conda install -c conda-forge gdal',
-            INSTALL_VIA_MAMBA: 'mamba install -c conda-forge gdal',
-            INSTALL_VIA_MICROMAMBA: 'micromamba install -c conda-forge gdal',
-            INSTALL_VIA_PIXI: 'pixi global install -c conda-forge gdal',
-          }"
-          copyPrompt="COPY_TO_CLIPBOARD"
-          copyMessage="COPIED_TO_CLIPBOARD"
-          language="bash"
-        >
-        </app-code-block>
-      }
-      <p>{{ 'SETUP_NETRC' | translate }}</p>
-      <app-code-block
-        [codeDescription]="`${homeDirectory()}/.netrc`"
-        [codeContent]="netrcContent"
-        copyPrompt="EXPORT_NETRC_CLIPBOARD"
-        copyMessage="EXPORTED_NETRC_CLIPBOARD"
-        language="bash"
-      >
-      </app-code-block>
-
-      @if (gdalConfigForm.minimalCommand().value()) {
-        <p>{{ 'SETUP_GDALRC' | translate }}</p>
-        <app-code-block
-          [codeDescription]="`${homeDirectory()}/.gdal/gdalrc`"
-          [codeContent]="gdalRC()"
-          copyPrompt="EXPORT_GDALRC_CLIPBOARD"
-          copyMessage="EXPORTED_GDALRC_CLIPBOARD"
-          language="bash"
-        >
-        </app-code-block>
-      }
-
-      <div><br /></div>
-      <app-docs-modal
-        class="info-text"
-        text="EXPORT_GDAL_HELP_LINK"
-        url="https://nisar-docs.asf.alaska.edu/gdal#installing-gdal"
-      ></app-docs-modal>
+      <span class="flex-grow"></span>
+      <mat-icon
+        [fontIcon]="
+          this.datasetSelected() ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+        "
+      ></mat-icon>
     </div>
 
-    @if (gdalConfigForm.outputType().value() === 'gdal') {
-      <div class="gdal-output-card">
+    <div class="step-card-content">
+      @if (this.datasetSelected()) {
+        @if (gdalConfigForm.environment.nisarDriver().value()) {
+          <p>{{ 'JPL_NISAR_DRIVER_HELP_BODY' | translate }}</p>
+          <app-code-block
+            [isCommand]="true"
+            defaultTab="INSTALL_VIA_CONDA"
+            [codeContentByTab]="{
+              INSTALL_VIA_CONDA:
+                'conda install -c nisar-forge -c conda-forge gdal-driver-nisar',
+              INSTALL_VIA_MAMBA:
+                'mamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
+              INSTALL_VIA_MICROMAMBA:
+                'micromamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
+              INSTALL_VIA_PIXI:
+                'pixi global install -c nisar-forge -c conda-forge gdal-driver-nisar',
+            }"
+            copyPrompt="COPY_TO_CLIPBOARD"
+            copyMessage="COPIED_TO_CLIPBOARD"
+            language="bash"
+          >
+          </app-code-block>
+        } @else {
+          <p>{{ 'INSTALL_GDAL' | translate }}</p>
+          <app-code-block
+            [isCommand]="true"
+            defaultTab="INSTALL_VIA_CONDA"
+            [codeContentByTab]="{
+              INSTALL_VIA_CONDA: 'conda install -c conda-forge gdal',
+              INSTALL_VIA_MAMBA: 'mamba install -c conda-forge gdal',
+              INSTALL_VIA_MICROMAMBA: 'micromamba install -c conda-forge gdal',
+              INSTALL_VIA_PIXI: 'pixi global install -c conda-forge gdal',
+              INSTALL_VIA_APT: 'sudo apt install gdal-bin',
+              INSTALL_VIA_PACMAN: 'sudo pacman -S gdal',
+              RUN_VIA_NIX: 'nix-shell -p gdal',
+            }"
+            copyPrompt="COPY_TO_CLIPBOARD"
+            copyMessage="COPIED_TO_CLIPBOARD"
+            language="bash"
+          >
+          </app-code-block>
+        }
+        <p>{{ 'SETUP_NETRC' | translate }}</p>
+        <app-code-block
+          [codeDescription]="`${homeDirectory()}/.netrc`"
+          [codeContent]="netrcContent"
+          copyPrompt="EXPORT_NETRC_CLIPBOARD"
+          copyMessage="EXPORTED_NETRC_CLIPBOARD"
+          language="bash"
+        >
+        </app-code-block>
+
+        @if (gdalConfigForm.environment.minimalCommand().value()) {
+          <p>{{ 'SETUP_GDALRC' | translate }}</p>
+          <app-code-block
+            [codeDescription]="`${homeDirectory()}/.gdal/gdalrc`"
+            [codeContent]="gdalRC()"
+            copyPrompt="EXPORT_GDALRC_CLIPBOARD"
+            copyMessage="EXPORTED_GDALRC_CLIPBOARD"
+            language="bash"
+          >
+          </app-code-block>
+        }
+
+        <div><br /></div>
+        <app-docs-modal
+          class="info-text"
+          text="EXPORT_GDAL_HELP_LINK"
+          url="https://nisar-docs.asf.alaska.edu/gdal#installing-gdal"
+        ></app-docs-modal>
+      }
+    </div>
+  </div>
+  @if (gdalConfigForm.output.type().value() === 'gdal') {
+    <div
+      class="gdal-output-card step-card"
+      [class.expanded]="this.datasetSelected()"
+      [matTooltip]="
+        (!this.datasetSelected() ? 'SELECT_A_DATASET_TO_CONTINUE' : null)
+          | translate
+      "
+    >
+      <div class="header-container">
         <h2>4. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
+        <span class="flex-grow"></span>
+        <mat-icon
+          [fontIcon]="
+            this.datasetSelected() ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+          "
+        ></mat-icon>
+      </div>
+      @if (this.datasetSelected()) {
         <div class="gdal-output-list">
           <app-code-block
             [codeDescription]="'GDAL_COMMAND_DESCRIPTION' | translate"
@@ -284,17 +397,9 @@
           >
           </app-code-block>
         </div>
-      </div>
-    }
-
-    @if (gdalConfigForm.selectedDatasets().value()?.length === 0) {
-      <div
-        class="blur-overlay"
-        [matTooltip]="'SELECT_A_DATASET_TO_CONTINUE' | translate"
-        [aria-label]="'SELECT_A_DATASET_TO_CONTINUE' | translate"
-      ></div>
-    }
-  </div>
+      }
+    </div>
+  }
 </div>
 
 <div class="footer">

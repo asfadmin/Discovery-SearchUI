@@ -28,6 +28,7 @@
     <app-copy-to-clipboard
       #clipboard
       class="compact"
+      [copyIcon]="clipboard.copied() ? 'check' : 'file_copy'"
       [aria-label]="copyPrompt() | translate"
       [prompt]="copyPrompt() | translate"
       [value]="codeValue()"
