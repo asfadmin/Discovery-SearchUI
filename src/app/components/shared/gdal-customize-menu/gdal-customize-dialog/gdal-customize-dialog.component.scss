@@ -105,6 +105,8 @@ h3 {
 }
 
 .dataset-button {
+  position: relative;
+
   @include mat.button-toggle-overrides(
     (
       height: 26px,
