@@ -16,7 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { Dataset } from '@models';
 import * as models from '@models';
-import { provisionalIssuesUrl } from '@models/datasets/nisar';
+import { validated } from '@models/datasets/nisar';
 import { PrettyDateRangePipe } from '@pipes/pretty-date.pipe';
 import { ScreenSizeService } from '@services';
 
@@ -44,7 +44,7 @@ export class DatasetComponent {
   public breakpoints = models.Breakpoints;
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
 
-  public provisionalIssuesUrl = provisionalIssuesUrl;
+  public nisarUrl = validated.url;
   public isReadMore = true;
 
   public isDeprecated = computed(() => {

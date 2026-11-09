@@ -201,9 +201,27 @@ export const L1L2BrowseCollectionMapping = {
   ROFF: { collection: 'NISAR_L2_GOFF', productType: 'GOFF' },
 };
 
-export const firstProvisionalCrid = 5023;
-export const firstValidatedCrid = 5036;
-export const provisionalIssuesUrl =
-  'https://nisar-docs.asf.alaska.edu/provisional-known-issues/';
-export const betaIssuesUrl =
-  'https://nisar-docs.asf.alaska.edu/product-known-issues/';
+export type CalibrationLevel = 'VALIDATED' | 'PROVISIONAL' | 'UNCALIBRATED';
+export interface Calibration {
+  firstCrid: number | null;
+  url: string;
+  label: CalibrationLevel;
+}
+
+export const validated: Calibration = {
+  firstCrid: 5036,
+  url: 'https://nisar-docs.asf.alaska.edu/availability-overview/',
+  label: 'VALIDATED',
+};
+
+export const provisional: Calibration = {
+  firstCrid: 5023,
+  url: 'https://nisar-docs.asf.alaska.edu/provisional-known-issues/',
+  label: 'PROVISIONAL',
+};
+
+export const uncalibrated: Calibration = {
+  firstCrid: null,
+  url: 'https://nisar-docs.asf.alaska.edu/product-known-issues/',
+  label: 'UNCALIBRATED',
+};
