@@ -93,27 +93,22 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public productTypeDocsUrl: string | null = null;
 
   public nisarCalibration = computed(() => {
-    this.selectedScene();
+    const scene = this.selectedScene();
 
     if (this.dataset?.id !== 'NISAR') {
       return null;
     }
 
-    const crid = Number(
-      this.scene?.metadata?.nisar?.crid?.replace(/\D/g, '') ?? '',
-    );
+    const crid = Number(scene?.metadata?.nisar?.crid?.replace(/\D/g, '') ?? '');
 
-    switch (true) {
-      case crid >= validated.firstCrid: {
-        return validated;
-      }
-      case crid >= provisional.firstCrid: {
-        return provisional;
-      }
-      default: {
-        return uncalibrated;
-      }
+    if (crid >= validated.firstCrid) {
+      return validated;
     }
+    if (crid >= provisional.firstCrid) {
+      return provisional;
+    }
+
+    return uncalibrated;
   });
 
   public isBrowseOverlayEnabled$: Observable<boolean> =
