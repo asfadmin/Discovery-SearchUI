@@ -535,14 +535,12 @@ export class MapService {
     this.map.once('click', () => {
       this.clearMultipleFeatureOverlay();
     });
-    this.selectHover.setActive(false);
     this.selectHover.clearSelection();
   }
 
   public clearMultipleFeatureOverlay() {
     this.map.removeOverlay(this.map.getOverlayById('multipleFrameMenu'));
     this.selectedMultipleFeatures$.set([]);
-    this.selectHover.setActive(true);
   }
 
   public sbasFrameMode(
