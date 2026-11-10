@@ -588,7 +588,7 @@ export class MapService {
     this.selectClick.getFeatures().clear();
   }
 
-  public handleFeature(feature: Feature) {
+  public handleFeature(feature: Feature | null) {
     if (feature?.get('dir')) {
       this.selectedSource.clear();
       this.selectedSource.addFeature(feature);
