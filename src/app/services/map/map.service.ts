@@ -71,7 +71,7 @@ export class MapService {
     ),
   );
   public focusedAriaFrame$ = new Subject<Feature>();
-  public selectedMultipleFrame$ = signal<Feature[]>([]);
+  public selectedMultipleFeatures$ = signal<Feature[]>([]);
   private mapView: views.MapView;
   private map: Map;
   private scaleLine: ScaleLine;
@@ -259,7 +259,7 @@ export class MapService {
   }
 
   public setLayer(layer: VectorLayer<VectorSource>): void {
-    this.setMultipleFrameOverlay();
+    this.clearMultipleFeatureOverlay();
 
     let previousVisible = true;
     if (this.polygonLayer) {
@@ -406,7 +406,7 @@ export class MapService {
   public clearDrawLayer(): void {
     this.drawService.clear();
     this.clearSelectedScene();
-    this.setMultipleFrameOverlay();
+    this.clearMultipleFeatureOverlay();
     // this.frameSelectionOverlay.setSource(null);
   }
 
@@ -518,28 +518,29 @@ export class MapService {
     }
   }
 
-  public setMultipleFrameOverlay(container: HTMLElement = null) {
-    if (container) {
-      const multipleFrameSelectionPopupMenuOverlay = new Overlay({
-        element: container,
-        position: this.projectedPosition,
-        id: 'multipleFrameMenu',
-        positioning: 'top-right',
-        stopEvent: true,
-      });
-      this.map.removeOverlay(this.map.getOverlayById('customOnDemandMenu'));
-      this.map.addOverlay(multipleFrameSelectionPopupMenuOverlay);
-      this.map.once('click', () => {
-        this.setMultipleFrameOverlay(null);
-      });
-      this.selectHover.setActive(false);
-      this.selectHover.clearSelection();
-    } else {
-      this.map.removeOverlay(this.map.getOverlayById('multipleFrameMenu'));
-      this.selectedMultipleFrame$.set([]);
-      this.selectHover.setActive(true);
-    }
+  public setMultipleFrameOverlay(container: HTMLElement) {
+    const multipleFrameSelectionPopupMenuOverlay = new Overlay({
+      element: container,
+      position: this.projectedPosition,
+      id: 'multipleFrameMenu',
+      positioning: 'bottom-right',
+      stopEvent: true,
+    });
+    this.map.removeOverlay(this.map.getOverlayById('customOnDemandMenu'));
+    this.map.addOverlay(multipleFrameSelectionPopupMenuOverlay);
+    this.map.once('click', () => {
+      this.clearMultipleFeatureOverlay();
+    });
+    this.selectHover.setActive(false);
+    this.selectHover.clearSelection();
   }
+
+  public clearMultipleFeatureOverlay() {
+    this.map.removeOverlay(this.map.getOverlayById('multipleFrameMenu'));
+    this.selectedMultipleFeatures$.set([]);
+    this.selectHover.setActive(true);
+  }
+
   public sbasFrameMode(
     enabled: boolean,
     frame: string,
@@ -580,10 +581,11 @@ export class MapService {
       features.length > 1 ||
       this.searchType() === models.SearchType.PAIR_SELECTION
     ) {
-      this.selectedMultipleFrame$.set(features);
+      this.selectedMultipleFeatures$.set(features);
     } else if (e.selected.length > 0) {
       this.handleFeature(e.selected[0]);
     }
+    this.selectClick.getFeatures().clear();
   }
 
   public handleFeature(feature: Feature) {
@@ -602,20 +604,6 @@ export class MapService {
         features: [feature.clone()],
       }),
     );
-    // this.frameSelectionOverlay.setStyle(
-    //     (feat) => {
-    //         if (feat.get('id') === id) {
-    //             return new Style( {
-    //         zIndex: 100000,
-    //           stroke: new Stroke({
-    //         color:'green',
-    //         width:4,
-    //         })})
-    //         } else {
-    //             return new Style({'stroke': new Stroke({'color': '#00000000'})})
-    //         }
-    //     }
-    // )
   }
   private createNewMap(overlay): Map {
     this.overviewMap = new OverviewMap({
