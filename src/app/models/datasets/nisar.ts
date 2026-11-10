@@ -201,12 +201,27 @@ export const L1L2BrowseCollectionMapping = {
   ROFF: { collection: 'NISAR_L2_GOFF', productType: 'GOFF' },
 };
 
-// Products processed with CRID 5023 or later are provisional calibrated data;
-// earlier CRIDs are pre-calibration ("uncalibrated") products.
-export const calibratedCrid = 5023;
-export const provisionalIssuesUrl =
-  'https://nisar-docs.asf.alaska.edu/provisional-known-issues/';
-// Update once the provisional known issues page is published alongside the
-// July data release; the pre-calibration page currently covers both.
-export const betaIssuesUrl =
-  'https://nisar-docs.asf.alaska.edu/product-known-issues/';
+export type CalibrationLevel = 'VALIDATED' | 'PROVISIONAL' | 'UNCALIBRATED';
+export interface Calibration {
+  firstCrid: number | null;
+  url: string;
+  label: CalibrationLevel;
+}
+
+export const validated: Calibration = {
+  firstCrid: 5036,
+  url: 'https://nisar-docs.asf.alaska.edu/availability-overview/',
+  label: 'VALIDATED',
+};
+
+export const provisional: Calibration = {
+  firstCrid: 5023,
+  url: 'https://nisar-docs.asf.alaska.edu/provisional-known-issues/',
+  label: 'PROVISIONAL',
+};
+
+export const uncalibrated: Calibration = {
+  firstCrid: null,
+  url: 'https://nisar-docs.asf.alaska.edu/product-known-issues/',
+  label: 'UNCALIBRATED',
+};

@@ -12,7 +12,8 @@
 .exit-button {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 0.4em;
+  z-index: 10;
 }
 
 .gdal-export-wrapper {
@@ -32,14 +33,46 @@ h1 {
   font-style: italic;
 }
 
-.gdal-dataset {
+.gdal-dataset-info {
   display: flex;
-  flex-direction: row;
-  gap: 0.5em;
+  flex-shrink: 1;
+  flex-flow: row wrap;
+  gap: 0 0.5em;
   align-items: center;
+  min-width: 0;
+}
+
+.gdal-dataset {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.3em 1em;
+  border-radius: 15px;
+}
+
+.gdal-dataset:hover {
+  @include themify($themes) {
+    background-color: themed('dark-focused');
+  }
+}
+
+.dataset-button {
+  position: relative;
+
+  @include mat.button-toggle-overrides(
+    (
+      height: 26px,
+      label-text-size: 16px,
+      divider-color: transparent,
+      selected-state-background-color: transparent,
+    )
+  );
 }
 
 .gdal-dataset-name {
+  flex-shrink: 1;
+  min-width: 0;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -53,9 +86,9 @@ h1 {
 
   max-width: 100%;
   height: fit-content;
-  padding: 0.4em;
+  padding: 0 0.4em;
   text-overflow: ellipsis;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-style: italic;
   white-space: nowrap;
   background: rgb(0 0 0 / 7.5%);
@@ -81,8 +114,30 @@ h1 {
   white-space: nowrap;
 }
 
+.gdal-dataset-check {
+  @include themify($themes) {
+    // unchecked: the box outline
+    --mat-pseudo-checkbox-full-unselected-icon-color: #{themed(
+        'dark-secondary-text'
+      )};
+
+    // checked: box fill and tick
+    --mat-pseudo-checkbox-full-selected-icon-color: #{themed('primary')};
+    --mat-pseudo-checkbox-full-selected-checkmark-color: #{themed(
+        'light-primary-text'
+      )};
+  }
+}
+
 .flex-grow {
   flex-grow: 1;
+  max-width: 100%;
+  height: 0;
+}
+
+.flex-break {
+  flex-basis: 100%;
+  height: 0;
 }
 
 .icon-row {
@@ -99,8 +154,12 @@ h1 {
 .dataset-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 0 1em;
+
+  @include mat.button-toggle-overrides(
+    (
+      divider-color: transparent,
+    )
+  );
 }
 
 .options-list-card {

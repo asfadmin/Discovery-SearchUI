@@ -56,6 +56,8 @@
     <button
       mat-menu-item
       class="control-mat-checkbox-toggle"
+      disabled
+      [matTooltip]="'COHERENCE_DISABLED' | translate"
       (click)="onClickCoherenceMenu()"
       [matMenuTriggerFor]="coherenceLayers"
     >

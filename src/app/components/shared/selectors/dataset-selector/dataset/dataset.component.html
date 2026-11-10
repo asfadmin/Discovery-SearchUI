@@ -27,10 +27,10 @@
             <span>
               <app-docs-modal
                 class="info-text"
-                [text]="'(' + ('PROVISIONAL' | translate) + ')'"
-                [url]="provisionalIssuesUrl"
-              ></app-docs-modal
-            ></span>
+                [text]="`(${('VALIDATED' | translate)})`"
+                [url]="nisarUrl"
+              ></app-docs-modal>
+            </span>
           }
           @if (dataset().subName) {
             <div class="dataset__subName faint-text">
