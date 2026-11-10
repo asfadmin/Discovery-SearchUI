@@ -568,7 +568,7 @@ export class MapService {
     });
   }
   private handleSelect(e: SelectEvent) {
-    const features = [];
+    const features: Feature[] = [];
     this.map.forEachFeatureAtPixel(
       e.mapBrowserEvent.pixel,
       (feature, _layer) => {
