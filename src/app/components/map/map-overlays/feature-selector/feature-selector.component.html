@@ -22,7 +22,16 @@
         (mouseleave)="hoverPreviewLeave(item.feature)"
       >
         <span matListItemTitle>
-          {{ item.display }}
+          @if (item.dataset) {
+            <app-file-name
+              [name]="item.display"
+              [dataset]="item.dataset"
+              [searchType]="searchType()"
+              [len]="20"
+            ></app-file-name>
+          } @else {
+            {{ item.display }}
+          }
         </span>
         <span matListItemLine>
           {{ item.description }}

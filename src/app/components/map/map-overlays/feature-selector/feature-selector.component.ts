@@ -6,9 +6,11 @@ import { MatIcon } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
+import * as moment from 'moment';
 import { Feature, getUid } from 'ol';
 import { StyleLike } from 'ol/style/Style';
 
+import { FileNameComponent } from '@components/shared/file-name';
 import { DisplayedFeature, FeatureType, SearchType } from '@models';
 import { MapService, ScenesService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
@@ -22,6 +24,7 @@ import { getSearchType } from '@store/search';
     MatIconButton,
     TranslatePipe,
     CdkDragHandle,
+    FileNameComponent,
   ],
   templateUrl: './feature-selector.component.html',
   styleUrl: './feature-selector.component.scss',
@@ -74,12 +77,17 @@ export class FeatureSelectorComponent {
   private getDisplayFor(feature: Feature): DisplayedFeature {
     let description: string;
     let display: string;
+    let dataset: string | null = null;
     const featureType = this.mapService.getFeatureType(feature);
     if (featureType === FeatureType.SCENE) {
-      description = this.scenes()
-        .find((x) => x.id === feature.get('filename'))
-        ?.metadata?.date.toString();
-      display = feature.get('filename');
+      const foundScene = this.scenes().find(
+        (x) => x.id === feature.get('filename'),
+      );
+      const dateUtc = moment.utc(foundScene?.metadata?.date);
+
+      description = dateUtc.format('LL, HH:mm:ss') + 'Z';
+      dataset = foundScene.dataset;
+      display = foundScene.name;
     }
 
     if (featureType === FeatureType.FRAME) {
@@ -90,6 +98,7 @@ export class FeatureSelectorComponent {
     return {
       feature: feature,
       id: getUid(feature),
+      dataset: dataset,
       display: display,
       description: description,
     };

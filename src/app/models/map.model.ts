@@ -47,6 +47,7 @@ export interface LonLat {
 export interface DisplayedFeature {
   feature: Feature;
   id: string;
+  dataset?: string;
   display: string;
   description: string;
 }

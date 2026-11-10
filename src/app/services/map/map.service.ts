@@ -536,11 +536,13 @@ export class MapService {
       this.clearMultipleFeatureOverlay();
     });
     this.selectHover.clearSelection();
+    this.selectHover.setActive(false);
   }
 
   public clearMultipleFeatureOverlay() {
     this.map.removeOverlay(this.map.getOverlayById('multipleFrameMenu'));
     this.selectedMultipleFeatures$.set([]);
+    this.selectHover.setActive(true);
   }
 
   public sbasFrameMode(
