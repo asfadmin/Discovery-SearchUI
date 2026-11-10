@@ -60,6 +60,7 @@ module.exports = tseslint.config([
         },
       ],
       'import/no-duplicates': 'error',
+      '@typescript-eslint/no-for-in-array': 'error',
       // ---------
       // re-enable these at some point
       // ---------
