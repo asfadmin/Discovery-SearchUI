@@ -2,6 +2,7 @@ import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import { Component, computed, inject, input, output } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -18,6 +19,7 @@ import { getSearchType } from '@store/search';
   selector: 'app-feature-selector',
   imports: [
     MatListModule,
+    MatIcon,
     MatIconButton,
     TranslatePipe,
     CdkDragHandle,

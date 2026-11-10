@@ -10,8 +10,7 @@
 
 .feature-options-title {
   padding-top: 0;
-  padding-right: 5px;
-  padding-left: 15px;
+  padding-right: 0.2rem;
   margin: 0;
   font-size: 1rem;
 }
@@ -26,12 +25,19 @@
   justify-content: space-between;
 }
 
+.drag-handle {
+  align-self: center;
+  padding-left: 0.5rem;
+  margin-bottom: -0.2rem;
+}
+
 .divider {
   margin-bottom: 0;
 }
 
 .close-button {
   padding: 0;
+
   @include mat.icon-button-overrides(
     (
       icon-size: 1.3rem,
