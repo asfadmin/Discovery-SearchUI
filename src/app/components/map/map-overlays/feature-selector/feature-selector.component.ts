@@ -77,7 +77,7 @@ export class FeatureSelectorComponent {
     const featureType = this.mapService.getFeatureType(feature);
     if (featureType === FeatureType.SCENE) {
       description = this.scenes()
-        .find((x) => x.name === feature.get('filename'))
+        .find((x) => x.id === feature.get('filename'))
         ?.metadata?.date.toString();
       display = feature.get('filename');
     }
