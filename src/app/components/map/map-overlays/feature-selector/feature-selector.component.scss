@@ -22,12 +22,12 @@
 .feature-header {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
 }
 
 .drag-handle {
   align-self: center;
   padding-left: 0.5rem;
+  padding-right: 0.4rem;
   margin-bottom: -0.2rem;
 }
 
@@ -37,6 +37,7 @@
 
 .close-button {
   padding: 0;
+  margin-left: auto;
 
   @include mat.icon-button-overrides(
     (
