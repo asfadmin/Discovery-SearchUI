@@ -9,8 +9,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Feature, getUid } from 'ol';
 import { StyleLike } from 'ol/style/Style';
 
-import { DisplayedFeature, SearchType } from '@models';
-import { ScenesService } from '@services';
+import { DisplayedFeature, FeatureType, SearchType } from '@models';
+import { MapService, ScenesService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
 import { getSearchType } from '@store/search';
 
@@ -32,6 +32,7 @@ export class FeatureSelectorComponent {
   public close = output();
   private sceneService = inject(ScenesService);
   private store = inject(Store);
+  private mapService = inject(MapService);
 
   private scenes = toSignal(this.sceneService.scenes$);
   public searchType = this.store.selectSignal(getSearchType);
@@ -71,15 +72,15 @@ export class FeatureSelectorComponent {
   private getDisplayFor(feature: Feature): DisplayedFeature {
     let description: string;
     let display: string;
-
-    if (feature.get('filename')) {
+    const featureType = this.mapService.getFeatureType(feature);
+    if (featureType === FeatureType.SCENE) {
       description = this.scenes()
         .find((x) => x.name === feature.get('filename'))
         ?.metadata?.date.toString();
       display = feature.get('filename');
     }
 
-    if (feature.get('dir')) {
+    if (featureType === FeatureType.FRAME) {
       description = `Track: ${feature.get('path')}`;
       display = `Frame ID ${feature.get('id')}`;
     }

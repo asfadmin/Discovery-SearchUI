@@ -146,7 +146,9 @@ export class MapComponent implements OnInit, OnDestroy {
   public selectedScene = this.store$.selectSignal(scenesStore.getSelectedScene);
   public SelectedOnDemandFrameID: Feature = null;
   public OnDemandFrames: { frameID: string; feature: Feature<Geometry> }[] = [];
-  public selectedFrameOptions = computed(() => this.mapService.selectedMultipleFeatures$());
+  public selectedFrameOptions = computed(() =>
+    this.mapService.selectedMultipleFeatures$(),
+  );
   private subs = new SubSink();
   private gridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   private isMapInitialized$ = this.store$.select(
@@ -701,7 +703,10 @@ export class MapComponent implements OnInit, OnDestroy {
     return features;
   }
   public callFeature(feature: Feature | null) {
-    if (feature?.get('dir')) {
+    if (
+      feature &&
+      this.mapService.getFeatureType(feature) === models.FeatureType.FRAME
+    ) {
       this.buildOnDemandStackWithFeature(feature);
       this.mapService.clearMultipleFeatureOverlay();
     }

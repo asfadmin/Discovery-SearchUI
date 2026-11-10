@@ -50,3 +50,9 @@ export interface DisplayedFeature {
   display: string;
   description: string;
 }
+
+export enum FeatureType {
+  FRAME,
+  SCENE,
+  NA,
+}

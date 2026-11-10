@@ -315,7 +315,11 @@ export class MapService {
       this.polygonLayer?.setVisible(true); // disable the polygons of scenes
       this.browseImageLayer?.setVisible(true);
       this.selectedLayer?.setVisible(true);
-      if (this.selectedSource.getFeatures()[0]?.get('dir')) {
+      if (
+        this.selectedSource.getFeatures()[0] &&
+        this.getFeatureType(this.selectedSource.getFeatures()[0]) ===
+          models.FeatureType.FRAME
+      ) {
         this.selectedSource.clear();
       }
       this.setAriaPopupOverlay(null, null);
@@ -573,7 +577,8 @@ export class MapService {
       e.mapBrowserEvent.pixel,
       (feature, _layer) => {
         if (feature instanceof Feature) {
-          if (feature.get('filename') || feature.get('dir')) {
+          const featureType = this.getFeatureType(feature);
+          if (featureType !== models.FeatureType.NA) {
             features.push(feature);
           }
         }
@@ -591,7 +596,7 @@ export class MapService {
   }
 
   public handleFeature(feature: Feature | null) {
-    if (feature?.get('dir')) {
+    if (feature && this.getFeatureType(feature) === models.FeatureType.FRAME) {
       this.selectedSource.clear();
       this.selectedSource.addFeature(feature);
       this.focusedAriaFrame$.next(feature);
@@ -1183,6 +1188,16 @@ export class MapService {
     const style = this.selectedLayer.getStyle() as Style;
     const olText = style.getText();
     olText.setText(text);
+  }
+
+  public getFeatureType(feature: Feature) {
+    if (feature.get('filename')) {
+      return models.FeatureType.SCENE;
+    }
+    if (feature.get('dir')) {
+      return models.FeatureType.FRAME;
+    }
+    return models.FeatureType.NA;
   }
 
   private getPointIntersection(
