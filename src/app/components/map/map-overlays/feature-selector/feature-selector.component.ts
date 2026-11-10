@@ -38,7 +38,9 @@ export class FeatureSelectorComponent {
   public searchType = this.store.selectSignal(getSearchType);
 
   public displayedFeatures = computed<DisplayedFeature[]>(() => {
-    return this.features()?.map((feature) => this.getDisplayFor(feature));
+    return this.features()
+      ?.map((feature) => this.getDisplayFor(feature))
+      .reverse();
   });
 
   public featureCache = new Map<
