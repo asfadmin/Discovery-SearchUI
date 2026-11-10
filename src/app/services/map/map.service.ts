@@ -568,12 +568,14 @@ export class MapService {
     });
   }
   private handleSelect(e: SelectEvent) {
-    const features: Feature[] = [];
+    const features: Feature<Geometry>[] = [];
     this.map.forEachFeatureAtPixel(
       e.mapBrowserEvent.pixel,
       (feature, _layer) => {
-        if (feature.get('filename') || feature.get('dir')) {
-          features.push(feature);
+        if (feature instanceof Feature) {
+          if (feature.get('filename') || feature.get('dir')) {
+            features.push(feature);
+          }
         }
       },
     );

@@ -9,8 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Feature, getUid } from 'ol';
 import { StyleLike } from 'ol/style/Style';
 
-import { SearchType } from '@models';
-import { FullDatePipe } from '@pipes/short-date.pipe';
+import { DisplayedFeature, SearchType } from '@models';
 import { ScenesService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
 import { getSearchType } from '@store/search';
@@ -23,13 +22,12 @@ import { getSearchType } from '@store/search';
     MatIconButton,
     TranslatePipe,
     CdkDragHandle,
-    FullDatePipe,
   ],
   templateUrl: './feature-selector.component.html',
   styleUrl: './feature-selector.component.scss',
 })
 export class FeatureSelectorComponent {
-  public features = input<Feature[]>();
+  public features = input.required<Feature[]>();
   public callFeature = output<Feature>();
   public close = output();
   private sceneService = inject(ScenesService);
@@ -37,30 +35,9 @@ export class FeatureSelectorComponent {
 
   private scenes = toSignal(this.sceneService.scenes$);
   public searchType = this.store.selectSignal(getSearchType);
-  public displayedFeatures = computed(() => {
-    return this.features()?.map((feature) => {
-      let description: any;
-      let display: string;
 
-      if (feature.get('filename')) {
-        description = this.scenes().find(
-          (x) => x.name === feature.get('filename'),
-        )?.metadata?.date;
-        display = feature.get('filename');
-      }
-
-      if (feature.get('dir')) {
-        description = `Track: ${feature.get('path')}`;
-        display = `Frame ID ${feature.get('id')}`;
-      }
-
-      return {
-        feature,
-        id: getUid(feature),
-        display: display,
-        description: description,
-      };
-    });
+  public displayedFeatures = computed<DisplayedFeature[]>(() => {
+    return this.features()?.map((feature) => this.getDisplayFor(feature));
   });
 
   public featureCache = new Map<
@@ -89,6 +66,30 @@ export class FeatureSelectorComponent {
   public handleClick(feature: Feature) {
     this.hoverPreviewLeave(feature);
     this.callFeature.emit(feature);
+  }
+
+  private getDisplayFor(feature: Feature): DisplayedFeature {
+    let description: string;
+    let display: string;
+
+    if (feature.get('filename')) {
+      description = this.scenes()
+        .find((x) => x.name === feature.get('filename'))
+        ?.metadata?.date.toString();
+      display = feature.get('filename');
+    }
+
+    if (feature.get('dir')) {
+      description = `Track: ${feature.get('path')}`;
+      display = `Frame ID ${feature.get('id')}`;
+    }
+
+    return {
+      feature: feature,
+      id: getUid(feature),
+      display: display,
+      description: description,
+    };
   }
 
   public closeMenu() {

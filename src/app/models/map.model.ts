@@ -1,3 +1,5 @@
+import { Feature } from 'ol';
+
 export const mapOptions = {
   wrapX: true,
 };
@@ -40,4 +42,11 @@ export enum DrawPolygonStyle {
 export interface LonLat {
   lon: number;
   lat: number;
+}
+
+export interface DisplayedFeature {
+  feature: Feature;
+  id: string;
+  display: string;
+  description: string;
 }

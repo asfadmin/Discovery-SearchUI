@@ -25,14 +25,7 @@
           {{ item.display }}
         </span>
         <span matListItemLine>
-          @switch (typeof item.display) {
-            @case ('string') {
-              {{ item.description }}
-            }
-            @default {
-              {{ item.description | fullDate }}
-            }
-          }
+          {{ item.description }}
         </span>
       </mat-list-item>
     }
