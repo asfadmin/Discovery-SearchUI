@@ -21,14 +21,12 @@
       <h2>1. {{ 'SELECT_DATASETS' | translate }}</h2>
       <span class="flex-grow"></span>
       @for (error of gdalConfigForm.selectedDatasets().errors(); track error) {
-        <div class="gdal-dataset-error">
-          <mat-error>{{ error.message | translate }}</mat-error>
-        </div>
+        <p class="gdal-dataset-error info">{{ error.message | translate }}</p>
       }
       <mat-icon
-        [fontIcon]="this.datasetSelected() ? 'check' : 'error'"
+        [fontIcon]="this.datasetSelected() ? 'check' : 'info'"
         [matTooltip]="datasetSelectedTooltip() | translate"
-        [class.error]="!this.datasetSelected()"
+        [class.info]="!this.datasetSelected()"
       ></mat-icon>
     </div>
     <div class="step-card-content dataset-selector">
@@ -98,13 +96,6 @@
       @if (this.datasetSelected()) {
         <div class="header-container subheader-container">
           <h3>{{ 'CONFIGURE_GEOSPATIAL_OPTIONS' | translate }}</h3>
-          <span class="flex-grow"></span>
-          <mat-icon
-            [fontIcon]="
-              this.gdalConfigForm.geospatial().valid() ? null : 'error'
-            "
-            [class.error]="this.gdalConfigForm.geospatial().invalid()"
-          ></mat-icon>
         </div>
         <div class="options-list">
           <span class="option reproject">
@@ -122,7 +113,9 @@
                   .errors();
                 track error
               ) {
-                <mat-error> {{ error.message | translate }}</mat-error>
+                <mat-error class="error-overflow">
+                  {{ error.message | translate }}
+                </mat-error>
               }
             </mat-form-field>
           </span>
@@ -167,11 +160,6 @@
         </div>
         <div class="header-container subheader-container">
           <h3>{{ 'CONFIGURE_GDAL_OUTPUTFILE' | translate }}</h3>
-          <span class="flex-grow"></span>
-          <mat-icon
-            [fontIcon]="this.gdalConfigForm.output().valid() ? null : 'error'"
-            [class.error]="this.gdalConfigForm.output().invalid()"
-          ></mat-icon>
         </div>
         <div class="options-list">
           <span class="option short">
@@ -209,13 +197,6 @@
         </div>
         <div class="header-container subheader-container">
           <h3>{{ 'CONFIGURE_GDAL_ENVIRONMENT' | translate }}</h3>
-          <span class="flex-grow"></span>
-          <mat-icon
-            [fontIcon]="
-              this.gdalConfigForm.environment().valid() ? null : 'error'
-            "
-            [class.error]="this.gdalConfigForm.environment().invalid()"
-          ></mat-icon>
         </div>
         <span class="flex-grow"></span>
         <div class="options-list">
@@ -278,11 +259,8 @@
 
   <div
     class="gdal-configure-card step-card"
-    [class.expanded]="this.datasetSelected()"
-    [matTooltip]="
-      (!this.datasetSelected() ? 'SELECT_A_DATASET_TO_CONTINUE' : null)
-        | translate
-    "
+    [class.expanded]="this.datasetSelected() && !this.configureError()"
+    [matTooltip]="cardErrorTooltip() | translate"
   >
     <div class="header-container">
       <h2>3. {{ 'CONFIGURE_ENVIRONMENT' | translate }}</h2>
@@ -293,24 +271,30 @@
         "
       ></mat-icon>
     </div>
-
     <div class="step-card-content">
-      @if (this.datasetSelected()) {
+      @if (this.datasetSelected() && !this.configureError()) {
         @if (gdalConfigForm.environment.nisarDriver().value()) {
           <p>{{ 'JPL_NISAR_DRIVER_HELP_BODY' | translate }}</p>
           <app-code-block
             [isCommand]="true"
-            defaultTab="INSTALL_VIA_CONDA"
-            [codeContentByTab]="{
-              INSTALL_VIA_CONDA:
+            [codeContentByTab]="[
+              [
+                'INSTALL_VIA_CONDA',
                 'conda install -c nisar-forge -c conda-forge gdal-driver-nisar',
-              INSTALL_VIA_MAMBA:
+              ],
+              [
+                'INSTALL_VIA_MAMBA',
                 'mamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
-              INSTALL_VIA_MICROMAMBA:
+              ],
+              [
+                'INSTALL_VIA_MICROMAMBA',
                 'micromamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
-              INSTALL_VIA_PIXI:
+              ],
+              [
+                'INSTALL_VIA_PIXI',
                 'pixi global install -c nisar-forge -c conda-forge gdal-driver-nisar',
-            }"
+              ],
+            ]"
             copyPrompt="COPY_TO_CLIPBOARD"
             copyMessage="COPIED_TO_CLIPBOARD"
             language="bash"
@@ -320,16 +304,18 @@
           <p>{{ 'INSTALL_GDAL' | translate }}</p>
           <app-code-block
             [isCommand]="true"
-            defaultTab="INSTALL_VIA_CONDA"
-            [codeContentByTab]="{
-              INSTALL_VIA_CONDA: 'conda install -c conda-forge gdal',
-              INSTALL_VIA_MAMBA: 'mamba install -c conda-forge gdal',
-              INSTALL_VIA_MICROMAMBA: 'micromamba install -c conda-forge gdal',
-              INSTALL_VIA_PIXI: 'pixi global install -c conda-forge gdal',
-              INSTALL_VIA_APT: 'sudo apt install gdal-bin',
-              INSTALL_VIA_PACMAN: 'sudo pacman -S gdal',
-              RUN_VIA_NIX: 'nix-shell -p gdal',
-            }"
+            [codeContentByTab]="[
+              ['INSTALL_VIA_CONDA', 'conda install -c conda-forge gdal'],
+              ['INSTALL_VIA_MAMBA', 'mamba install -c conda-forge gdal'],
+              [
+                'INSTALL_VIA_MICROMAMBA',
+                'micromamba install -c conda-forge gdal',
+              ],
+              ['INSTALL_VIA_PIXI', 'pixi global install -c conda-forge gdal'],
+              ['INSTALL_VIA_APT', 'sudo apt install gdal-bin'],
+              ['INSTALL_VIA_PACMAN', 'sudo pacman -S gdal'],
+              ['RUN_VIA_NIX', 'nix-shell -p gdal'],
+            ]"
             copyPrompt="COPY_TO_CLIPBOARD"
             copyMessage="COPIED_TO_CLIPBOARD"
             language="bash"
@@ -370,11 +356,8 @@
   @if (gdalConfigForm.output.type().value() === 'gdal') {
     <div
       class="gdal-output-card step-card"
-      [class.expanded]="this.datasetSelected()"
-      [matTooltip]="
-        (!this.datasetSelected() ? 'SELECT_A_DATASET_TO_CONTINUE' : null)
-          | translate
-      "
+      [class.expanded]="this.datasetSelected() && !this.configureError()"
+      [matTooltip]="cardErrorTooltip() | translate"
     >
       <div class="header-container">
         <h2>4. {{ 'RUN_GDAL_SNIPPET' | translate }}</h2>
@@ -385,7 +368,7 @@
           "
         ></mat-icon>
       </div>
-      @if (this.datasetSelected()) {
+      @if (this.datasetSelected() && !this.configureError()) {
         <div class="gdal-output-list">
           <app-code-block
             [codeDescription]="'GDAL_COMMAND_DESCRIPTION' | translate"

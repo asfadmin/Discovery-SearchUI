@@ -259,6 +259,18 @@ export class GdalCustomizeDialogComponent {
       this.gdalConfigForm.environment().invalid() ||
       this.gdalConfigForm.output().invalid(),
   );
+  configureErrorMessages = computed(() =>
+    [
+      ...this.gdalConfigForm.geospatial().errors(),
+      ...this.gdalConfigForm.environment().errors(),
+      ...this.gdalConfigForm.output().errors(),
+    ]
+      .map((error) => error.message)
+      .filter(
+        (message) =>
+          message !== null || message !== undefined || message !== '',
+      ),
+  );
   configureIcon = computed(() => {
     if (this.configureError()) {
       return 'error';
@@ -277,6 +289,17 @@ export class GdalCustomizeDialogComponent {
     }
 
     return 'keyboard_arrow_up';
+  });
+  cardErrorTooltip = computed(() => {
+    if (!this.datasetSelected()) {
+      return 'SELECT_A_DATASET_TO_CONTINUE';
+    }
+
+    if (this.configureError()) {
+      return this.configureErrorMessages()[0];
+    }
+
+    return null;
   });
 
   netrcContent = `\
