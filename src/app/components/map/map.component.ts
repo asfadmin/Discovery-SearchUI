@@ -419,7 +419,7 @@ export class MapComponent implements OnInit, OnDestroy {
       () => {
         if (this.selectedFrameOptions().length > 0) {
           this.dragReference.reset();
-          this.mapService.setMultipleFrameOverlay(
+          this.mapService.setMultipleFeatureOverlay(
             this.multiFeaturePopup.nativeElement,
           );
         }

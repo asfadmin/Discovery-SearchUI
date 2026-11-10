@@ -518,7 +518,7 @@ export class MapService {
     }
   }
 
-  public setMultipleFrameOverlay(container: HTMLElement) {
+  public setMultipleFeatureOverlay(container: HTMLElement) {
     const multipleFrameSelectionPopupMenuOverlay = new Overlay({
       element: container,
       position: this.projectedPosition,
