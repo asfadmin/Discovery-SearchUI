@@ -59,7 +59,7 @@ export class SceneGroupFileComponent {
   isGdalable = computed(
     () =>
       this.isScienceData() &&
-      this.gdalService.getProductDatasets(this.gdalProduct()).length !== 0,
+      this.gdalService.getProductDatasets(this.gdalProduct()).isNonEmpty(),
   );
 
   toggle = output<void>();

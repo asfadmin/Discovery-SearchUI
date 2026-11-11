@@ -54,6 +54,43 @@
   }
 }
 
+.dataset-tree-node {
+  @include mat.expansion-overrides(
+    (
+      header-focus-state-layer-color: transparent,
+      header-hover-state-layer-color: transparent,
+      container-elevation-shadow: none,
+    )
+  );
+}
+
+.polarization-grid {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.polarization-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.polarization-element {
+  flex: 1;
+  width: 100%;
+  text-align: right;
+  @include themify($themes) {
+    @include mat.button-toggle-overrides(
+      (
+        height: 26px,
+        label-text-size: 16px,
+        divider-color: transparent,
+        selected-state-background-color: themed('dark-focused'),
+      )
+    );
+  }
+}
+
 .info {
   @include themify($themes) {
     color: themed('dark-secondary-text');
@@ -99,9 +136,12 @@ h3 {
 }
 
 .gdal-dataset {
+  display: flex;
+  flex-direction: row;
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  gap: 15px;
   width: 100%;
   padding: 0.3em 1em;
   border-radius: 15px;

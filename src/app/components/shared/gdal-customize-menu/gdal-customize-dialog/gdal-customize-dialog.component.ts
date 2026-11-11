@@ -53,6 +53,8 @@ import {
   GdalCustomizeMenuComponent,
   GdalCustomizeDialogData,
 } from '../gdal-customize-menu.component';
+import { GDALCategory, GDALDataset } from '@models';
+import { MatTreeModule } from '@angular/material/tree';
 
 interface GdalConfigModel {
   selectedDatasets: string[];
@@ -75,6 +77,12 @@ interface GdalConfigModel {
   };
 }
 
+interface DatasetNode {
+  name: string;
+  children?: DatasetNode[];
+  dataset?: GDALDataset;
+}
+
 @Component({
   selector: 'app-gdal-customize-dialog',
   imports: [
@@ -94,6 +102,8 @@ interface GdalConfigModel {
     MatInput,
     MatIcon,
     MatError,
+    MatExpansionModule,
+    MatTreeModule,
     FormField,
     FormsModule,
     DocsModalComponent,
@@ -106,7 +116,7 @@ interface GdalConfigModel {
 export class GdalCustomizeDialogComponent {
   readonly dialogRef = inject(MatDialogRef<GdalCustomizeMenuComponent>);
   readonly data = inject<GdalCustomizeDialogData>(MAT_DIALOG_DATA);
-  datasets = this.data.datasets;
+  datasets = this.toAngularMaterialTree(this.data.datasets);
   gdalService = inject(GdalService);
   outputFormats = GDAL_FORMATS;
   outputOSList = GDAL_OS;
@@ -316,6 +326,32 @@ machine urs.earthdata.nasa.gov
     }
 
     return 'Unix';
+  }
+
+  childrenAccessor = (node: DatasetNode) => node.children ?? [];
+
+  hasChild = (_: number, node: DatasetNode) =>
+    !!node.children && node.children.length > 0;
+
+  toAngularMaterialTree(datasets: GDALCategory): DatasetNode[] {
+    if (Object.entries(datasets.categories).length == 0) {
+      return datasets.datasets.map((dataset) => {
+        return {
+          name: dataset.name,
+          dataset: dataset,
+        };
+      });
+    }
+
+    if (Object.entries(datasets.categories).length == 1) {
+      return this.toAngularMaterialTree(
+        Object.entries(datasets.categories)[0][1],
+      );
+    }
+
+    return Object.entries(datasets.categories).map(([key, value]) => {
+      return { name: key, children: this.toAngularMaterialTree(value) };
+    });
   }
 
   constructor() {

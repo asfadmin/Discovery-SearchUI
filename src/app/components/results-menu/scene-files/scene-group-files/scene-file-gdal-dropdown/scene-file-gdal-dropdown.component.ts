@@ -17,6 +17,7 @@ import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-me
 import { GdalProductInfo, GdalService } from '@services/gdal/gdal.service';
 
 import { SceneFileGdalDropdownDatasetComponent } from './scene-file-gdal-dropdown-dataset/scene-file-gdal-dropdown-dataset.component';
+import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-scene-file-gdal-dropdown',
@@ -28,6 +29,8 @@ import { SceneFileGdalDropdownDatasetComponent } from './scene-file-gdal-dropdow
     TranslateModule,
     SceneFileGdalDropdownDatasetComponent,
     DocsModalComponent,
+    KeyValuePipe,
+    NgTemplateOutlet,
   ],
   templateUrl: './scene-file-gdal-dropdown.component.html',
   styleUrl: './scene-file-gdal-dropdown.component.scss',
