@@ -1,15 +1,4 @@
-@let breakpoint = breakpoint$ | async;
-
-<div
-  class="tool-menu"
-  [ngStyle]="{
-    bottom: 0,
-  }"
-  [ngClass]="{
-    'menu-override':
-      searchType() === searchTypes.BASELINE && breakpoint === breakpoints.FULL,
-  }"
->
+<div class="tool-menu" [class.menu-override]="useMenuOverride()">
   <div class="search-button-label">{{ 'SEARCH' | translate | uppercase }}:</div>
   <div
     [matTooltip]="
@@ -50,6 +39,20 @@
     </button>
   </div>
 
+  @if (isGCOVProduct()) {
+    <div matTooltip="Bridge" >
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="openBridgeSubmitDialog()"
+        class="mini-toggle-button search-button"
+        target="_blank"
+      >
+        Bridge
+      </button>
+    </div>
+  }
+
   <div [matTooltip]="moreLikeThisTooltipKey() | translate">
     <button
       mat-stroked-button
@@ -58,7 +61,7 @@
       (click)="moreLikeThis()"
       class="mini-toggle-button search-button"
     >
-      @if (breakpoint === breakpoints.MOBILE) {
+      @if (breakpoint() === breakpoints.MOBILE) {
         <span>{{ 'MORE' | translate }}</span>
       } @else {
         <span>{{ moreLikeThisLabelKey() | translate }}</span>

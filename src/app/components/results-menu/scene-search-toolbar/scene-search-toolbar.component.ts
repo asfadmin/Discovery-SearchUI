@@ -1,5 +1,6 @@
-import { NgStyle, NgClass, UpperCasePipe, AsyncPipe } from '@angular/common';
+import { UpperCasePipe, AsyncPipe } from '@angular/common';
 import { Component, inject, computed } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
@@ -19,15 +20,7 @@ import * as userStore from '@store/user';
 
 @Component({
   selector: 'app-scene-search-toolbar',
-  imports: [
-    NgStyle,
-    NgClass,
-    MatButton,
-    AsyncPipe,
-    UpperCasePipe,
-    MatTooltip,
-    TranslateModule,
-  ],
+  imports: [MatButton, AsyncPipe, UpperCasePipe, MatTooltip, TranslateModule],
   templateUrl: './scene-search-toolbar.component.html',
   styleUrl: './scene-search-toolbar.component.scss',
 })
@@ -41,7 +34,7 @@ export class SceneSearchToolbarComponent {
   public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
-  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoint = toSignal(this.screenSize.breakpoint$);
   public breakpoints = models.Breakpoints;
   private dateRange = this.store$.selectSignal(filtersStore.getDateRange);
 
@@ -50,6 +43,19 @@ export class SceneSearchToolbarComponent {
   readonly selectedProducts = this.store$.selectSignal(
     scenesStore.getSelectedSceneProducts,
   );
+
+  protected readonly useMenuOverride = computed(
+    () =>
+      this.searchType() === this.searchTypes.BASELINE &&
+      this.breakpoint() === this.breakpoints.FULL,
+  );
+
+  readonly isGCOVProduct = computed(() => {
+    return (
+      this.dataset()?.id === 'NISAR' &&
+      this.scene()?.metadata?.productType === 'GCOV'
+    );
+  });
 
   readonly dataset = computed(() => {
     const scene = this.scene();
@@ -260,5 +266,9 @@ export class SceneSearchToolbarComponent {
         new filtersStore.SetEndDate(new Date(dateRange.end)),
       );
     }
+  }
+
+  public openBridgeSubmitDialog() {
+    console.log(this.scene, this.dataset);
   }
 }
