@@ -32,11 +32,13 @@ import {
 } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
+import { MatTreeModule } from '@angular/material/tree';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { CodeBlockComponent } from '@components/shared/code-block/code-block.component';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { GDALCategory, GDALDataset } from '@models';
 import {
   GdalFormats,
   GdalOptions,
@@ -53,8 +55,6 @@ import {
   GdalCustomizeMenuComponent,
   GdalCustomizeDialogData,
 } from '../gdal-customize-menu.component';
-import { GDALCategory, GDALDataset } from '@models';
-import { MatTreeModule } from '@angular/material/tree';
 
 interface GdalConfigModel {
   selectedDatasets: string[];

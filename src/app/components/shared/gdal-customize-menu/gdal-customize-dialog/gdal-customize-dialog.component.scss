@@ -79,6 +79,7 @@
   flex: 1;
   width: 100%;
   text-align: right;
+
   @include themify($themes) {
     @include mat.button-toggle-overrides(
       (
@@ -136,12 +137,11 @@ h3 {
 }
 
 .gdal-dataset {
-  display: flex;
-  flex-direction: row;
   box-sizing: border-box;
   display: flex;
-  align-items: center;
+  flex-direction: row;
   gap: 15px;
+  align-items: center;
   width: 100%;
   padding: 0.3em 1em;
   border-radius: 15px;
@@ -242,10 +242,10 @@ h3 {
 }
 
 .error-overflow {
-  margin: 0;
   padding: 0;
-  text-wrap: nowrap;
+  margin: 0;
   overflow: visible;
+  text-wrap: nowrap;
 }
 
 .icon-row {

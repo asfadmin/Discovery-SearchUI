@@ -1,4 +1,5 @@
 import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   inject,
@@ -17,7 +18,6 @@ import { GdalCustomizeMenuComponent } from '@components/shared/gdal-customize-me
 import { GdalProductInfo, GdalService } from '@services/gdal/gdal.service';
 
 import { SceneFileGdalDropdownDatasetComponent } from './scene-file-gdal-dropdown-dataset/scene-file-gdal-dropdown-dataset.component';
-import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-scene-file-gdal-dropdown',
