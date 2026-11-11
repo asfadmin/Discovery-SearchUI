@@ -64,42 +64,48 @@
           [childrenAccessor]="childrenAccessor"
         >
           <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-            <mat-button-toggle
-              #toggle
-              class="dataset-button"
-              [value]="node.dataset.path"
-              [aria-label]="`${('SELECT' | translate)} ${node.dataset.name}`"
-              [matTooltip]="`${('SELECT' | translate)} ${node.dataset.name}`"
-            >
-              <div class="gdal-dataset">
-                <mat-pseudo-checkbox
-                  class="gdal-dataset-check"
-                  [state]="
-                    gdalConfigForm
-                      .selectedDatasets()
-                      .value()
-                      .includes(node.dataset.path)
-                      ? 'checked'
-                      : 'unchecked'
-                  "
-                />
-                <div class="gdal-dataset-info">
-                  <span class="gdal-dataset-name">{{ node.dataset.name }}</span>
-                  @if (node.dataset.type) {
-                    <span class="gdal-dataset-chip">{{
-                      node.dataset.type
+            <div class="dataset-toggle-container">
+              <mat-button-toggle
+                #toggle
+                class="dataset-button"
+                [value]="node.dataset.path"
+                [aria-label]="`${('SELECT' | translate)} ${node.dataset.name}`"
+                [matTooltip]="`${('SELECT' | translate)} ${node.dataset.name}`"
+              >
+                <div class="gdal-dataset">
+                  <mat-pseudo-checkbox
+                    class="gdal-dataset-check"
+                    [state]="
+                      gdalConfigForm
+                        .selectedDatasets()
+                        .value()
+                        .includes(node.dataset.path)
+                        ? 'checked'
+                        : 'unchecked'
+                    "
+                  />
+                  <div class="gdal-dataset-info">
+                    <span class="gdal-dataset-name">{{
+                      node.dataset.name
                     }}</span>
-                  }
-                  @if (node.dataset.unit) {
-                    <span class="gdal-dataset-chip">{{
-                      node.dataset.unit
+                    @if (node.dataset.type) {
+                      <span class="gdal-dataset-chip">{{
+                        node.dataset.type
+                      }}</span>
+                    }
+                    @if (node.dataset.unit) {
+                      <span class="gdal-dataset-chip">{{
+                        node.dataset.unit
+                      }}</span>
+                    }
+                    <span class="flex-break"></span>
+                    <span class="gdal-dataset-path">{{
+                      node.dataset.path
                     }}</span>
-                  }
-                  <span class="flex-break"></span>
-                  <span class="gdal-dataset-path">{{ node.dataset.path }}</span>
+                  </div>
                 </div>
-              </div>
-            </mat-button-toggle>
+              </mat-button-toggle>
+            </div>
           </mat-tree-node>
           <mat-tree-node
             *matTreeNodeDef="let node; when: hasChild"

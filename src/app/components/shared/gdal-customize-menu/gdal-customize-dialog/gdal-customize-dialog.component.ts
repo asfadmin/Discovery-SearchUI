@@ -334,13 +334,15 @@ machine urs.earthdata.nasa.gov
     !!node.children && node.children.length > 0;
 
   toAngularMaterialTree(datasets: GDALCategory): DatasetNode[] {
+    const children: DatasetNode[] = datasets.datasets.map((dataset) => {
+      return {
+        name: dataset.name,
+        dataset: dataset,
+      };
+    });
+
     if (Object.entries(datasets.categories).length == 0) {
-      return datasets.datasets.map((dataset) => {
-        return {
-          name: dataset.name,
-          dataset: dataset,
-        };
-      });
+      return children;
     }
 
     if (Object.entries(datasets.categories).length == 1) {
@@ -349,9 +351,13 @@ machine urs.earthdata.nasa.gov
       );
     }
 
-    return Object.entries(datasets.categories).map(([key, value]) => {
-      return { name: key, children: this.toAngularMaterialTree(value) };
-    });
+    children.unshift(
+      ...Object.entries(datasets.categories).map(([key, value]) => {
+        return { name: key, children: this.toAngularMaterialTree(value) };
+      }),
+    );
+
+    return children;
   }
 
   constructor() {

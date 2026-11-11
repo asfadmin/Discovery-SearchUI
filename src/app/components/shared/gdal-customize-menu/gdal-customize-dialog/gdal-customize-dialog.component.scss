@@ -166,6 +166,12 @@ h3 {
   );
 }
 
+.dataset-toggle-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .gdal-dataset-name {
   flex-shrink: 1;
   min-width: 0;
