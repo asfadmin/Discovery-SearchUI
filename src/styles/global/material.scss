@@ -32,25 +32,25 @@ $config: mat.m2-define-legacy-typography-config();
   }
 }
 
-// .mat-expansion-panel-header,
-// .mat-expansion-panel-header.mat-expanded {
-//   @extend .mat-header-base;
+.mat-expansion-panel-header,
+.mat-expansion-panel-header.mat-expanded {
+  @extend .mat-header-base;
 
-//   &:hover,
-//   &:visited,
-//   &:link,
-//   &:active,
-//   &:focus,
-//   &[aria-disabled='true'] {
-//     @extend .mat-header-base;
+  &:hover,
+  &:visited,
+  &:link,
+  &:active,
+  &:focus,
+  &[aria-disabled='true'] {
+    @extend .mat-header-base;
 
-//     @include themify_non_host($themes) {
-//       color: themed('dark-secondary-text');
-//       background-color: themed('primary-light');
-//       border-color: themed('primary');
-//     }
-//   }
-// }
+    @include themify_non_host($themes) {
+      color: themed('dark-secondary-text');
+      background-color: themed('primary-light');
+      border-color: themed('primary');
+    }
+  }
+}
 
 .mat-expansion-panel-header-title {
   font-size: mat.m2-font-size($config, subheading-2);
@@ -279,9 +279,8 @@ button,
 .mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay,
 .control-mat-button-toggle.mat-button-toggle-appearance-standard
   .mat-button-toggle-focus-overlay {
-  @include themify_non_host($themes) {
-    background-color: themed('dark-focused');
-  }
+  background-color: transparent !important;
+  opacity: 0 !important;
 }
 
 // Hide ripple effects on button toggles
