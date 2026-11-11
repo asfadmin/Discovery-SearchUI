@@ -1,7 +1,8 @@
-import { UpperCasePipe, AsyncPipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { Component, inject, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,9 +19,11 @@ import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
 
+import { BridgeSubmitDialogComponent } from './bridge-submit-dialog/bridge-submit-dialog.component';
+
 @Component({
   selector: 'app-scene-search-toolbar',
-  imports: [MatButton, AsyncPipe, UpperCasePipe, MatTooltip, TranslateModule],
+  imports: [MatButton, UpperCasePipe, MatTooltip, TranslateModule],
   templateUrl: './scene-search-toolbar.component.html',
   styleUrl: './scene-search-toolbar.component.scss',
 })
@@ -29,6 +32,7 @@ export class SceneSearchToolbarComponent {
   private store$ = inject<Store<AppState>>(Store);
   private datasetForProduct = inject(DatasetForProductService);
   public prop = inject(PropertyService);
+  private dialog = inject(MatDialog);
 
   public p = models.Props;
   public searchType = this.store$.selectSignal(searchStore.getSearchType);
@@ -269,6 +273,12 @@ export class SceneSearchToolbarComponent {
   }
 
   public openBridgeSubmitDialog() {
-    console.log(this.scene, this.dataset);
+    this.dialog.open(BridgeSubmitDialogComponent, {
+      autoFocus: 'first-tabbable',
+      maxWidth: '80em',
+      maxHeight: '95vh',
+      height: '600px',
+      width: '700px',
+    });
   }
 }
