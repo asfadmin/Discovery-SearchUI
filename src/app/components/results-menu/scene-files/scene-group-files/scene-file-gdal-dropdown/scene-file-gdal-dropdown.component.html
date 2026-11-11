@@ -20,14 +20,36 @@
       </span>
     </div>
 
-    @for (dataset of gdalDatasets(); track dataset) {
-      @if (!dataset.ancillary) {
-        <app-scene-file-gdal-dropdown-dataset
-          [gdalDataset]="dataset"
-          [gdalProduct]="gdalProduct()"
+    <ng-template #datasetTemplate let-category>
+      @for (
+        subcategory of category.categories | keyvalue;
+        track subcategory.key
+      ) {
+        <ng-container
+          *ngTemplateOutlet="
+            datasetTemplate;
+            context: { $implicit: subcategory.value }
+          "
         >
-        </app-scene-file-gdal-dropdown-dataset>
+        </ng-container>
       }
-    }
+
+      @for (dataset of category.datasets; track dataset.path) {
+        @if (!dataset.ancillary) {
+          <app-scene-file-gdal-dropdown-dataset
+            [gdalDataset]="dataset"
+            [gdalProduct]="gdalProduct()"
+          >
+          </app-scene-file-gdal-dropdown-dataset>
+        }
+      }
+    </ng-template>
+    <ng-container
+      *ngTemplateOutlet="
+        datasetTemplate;
+        context: { $implicit: gdalDatasets() }
+      "
+    >
+    </ng-container>
   </div>
 </div>

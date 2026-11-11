@@ -16,6 +16,94 @@
   z-index: 10;
 }
 
+.error {
+  @include themify($themes) {
+    color: themed('err');
+  }
+}
+
+.step-card.expanded {
+  padding: 0.1em 0.5em 1em;
+}
+
+.step-card-content {
+  padding: 0 1em;
+}
+
+.step-card-content.dataset-selector {
+  padding: 0;
+}
+
+.step-card {
+  padding: 0 0.5em;
+  margin: 0.5em 0;
+  border-radius: 15px;
+  box-shadow: 0 0 5px rgb(0 0 0 / 30%);
+}
+
+.header-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.5em;
+  margin: 0.5em;
+
+  .subheader-container {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.dataset-tree-node {
+  @include mat.expansion-overrides(
+    (
+      header-focus-state-layer-color: transparent,
+      header-hover-state-layer-color: transparent,
+      container-elevation-shadow: none,
+    )
+  );
+}
+
+.polarization-grid {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.polarization-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.polarization-element {
+  flex: 1;
+  width: 100%;
+  text-align: right;
+
+  @include themify($themes) {
+    @include mat.button-toggle-overrides(
+      (
+        height: 26px,
+        label-text-size: 16px,
+        divider-color: transparent,
+        selected-state-background-color: themed('dark-focused'),
+      )
+    );
+  }
+}
+
+.info {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
+}
+
+.error {
+  @include themify($themes) {
+    color: themed('err');
+  }
+}
+
 .gdal-export-wrapper {
   height: 100%;
   padding: 1em;
@@ -24,6 +112,12 @@
 
 h1 {
   text-align: center;
+}
+
+h2,
+h3 {
+  padding: 0;
+  margin: 0;
 }
 
 .subtitle {
@@ -45,6 +139,8 @@ h1 {
 .gdal-dataset {
   box-sizing: border-box;
   display: flex;
+  flex-direction: row;
+  gap: 15px;
   align-items: center;
   width: 100%;
   padding: 0.3em 1em;
@@ -68,6 +164,12 @@ h1 {
       selected-state-background-color: transparent,
     )
   );
+}
+
+.dataset-toggle-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .gdal-dataset-name {
@@ -129,6 +231,11 @@ h1 {
   }
 }
 
+.gdal-dataset-error {
+  padding: 0 0.5em;
+  margin: 0;
+}
+
 .flex-grow {
   flex-grow: 1;
   max-width: 100%;
@@ -138,6 +245,13 @@ h1 {
 .flex-break {
   flex-basis: 100%;
   height: 0;
+}
+
+.error-overflow {
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  text-wrap: nowrap;
 }
 
 .icon-row {
@@ -233,23 +347,6 @@ h1 {
 
 .short {
   width: 15ch;
-}
-
-.blur-overlay-container {
-  position: relative;
-}
-
-.blur-overlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background-color: color-mix(
-    in srgb,
-    var('--mat-dialog-container-color') 30%,
-    transparent
-  );
-  backdrop-filter: blur(1px);
 }
 
 .footer {

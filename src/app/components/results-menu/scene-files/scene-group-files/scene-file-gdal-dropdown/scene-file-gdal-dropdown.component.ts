@@ -1,4 +1,5 @@
 import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   inject,
@@ -28,6 +29,8 @@ import { SceneFileGdalDropdownDatasetComponent } from './scene-file-gdal-dropdow
     TranslateModule,
     SceneFileGdalDropdownDatasetComponent,
     DocsModalComponent,
+    KeyValuePipe,
+    NgTemplateOutlet,
   ],
   templateUrl: './scene-file-gdal-dropdown.component.html',
   styleUrl: './scene-file-gdal-dropdown.component.scss',
