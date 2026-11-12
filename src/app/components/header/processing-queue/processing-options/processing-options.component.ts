@@ -85,7 +85,7 @@ export class ProcessingOptionsComponent {
     const jobTypeCost = costs[jobType.id];
 
     if (
-      jobTypeCost.cost_parameters &&
+      jobTypeCost?.cost_parameters &&
       jobTypeCost.cost_parameters.includes(option.apiName)
     ) {
       return jobTypeCost.cost_table;

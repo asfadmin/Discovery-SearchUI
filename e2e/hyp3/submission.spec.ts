@@ -36,14 +36,18 @@ test(
 
     await expect(listSearchButton).toBeEnabled();
     await listSearchButton.click();
-
     await loggedInPage
       .locator('app-scenes-list button[mat-list-item]')
       .first()
       .click();
     await expect(loggedInPage).toHaveScreenshot();
 
-    await loggedInPage.locator('.mdc-icon-button').first().click();
+    await loggedInPage
+      .locator(
+        '.mdc-icon-button.mat-mdc-icon-button.mat-mdc-button-base.mat-mdc-list-item-meta',
+      )
+      .first()
+      .click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Add RTC GAMMA to On Demand' })
       .click();
