@@ -64,7 +64,25 @@
   );
 }
 
+.polarization-grid-vertical-container {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.polarization-grid-horizontal-container {
+  display: flex;
+  flex-direction: row;
+}
+
 .polarization-grid {
+  border-radius: 5px;
+
+  @include themify($themes) {
+    border-left: 1px solid themed('dark-secondary-text');
+    border-bottom: 1px solid themed('dark-secondary-text');
+  }
+
   display: flex;
   flex-direction: column;
   width: fit-content;
@@ -77,7 +95,7 @@
 
 .polarization-element {
   flex: 1;
-  width: 100%;
+  width: 100px;
   text-align: right;
 
   @include themify($themes) {
@@ -147,15 +165,42 @@ h3 {
   border-radius: 15px;
 }
 
-.gdal-dataset:hover {
+.hover:hover {
   @include themify($themes) {
     background-color: themed('dark-focused');
   }
 }
 
-.dataset-button {
-  position: relative;
+.polarization-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25em;
+  border-radius: 5px;
 
+  gap: 0.25em;
+}
+
+.polarization-grid-label {
+  text-align: center;
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
+}
+
+.polarization-grid-label.y {
+  writing-mode: vertical-rl; /* Reads top-to-bottom */
+  text-orientation: sideways;
+  transform: rotate(180deg);
+}
+
+.polarization-grid-label.x {
+  padding: 0;
+  width: 100%;
+}
+
+.dataset-button {
   @include mat.button-toggle-overrides(
     (
       height: 26px,
@@ -164,6 +209,10 @@ h3 {
       selected-state-background-color: transparent,
     )
   );
+}
+
+.dataset-polarization-selector-container {
+  padding: 0.25em 1em;
 }
 
 .dataset-toggle-container {
@@ -294,6 +343,17 @@ h3 {
   }
 
   padding-bottom: 0.5em;
+}
+
+.polarization-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+
+.polarization-graphic {
+  height: 8em;
 }
 
 .options-list {

@@ -30,27 +30,6 @@
       ></mat-icon>
     </div>
     <div class="step-card-content dataset-selector">
-      <!-- <div class="polarization-grid">
-        @for (
-          row of [
-            ['HHHH', 'HHHV', 'HHVH', 'HHVV'],
-            ['', 'HVHV', 'HVVH', 'HVVV'],
-            ['', '', 'VHVH', 'VHVV'],
-            ['', '', '', 'VVVV'],
-          ];
-          track $index
-        ) {
-          <div class="polarization-row">
-            @for (polarization of row; track $index) {
-              <span class="polarization-element">
-                <mat-button-toggle>
-                  {{ polarization }}
-                </mat-button-toggle>
-              </span>
-            }
-          </div>
-        }
-      </div> -->
       <mat-button-toggle-group
         [formField]="gdalConfigForm.selectedDatasets"
         vertical
@@ -65,46 +44,165 @@
         >
           <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
             <div class="dataset-toggle-container">
-              <mat-button-toggle
-                #toggle
-                class="dataset-button"
-                [value]="node.dataset.path"
-                [aria-label]="`${('SELECT' | translate)} ${node.dataset.name}`"
-                [matTooltip]="`${('SELECT' | translate)} ${node.dataset.name}`"
-              >
-                <div class="gdal-dataset">
-                  <mat-pseudo-checkbox
-                    class="gdal-dataset-check"
-                    [state]="
-                      gdalConfigForm
-                        .selectedDatasets()
-                        .value()
-                        .includes(node.dataset.path)
-                        ? 'checked'
-                        : 'unchecked'
-                    "
-                  />
-                  <div class="gdal-dataset-info">
-                    <span class="gdal-dataset-name">{{
-                      node.dataset.name
-                    }}</span>
-                    @if (node.dataset.type) {
-                      <span class="gdal-dataset-chip">{{
-                        node.dataset.type
-                      }}</span>
-                    }
-                    @if (node.dataset.unit) {
-                      <span class="gdal-dataset-chip">{{
-                        node.dataset.unit
-                      }}</span>
-                    }
-                    <span class="flex-break"></span>
-                    <span class="gdal-dataset-path">{{
-                      node.dataset.path
-                    }}</span>
+              @if (
+                node.categoryType == categoryTypes.CovarianceGrid ||
+                node.categoryType == categoryTypes.PolarizationGrid
+              ) {
+                <div class="polarization-container">
+                  <div class="polarization-card">
+                    <div class="gdal-dataset">
+                      <div class="gdal-dataset-info">
+                        <span class="gdal-dataset-name">{{
+                          node.dataset.name
+                        }}</span>
+                        @if (node.dataset.type) {
+                          <span class="gdal-dataset-chip">{{
+                            node.dataset.type
+                          }}</span>
+                        }
+                        @if (node.dataset.unit) {
+                          <span class="gdal-dataset-chip">{{
+                            node.dataset.unit
+                          }}</span>
+                        }
+                        <span class="flex-break"></span>
+                        <span class="gdal-dataset-path">{{
+                          node.dataset.path
+                        }}</span>
+                      </div>
+                    </div>
+                    <div class="dataset-polarization-selector-container">
+                      <div class="polarization-grid-vertical-container">
+                        <div class="polarization-grid-horizontal-container">
+                          <div class="polarization-grid-label y">
+                            {{
+                              (node.categoryType != categoryTypes.CovarianceGrid
+                                ? 'TRANSMIT'
+                                : 'SLC_X'
+                              ) | translate
+                            }}
+                          </div>
+                          <div class="polarization-grid">
+                            @for (
+                              row of categoryTypeToGrid(node.categoryType);
+                              track $index
+                            ) {
+                              <div class="polarization-row">
+                                @for (polarization of row; track $index) {
+                                  @if (polarization === '') {
+                                    <span class="polarization-element spacer">
+                                    </span>
+                                  } @else {
+                                    <span
+                                      class="polarization-element"
+                                      [class.enabled]="
+                                        polarization in node.polarizations
+                                      "
+                                    >
+                                      <mat-button-toggle
+                                        class="dataset-button"
+                                        [disabled]="
+                                          !(polarization in node.polarizations)
+                                        "
+                                        [value]="
+                                          node.polarizations[polarization]?.path
+                                        "
+                                      >
+                                        <span class="polarization-button hover">
+                                          <mat-pseudo-checkbox
+                                            class="gdal-dataset-check"
+                                            [state]="
+                                              gdalConfigForm
+                                                .selectedDatasets()
+                                                .value()
+                                                .includes(
+                                                  node.polarizations[
+                                                    polarization
+                                                  ]?.path
+                                                )
+                                                ? 'checked'
+                                                : 'unchecked'
+                                            "
+                                          />
+                                          {{ polarization }}
+                                        </span>
+                                      </mat-button-toggle>
+                                    </span>
+                                  }
+                                }
+                              </div>
+                            }
+                          </div>
+                        </div>
+                        <div class="polarization-grid-label x">
+                          {{
+                            (node.categoryType != categoryTypes.CovarianceGrid
+                              ? 'RECEIVE'
+                              : 'SLC_Y'
+                            ) | translate
+                          }}
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                  <div class="flex-grow"></div>
+                  @if (node.categoryType === categoryTypes.PolarizationGrid) {
+                    @for (
+                      polarization of getActivePolarizations(
+                        node.polarizations
+                      );
+                      track polarization
+                    ) {
+                      <app-polarization-graphic
+                        [polarizations]="[polarization]"
+                        class="polarization-graphic"
+                      >
+                      </app-polarization-graphic>
+                    }
+                  }
                 </div>
-              </mat-button-toggle>
+              } @else {
+                <mat-button-toggle
+                  #toggle
+                  class="dataset-button"
+                  [value]="node.dataset.path"
+                  [aria-label]="`${('SELECT' | translate)} ${node.dataset.name}`"
+                  [matTooltip]="`${('SELECT' | translate)} ${node.dataset.name}`"
+                >
+                  <div class="gdal-dataset hover">
+                    <mat-pseudo-checkbox
+                      class="gdal-dataset-check"
+                      [state]="
+                        gdalConfigForm
+                          .selectedDatasets()
+                          .value()
+                          .includes(node.dataset.path)
+                          ? 'checked'
+                          : 'unchecked'
+                      "
+                    />
+                    <div class="gdal-dataset-info">
+                      <span class="gdal-dataset-name">{{
+                        node.dataset.name
+                      }}</span>
+                      @if (node.dataset.type) {
+                        <span class="gdal-dataset-chip">{{
+                          node.dataset.type
+                        }}</span>
+                      }
+                      @if (node.dataset.unit) {
+                        <span class="gdal-dataset-chip">{{
+                          node.dataset.unit
+                        }}</span>
+                      }
+                      <span class="flex-break"></span>
+                      <span class="gdal-dataset-path">{{
+                        node.dataset.path
+                      }}</span>
+                    </div>
+                  </div>
+                </mat-button-toggle>
+              }
             </div>
           </mat-tree-node>
           <mat-tree-node
@@ -122,7 +220,7 @@
                 {{ tree.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
               </mat-icon>
             </button>
-            {{ node.name }}
+            {{ node.name | translate }}
           </mat-tree-node>
         </mat-tree>
       </mat-button-toggle-group>

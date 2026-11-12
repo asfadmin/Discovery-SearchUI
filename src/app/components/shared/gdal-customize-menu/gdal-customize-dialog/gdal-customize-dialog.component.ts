@@ -38,7 +38,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CodeBlockComponent } from '@components/shared/code-block/code-block.component';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
-import { GDALCategory, GDALDataset } from '@models';
+import { CategoryType, GDALCategory, GDALDataset } from '@models';
 import {
   GdalFormats,
   GdalOptions,
@@ -55,6 +55,7 @@ import {
   GdalCustomizeMenuComponent,
   GdalCustomizeDialogData,
 } from '../gdal-customize-menu.component';
+import { PolarizationGraphicComponent } from '@components/shared/polarization-graphic/polarization-graphic.component';
 
 interface GdalConfigModel {
   selectedDatasets: string[];
@@ -81,6 +82,8 @@ interface DatasetNode {
   name: string;
   children?: DatasetNode[];
   dataset?: GDALDataset;
+  polarizations?: Record<string, GDALDataset>;
+  categoryType?: CategoryType;
 }
 
 @Component({
@@ -109,6 +112,7 @@ interface DatasetNode {
     DocsModalComponent,
     CodeBlockComponent,
     CopyToClipboardComponent,
+    PolarizationGraphicComponent,
   ],
   templateUrl: './gdal-customize-dialog.component.html',
   styleUrl: './gdal-customize-dialog.component.scss',
@@ -116,6 +120,7 @@ interface DatasetNode {
 export class GdalCustomizeDialogComponent {
   readonly dialogRef = inject(MatDialogRef<GdalCustomizeMenuComponent>);
   readonly data = inject<GdalCustomizeDialogData>(MAT_DIALOG_DATA);
+  readonly categoryTypes = CategoryType;
   datasets = this.toAngularMaterialTree(this.data.datasets);
   gdalService = inject(GdalService);
   outputFormats = GDAL_FORMATS;
@@ -334,30 +339,83 @@ machine urs.earthdata.nasa.gov
     !!node.children && node.children.length > 0;
 
   toAngularMaterialTree(datasets: GDALCategory): DatasetNode[] {
-    const children: DatasetNode[] = datasets.datasets.map((dataset) => {
-      return {
-        name: dataset.name,
-        dataset: dataset,
-      };
-    });
-
-    if (Object.entries(datasets.categories).length == 0) {
-      return children;
-    }
-
     if (Object.entries(datasets.categories).length == 1) {
       return this.toAngularMaterialTree(
         Object.entries(datasets.categories)[0][1],
       );
     }
 
-    children.unshift(
-      ...Object.entries(datasets.categories).map(([key, value]) => {
-        return { name: key, children: this.toAngularMaterialTree(value) };
-      }),
-    );
+    const children: DatasetNode[] = [];
 
-    return children;
+    if (
+      (datasets.categoryType === CategoryType.CovarianceGrid ||
+        datasets.categoryType === CategoryType.PolarizationGrid) &&
+      !Array.isArray(datasets.datasets)
+    ) {
+      if (Object.entries(datasets.datasets).length === 1) {
+        children.push({
+          name: datasets.name,
+          dataset: Object.entries(datasets.datasets)[0][1],
+        });
+      } else {
+        children.push({
+          name: datasets.name,
+          polarizations: datasets.datasets,
+          categoryType: datasets.categoryType,
+          dataset: datasets.categoryInfo,
+        });
+      }
+    } else if (!Array.isArray(datasets.datasets)) {
+      return [];
+    } else {
+      if (Object.entries(datasets.categories).length !== 0) {
+        children.push(
+          ...Object.entries(datasets.categories).map(([key, value]) => {
+            return { name: key, children: this.toAngularMaterialTree(value) };
+          }),
+        );
+      }
+
+      children.push(
+        ...datasets.datasets.map((dataset) => {
+          return {
+            name: dataset.name,
+            dataset: dataset,
+          };
+        }),
+      );
+    }
+
+    return children.map((node) => {
+      if (node.children && Object.entries(node.children).length === 1) {
+        return Object.entries(node.children)[0][1];
+      }
+      return node;
+    });
+  }
+
+  categoryTypeToGrid(type: CategoryType): string[][] {
+    if (type == CategoryType.CovarianceGrid) {
+      return [
+        ['HHHH', 'HHHV', 'HHVH', 'HHVV'],
+        ['', 'HVHV', 'HVVH', 'HVVV'],
+        ['', '', 'VHVH', 'VHVV'],
+        ['', '', '', 'VVVV'],
+      ];
+    }
+
+    return [
+      ['HH', 'HV'],
+      ['VH', 'VV'],
+    ];
+  }
+
+  getActivePolarizations(polarizations: Record<string, GDALDataset>): string[] {
+    return Object.entries(polarizations)
+      .filter(([_, dataset]) =>
+        this.gdalConfigForm.selectedDatasets().value().includes(dataset.path),
+      )
+      .map(([polarization, _]) => polarization);
   }
 
   constructor() {
