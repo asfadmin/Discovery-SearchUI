@@ -786,6 +786,14 @@ export class GDALCategory {
     }
   }
 
+  public getDatasets(): GDALDataset[] {
+    if (Array.isArray(this.datasets)) {
+      return this.datasets;
+    } else {
+      return Object.entries(this.datasets).map(([_, dataset]) => dataset);
+    }
+  }
+
   public pushEmpty(key: string) {
     this.categories[key] = new GDALCategory(key);
   }

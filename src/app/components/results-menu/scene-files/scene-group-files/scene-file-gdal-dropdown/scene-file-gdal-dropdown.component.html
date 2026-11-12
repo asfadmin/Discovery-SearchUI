@@ -34,7 +34,7 @@
         </ng-container>
       }
 
-      @for (dataset of category.datasets; track dataset.path) {
+      @for (dataset of category.getDatasets(); track dataset.path) {
         @if (!dataset.ancillary) {
           <app-scene-file-gdal-dropdown-dataset
             [gdalDataset]="dataset"

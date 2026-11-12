@@ -420,7 +420,10 @@ machine urs.earthdata.nasa.gov
 
   constructor() {
     effect(() => {
-      if (!this.gdalConfigForm.output.filename().dirty()) {
+      if (
+        !this.gdalConfigForm.output.filename().dirty() &&
+        this.datasetSelected()
+      ) {
         this.gdalConfigForm.output.filename().value.set(
           this.gdalService.resolveOutputFilename({
             product: this.data.product,
