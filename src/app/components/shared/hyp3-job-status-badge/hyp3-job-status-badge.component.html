@@ -1,21 +1,25 @@
 @if (isExpired(job())) {
   <mat-chip
-    class="clickable"
+    class="clickable chip"
     [matMenuTriggerFor]="resubmitJobMenu"
     color="primary"
     >{{ 'EXPIRED' | translate }}...
   </mat-chip>
 } @else if (isFailed(job())) {
   <mat-chip
-    class="clickable"
+    class="clickable chip"
     [matMenuTriggerFor]="resubmitJobMenu"
     color="primary"
     >{{ 'FAILED' | translate }}...
   </mat-chip>
 } @else if (isPending(job())) {
-  <mat-chip color="secondary">{{ 'PENDING' | translate }}</mat-chip>
+  <mat-chip color="secondary" class="chip">{{
+    'PENDING' | translate
+  }}</mat-chip>
 } @else if (isRunning(job())) {
-  <mat-chip color="secondary">{{ 'RUNNING' | translate }}</mat-chip>
+  <mat-chip color="secondary" class="chip">{{
+    'RUNNING' | translate
+  }}</mat-chip>
 }
 
 <mat-menu #resubmitJobMenu="matMenu">
