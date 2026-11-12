@@ -48,6 +48,14 @@ import { PairSelectionService } from './pair-selection.service';
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
 
+interface DisplacementLayerPoint {
+  seriesNumber: number;
+  color: string;
+  frames: models.TimeseriesSubframe[];
+  base_wkt: string;
+  uuid: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -78,6 +86,7 @@ export class MapService {
 
   private polygonLayer: VectorLayer<VectorSource>;
   public displacmentLayer: VectorLayer<VectorSource>;
+  private displacementPoints: DisplacementLayerPoint[] = [];
   public frameSelectionOverlay = new VectorImageLayer<VectorSource>();
   public selectedOnDemandFrameOverlays = new VectorLayer<VectorSource>({
     style: new Style({
@@ -729,6 +738,9 @@ export class MapService {
         .getLayers()
         .setAt(0, this.mapView.layer);
       this.frameSelectionOverlay.getSource()?.refresh();
+      if (this.displacmentLayer) {
+        this.setDisplacementLayer(this.displacementPoints);
+      }
     }
 
     const layers = this.map.getLayers().getArray();
@@ -946,6 +958,7 @@ export class MapService {
 
         const overview_source = new XYZ({
           url: `${base_url}/{z}/{x}/{y}.png`,
+          crossOrigin: 'anonymous',
           wrapX: models.mapOptions.wrapX,
           tileSize: [256, 256],
           maxZoom: 12,
@@ -995,15 +1008,8 @@ export class MapService {
     this.displacementOverview$.next(type);
   }
 
-  public setDisplacementLayer(
-    points: {
-      seriesNumber: number;
-      color: string;
-      frames: models.TimeseriesSubframe[];
-      base_wkt: string;
-      uuid: string;
-    }[],
-  ) {
+  public setDisplacementLayer(points: DisplacementLayerPoint[]) {
+    this.displacementPoints = points;
     if (this.displacmentLayer) {
       this.map.removeLayer(this.displacmentLayer);
       this.displacmentLayer = null;

@@ -87,7 +87,7 @@ export class NetcdfService {
             error: errorDetails,
           }),
         );
-        return of();
+        return of(null);
       }
     } else {
       return this.http
