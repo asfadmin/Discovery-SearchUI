@@ -1,3 +1,18 @@
+@use '@angular/material' as mat;
+@use 'asf-theme-variables' as *;
+
 .clickable {
   cursor: pointer;
+}
+
+.chip {
+  @include themify($themes) {
+    @include mat.chips-overrides(
+      (
+        hover-state-layer-color: themed('light-secondary-text'),
+        focus-state-layer-color: themed('light-secondary-text'),
+        selected-hover-state-layer-color: themed('light-secondary-text'),
+      )
+    );
+  }
 }
