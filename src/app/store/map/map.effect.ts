@@ -188,6 +188,7 @@ export class MapEffects {
               selectedProduct,
             );
           } else {
+            this.mapService.clearBrowseOverlays();
             this.store$.dispatch(new ClearBrowseOverlays());
           }
         }),
