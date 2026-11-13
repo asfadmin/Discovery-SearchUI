@@ -1,0 +1,81 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+
+title: NISAR Data User Guide
+doi: 10.5281/zenodo.20075813
+contact:
+  - name: NASA Earthdata Forum
+    website: https://forum.earthdata.nasa.gov
+  - name: ASF User Services
+    email: uso@asf.alaska.edu
+type: software
+license: CC0-1.0
+url: https://search.asf.alaska.edu
+repository-code: https://github.com/asfadmin/Discovery-SearchUI
+keywords:
+  - NISAR
+  - SENTINEL-1
+  - ALOS
+  - ALOS-PALSAR
+  - OPERA
+  - OPERA Displacement
+  - ARIA GUNW
+  - SMAP
+  - UAVSAR
+  - Vertex
+  - Search
+  - NASA-ISRO Synthetic Aperture Radar
+  - Synthetic Aperture Radar
+  - SAR
+  - NASA
+  - Alaska Satellite Facility
+  - ASF
+  - Jet Propulsion Laboratory
+  - JPL
+  - data
+  - remote sensing
+  - earth science
+  - land surface
+  - geomorphic landforms
+  - geomorphic processes
+  - solid earth
+  - tectonics
+  - agriculture
+  - forest science
+  - cryosphere
+  - glaciers
+  - ice sheets
+  - frozen ground
+authors:
+  - given-names: Lily
+    family-names: Larsen
+    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
+    orcid: https://orcid.org/0009-0004-8017-3522
+    alias: lllarsen
+  - given-names: William
+    family-names: Horn
+    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
+    orcid: https://orcid.org/0009-0003-8206-5982
+    alias: williamh890
+  - given-names: Kim
+    family-names: Fairbanks
+    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
+    alias: SpicyGarlicAlbacoreRoll
+  - given-names: Andrew
+    family-names: Anderson
+    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
+    alias: artisticlight
+  - given-names: Tyler
+    family-names: Chase
+    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
+    alias: tylercchase
+  - given-names: Yoreley
+    family-names: Villafañez
+    alias: yoreley777
+  - given-names: Gregory
+    family-names: Short
+    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
+    alias: glshort
+
