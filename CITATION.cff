@@ -12,8 +12,8 @@ contact:
     email: uso@asf.alaska.edu
 type: software
 license: CC0-1.0
-url: https://nisar-docs.asf.alaska.edu/
-repository-code: https://github.com/ua-asf/nisar-docs
+url: https://search.asf.alaska.edu
+repository-code: https://github.com/asfadmin/Discovery-SearchUI
 keywords:
   - NISAR
   - SENTINEL-1
