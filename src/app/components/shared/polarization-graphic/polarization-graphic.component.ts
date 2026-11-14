@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-polarization-graphic',
@@ -7,11 +7,5 @@ import { Component, computed, input } from '@angular/core';
   styleUrl: './polarization-graphic.component.scss',
 })
 export class PolarizationGraphicComponent {
-  polarizations = input<string[]>();
-  transmit_polarizations = computed(() =>
-    this.polarizations().map((polarization) => polarization[1]),
-  );
-  receive_polarizations = computed(() =>
-    this.polarizations().map((polarization) => polarization[0]),
-  );
+  polarization = input<string>();
 }
