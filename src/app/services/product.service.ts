@@ -782,6 +782,7 @@ export class ProductService {
 
   private alosSubproductsFromScene(product: models.CMRProduct) {
     if (!product.metadata.collectionName) {
+      product.bytes /= 1000000;
       return [];
     }
     const products = [];
@@ -792,7 +793,6 @@ export class ProductService {
     if (product.metadata.fileSizes instanceof Object) {
       product.bytes = product.metadata.fileSizes[fileID].bytes;
     }
-    product.bytes = product.bytes * 0;
     product.browses = product.browses.filter((url) => !url.includes('low-res'));
 
     const s3UrlsByProductID = product.metadata.s3Urls.reduce((prev, curr) => {
