@@ -19,7 +19,10 @@ import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
 
-import { BridgeSubmitDialogComponent } from './bridge-submit-dialog/bridge-submit-dialog.component';
+import {
+  BridgeSubmitDialogComponent,
+  BridgeSubmitDialogData,
+} from './bridge-submit-dialog/bridge-submit-dialog.component';
 
 @Component({
   selector: 'app-scene-search-toolbar',
@@ -273,7 +276,23 @@ export class SceneSearchToolbarComponent {
   }
 
   public openBridgeSubmitDialog() {
+    if (!this.isGCOVProduct()) {
+      console.log('Skipping because not gcov');
+      return;
+    }
+
+    const scene = this.scene();
+    const data: BridgeSubmitDialogData = {
+      relative_orbit: scene.metadata.path, // NISAR relative orbit number. minimum: 1, maximum: 173
+      orbit_direction:
+        scene.metadata.flightDirection === models.FlightDirection.ASCENDING
+          ? 'A'
+          : 'B', // A = Ascending, D = Descending
+      frame_number: scene.metadata.frame, // NISAR track frame number containing scene. minimum: 1, maximum: 176
+    };
+
     this.dialog.open(BridgeSubmitDialogComponent, {
+      data,
       autoFocus: 'first-tabbable',
       maxWidth: '80em',
       maxHeight: '95vh',

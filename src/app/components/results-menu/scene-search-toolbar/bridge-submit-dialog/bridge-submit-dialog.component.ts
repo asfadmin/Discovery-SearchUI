@@ -9,7 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -21,6 +25,40 @@ interface BridgeSubmitModel {
   startDate: Date | null;
   endDate: Date | null;
   cropThreshold: boolean;
+}
+
+// Parameters for running NISAR_CV jobs
+interface BridgeJobType {
+  // Start date of CV calculation in YYYY-MM-DD format. (min: nisar launch day, max: today)
+  starte_date: string;
+  // End date of CV calculation in YYYY-MM-DD format. (min: nisar launch day, max: today)
+  end_date: string;
+  // NISAR relative orbit number. minimum: 1, maximum: 173
+  relative_orbit: number;
+  // A = Ascending, D = Descending
+  orbit_direction: 'A' | 'B';
+  // NISAR track frame number containing scene. minimum: 1, maximum: 176
+  frame_number: number;
+  // Polarization of input granules to use.
+  pol: 'HHHH';
+  // Geographic subset of the granules to use, in the format of a WKT string.
+  subset: string | null;
+  // Choose whether to generate a crop area classification map. If False, only a coefficient of variation file is created.
+  crop_area_boolean: boolean;
+  // Coefficient of variation threshold to use for crop area classification. min: 0, 0.6
+  cv_threshold: number;
+  // Backscatter threshold, in decibels, for watermask generation. Pixels with backscatter below this threshold in more than --water-fraction % of images are classified as water. default: -16.5
+  water_threshold_db: number;
+  // Fraction of images in which the backscatter of a pixel is below --water-threshold-db in order for the pixel to be classified as water. min: 0, default: 0.75
+  water_fraction: number;
+}
+export interface BridgeSubmitDialogData {
+  // NISAR relative orbit number. minimum: 1, maximum: 173
+  relative_orbit: number;
+  // A = Ascending, D = Descending
+  orbit_direction: 'A' | 'B';
+  // NISAR track frame number containing scene. minimum: 1, maximum: 176
+  frame_number: number;
 }
 
 export type BridgeSubmitResult = BridgeSubmitModel;
@@ -40,19 +78,37 @@ export type BridgeSubmitResult = BridgeSubmitModel;
     MatIconModule,
     MatInputModule,
   ],
+  styleUrl: './bridge-submit-dialog.component.scss',
   template: `
     <div class="header">
-      <h2 mat-dialog-title>NISAR CV</h2>
-      <button mat-icon-button type="button" mat-dialog-close aria-label="Close">
-        <mat-icon>close</mat-icon>
-      </button>
+      <div class="header-title">
+        <h2 mat-dialog-title>NISAR Bridge</h2>
+
+        <button
+          mat-icon-button
+          type="button"
+          mat-dialog-close
+          aria-label="Close"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="application-selector">
+        <div class="enabled clickable">Cropland Coefficent of Variation</div>
+        <div class="disabled">Custom Soil Moisture</div>
+        <div class="disabled">Forest Disturbance</div>
+      </div>
     </div>
 
     <mat-dialog-content>
-      <mat-checkbox [formField]="bridgeForm.useSubset"
-        >Subset using Area of Interest</mat-checkbox
-      >
+      <div class="nisar-frame-info">
+        <div>Frame: {{ data.frame_number }}</div>
+        <div>Relative Orbit: {{ data.relative_orbit }}</div>
+        <div>Orbit Direction: {{ data.orbit_direction }}</div>
+      </div>
 
+      <h3>Subset Options</h3>
       <app-aoi-options [showHeader]="false" />
 
       <div class="date-row">
@@ -85,6 +141,7 @@ export type BridgeSubmitResult = BridgeSubmitModel;
             <mat-datepicker-toggle matIconSuffix [for]="endPicker" />
             <mat-datepicker #endPicker />
           </mat-form-field>
+
           @if (bridgeForm.endDate().touched()) {
             @for (error of bridgeForm.endDate().errors(); track error.kind) {
               <p class="field-error">{{ error.message }}</p>
@@ -92,6 +149,7 @@ export type BridgeSubmitResult = BridgeSubmitModel;
           }
         </div>
       </div>
+
       @if (bridgeForm.endDate().touched()) {
         @for (error of bridgeForm.endDate().errors(); track error.kind) {
           <p class="field-error">{{ error.message }}</p>
@@ -115,50 +173,13 @@ export type BridgeSubmitResult = BridgeSubmitModel;
       </button>
     </footer>
   `,
-  styles: `
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    mat-dialog-content {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .field-error {
-      color: var(--mat-sys-error);
-      margin: 0;
-      font-size: 0.75rem;
-    }
-
-    footer[mat-dialog-actions] {
-      border-top: 1px solid var(--mat-sys-outline-variant);
-      padding: 1rem 1.5rem;
-    }
-
-    .date-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .date-field {
-      flex: 1 1 200px;
-      min-width: 0;
-
-      mat-form-field {
-        width: 100%;
-      }
-    }
-  `,
 })
 export class BridgeSubmitDialogComponent {
   private readonly dialogRef = inject(
     MatDialogRef<BridgeSubmitDialogComponent, BridgeSubmitResult>,
   );
+
+  data = inject<BridgeSubmitDialogData>(MAT_DIALOG_DATA);
 
   private readonly model = signal<BridgeSubmitModel>({
     useSubset: false,
@@ -187,6 +208,22 @@ export class BridgeSubmitDialogComponent {
     if (this.bridgeForm().invalid()) {
       return;
     }
+
+    const job: BridgeJobType = {
+      starte_date: '', // Start date of CV calculation in YYYY-MM-DD format. (min: nisar launch day, max: today)
+      end_date: '', // End date of CV calculation in YYYY-MM-DD format. (min: nisar launch day, max: today)
+      relative_orbit: 42, // NISAR relative orbit number. minimum: 1, maximum: 173
+      orbit_direction: 'A', // A = Ascending, D = Descending
+      frame_number: 42, // NISAR track frame number containing scene. minimum: 1, maximum: 176
+      pol: 'HHHH', // Polarization of input granules to use.
+      subset: null, // Geographic subset of the granules to use, in the format of a WKT string.
+      crop_area_boolean: true, // Choose whether to generate a crop area classification map. If False, only a coefficient of variation file is created.
+      cv_threshold: 0.4, // Coefficient of variation threshold to use for crop area classification. min: 0, 0.6
+      water_threshold_db: -16.5, // Backscatter threshold, in decibels, for watermask generation. Pixels with backscatter below this threshold in more than --water-fraction % of images are classified as water. default: -16.5
+      water_fraction: 0.75, // Fraction of images in which the backscatter of a pixel is below --water-threshold-db in order for the pixel to be classified as water. min: 0, default: 0.75
+    };
+
+    console.log(job);
     this.dialogRef.close(this.bridgeForm().value());
   }
 }

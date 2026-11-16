@@ -1,0 +1,82 @@
+@use 'asf-theme-variables' as *;
+
+.nisar-frame-info {
+  display: flex;
+  flex-direction: row;
+
+  div {
+    padding: 0.5em 1em;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-title {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.application-selector {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 3em;
+
+  div {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+  }
+  .enabled {
+    @include themify($themes) {
+      background-color: rgb(themed('primary-light'), 0.2);;
+    }
+  }
+
+  .disabled {
+    @include themify($themes) {
+      background-color: rgb(themed('primary-light'), 0.9);;
+    }
+  }
+}
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field-error {
+  color: var(--mat-sys-error);
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+footer[mat-dialog-actions] {
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  padding: 1rem 1.5rem;
+}
+
+.date-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.date-field {
+  flex: 1 1 200px;
+  min-width: 0;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
