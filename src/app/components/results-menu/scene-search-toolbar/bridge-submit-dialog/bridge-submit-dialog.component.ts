@@ -1,10 +1,19 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   signal,
 } from '@angular/core';
-import { form, FormField, required, validate } from '@angular/forms/signals';
+import { toSignal } from '@angular/core/rxjs-interop';
+import {
+  form,
+  FormField,
+  required,
+  validate,
+  submit,
+} from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -17,26 +26,27 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { firstValueFrom } from 'rxjs';
 
 import { AoiOptionsComponent } from '@components/shared/aoi-options/aoi-options.component';
+import * as models from '@models';
+import { MapService } from '@services';
 
 interface BridgeSubmitModel {
-  useSubset: boolean;
   startDate: Date | null;
   endDate: Date | null;
-  cropThreshold: boolean;
 }
 
 // Parameters for running NISAR_CV jobs
 interface BridgeJobType {
   // Start date of CV calculation in YYYY-MM-DD format. (min: nisar launch day, max: today)
-  starte_date: string;
+  start_date: string;
   // End date of CV calculation in YYYY-MM-DD format. (min: nisar launch day, max: today)
   end_date: string;
   // NISAR relative orbit number. minimum: 1, maximum: 173
   relative_orbit: number;
   // A = Ascending, D = Descending
-  orbit_direction: 'A' | 'B';
+  orbit_direction: 'A' | 'D';
   // NISAR track frame number containing scene. minimum: 1, maximum: 176
   frame_number: number;
   // Polarization of input granules to use.
@@ -56,12 +66,12 @@ export interface BridgeSubmitDialogData {
   // NISAR relative orbit number. minimum: 1, maximum: 173
   relative_orbit: number;
   // A = Ascending, D = Descending
-  orbit_direction: 'A' | 'B';
+  orbit_direction: 'A' | 'D';
   // NISAR track frame number containing scene. minimum: 1, maximum: 176
   frame_number: number;
 }
 
-export type BridgeSubmitResult = BridgeSubmitModel;
+export type BridgeSubmitResult = any; // TODO: a proper response interface
 
 @Component({
   selector: 'app-bridge-submit-dialog',
@@ -108,57 +118,48 @@ export type BridgeSubmitResult = BridgeSubmitModel;
         <div>Orbit Direction: {{ data.orbit_direction }}</div>
       </div>
 
-      <h3>Subset Options</h3>
-      <app-aoi-options [showHeader]="false" />
-
       <div class="date-row">
-        <div class="date-field">
-          <mat-form-field appearance="outline">
-            <mat-label>Start date</mat-label>
+        <mat-form-field>
+          <mat-label>Acquisition dates</mat-label>
+
+          <mat-date-range-input
+            [rangePicker]="picker"
+            [min]="minDate"
+            [max]="today()"
+          >
             <input
-              matInput
-              [matDatepicker]="startPicker"
+              matStartDate
+              placeholder="Start"
               [formField]="bridgeForm.startDate"
             />
-            <mat-datepicker-toggle matIconSuffix [for]="startPicker" />
-            <mat-datepicker #startPicker />
-          </mat-form-field>
-          @if (bridgeForm.startDate().touched()) {
-            @for (error of bridgeForm.startDate().errors(); track error.kind) {
-              <p class="field-error">{{ error.message }}</p>
-            }
-          }
-        </div>
-
-        <div class="date-field">
-          <mat-form-field appearance="outline">
-            <mat-label>End date</mat-label>
             <input
-              matInput
-              [matDatepicker]="endPicker"
+              matEndDate
+              placeholder="End"
               [formField]="bridgeForm.endDate"
             />
-            <mat-datepicker-toggle matIconSuffix [for]="endPicker" />
-            <mat-datepicker #endPicker />
-          </mat-form-field>
+          </mat-date-range-input>
 
-          @if (bridgeForm.endDate().touched()) {
-            @for (error of bridgeForm.endDate().errors(); track error.kind) {
-              <p class="field-error">{{ error.message }}</p>
+          <mat-datepicker-toggle matIconSuffix [for]="picker" />
+          <mat-date-range-picker #picker />
+        </mat-form-field>
+
+        @for (
+          field of [bridgeForm.startDate, bridgeForm.endDate];
+          track $index
+        ) {
+          @if (field().touched() && field().invalid()) {
+            @for (e of field().errors(); track e.kind) {
+              <p class="error">{{ e.message }}</p>
             }
           }
-        </div>
+        }
       </div>
 
-      @if (bridgeForm.endDate().touched()) {
-        @for (error of bridgeForm.endDate().errors(); track error.kind) {
-          <p class="field-error">{{ error.message }}</p>
-        }
+      <h3>Subset Options</h3>
+      <app-aoi-options [showHeader]="false" />
+      @for (e of bridgeForm().errors(); track e.kind) {
+        <p class="error">{{ e.message }}</p>
       }
-
-      <mat-checkbox [formField]="bridgeForm.cropThreshold"
-        >Crop threshold</mat-checkbox
-      >
     </mat-dialog-content>
 
     <footer mat-dialog-actions align="end">
@@ -166,64 +167,135 @@ export type BridgeSubmitResult = BridgeSubmitModel;
       <button
         mat-flat-button
         type="button"
-        [disabled]="bridgeForm().invalid()"
-        (click)="submit()"
+        [disabled]="bridgeForm().invalid() || bridgeForm().submitting()"
+        (click)="onSubmit($event)"
       >
-        Submit
+        {{ bridgeForm().submitting() ? 'Submitting…' : 'Submit' }}
       </button>
     </footer>
   `,
 })
 export class BridgeSubmitDialogComponent {
-  private readonly dialogRef = inject(
-    MatDialogRef<BridgeSubmitDialogComponent, BridgeSubmitResult>,
-  );
+  private mapService = inject(MapService);
+  private http = inject(HttpClient);
+  private readonly dialogRef =
+    inject<MatDialogRef<BridgeSubmitDialogComponent, BridgeSubmitResult>>(
+      MatDialogRef,
+    );
+  protected data = inject<BridgeSubmitDialogData>(MAT_DIALOG_DATA);
+  private wkt = toSignal(this.mapService.searchPolygon$);
+  protected wktValidForSubset = computed(() => this.wkt()?.includes('POLYGON'));
 
-  data = inject<BridgeSubmitDialogData>(MAT_DIALOG_DATA);
+  readonly minDate = models.nisar.date.start;
+  readonly today = signal(new Date());
+  readonly todayYmd = computed(() => this.toYmd(this.today()));
+  private readonly minYmd = this.toYmd(this.minDate);
 
   private readonly model = signal<BridgeSubmitModel>({
-    useSubset: false,
     startDate: null,
     endDate: null,
-    cropThreshold: false,
   });
 
   protected readonly bridgeForm = form(this.model, (path) => {
     required(path.startDate, { message: 'Start date is required' });
     required(path.endDate, { message: 'End date is required' });
 
+    validate(path.startDate, ({ value }) => {
+      const v = value();
+      if (!v) return undefined;
+      const ymd = this.toYmd(v);
+      if (ymd < this.minYmd) {
+        return {
+          kind: 'min',
+          message: `Start cannot be before ${this.minYmd}`,
+        };
+      }
+      if (ymd > this.todayYmd()) {
+        return { kind: 'max', message: 'Start cannot be in the future' };
+      }
+      return undefined;
+    });
+
     validate(path.endDate, ({ value, valueOf }) => {
-      const start = valueOf(path.startDate);
-      const end = value();
-      return start && end && end < start
-        ? {
-            kind: 'endBeforeStart',
-            message: 'End date must be on or after the start date',
-          }
+      const endDate = value();
+      if (!endDate) return undefined;
+
+      const endYmd = this.toYmd(endDate);
+
+      if (endYmd > this.todayYmd()) {
+        return { kind: 'max', message: 'End cannot be in the future' };
+      }
+      const startDate = valueOf(path.startDate);
+      return startDate && endYmd < this.toYmd(startDate)
+        ? { kind: 'range', message: 'End must be on or after start' }
         : undefined;
     });
   });
 
-  protected submit(): void {
-    if (this.bridgeForm().invalid()) {
-      return;
+  toYmd(d: Date): string {
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${m}-${day}`;
+  }
+
+  readonly job = computed<BridgeJobType | null>(() => {
+    const { startDate, endDate } = this.bridgeForm().value();
+    if (!startDate || !endDate) {
+      return null;
     }
 
+    const subset = this.wktValidForSubset() ? this.wkt() : null;
+
+    const { frame_number, relative_orbit, orbit_direction } = this.data;
+
     const job: BridgeJobType = {
-      starte_date: '', // Start date of CV calculation in YYYY-MM-DD format. (min: nisar launch day, max: today)
-      end_date: '', // End date of CV calculation in YYYY-MM-DD format. (min: nisar launch day, max: today)
-      relative_orbit: 42, // NISAR relative orbit number. minimum: 1, maximum: 173
-      orbit_direction: 'A', // A = Ascending, D = Descending
-      frame_number: 42, // NISAR track frame number containing scene. minimum: 1, maximum: 176
-      pol: 'HHHH', // Polarization of input granules to use.
-      subset: null, // Geographic subset of the granules to use, in the format of a WKT string.
-      crop_area_boolean: true, // Choose whether to generate a crop area classification map. If False, only a coefficient of variation file is created.
-      cv_threshold: 0.4, // Coefficient of variation threshold to use for crop area classification. min: 0, 0.6
-      water_threshold_db: -16.5, // Backscatter threshold, in decibels, for watermask generation. Pixels with backscatter below this threshold in more than --water-fraction % of images are classified as water. default: -16.5
-      water_fraction: 0.75, // Fraction of images in which the backscatter of a pixel is below --water-threshold-db in order for the pixel to be classified as water. min: 0, default: 0.75
+      start_date: this.toYmd(startDate),
+      end_date: this.toYmd(endDate),
+      relative_orbit,
+      orbit_direction,
+      frame_number,
+      subset,
+      pol: 'HHHH',
+      crop_area_boolean: true,
+      cv_threshold: 0.4,
+      water_threshold_db: -16.5,
+      water_fraction: 0.75,
     };
 
-    console.log(job);
-    this.dialogRef.close(this.bridgeForm().value());
+    return job;
+  });
+
+  readonly results = signal<unknown[]>([]);
+
+  async onSubmit(event: Event) {
+    event.preventDefault();
+
+    await submit(this.bridgeForm, async () => {
+      const job = this.job();
+      if (!job) {
+        return undefined;
+      }
+
+      const bridgeJobsEndpoint = 'https://hyp3-bridge.asf.alaska.edu/jobs';
+
+      try {
+        const res = await firstValueFrom(
+          this.http.post<unknown>(bridgeJobsEndpoint, {
+            jobs: [job],
+            validate_only: true,
+          }),
+        );
+        console.log(res);
+        this.dialogRef.close(res);
+        return undefined;
+      } catch (err) {
+        console.log(err);
+        const message =
+          err instanceof HttpErrorResponse
+            ? (err.error?.detail ?? err.message)
+            : 'Request failed. Please try again.';
+        return { kind: 'server', message };
+      }
+    });
   }
 }

@@ -51,6 +51,8 @@ export class SceneSearchToolbarComponent {
     scenesStore.getSelectedSceneProducts,
   );
 
+  isUserLoggedIn = toSignal(this.store$.select(userStore.getIsUserLoggedIn));
+
   protected readonly useMenuOverride = computed(
     () =>
       this.searchType() === this.searchTypes.BASELINE &&
@@ -287,7 +289,7 @@ export class SceneSearchToolbarComponent {
       orbit_direction:
         scene.metadata.flightDirection === models.FlightDirection.ASCENDING
           ? 'A'
-          : 'B', // A = Ascending, D = Descending
+          : 'D', // A = Ascending, D = Descending
       frame_number: scene.metadata.frame, // NISAR track frame number containing scene. minimum: 1, maximum: 176
     };
 
@@ -296,7 +298,6 @@ export class SceneSearchToolbarComponent {
       autoFocus: 'first-tabbable',
       maxWidth: '80em',
       maxHeight: '95vh',
-      height: '600px',
       width: '700px',
     });
   }

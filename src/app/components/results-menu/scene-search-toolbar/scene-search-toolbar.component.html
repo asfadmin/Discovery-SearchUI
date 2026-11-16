@@ -44,6 +44,7 @@
       <button
         mat-stroked-button
         color="primary"
+        [disabled]="!isUserLoggedIn()"
         (click)="openBridgeSubmitDialog()"
         class="mini-toggle-button search-button"
         target="_blank"
