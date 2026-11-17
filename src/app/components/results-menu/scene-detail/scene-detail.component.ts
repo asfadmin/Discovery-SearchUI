@@ -42,6 +42,7 @@ import * as uiStore from '@store/ui';
 import * as userStore from '@store/user';
 
 import { ImageDialogComponent } from './image-dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-scene-detail',
@@ -61,6 +62,7 @@ import { ImageDialogComponent } from './image-dialog';
     AsyncPipe,
     TitleCasePipe,
     TranslateModule,
+    MatButtonModule,
   ],
 })
 export class SceneDetailComponent implements OnInit, OnDestroy {
