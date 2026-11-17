@@ -179,6 +179,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         );
         if (this.hyp3PlusMode()) {
           this.hyp3Service.setApiUrl('https://hyp3-plus.asf.alaska.edu');
+        } else {
+          this.hyp3Service.setApiUrl('https://hyp3-bridge.asf.alaska.edu');
         }
       },
       { injector: this.injector },

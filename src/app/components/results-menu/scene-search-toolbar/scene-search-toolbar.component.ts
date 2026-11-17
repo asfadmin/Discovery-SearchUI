@@ -1,6 +1,8 @@
-import { NgStyle, NgClass, UpperCasePipe, AsyncPipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { Component, inject, computed } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -17,17 +19,14 @@ import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
 
+import {
+  BridgeSubmitDialogComponent,
+  BridgeSubmitDialogData,
+} from './bridge-submit-dialog/bridge-submit-dialog.component';
+
 @Component({
   selector: 'app-scene-search-toolbar',
-  imports: [
-    NgStyle,
-    NgClass,
-    MatButton,
-    AsyncPipe,
-    UpperCasePipe,
-    MatTooltip,
-    TranslateModule,
-  ],
+  imports: [MatButton, UpperCasePipe, MatTooltip, TranslateModule],
   templateUrl: './scene-search-toolbar.component.html',
   styleUrl: './scene-search-toolbar.component.scss',
 })
@@ -36,12 +35,13 @@ export class SceneSearchToolbarComponent {
   private store$ = inject<Store<AppState>>(Store);
   private datasetForProduct = inject(DatasetForProductService);
   public prop = inject(PropertyService);
+  private dialog = inject(MatDialog);
 
   public p = models.Props;
   public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
-  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoint = toSignal(this.screenSize.breakpoint$);
   public breakpoints = models.Breakpoints;
   private dateRange = this.store$.selectSignal(filtersStore.getDateRange);
 
@@ -50,6 +50,21 @@ export class SceneSearchToolbarComponent {
   readonly selectedProducts = this.store$.selectSignal(
     scenesStore.getSelectedSceneProducts,
   );
+
+  isUserLoggedIn = toSignal(this.store$.select(userStore.getIsUserLoggedIn));
+
+  protected readonly useMenuOverride = computed(
+    () =>
+      this.searchType() === this.searchTypes.BASELINE &&
+      this.breakpoint() === this.breakpoints.FULL,
+  );
+
+  readonly isGCOVProduct = computed(() => {
+    return (
+      this.dataset()?.id === 'NISAR' &&
+      this.scene()?.metadata?.productType === 'GCOV'
+    );
+  });
 
   readonly dataset = computed(() => {
     const scene = this.scene();
@@ -260,5 +275,30 @@ export class SceneSearchToolbarComponent {
         new filtersStore.SetEndDate(new Date(dateRange.end)),
       );
     }
+  }
+
+  public openBridgeSubmitDialog() {
+    if (!this.isGCOVProduct()) {
+      console.log('Skipping because not gcov');
+      return;
+    }
+
+    const scene = this.scene();
+    const data: BridgeSubmitDialogData = {
+      relative_orbit: scene.metadata.path, // NISAR relative orbit number. minimum: 1, maximum: 173
+      orbit_direction:
+        scene.metadata.flightDirection === models.FlightDirection.ASCENDING
+          ? 'A'
+          : 'D', // A = Ascending, D = Descending
+      frame_number: scene.metadata.frame, // NISAR track frame number containing scene. minimum: 1, maximum: 176
+    };
+
+    this.dialog.open(BridgeSubmitDialogComponent, {
+      data,
+      autoFocus: 'first-tabbable',
+      maxWidth: '80em',
+      maxHeight: '95vh',
+      width: '700px',
+    });
   }
 }

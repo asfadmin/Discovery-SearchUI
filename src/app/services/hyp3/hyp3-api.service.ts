@@ -435,24 +435,8 @@ export class Hyp3ApiService {
     );
   }
 
-  public isHyp3able(
-    products: models.CMRProduct[],
-    jobType: models.Hyp3JobType,
-  ): boolean {
-    return (
-      products.length === jobType.numProducts &&
-      jobType.productTypes.some((productType) => {
-        const types = new Set(productType.productTypes);
-        const pols = new Set(productType.polarizations);
-        const beamModes = new Set(productType.beamModes);
-        return products.every(
-          (product) =>
-            types.has(product.metadata.productType) &&
-            pols.has(product.metadata.polarization) &&
-            beamModes.has(product.metadata.beamMode),
-        );
-      })
-    );
+  public isHyp3able(_, __): boolean {
+    return false;
   }
 
   public getExpiredHyp3ableObject(scene: models.CMRProduct): {

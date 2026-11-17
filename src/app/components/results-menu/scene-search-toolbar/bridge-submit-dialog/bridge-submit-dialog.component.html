@@ -1,0 +1,106 @@
+<div class="header">
+  <div class="header-title">
+    <h2 mat-dialog-title>NISAR Bridge</h2>
+
+    <button mat-icon-button type="button" mat-dialog-close aria-label="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="application-selector">
+    <div class="enabled clickable">Cropland Coefficent of Variation</div>
+    <div class="disabled">Custom Soil Moisture</div>
+    <div class="disabled">Forest Disturbance</div>
+  </div>
+</div>
+
+<mat-dialog-content>
+  <div class="nisar-frame-info">
+    <div>Frame: {{ data.frame_number }}</div>
+    <div>Relative Orbit: {{ data.relative_orbit }}</div>
+    <div>Orbit Direction: {{ data.orbit_direction }}</div>
+  </div>
+
+  <div class="date-row">
+    <mat-form-field>
+      <mat-label>Acquisition dates</mat-label>
+
+      <mat-date-range-input
+        [rangePicker]="picker"
+        [min]="minDate"
+        [max]="today()"
+      >
+        <input
+          matStartDate
+          placeholder="Start"
+          [formField]="bridgeForm.startDate"
+        />
+        <input matEndDate placeholder="End" [formField]="bridgeForm.endDate" />
+      </mat-date-range-input>
+
+      <mat-datepicker-toggle matIconSuffix [for]="picker" />
+      <mat-date-range-picker #picker />
+    </mat-form-field>
+
+    @for (field of [bridgeForm.startDate, bridgeForm.endDate]; track $index) {
+      @if (field().touched() && field().invalid()) {
+        @for (e of field().errors(); track e.kind) {
+          <p class="error">{{ e.message }}</p>
+        }
+      }
+    }
+  </div>
+
+  <div class="cv-row">
+    <mat-form-field>
+      <mat-label>CV threshold</mat-label>
+      <input
+        matInput
+        type="number"
+        step="0.01"
+        [formField]="bridgeForm.cvThreshold"
+      />
+      <mat-hint>Between {{ cvLimits.min }} and {{ cvLimits.max }} </mat-hint>
+    </mat-form-field>
+
+    @if (
+      bridgeForm.cvThreshold().touched() && bridgeForm.cvThreshold().invalid()
+    ) {
+      @for (e of bridgeForm.cvThreshold().errors(); track e.kind) {
+        <p class="error">{{ e.message }}</p>
+      }
+    }
+    <div>
+      The crop area product is derived from the Coefficient of Variation (CV) of
+      the HHHH intensity. Higher values may suit some areas better. Higher
+      values reduce false positive crop detection.
+    </div>
+  </div>
+
+  <h3>Subset Options</h3>
+  <app-aoi-options [showHeader]="false" />
+  @for (e of bridgeForm().errors(); track e.kind) {
+    <p class="error">{{ e.message }}</p>
+  }
+</mat-dialog-content>
+
+<footer mat-dialog-actions class="footer">
+  <div>
+    <button mat-button type="button" mat-dialog-close>Cancel</button>
+  </div>
+  <div class="submit-cluster">
+    <div>Credits: {{ credits() }}</div>
+    <div>
+      <button
+        mat-flat-button
+        type="button"
+        [disabled]="
+          credits() <= 1 || bridgeForm().invalid() || bridgeForm().submitting()
+        "
+        (click)="onSubmit($event)"
+      >
+        {{ bridgeForm().submitting() ? 'Submitting…' : 'Submit' }}
+      </button>
+    </div>
+  </div>
+</footer>
