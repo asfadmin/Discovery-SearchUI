@@ -30,12 +30,13 @@
   height: 3em;
 
   div {
-    flex-grow: 1;
     display: flex;
-    justify-content: center;
+    flex-grow: 1;
     align-items: center;
+    justify-content: center;
     font-weight: 500;
   }
+
   .enabled {
     @include themify($themes) {
       background-color: rgb(themed('primary-light'), 0.2);;
@@ -56,24 +57,22 @@ mat-dialog-content {
 }
 
 .field-error {
-  color: var(--mat-sys-error);
   margin: 0;
   font-size: 0.75rem;
+  color: var(--mat-sys-error);
 }
 
 footer[mat-dialog-actions] {
-  border-top: 1px solid var(--mat-sys-outline-variant);
-  padding: 1rem 1.5rem;
   display: flex;
   justify-content: space-between;
-  div {
-
-  }
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--mat-sys-outline-variant);
 }
 
 .submit-cluster {
   display: flex;
   align-items: center;
+
   div {
     padding: 0 0 0 1em;
   }

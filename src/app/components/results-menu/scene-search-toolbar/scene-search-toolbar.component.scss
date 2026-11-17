@@ -20,9 +20,9 @@
 }
 
 .tool-menu {
+  bottom: 0;
   z-index: 2;
   display: flex;
-  bottom: 0;
   flex-wrap: nowrap; // Prevent wrapping
   align-items: center;
   justify-content: flex-start;
