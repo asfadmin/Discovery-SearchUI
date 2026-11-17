@@ -224,7 +224,7 @@ export class Hyp3JobService {
     };
     if (job.job_type === 'NISAR_CV') {
       console.log(job);
-      combinedProduct.browses = job.browse_images.reverse(); // grab the smaller thing first
+      combinedProduct.browses = job.browse_images?.reverse(); // grab the smaller thing first
       combinedProduct.metadata.date = job.request_time;
       combinedProduct.name = job.job_id;
       combinedProduct.isDummyProduct = false;
