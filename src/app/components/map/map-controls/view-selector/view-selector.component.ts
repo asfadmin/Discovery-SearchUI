@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  computed,
+  effect,
+  inject,
+} from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -29,8 +36,19 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
 
   public view: MapViewType;
   public types = MapViewType;
-  public isDisplacementSearch = false;
+  private searchType = this.store$.selectSignal(searchStore.getSearchType);
+  public isDisplacementSearch = computed(
+    () => this.searchType() === SearchType.DISPLACEMENT,
+  );
   private subs = new SubSink();
+
+  constructor() {
+    effect(() => {
+      if (this.isDisplacementSearch() && this.view === MapViewType.ANTARCTIC) {
+        this.onNewProjection(MapViewType.EQUATORIAL);
+      }
+    });
+  }
 
   ngOnInit() {
     this.subs.add(
@@ -41,21 +59,6 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
           event: 'map-view',
           'map-view': this.view,
         });
-      }),
-    );
-
-    this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
-        this.isDisplacementSearch = searchType === SearchType.DISPLACEMENT;
-
-        // Auto-switch to equatorial view if switching to Displacement Search from a polar view
-        if (
-          this.isDisplacementSearch &&
-          (this.view === MapViewType.ARCTIC ||
-            this.view === MapViewType.ANTARCTIC)
-        ) {
-          this.store$.dispatch(new mapStore.SetMapView(MapViewType.EQUATORIAL));
-        }
       }),
     );
   }
