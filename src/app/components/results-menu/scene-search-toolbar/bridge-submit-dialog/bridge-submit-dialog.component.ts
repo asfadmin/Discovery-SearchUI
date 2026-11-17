@@ -161,15 +161,29 @@ export class BridgeSubmitDialogComponent {
       const endDate = value();
       if (!endDate) return undefined;
 
-      const endYmd = this.toYmd(endDate);
-
-      if (endYmd > this.todayYmd()) {
+      if (this.toYmd(endDate) > this.todayYmd()) {
         return { kind: 'max', message: 'End cannot be in the future' };
       }
+
       const startDate = valueOf(path.startDate);
-      return startDate && endYmd < this.toYmd(startDate)
-        ? { kind: 'range', message: 'End must be on or after start' }
-        : undefined;
+      if (!startDate) return undefined;
+
+      const days = this.daysBetween(startDate, endDate);
+
+      if (days < 0) {
+        return { kind: 'range', message: 'End must be on or after start' };
+      }
+
+      const nisarRevisitDays = 12;
+      const minRepeatPeriods = 3;
+      const minRangeDays = nisarRevisitDays * minRepeatPeriods;
+      if (days < minRangeDays) {
+        return {
+          kind: 'minRange',
+          message: `Date range must be at least ${minRepeatPeriods} NISAR repeat periods (${nisarRevisitDays} × ${minRepeatPeriods} = ${minRangeDays} days)`,
+        };
+      }
+      return undefined;
     });
 
     min(path.cvThreshold, this.cvLimits.min, {
@@ -184,6 +198,12 @@ export class BridgeSubmitDialogComponent {
     const m = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
     return `${d.getFullYear()}-${m}-${day}`;
+  }
+
+  private daysBetween(start: Date, end: Date): number {
+    const s = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
+    const e = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
+    return Math.round((e - s) / 86_400_000);
   }
 
   readonly job = computed<BridgeJobType | null>(() => {

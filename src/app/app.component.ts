@@ -318,7 +318,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           !hyp3Plus
         ) {
           this.hyp3Service.setApiUrl(profile.hyp3BackendUrl);
-          this.store$.dispatch(new searchStore.ClearSearch());
+          // Remove this so filters can load
+          // this.store$.dispatch(new searchStore.ClearSearch());
         }
 
         this.store$.dispatch(new hyp3Store.LoadCosts());
