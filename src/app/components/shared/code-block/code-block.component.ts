@@ -1,4 +1,3 @@
-import { KeyValuePipe } from '@angular/common';
 import {
   Component,
   ComponentRef,
@@ -27,7 +26,6 @@ import 'prismjs/components/prism-python';
   imports: [
     CopyToClipboardComponent,
     TranslateModule,
-    KeyValuePipe,
     MatButtonToggleGroup,
     MatButtonToggle,
     FormsModule,

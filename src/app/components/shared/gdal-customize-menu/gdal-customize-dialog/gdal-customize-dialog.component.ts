@@ -38,6 +38,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CodeBlockComponent } from '@components/shared/code-block/code-block.component';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { PolarizationGraphicComponent } from '@components/shared/polarization-graphic/polarization-graphic.component';
 import { CategoryType, GDALCategory, GDALDataset } from '@models';
 import {
   GdalFormats,
@@ -55,7 +56,6 @@ import {
   GdalCustomizeMenuComponent,
   GdalCustomizeDialogData,
 } from '../gdal-customize-menu.component';
-import { PolarizationGraphicComponent } from '@components/shared/polarization-graphic/polarization-graphic.component';
 
 interface GdalConfigModel {
   selectedDatasets: string[];
