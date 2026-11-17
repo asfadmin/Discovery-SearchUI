@@ -13,6 +13,8 @@ import {
   required,
   validate,
   submit,
+  min,
+  max,
 } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -39,6 +41,7 @@ import * as searchStore from '@store/search';
 interface BridgeSubmitModel {
   startDate: Date | null;
   endDate: Date | null;
+  cvThreshold: number;
 }
 
 // Parameters for running NISAR_CV jobs
@@ -165,6 +168,35 @@ export type BridgeSubmitResult = any; // TODO: a proper response interface
         }
       </div>
 
+      <div class="cv-row">
+        <mat-form-field>
+          <mat-label>CV threshold</mat-label>
+          <input
+            matInput
+            type="number"
+            step="0.01"
+            [formField]="bridgeForm.cvThreshold"
+          />
+          <mat-hint
+            >Between {{ cvLimits.min }} and {{ cvLimits.max }}
+          </mat-hint>
+        </mat-form-field>
+
+        @if (
+          bridgeForm.cvThreshold().touched() &&
+          bridgeForm.cvThreshold().invalid()
+        ) {
+          @for (e of bridgeForm.cvThreshold().errors(); track e.kind) {
+            <p class="error">{{ e.message }}</p>
+          }
+        }
+        <div>
+          The crop area product is derived from the Coefficient of Variation
+          (CV) of the HHHH intensity. Higher values may suit some areas better.
+          Higher values reduce false positive crop detection.
+        </div>
+      </div>
+
       <h3>Subset Options</h3>
       <app-aoi-options [showHeader]="false" />
       @for (e of bridgeForm().errors(); track e.kind) {
@@ -224,7 +256,10 @@ export class BridgeSubmitDialogComponent {
   private readonly model = signal<BridgeSubmitModel>({
     startDate: null,
     endDate: null,
+    cvThreshold: 0.4,
   });
+
+  readonly cvLimits = { min: 0.3, max: 0.6 };
 
   protected readonly bridgeForm = form(this.model, (path) => {
     required(path.startDate, { message: 'Start date is required' });
@@ -260,6 +295,13 @@ export class BridgeSubmitDialogComponent {
         ? { kind: 'range', message: 'End must be on or after start' }
         : undefined;
     });
+
+    min(path.cvThreshold, this.cvLimits.min, {
+      message: `Must be at least ${this.cvLimits.min}`,
+    });
+    max(path.cvThreshold, this.cvLimits.max, {
+      message: `Must be at most ${0.6}`,
+    });
   });
 
   toYmd(d: Date): string {
@@ -269,8 +311,8 @@ export class BridgeSubmitDialogComponent {
   }
 
   readonly job = computed<BridgeJobType | null>(() => {
-    const { startDate, endDate } = this.bridgeForm().value();
-    if (!startDate || !endDate) {
+    const { startDate, endDate, cvThreshold } = this.bridgeForm().value();
+    if (!startDate || !endDate || !cvThreshold) {
       return null;
     }
 
@@ -281,13 +323,13 @@ export class BridgeSubmitDialogComponent {
     const job_parameters: BridgeJobParamters = {
       start_date: this.toYmd(startDate),
       end_date: this.toYmd(endDate),
+      cv_threshold: cvThreshold,
       relative_orbit,
       orbit_direction,
       frame_number,
       subset,
       pol: 'HHHH',
       crop_area: true,
-      cv_threshold: 0.4,
       water_threshold_db: -16.5,
       water_fraction: 0.75,
     };

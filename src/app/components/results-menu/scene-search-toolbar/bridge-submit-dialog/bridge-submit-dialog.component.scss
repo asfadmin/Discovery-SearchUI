@@ -85,6 +85,14 @@ footer[mat-dialog-actions] {
   gap: 1rem;
 }
 
+
+.cv-row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 .date-field {
   flex: 1 1 200px;
   min-width: 0;
