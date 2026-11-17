@@ -77,7 +77,7 @@
                           <div class="polarization-grid-label y">
                             {{
                               (node.categoryType != categoryTypes.CovarianceGrid
-                                ? 'TRANSMIT'
+                                ? 'TRANSMIT_POLARIZATION'
                                 : 'SLC_X'
                               ) | translate
                             }}
@@ -137,7 +137,7 @@
                         <div class="polarization-grid-label x">
                           {{
                             (node.categoryType != categoryTypes.CovarianceGrid
-                              ? 'RECEIVE'
+                              ? 'RECEIVE_POLARIZATION'
                               : 'SLC_Y'
                             ) | translate
                           }}

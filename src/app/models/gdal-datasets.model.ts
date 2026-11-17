@@ -269,7 +269,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
             .get('FREQUENCY_A')
             .get('WRAPPED')
             .pushCategory(
-              'Interferogram',
+              'INTERFEROGRAM',
               [
                 {
                   path: `//science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/${polarization}/wrappedInterferogram`,
@@ -290,7 +290,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
             .get('FREQUENCY_A')
             .get('WRAPPED')
             .pushCategory(
-              'Coherence',
+              'COHERENCE',
               [
                 {
                   path: `//science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/${polarization}/coherenceMagnitude`,
@@ -637,7 +637,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
               .get('ANCILLARY')
               .get(layer.key)
               .pushCategory(
-                'Correlation Surface Peak',
+                'CORRELATION_SURFACE_PEAK',
                 [
                   {
                     path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/${polarization}/${layer.path}/correlationSurfacePeak`,
@@ -661,7 +661,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
               .get('ANCILLARY')
               .get(layer.key)
               .pushCategory(
-                'Signal To Noise Ratio',
+                'SIGNAL_TO_NOISE_RATIO',
                 [
                   {
                     path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/${polarization}/${layer.path}/snr`,
