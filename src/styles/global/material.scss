@@ -190,6 +190,12 @@ button,
       color: themed('dark-primary-text');
     }
   }
+
+  .dataset-enter-target {
+    @include themify_non_host($themes) {
+      background-color: themed('dark-focused');
+    }
+  }
 }
 
 // Fix for Angular Material 20 MDC badges to ensure they remain circular
