@@ -64,6 +64,20 @@ mat-dialog-content {
 footer[mat-dialog-actions] {
   border-top: 1px solid var(--mat-sys-outline-variant);
   padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  div {
+
+  }
+}
+
+.submit-cluster {
+  display: flex;
+  align-items: center;
+  div {
+    padding: 0 0 0 1em;
+  }
+
 }
 
 .date-row {

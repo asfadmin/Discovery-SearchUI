@@ -26,11 +26,15 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { Store } from '@ngrx/store';
 import { firstValueFrom } from 'rxjs';
 
 import { AoiOptionsComponent } from '@components/shared/aoi-options/aoi-options.component';
 import * as models from '@models';
-import { MapService } from '@services';
+import { MapService, NotificationService } from '@services';
+import { AppState } from '@store';
+import * as hyp3Store from '@store/hyp3';
+import * as searchStore from '@store/search';
 
 interface BridgeSubmitModel {
   startDate: Date | null;
@@ -38,7 +42,7 @@ interface BridgeSubmitModel {
 }
 
 // Parameters for running NISAR_CV jobs
-interface BridgeJobType {
+interface BridgeJobParamters {
   // Start date of CV calculation in YYYY-MM-DD format. (min: nisar launch day, max: today)
   start_date: string;
   // End date of CV calculation in YYYY-MM-DD format. (min: nisar launch day, max: today)
@@ -54,7 +58,7 @@ interface BridgeJobType {
   // Geographic subset of the granules to use, in the format of a WKT string.
   subset: string | null;
   // Choose whether to generate a crop area classification map. If False, only a coefficient of variation file is created.
-  crop_area_boolean: boolean;
+  crop_area: boolean;
   // Coefficient of variation threshold to use for crop area classification. min: 0, 0.6
   cv_threshold: number;
   // Backscatter threshold, in decibels, for watermask generation. Pixels with backscatter below this threshold in more than --water-fraction % of images are classified as water. default: -16.5
@@ -62,6 +66,12 @@ interface BridgeJobType {
   // Fraction of images in which the backscatter of a pixel is below --water-threshold-db in order for the pixel to be classified as water. min: 0, default: 0.75
   water_fraction: number;
 }
+
+interface BridgeJobType {
+  job_type: 'NISAR_CV';
+  job_parameters: BridgeJobParamters;
+}
+
 export interface BridgeSubmitDialogData {
   // NISAR relative orbit number. minimum: 1, maximum: 173
   relative_orbit: number;
@@ -162,29 +172,49 @@ export type BridgeSubmitResult = any; // TODO: a proper response interface
       }
     </mat-dialog-content>
 
-    <footer mat-dialog-actions align="end">
-      <button mat-button type="button" mat-dialog-close>Cancel</button>
-      <button
-        mat-flat-button
-        type="button"
-        [disabled]="bridgeForm().invalid() || bridgeForm().submitting()"
-        (click)="onSubmit($event)"
-      >
-        {{ bridgeForm().submitting() ? 'Submitting…' : 'Submit' }}
-      </button>
+    <footer mat-dialog-actions class="footer">
+      <div>
+        <button mat-button type="button" mat-dialog-close>Cancel</button>
+      </div>
+      <div class="submit-cluster">
+        <div>Credits: {{ credits() }}</div>
+        <div>
+          <button
+            mat-flat-button
+            type="button"
+            [disabled]="
+              credits() <= 1 ||
+              bridgeForm().invalid() ||
+              bridgeForm().submitting()
+            "
+            (click)="onSubmit($event)"
+          >
+            {{ bridgeForm().submitting() ? 'Submitting…' : 'Submit' }}
+          </button>
+        </div>
+      </div>
     </footer>
   `,
 })
 export class BridgeSubmitDialogComponent {
+  private store$ = inject<Store<AppState>>(Store);
   private mapService = inject(MapService);
   private http = inject(HttpClient);
+  private notificationService = inject(NotificationService);
   private readonly dialogRef =
     inject<MatDialogRef<BridgeSubmitDialogComponent, BridgeSubmitResult>>(
       MatDialogRef,
     );
   protected data = inject<BridgeSubmitDialogData>(MAT_DIALOG_DATA);
+
+  protected user = toSignal<models.Hyp3User>(
+    this.store$.select(hyp3Store.getHyp3User),
+  );
   private wkt = toSignal(this.mapService.searchPolygon$);
   protected wktValidForSubset = computed(() => this.wkt()?.includes('POLYGON'));
+  protected readonly credits = computed(
+    () => this.user()?.quota?.remaining ?? 0,
+  );
 
   readonly minDate = models.nisar.date.start;
   readonly today = signal(new Date());
@@ -248,7 +278,7 @@ export class BridgeSubmitDialogComponent {
 
     const { frame_number, relative_orbit, orbit_direction } = this.data;
 
-    const job: BridgeJobType = {
+    const job_parameters: BridgeJobParamters = {
       start_date: this.toYmd(startDate),
       end_date: this.toYmd(endDate),
       relative_orbit,
@@ -256,13 +286,16 @@ export class BridgeSubmitDialogComponent {
       frame_number,
       subset,
       pol: 'HHHH',
-      crop_area_boolean: true,
+      crop_area: true,
       cv_threshold: 0.4,
       water_threshold_db: -16.5,
       water_fraction: 0.75,
     };
 
-    return job;
+    return {
+      job_type: 'NISAR_CV',
+      job_parameters,
+    };
   });
 
   readonly results = signal<unknown[]>([]);
@@ -280,13 +313,29 @@ export class BridgeSubmitDialogComponent {
 
       try {
         const res = await firstValueFrom(
-          this.http.post<unknown>(bridgeJobsEndpoint, {
-            jobs: [job],
-            validate_only: true,
-          }),
+          this.http.post<models.Hyp3JobsResponse>(
+            bridgeJobsEndpoint,
+            { jobs: [job] },
+            { withCredentials: true },
+          ),
         );
         console.log(res);
         this.dialogRef.close(res);
+        const numJobsSubmitted = res?.jobs?.length ?? 0;
+
+        const jobText =
+          numJobsSubmitted > 1 ? `${numJobsSubmitted} Jobs` : 'Job';
+
+        this.notificationService
+          .info(`Click to view Submitted Products.`, `${jobText} Submitted`, {
+            closeButton: true,
+            disableTimeOut: true,
+          })
+          .onTap.subscribe(() => {
+            const searchType = models.SearchType.CUSTOM_PRODUCTS;
+            this.store$.dispatch(new searchStore.SetSearchType(searchType));
+          });
+
         return undefined;
       } catch (err) {
         console.log(err);
