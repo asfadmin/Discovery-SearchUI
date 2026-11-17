@@ -100,11 +100,11 @@ export class BrowseOverlayService {
   // }
   private createGeotiffSourceUrl(url: string) {
     return new GeoTIFFSource({
+      normalize: false,
+      interpolate: false,
       sources: [
         {
           url,
-          min: 0.0,
-          max: 3.0,
           bands: [1],
           nodata: 0,
         },
