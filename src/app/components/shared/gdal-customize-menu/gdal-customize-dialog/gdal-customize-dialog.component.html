@@ -425,7 +425,14 @@
     <div class="step-card-content">
       @if (this.datasetSelected() && !this.configureError()) {
         @if (gdalConfigForm.environment.nisarDriver().value()) {
-          <p>{{ 'JPL_NISAR_DRIVER_HELP_BODY' | translate }}</p>
+          <p>
+            {{ 'JPL_NISAR_DRIVER_HELP_BODY' | translate }}
+            <app-docs-modal
+              class="info-text"
+              text="JPL_NISAR_DRIVER_HELP_LINK"
+              url="https://nisar-docs.asf.alaska.edu/gdal/#jpl-nisar-hdf5-gdal-plugin"
+            ></app-docs-modal>
+          </p>
           <app-code-block
             [isCommand]="true"
             [codeContentByTab]="[

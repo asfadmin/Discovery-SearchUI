@@ -257,6 +257,15 @@ export class GdalCustomizeDialogComponent {
 
     return 'SELECT_A_DATASET_TO_CONTINUE';
   });
+  cropToAOITooltip = computed(() => {
+    if (!this.enableCutlineWKTString()) {
+      return 'CROP_TO_AOI_DISABLED';
+    }
+    if (this.gdalService.isCropToAOIAvailable()) {
+      return 'CROP_TO_AOI_TOOLTIP_ADMONITION';
+    }
+    return 'CROP_TO_AOI_TOOLTIP';
+  });
   enableCutlineWKTString = computed(() => {
     if (this.gdalConfigForm.geospatial.cutlineWKT().disabled()) {
       return 'CROP_TO_AOI_IS_DISABLED';

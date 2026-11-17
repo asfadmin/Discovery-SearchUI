@@ -500,6 +500,7 @@
   "JOINT_OBSERVATION_TOOLTIP": "Joint observation: simultaneous L- and S-band acquisitions",
   "JPL_NISAR_DRIVER": "Use NISAR Plugin for GDAL (Experimental)",
   "JPL_NISAR_DRIVER_HELP_BODY": "Install the NISAR plugin for GDAL using Conda, Mamba, Micromamba, or Pixi.",
+  "JPL_NISAR_DRIVER_HELP_LINK": "Click here to learn more about the JPL NISAR Plugin for GDAL.",
   "JPL_NISAR_DRIVER_IS_DISABLED": "Use of the NISAR plugin for GDAL driver is not supported on Windows",
   "JPL_NISAR_DRIVER_TOOLTIP": "The NISAR plugin for GDAL provides better performance but must be installed separately from GDAL.",
   "JUN_JUL_AUG": "Jun, Jul, Aug",
