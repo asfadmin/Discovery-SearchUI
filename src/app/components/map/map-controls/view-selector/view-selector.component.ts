@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  computed,
+  effect,
+  inject,
+} from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -6,9 +13,10 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 
-import { MapViewType } from '@models';
+import { MapViewType, SearchType } from '@models';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
+import * as searchStore from '@store/search';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -28,7 +36,19 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
 
   public view: MapViewType;
   public types = MapViewType;
+  private searchType = this.store$.selectSignal(searchStore.getSearchType);
+  public isDisplacementSearch = computed(
+    () => this.searchType() === SearchType.DISPLACEMENT,
+  );
   private subs = new SubSink();
+
+  constructor() {
+    effect(() => {
+      if (this.isDisplacementSearch() && this.view === MapViewType.ANTARCTIC) {
+        this.onNewProjection(MapViewType.EQUATORIAL);
+      }
+    });
+  }
 
   ngOnInit() {
     this.subs.add(

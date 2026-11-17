@@ -26,16 +26,21 @@
     </mat-icon>
   </button>
 
-  <button
-    mat-stroked-button
-    (click)="onAntarcticSelected()"
-    class="view-select-button"
-    [class.selected]="view === types.ANTARCTIC"
-    [class.clickable]="view !== types.ANTARCTIC"
-    [attr.aria-label]="'ANTARCTIC_MAP_PROJECTION' | translate"
-    [value]="types.ANTARCTIC"
-    [matTooltip]="'ANTARCTIC_MAP_PROJECTION' | translate"
-  >
-    <mat-icon svgIcon="antarctic" class="view-btn view-select-icon"></mat-icon>
-  </button>
+  @if (!isDisplacementSearch()) {
+    <button
+      mat-stroked-button
+      (click)="onAntarcticSelected()"
+      class="view-select-button"
+      [class.selected]="view === types.ANTARCTIC"
+      [class.clickable]="view !== types.ANTARCTIC"
+      [attr.aria-label]="'ANTARCTIC_MAP_PROJECTION' | translate"
+      [value]="types.ANTARCTIC"
+      [matTooltip]="'ANTARCTIC_MAP_PROJECTION' | translate"
+    >
+      <mat-icon
+        svgIcon="antarctic"
+        class="view-btn view-select-icon"
+      ></mat-icon>
+    </button>
+  }
 </div>
