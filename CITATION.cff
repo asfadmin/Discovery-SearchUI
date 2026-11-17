@@ -76,6 +76,7 @@ authors:
   - given-names: Gregory
     family-names: Short
     affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
+    orcid: https://orcid.org/0009-0001-3599-5197
     alias: glshort
   - given-names: Yoreley
     family-names: Villafañez
