@@ -7,6 +7,7 @@ import {
   inject,
   computed,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import {
   MatCardHeader,
   MatCardTitle,
@@ -42,7 +43,6 @@ import * as uiStore from '@store/ui';
 import * as userStore from '@store/user';
 
 import { ImageDialogComponent } from './image-dialog';
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-scene-detail',
