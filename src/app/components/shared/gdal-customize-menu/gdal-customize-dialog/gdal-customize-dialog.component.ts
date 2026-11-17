@@ -444,11 +444,8 @@ machine urs.earthdata.nasa.gov
 
     effect(() => {
       if (this.isWindows()) {
-        this.gdalConfigModel.update((m) => ({
-          ...m,
-          minimalCommand: false,
-          nisarDriver: false,
-        }));
+        this.gdalConfigForm.environment.minimalCommand().value.set(false);
+        this.gdalConfigForm.environment.nisarDriver().value.set(false);
       }
     });
   }
