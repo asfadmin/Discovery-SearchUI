@@ -204,7 +204,7 @@ export class Hyp3JobService {
         ? job.files[0]
         : { size: -1, url: '', filename: product.name };
 
-    const combinedProduct: any = {
+    const combinedProduct: models.CMRProduct = {
       ...product,
       browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
       thumbnail: job.thumbnail_images
@@ -218,11 +218,17 @@ export class Hyp3JobService {
       metadata: {
         ...product.metadata,
         fileName: jobFile.filename || '',
-        productType: job.job_type as models.Hyp3JobType,
+        productType: job.job_type as string,
         job,
       },
     };
-
+    if (job.job_type === 'NISAR_CV') {
+      console.log(job);
+      combinedProduct.browses = job.browse_images?.reverse(); // grab the smaller thing first
+      combinedProduct.metadata.date = job.request_time;
+      combinedProduct.name = job.job_id;
+      combinedProduct.isDummyProduct = false;
+    }
     return combinedProduct;
   }
 

@@ -7,6 +7,7 @@ import {
   inject,
   computed,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import {
   MatCardHeader,
   MatCardTitle,
@@ -61,6 +62,7 @@ import { ImageDialogComponent } from './image-dialog';
     AsyncPipe,
     TitleCasePipe,
     TranslateModule,
+    MatButtonModule,
   ],
 })
 export class SceneDetailComponent implements OnInit, OnDestroy {

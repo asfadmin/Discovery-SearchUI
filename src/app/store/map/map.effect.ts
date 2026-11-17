@@ -164,6 +164,20 @@ export class MapEffects {
               return;
             }
           }
+          // const test: models.CMRProduct = selectedProduct;
+          // if (test.metadata.job) {
+          //   // const url =
+          //   //   'http://127.0.0.1:5000/files/S1_305981_IW3_20141027_20261112_VV_INT80_2CBC_dem.tif';
+          //   // const url = 'http://127.0.0.1:5000/files/test_unw_phase.tif';
+          //   this.mapService.setSelectedBrowse(
+          //     url,
+          //     selectedProduct.metadata.polygon,
+          //     selectedProduct,
+          //   );
+          //   this.mapService.clearBrowseOverlays();
+          //   this.store$.dispatch(new ClearBrowseOverlays());
+          //   return;
+          // }
           if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
             let url = selectedProduct.browses[0];
             const latlon_browse = selectedProduct.browses.find((url) =>
