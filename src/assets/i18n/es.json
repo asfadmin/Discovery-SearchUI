@@ -173,7 +173,7 @@
   "CROP_TO_AOI": "Recortar al Área de Interés actual",
   "CROP_TO_AOI_DISABLED": "Seleccione un Área de Interés poligonal para usar esta función.",
   "CROP_TO_AOI_IS_DISABLED": "El recorte al Área de Interés está deshabilitado.",
-  "CROP_TO_AOI_TOOLTIP": "Recortar al Área de Interés seleccionada.",
+  "CROP_TO_AOI_TOOLTIP": "Areas of Interest selected on browse images will lead to approximate cutlines as browse image placement is approximate.",
   "CROP_TO_WKT_POLYGON_STRING": "Recortar a la cadena de polígono WKT",
   "CROP_TO_WKT_POLYGON_STRING_ERROR": "Must be a valid WKT POLYGON string.",
   "CROSS_OFFSET_VARIANCE": "Cross Offset Variance",
