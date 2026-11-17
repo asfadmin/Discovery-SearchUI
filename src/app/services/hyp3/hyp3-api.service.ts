@@ -435,11 +435,7 @@ export class Hyp3ApiService {
     );
   }
 
-  public isHyp3able(
-    products: models.CMRProduct[],
-    jobType: models.Hyp3JobType,
-  ): boolean {
-    console.log(products, jobType);
+  public isHyp3able(_, __): boolean {
     return false;
   }
 
