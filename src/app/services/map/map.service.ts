@@ -886,7 +886,7 @@ export class MapService implements OnDestroy {
         this.map.addLayer(this.browseImageLayer);
       }
     } else {
-      let style = [
+      let style: any = [
         'interpolate',
         ['linear'],
         ['band', 1],
@@ -907,19 +907,16 @@ export class MapService implements OnDestroy {
           0.00001,
           [0, 0, 0, 1],
           1.0,
-          [255, 0, 0, 1],
+          [255, 255, 255, 1],
         ];
       } else if (url.includes('CROP')) {
         style = [
-          'interpolate',
-          ['linear'],
-          ['band', 1],
-          0.0,
-          [0, 0, 0, 0],
-          0.00001,
-          [0, 0, 0, 1],
-          3.0,
-          [255, 255, 255, 1],
+          'case',
+          ['<', ['band', 1], 1],
+          '#2b83ba',
+          ['<', ['band', 1], 2],
+          '#abdda4',
+          '#d7191c',
         ];
       }
 
