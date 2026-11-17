@@ -451,7 +451,7 @@
             language="bash"
           >
           </app-code-block>
-        } @else {
+        } @else if (gdalConfigForm.environment.os().value() == 'Unix') {
           <p>{{ 'INSTALL_GDAL' | translate }}</p>
           <app-code-block
             [isCommand]="true"
@@ -472,6 +472,15 @@
             language="bash"
           >
           </app-code-block>
+        } @else {
+          <p>
+            {{ 'INSTALL_GDAL_WINDOWS' | translate }}
+            <app-docs-modal
+              class="info-text"
+              text="INSTALL_GDAL_WINDOWS_LINK"
+              url="https://nisar-docs.asf.alaska.edu/gdal#installing-gdal"
+            ></app-docs-modal>
+          </p>
         }
         <p>{{ 'SETUP_NETRC' | translate }}</p>
         <app-code-block
