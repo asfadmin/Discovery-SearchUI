@@ -85,13 +85,26 @@ export class BrowseOverlayService {
     });
   }
 
-  private createGeotiffSource(blob: Blob) {
+  // private _createGeotiffSource(blob: Blob) {
+  //   return new GeoTIFFSource({
+  //     sources: [
+  //       {
+  //         blob,
+  //         min: 0.0,
+  //         max: 3.0,
+  //         bands: [1],
+  //         nodata: 0,
+  //       },
+  //     ],
+  //   });
+  // }
+  private createGeotiffSourceUrl(url: string) {
     return new GeoTIFFSource({
       sources: [
         {
-          blob,
+          url,
           min: 0.0,
-          max: 0.15,
+          max: 3.0,
           bands: [1],
           nodata: 0,
         },
@@ -155,27 +168,18 @@ export class BrowseOverlayService {
   }
 
   public createGeotiffLayer(
-    blob: Blob,
+    url: string,
     _wkt: string,
     className = 'ol-layer',
     layer_id = '',
+    style = [],
   ) {
-    const source = this.createGeotiffSource(blob);
+    const source = this.createGeotiffSourceUrl(url);
 
     const output = new TileLayer({
       source: source as GeoTIFFSource,
       style: {
-        color: [
-          'interpolate',
-          ['linear'],
-          ['band', 1],
-          0.0,
-          [0, 0, 0, 0],
-          0.00001,
-          [0, 0, 0, 1],
-          1.0,
-          [255, 255, 255, 1],
-        ],
+        color: style,
       },
       className,
       zIndex: 0,

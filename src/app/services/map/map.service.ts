@@ -886,25 +886,52 @@ export class MapService implements OnDestroy {
         this.map.addLayer(this.browseImageLayer);
       }
     } else {
-      this.http
-        .get(url, {
-          withCredentials: true,
-          observe: 'response',
-          responseType: 'blob',
-        })
-        .subscribe((response: any) => {
-          this.browseImageLayer = this.browseOverlayService.createGeotiffLayer(
-            response.body,
-            wkt,
-            'ol-layer',
-            'current-overlay',
-          );
-          const s: any = this.browseImageLayer.getSource().getView()!;
-          s.then((thing: any) => {
-            this.map?.getView().fit(thing.extent);
-          });
-          this.map.addLayer(this.browseImageLayer);
-        });
+      let style = [
+        'interpolate',
+        ['linear'],
+        ['band', 1],
+        0.0,
+        [0, 0, 0, 0],
+        0.00001,
+        [0, 0, 0, 1],
+        1.0,
+        [255, 255, 255, 1],
+      ];
+      if (url.includes('CV')) {
+        style = [
+          'interpolate',
+          ['linear'],
+          ['band', 1],
+          0.0,
+          [0, 0, 0, 0],
+          0.00001,
+          [0, 0, 0, 1],
+          1.0,
+          [255, 0, 0, 1],
+        ];
+      } else if (url.includes('CROP')) {
+        style = [
+          'interpolate',
+          ['linear'],
+          ['band', 1],
+          0.0,
+          [0, 0, 0, 0],
+          0.00001,
+          [0, 0, 0, 1],
+          3.0,
+          [255, 255, 255, 1],
+        ];
+      }
+
+      this.browseImageLayer = this.browseOverlayService.createGeotiffLayer(
+        url,
+        wkt,
+        'ol-layer',
+        'current-overlay',
+        style,
+      );
+
+      this.map.addLayer(this.browseImageLayer);
     }
   }
 
