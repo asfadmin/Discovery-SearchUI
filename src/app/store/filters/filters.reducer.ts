@@ -132,7 +132,7 @@ export const initState: FiltersState = {
   jointObservation: [],
   rangeBandwidth: [],
   instrument: [],
-  scienceProduct: [],
+  scienceProduct: ['GCOV'],
   productionConfig: ['PR'],
   productMaturity: [],
 
