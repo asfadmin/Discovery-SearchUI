@@ -88,8 +88,7 @@ footer[mat-dialog-actions] {
 
 .cv-row {
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
+  flex-flow: row wrap;
   gap: 1rem;
 }
 
