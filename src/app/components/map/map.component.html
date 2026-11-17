@@ -8,13 +8,27 @@
 <div
   #AriaPopup
   class="ol-popup"
-  [class.on-demand-popup-menu]="this.OnDemandFrames.length > 0"
-  [class.hidden]="this.OnDemandFrames.length === 0"
+  [class.on-demand-popup-menu]="OnDemandFrames.length > 0"
+  [class.hidden]="OnDemandFrames.length === 0"
 >
   <button mat-button (click)="buildOnDemandStack()">
     <mat-icon>show_chart</mat-icon>
     <span>{{ 'BUILD_SBAS_SLC_STACK' | translate }}</span>
   </button>
+</div>
+
+<div
+  #MultiFeaturePopup
+  class="ol-popup"
+  cdkDrag
+  [class.hidden]="selectedFrameOptions().length === 0"
+  [class.multi-feature-menu]="this.selectedFrameOptions().length !== 0"
+>
+  <app-feature-selector
+    [features]="selectedFrameOptions()"
+    (callFeature)="callFeature($event)"
+    (close)="closePreview()"
+  />
 </div>
 
 <div class="map-header">

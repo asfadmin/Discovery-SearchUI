@@ -1,0 +1,42 @@
+<div cdkDragHandle class="draggable feature-header">
+  <mat-icon class="drag-handle">drag_indicator</mat-icon>
+  <h3 class="feature-options-title">
+    @switch (searchType()) {
+      @case (searchTypes.PAIR_SELECTION) {
+        {{ 'SELECT_FROM_OVERLAPPING_FRAME' | translate }}
+      }
+      @default {
+        {{ 'SELECT_FROM_OVERLAPPING' | translate }}
+      }
+    }
+  </h3>
+  <button matIconButton (click)="closeMenu()" class="close-button">x</button>
+</div>
+<hr class="divider" />
+<div class="feature-options">
+  <mat-action-list class="feature-options-list">
+    @for (item of this.displayedFeatures(); track $index) {
+      <mat-list-item
+        (click)="handleClick(item.feature)"
+        (mouseenter)="hoverPreview(item.feature)"
+        (mouseleave)="hoverPreviewLeave(item.feature)"
+      >
+        <span matListItemTitle>
+          @if (item.dataset) {
+            <app-file-name
+              [name]="item.display"
+              [dataset]="item.dataset"
+              [searchType]="searchType()"
+              [len]="20"
+            ></app-file-name>
+          } @else {
+            {{ item.display }}
+          }
+        </span>
+        <span matListItemLine>
+          {{ item.description }}
+        </span>
+      </mat-list-item>
+    }
+  </mat-action-list>
+</div>

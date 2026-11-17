@@ -26,12 +26,7 @@ import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/c
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
 import * as models from '@models';
-import {
-  provisionalIssuesUrl,
-  betaIssuesUrl,
-  firstValidatedCrid,
-  firstProvisionalCrid,
-} from '@models/datasets/nisar';
+import { validated, provisional, uncalibrated } from '@models/datasets/nisar';
 import {
   AuthService,
   BrowseOverlayService,
@@ -98,29 +93,22 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public productTypeDocsUrl: string | null = null;
 
   public nisarCalibration = computed(() => {
-    this.selectedScene();
+    const scene = this.selectedScene();
 
     if (this.dataset?.id !== 'NISAR') {
       return null;
     }
 
-    const crid = Number(
-      this.scene?.metadata?.nisar?.crid?.replace(/\D/g, '') ?? '',
-    );
-    switch (true) {
-      case crid >= firstValidatedCrid: {
-        return {
-          label: 'VALIDATED',
-          url: 'https://nisar-docs.asf.alaska.edu/nisar-known-issues/',
-        };
-      }
-      case crid >= firstProvisionalCrid: {
-        return { label: 'PROVISIONAL', url: provisionalIssuesUrl };
-      }
-      default: {
-        return { label: 'UNCALIBRATED', url: betaIssuesUrl };
-      }
+    const crid = Number(scene?.metadata?.nisar?.crid?.replace(/\D/g, '') ?? '');
+
+    if (crid >= validated.firstCrid) {
+      return validated;
     }
+    if (crid >= provisional.firstCrid) {
+      return provisional;
+    }
+
+    return uncalibrated;
   });
 
   public isBrowseOverlayEnabled$: Observable<boolean> =

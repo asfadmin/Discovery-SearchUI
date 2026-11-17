@@ -4,9 +4,10 @@ import { Feature } from 'ol';
 import { Geometry, Polygon } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { Fill, Stroke, Style } from 'ol/style';
 
 import { Range } from '@models';
+
+import { framePreview } from './polygon.style';
 
 @Injectable({
   providedIn: 'root',
@@ -19,14 +20,10 @@ export class PairSelectionService {
 
     this.layer = new VectorLayer<VectorSource>({
       source: this.source,
-      style: new Style({
-        fill: new Fill({
-          color: '#FFFFFF33',
-        }),
-        stroke: new Stroke({
-          color: 'black',
-        }),
-      }),
+      style: framePreview,
+      properties: {
+        selectable: true,
+      },
     });
   }
 

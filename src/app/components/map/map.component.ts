@@ -1,12 +1,16 @@
+import { CdkDrag } from '@angular/cdk/drag-drop';
 import { AsyncPipe } from '@angular/common';
 import {
   Component,
   ElementRef,
   EventEmitter,
+  Injector,
   OnDestroy,
   OnInit,
   Output,
   ViewChild,
+  computed,
+  effect,
   inject,
 } from '@angular/core';
 import { MatButton, MatFabButton } from '@angular/material/button';
@@ -53,6 +57,7 @@ import { DisplacementLayersComponent } from './displacement-layers/displacement-
 import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.component';
 import { LayerSelectorComponent } from './map-controls/layer-selector/layer-selector.component';
 import { MapControlsComponent } from './map-controls/map-controls.component';
+import { FeatureSelectorComponent } from './map-overlays/feature-selector/feature-selector.component';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -80,6 +85,8 @@ enum FullscreenControls {
     AsyncPipe,
     TranslateModule,
     MatTooltipModule,
+    FeatureSelectorComponent,
+    CdkDrag,
   ],
 })
 export class MapComponent implements OnInit, OnDestroy {
@@ -98,6 +105,9 @@ export class MapComponent implements OnInit, OnDestroy {
   @ViewChild('browsetooltip', { static: false }) browseDisclaimer: ElementRef;
   @ViewChild('AriaPopup', { static: false })
   ariaPopup: ElementRef<HTMLDivElement>;
+  @ViewChild('MultiFeaturePopup', { static: false })
+  multiFeaturePopup: ElementRef<HTMLDivElement>;
+  @ViewChild(CdkDrag) dragReference!: CdkDrag;
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
@@ -136,6 +146,9 @@ export class MapComponent implements OnInit, OnDestroy {
   public selectedScene = this.store$.selectSignal(scenesStore.getSelectedScene);
   public SelectedOnDemandFrameID: Feature = null;
   public OnDemandFrames: { frameID: string; feature: Feature<Geometry> }[] = [];
+  public selectedFrameOptions = computed(() =>
+    this.mapService.selectedMultipleFeatures$(),
+  );
   private subs = new SubSink();
   private gridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   private isMapInitialized$ = this.store$.select(
@@ -149,24 +162,8 @@ export class MapComponent implements OnInit, OnDestroy {
   private chartStates: models.timeseriesChartItemState[] = [];
   //@ts-expect-error Variable used later
   private selectedSeries: any = null;
+  private injector = inject(Injector);
 
-  public buildOnDemandStack() {
-    // let id = feature.get('id')
-    this.store$.dispatch(new uiStore.SetFrameSelection(false));
-    this.store$.dispatch(new searchStore.ClearSearch());
-    this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.SBAS));
-    this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(true));
-    this.store$.dispatch(
-      new scenesStore.SetFilterMaster(
-        this.OnDemandFrames[0].frameID.toString(),
-      ),
-    );
-    this.store$.dispatch(new filtersStore.SetSelectedDataset(models.beta.id));
-    this.store$.dispatch(new searchStore.MakeSearch());
-
-    this.mapService.setOnDemandSBASFrame(this.OnDemandFrames[0].feature);
-    this.mapService.setAriaPopupOverlay(null, null);
-  }
   ngOnInit(): void {
     this.mapService.focusedAriaFrame$
       .pipe(
@@ -312,12 +309,16 @@ export class MapComponent implements OnInit, OnDestroy {
         this.store$.select(scenesStore.getFilterMaster), // frame id for things
         this.store$.select(filtersStore.getSelectedDataset),
       ]).subscribe(([shouldUseFramesForReference, filterMaster, dataset]) => {
-        // TODO: load in frame map instead of grabbing previous frame map feature
-        this.mapService.sbasFrameMode(
-          !shouldUseFramesForReference,
-          filterMaster,
-          dataset,
-        );
+        if (
+          dataset.properties.includes(models.Props.PAIR_SELECTION) &&
+          this.searchType() === models.SearchType.SBAS
+        ) {
+          this.mapService.sbasFrameMode(
+            !shouldUseFramesForReference,
+            filterMaster,
+            dataset,
+          );
+        }
       }),
     );
 
@@ -413,6 +414,18 @@ export class MapComponent implements OnInit, OnDestroy {
         this.mapService.loadPolygonFrom(wktRepresentation.toString());
       }),
     );
+
+    effect(
+      () => {
+        if (this.selectedFrameOptions().length > 0) {
+          this.dragReference.reset();
+          this.mapService.setMultipleFeatureOverlay(
+            this.multiFeaturePopup.nativeElement,
+          );
+        }
+      },
+      { injector: this.injector },
+    );
   }
 
   public respondToActiveWkt(uuid: string) {
@@ -503,7 +516,10 @@ export class MapComponent implements OnInit, OnDestroy {
           ),
         )
         .subscribe((feature) => {
-          if (this.searchType() !== this.searchTypes.DISPLACEMENT) {
+          if (
+            this.searchType() !== this.searchTypes.DISPLACEMENT &&
+            this.searchType() !== this.searchTypes.PAIR_SELECTION
+          ) {
             this.mapService.setSelectedFeature(feature);
           }
         }),
@@ -654,6 +670,25 @@ export class MapComponent implements OnInit, OnDestroy {
     return vectorLayer;
   }
 
+  public buildOnDemandStack() {
+    this.buildOnDemandStackWithFeature(this.OnDemandFrames[0].feature);
+  }
+
+  public buildOnDemandStackWithFeature(feature: Feature) {
+    this.store$.dispatch(new uiStore.SetFrameSelection(false));
+    this.store$.dispatch(new searchStore.ClearSearch());
+    this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.SBAS));
+    this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(true));
+    this.store$.dispatch(
+      new scenesStore.SetFilterMaster(feature.get('id').toString()),
+    );
+    this.store$.dispatch(new filtersStore.SetSelectedDataset(models.beta.id));
+    this.store$.dispatch(new searchStore.MakeSearch());
+
+    this.mapService.setOnDemandSBASFrame(feature);
+    this.mapService.setAriaPopupOverlay(null, null);
+  }
+
   private scenesToFeature(scenes: models.CMRProduct[], projection: string) {
     const features = scenes
       .filter((scene) => !!scene.metadata.polygon)
@@ -666,6 +701,20 @@ export class MapComponent implements OnInit, OnDestroy {
       });
 
     return features;
+  }
+  public callFeature(feature: Feature | null) {
+    if (
+      feature &&
+      this.mapService.getFeatureType(feature) === models.FeatureType.FRAME
+    ) {
+      this.buildOnDemandStackWithFeature(feature);
+      this.mapService.clearMultipleFeatureOverlay();
+    }
+    this.mapService.handleFeature(feature);
+  }
+
+  public closePreview() {
+    this.mapService.clearMultipleFeatureOverlay();
   }
 
   private featuresToSource(

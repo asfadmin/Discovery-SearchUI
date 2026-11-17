@@ -20,7 +20,9 @@ test(
     await loggedInPage.waitForTimeout(1000);
     await loggedInPage.mouse.click(790, 503);
     await loggedInPage
-      .getByRole('button', { name: 'Build SBAS SLC Stack' })
+      .locator('mat-list-item')
+      .filter({ hasText: 'Frame ID' })
+      .first()
       .click();
     await expect(
       loggedInPage.locator('app-search-type-selector'),

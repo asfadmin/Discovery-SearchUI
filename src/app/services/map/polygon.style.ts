@@ -153,3 +153,23 @@ export const selected = new Style({
   }),
   zIndex: 10,
 });
+
+export const hoverPreview = new Style({
+  fill: new Fill({
+    color: 'rgba(255, 255, 255, 0.2)',
+  }),
+  stroke: new Stroke({
+    color: 'rgba(255, 5, 5, 0.8)',
+    width: 4,
+  }),
+  zIndex: 11,
+});
+
+export const framePreview = new Style({
+  fill: new Fill({
+    color: '#FFFFFF33',
+  }),
+  stroke: new Stroke({
+    color: 'black',
+  }),
+});
