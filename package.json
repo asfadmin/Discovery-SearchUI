@@ -10,6 +10,7 @@
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint -c eslint.config.js src e2e",
     "lint:css": "stylelint -c stylelint.config.mjs \"**/*.scss\"",
+    "lint:fix": "npm run lint:js -- --fix",
     "e2e": "ng e2e",
     "check_keys": "node scripts/check-keys.js"
   },
