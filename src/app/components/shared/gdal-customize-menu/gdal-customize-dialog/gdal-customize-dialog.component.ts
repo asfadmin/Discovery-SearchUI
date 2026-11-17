@@ -171,7 +171,7 @@ export class GdalCustomizeDialogComponent {
     );
     pattern(
       schemaPath.geospatial.cutlineWKT,
-      /POLYGON [(]{2}(\d+(?:\.\d+)?)\s(\d+(?:\.\d+)?)((,\s(\d+(?:\.\d+)?)\s(\d+(?:\.\d+)?)))*[)]{2}/, //https://stackoverflow.com/a/69107967
+      /^POLYGON\s*\(\s*\(\s*([-+]?\d+(?:\.\d+)?\s+[-+]?\d+(?:\.\d+)?)(?:\s*,\s*[-+]?\d+(?:\.\d+)?\s+[-+]?\d+(?:\.\d+)?){2,}\s*,\s*\1\s*\)\s*\)$/,
       { message: 'CROP_TO_WKT_POLYGON_STRING_ERROR' },
     );
   });
