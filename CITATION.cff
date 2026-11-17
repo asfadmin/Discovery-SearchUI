@@ -3,7 +3,7 @@ message: >-
   If you use this software, please cite it using the
   metadata from this file.
 
-title: NISAR Data User Guide
+title: ASF's Angular Search UI
 doi: TODO
 contact:
   - name: NASA Earthdata Forum
@@ -49,20 +49,6 @@ keywords:
   - ice sheets
   - frozen ground
 authors:
-  - given-names: Lily
-    family-names: Larsen
-    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
-    orcid: https://orcid.org/0009-0004-8017-3522
-    alias: lllarsen
-  - given-names: William
-    family-names: Horn
-    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
-    orcid: https://orcid.org/0009-0003-8206-5982
-    alias: williamh890
-  - given-names: Kim
-    family-names: Fairbanks
-    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
-    alias: SpicyGarlicAlbacoreRoll
   - given-names: Andrew
     family-names: Anderson
     affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
@@ -70,12 +56,27 @@ authors:
   - given-names: Tyler
     family-names: Chase
     affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
+    orcid: https://orcid.org/0009-0006-0799-0619
     alias: tylercchase
-  - given-names: Yoreley
-    family-names: Villafañez
-    alias: yoreley777
+  - given-names: Kim
+    family-names: Fairbanks
+    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
+    orcid: https://orcid.org/0009-0006-9026-8327
+    alias: SpicyGarlicAlbacoreRoll
+  - given-names: William
+    family-names: Horn
+    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
+    orcid: https://orcid.org/0009-0003-8206-5982
+    alias: williamh890
+  - given-names: Lily
+    family-names: Larsen
+    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
+    orcid: https://orcid.org/0009-0004-8017-3522
+    alias: lllarsen
   - given-names: Gregory
     family-names: Short
     affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
     alias: glshort
-
+  - given-names: Yoreley
+    family-names: Villafañez
+    alias: yoreley777
