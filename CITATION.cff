@@ -4,7 +4,7 @@ message: >-
   metadata from this file.
 
 title: ASF's Angular Search UI
-doi: TODO
+doi: 10.5281/zenodo.24327253
 contact:
   - name: NASA Earthdata Forum
     website: https://forum.earthdata.nasa.gov
@@ -63,6 +63,10 @@ authors:
     affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
     orcid: https://orcid.org/0009-0006-9026-8327
     alias: SpicyGarlicAlbacoreRoll
+  - given-names: Christy
+    family-names: Fleming
+    affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
+    alias: ccfleming417
   - given-names: William
     family-names: Horn
     affiliation: Alaska Satellite Facility, Geophysical Institute, University of Alaska Fairbanks, Fairbanks, AK USA
