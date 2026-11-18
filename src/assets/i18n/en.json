@@ -924,6 +924,7 @@
   "THE_MAP": "The map",
   "THIS_INTERFACE_IS_POWERED_BY_A_ROBUST_API_YOU_CAN_USE_THAT_API_DIRECTLY_ALLOWING": "This interface is powered by a robust API. You can use that API directly allowing",
   "TILE_ID": "Tile ID",
+  "TIMESERIES_LOAD_FAILED": "Could not load data for the selected points",
   "TO": "to",
   "TO_A": "to a",
   "TO_DOWNLOADS": "to downloads",

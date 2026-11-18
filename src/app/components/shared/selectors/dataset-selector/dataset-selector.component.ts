@@ -65,6 +65,7 @@ export class DatasetSelectorComponent {
   public isReadMore = true;
 
   public searchElement = viewChild<ElementRef>('datasetOptions');
+  public menuTrigger = viewChild(MatMenuTrigger);
 
   public datasetName = computed(() => {
     let datasetName = '';
@@ -93,8 +94,31 @@ export class DatasetSelectorComponent {
     });
   });
 
+  public enterTarget = computed(() => {
+    const firstDataset = this.filteredDatasets()?.[0];
+    if (
+      !this.datasetFilter() ||
+      !firstDataset ||
+      firstDataset.properties.includes(models.Props.DEPRECATED)
+    ) {
+      return null;
+    }
+    return firstDataset;
+  });
+
   public menuOpen() {
     this.searchElement().nativeElement.focus();
+  }
+
+  public onFilterEnter(event: Event): void {
+    event.preventDefault();
+    const dataset = this.enterTarget();
+    if (!dataset) {
+      return;
+    }
+
+    this.onSelectionChange(dataset.id);
+    this.menuTrigger().closeMenu();
   }
 
   public onSelectionChange(dataset: string): void {

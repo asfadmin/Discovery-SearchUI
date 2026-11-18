@@ -37,9 +37,11 @@
               [(ngModel)]="datasetFilter"
               name="dataset-options-filter"
               #datasetOptions
+              (keydown.enter)="onFilterEnter($event)"
             />
             @if (datasetFilter()) {
               <button
+                type="button"
                 mat-icon-button
                 matSuffix
                 (click)="datasetFilter.set('')"
@@ -55,6 +57,7 @@
           @for (dataset of filteredDatasets(); track dataset.id) {
             <button
               mat-menu-item
+              [class.dataset-enter-target]="dataset.id === enterTarget()?.id"
               (keydown.enter)="onSelectionChange(dataset.id)"
             >
               <app-dataset

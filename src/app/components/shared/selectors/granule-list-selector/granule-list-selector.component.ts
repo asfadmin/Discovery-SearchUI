@@ -43,7 +43,7 @@ export class GranuleListSelectorComponent {
     effect(() => {
       if (this.granuleList() !== this.granuleListModel().list) {
         this.store$.dispatch(
-          new filtersStore.setGranuleList(this.granuleListModel().list),
+          new filtersStore.setGranuleList(this.granuleListModel().list.trim()),
         );
       }
     });
