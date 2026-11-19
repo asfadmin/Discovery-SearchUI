@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  inject,
-  input,
-} from '@angular/core';
+import { Component, Input, inject, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -42,8 +35,8 @@ export class SceneControlsComponent {
   readonly numQueued = input<number>(undefined);
   readonly searchType = input<models.SearchType>(undefined);
 
-  @Output() onZoomToScene = new EventEmitter();
-  @Output() onToggleScene = new EventEmitter();
+  readonly onZoomToScene = output();
+  readonly onToggleScene = output();
 
   public SearchTypes = models.SearchType;
 

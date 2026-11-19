@@ -2,10 +2,9 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  Output,
-  EventEmitter,
   inject,
   input,
+  output,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as d3 from 'd3';
@@ -46,7 +45,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   readonly zoomOut$ = input<Observable<void>>(undefined);
   readonly zoomToFit$ = input<Observable<void>>(undefined);
   private pairs$: Observable<any> = this.pairService.pairs$;
-  @Output() isGraphDisconnected = new EventEmitter<boolean>();
+  readonly isGraphDisconnected = output<boolean>();
 
   private hoveredLine;
   private selectedPair = null;

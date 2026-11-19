@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, output } from '@angular/core';
 import {
   MatButtonToggle,
   MatButtonToggleGroup,
@@ -20,9 +20,9 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './timeseries-chart-zoom.component.scss',
 })
 export class TimeseriesChartZoomComponent {
-  @Output() zoomInEvent = new EventEmitter<void>();
-  @Output() zoomOutEvent = new EventEmitter<void>();
-  @Output() zoomToFitEvent = new EventEmitter<void>();
+  readonly zoomInEvent = output<void>();
+  readonly zoomOutEvent = output<void>();
+  readonly zoomToFitEvent = output<void>();
 
   public zoomIn(): void {
     this.zoomInEvent.emit();

@@ -2,12 +2,11 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 import { UpperCasePipe, TitleCasePipe } from '@angular/common';
 import {
   Component,
-  EventEmitter,
   OnDestroy,
   OnInit,
-  Output,
   inject,
   Signal,
+  output,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -87,7 +86,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   private screenSize = inject(services.ScreenSizeService);
   public hyp3 = inject(Hyp3ApiService);
 
-  @Output() selectedChange = new EventEmitter<string>();
+  readonly selectedChange = output<string>();
 
   public breakpoint: Signal<models.Breakpoints> = toSignal(
     this.screenSize.breakpoint$,

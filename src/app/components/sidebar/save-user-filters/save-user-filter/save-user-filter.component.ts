@@ -1,13 +1,12 @@
 import {
   Component,
-  EventEmitter,
   ElementRef,
   Input,
   OnInit,
-  Output,
   ViewChild,
   inject,
   input,
+  output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -61,7 +60,7 @@ export class SaveUserFilterComponent implements OnInit {
   @Input() filterPreset: models.SavedFilterPreset;
   readonly isNew = input<boolean>(undefined);
 
-  @Output() updateName = new EventEmitter<string>();
+  readonly updateName = output<string>();
 
   public SearchType = models.SearchType;
   public searchTranslation = models.SearchTypeTranslation;

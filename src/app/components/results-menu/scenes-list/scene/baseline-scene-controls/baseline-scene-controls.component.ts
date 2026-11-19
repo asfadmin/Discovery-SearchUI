@@ -1,13 +1,5 @@
 import { NgClass } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  inject,
-  input,
-} from '@angular/core';
+import { Component, OnInit, Input, inject, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatListItemMeta } from '@angular/material/list';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -51,7 +43,7 @@ export class BaselineSceneControlsComponent implements OnInit {
   };
   readonly isQueued = input<boolean>(undefined);
 
-  @Output() onToggleScene = new EventEmitter();
+  readonly onToggleScene = output();
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;

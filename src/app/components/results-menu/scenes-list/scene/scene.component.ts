@@ -1,13 +1,5 @@
 import { NgStyle, NgClass } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  inject,
-  input,
-} from '@angular/core';
+import { Component, OnInit, Input, inject, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatListItem } from '@angular/material/list';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -67,7 +59,7 @@ export class SceneComponent implements OnInit {
     byJobType: models.Hyp3ableProductByJobType[];
   }>(undefined);
 
-  @Output() toggleScene = new EventEmitter();
+  readonly toggleScene = output();
 
   public hovered: boolean;
   public breakpoint: models.Breakpoints;

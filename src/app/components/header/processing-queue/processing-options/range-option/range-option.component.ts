@@ -1,12 +1,5 @@
 import { LowerCasePipe } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  input,
-} from '@angular/core';
+import { Component, Input, OnInit, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   MatFormField,
@@ -40,7 +33,7 @@ export class RangeOptionComponent implements OnInit {
   @Input() range: Range<number>;
   readonly default = input<number>(undefined);
 
-  @Output() valueChange = new EventEmitter<number>();
+  readonly valueChange = output<number>();
 
   ngOnInit(): void {
     this.value = this.default();

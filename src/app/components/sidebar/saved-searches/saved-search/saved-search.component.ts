@@ -2,13 +2,12 @@ import {
   Component,
   OnInit,
   Input,
-  Output,
-  EventEmitter,
   ViewChild,
   ElementRef,
   ChangeDetectionStrategy,
   inject,
   input,
+  output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -57,12 +56,15 @@ export class SavedSearchComponent implements OnInit {
   readonly isSavedSearch = input<boolean>(undefined);
   readonly lockedFocus = input<boolean>(undefined);
 
-  @Output() updateFilters = new EventEmitter<string>();
-  @Output() updateName = new EventEmitter<{ id: string; name: string }>();
-  @Output() deleteSearch = new EventEmitter<string>();
-  @Output() setSearch = new EventEmitter<models.Search>();
-  @Output() expand = new EventEmitter<string>();
-  @Output() unlockFocus = new EventEmitter<void>();
+  readonly updateFilters = output<string>();
+  readonly updateName = output<{
+    id: string;
+    name: string;
+  }>();
+  readonly deleteSearch = output<string>();
+  readonly setSearch = output<models.Search>();
+  readonly expand = output<string>();
+  readonly unlockFocus = output<void>();
 
   public SearchType = models.SearchType;
   public searchTranslation = models.SearchTypeTranslation;

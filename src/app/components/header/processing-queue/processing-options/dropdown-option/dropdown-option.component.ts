@@ -1,5 +1,5 @@
 import { NgPlural, NgPluralCase, UpperCasePipe } from '@angular/common';
-import { Component, Input, Output, EventEmitter, input } from '@angular/core';
+import { Component, Input, input, output } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -36,7 +36,7 @@ export class DropdownOptionComponent {
 
   @Input() costsTable: any = null;
 
-  @Output() valueChange = new EventEmitter<string>();
+  readonly valueChange = output<string>();
 
   public onValueChange(toggleValue: string): void {
     this.value = toggleValue;

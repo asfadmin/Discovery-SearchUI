@@ -2,12 +2,11 @@ import { AsyncPipe } from '@angular/common';
 import {
   Component,
   Input,
-  Output,
-  EventEmitter,
   OnInit,
   OnDestroy,
   inject,
   input,
+  output,
 } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -96,10 +95,10 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   readonly loadingHyp3JobName = input<string | null>(undefined);
   readonly isSearchableProduct = input(false);
 
-  @Output() toggle = new EventEmitter<void>();
-  @Output() closeProduct = new EventEmitter<models.CMRProduct>();
-  @Output() queueHyp3Job = new EventEmitter<models.QueuedHyp3Job>();
-  @Output() renameJobProjectName = new EventEmitter<string>();
+  readonly toggle = output<void>();
+  readonly closeProduct = output<models.CMRProduct>();
+  readonly queueHyp3Job = output<models.QueuedHyp3Job>();
+  readonly renameJobProjectName = output<string>();
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = SearchType;

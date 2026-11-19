@@ -3,11 +3,10 @@ import {
   Component,
   OnInit,
   Input,
-  Output,
-  EventEmitter,
   inject,
   Signal,
   input,
+  output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconButton, MatButton } from '@angular/material/button';
@@ -100,7 +99,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
     map((jobs) => this.sortJobQueue(jobs)),
   );
 
-  @Output() removeJob = new EventEmitter<models.QueuedHyp3Job>();
+  readonly removeJob = output<models.QueuedHyp3Job>();
 
   public projectName = '';
   public isLoggedIn: Signal<boolean> = this.store$.selectSignal(

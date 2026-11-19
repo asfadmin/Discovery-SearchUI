@@ -2,12 +2,11 @@ import { NgClass } from '@angular/common';
 import {
   Component,
   OnInit,
-  Output,
-  EventEmitter,
   OnDestroy,
   inject,
   effect,
   input,
+  output,
 } from '@angular/core';
 import {
   UntypedFormGroup,
@@ -80,10 +79,10 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   readonly maxDate = input<Date>(undefined);
   readonly startDate = input<Date>(undefined);
   readonly endDate = input<Date>(undefined);
-  @Output() newStart = new EventEmitter<Date>();
-  @Output() newEnd = new EventEmitter<Date>();
-  @Output() startDateError = new EventEmitter<void>();
-  @Output() endDateError = new EventEmitter<void>();
+  readonly newStart = output<Date>();
+  readonly newEnd = output<Date>();
+  readonly startDateError = output<void>();
+  readonly endDateError = output<void>();
 
   public startDateErrors$ = new Subject<void>();
   public endDateErrors$ = new Subject<void>();

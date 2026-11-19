@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MatCheckboxChange,
@@ -22,7 +22,7 @@ export class TimeseriesChartConfigComponent {
 
   public showLines = this.store$.selectSignal(chartsStore.getShowLines);
   public showLinearFit = this.store$.selectSignal(chartsStore.getShowLinearFit);
-  @Output() public resetReferenceEvent = new EventEmitter();
+  public readonly resetReferenceEvent = output();
 
   public onToggleLines(event: MatCheckboxChange) {
     if (event.checked) {

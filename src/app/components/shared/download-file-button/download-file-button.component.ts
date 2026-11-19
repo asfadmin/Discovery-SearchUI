@@ -2,12 +2,11 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 import {
   Component,
   Input,
-  Output,
-  EventEmitter,
   OnInit,
   AfterViewInit,
   inject,
   input,
+  output,
 } from '@angular/core';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -59,10 +58,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   readonly href = input<string>(undefined);
   @Input() disabled: boolean;
   readonly useNewDownload = input<boolean>(undefined);
-  @Output()
-  productDownloaded: EventEmitter<CMRProduct> = new EventEmitter<CMRProduct>();
-  @Output() downloadCancelled: EventEmitter<CMRProduct> =
-    new EventEmitter<CMRProduct>();
+  readonly productDownloaded = output<CMRProduct>();
+  readonly downloadCancelled = output<CMRProduct>();
   public dFile: DownloadStatus;
   public url: string;
   public fileName: string = null;

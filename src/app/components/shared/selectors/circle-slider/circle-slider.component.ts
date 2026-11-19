@@ -1,13 +1,12 @@
 import {
   Component,
-  EventEmitter,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
   inject,
   input,
+  output,
 } from '@angular/core';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -32,12 +31,12 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
   readonly startValue = input(0);
   readonly endValue = input(180);
 
-  @Output() newStart = new EventEmitter<number>();
-  @Output() newEnd = new EventEmitter<number>();
+  readonly newStart = output<number>();
+  readonly newEnd = output<number>();
 
-  @Output() doneSelecting = new EventEmitter<boolean>();
+  readonly doneSelecting = output<boolean>();
 
-  @Output() swapEvent = new EventEmitter();
+  readonly swapEvent = output();
   private svg?: any;
   private width = 300;
   private height = 250;
