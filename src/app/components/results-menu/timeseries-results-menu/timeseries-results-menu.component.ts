@@ -448,6 +448,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public deletePoint(uuid: string) {
     this.pointHistoryService.removePoint(uuid);
   }
+
   public deleteAllPoints(): void {
     this.pointHistoryService.clear();
   }

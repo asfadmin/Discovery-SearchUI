@@ -449,6 +449,7 @@ export class ProcessingQueueComponent implements OnInit {
       ? this.hyp3JobTypesList[0].id
       : null;
   }
+
   public openSignup(): void {
     this.isSignupSelected = true;
     this.selectedJobTypeId = null;

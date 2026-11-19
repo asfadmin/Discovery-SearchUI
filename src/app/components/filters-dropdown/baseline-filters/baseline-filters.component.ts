@@ -86,6 +86,7 @@ export class BaselineFiltersComponent {
   public onDatasetChange(dataset: string): void {
     this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
   }
+
   public selectPanel(panel: FilterPanel): void {
     this.selectedPanel = panel;
   }

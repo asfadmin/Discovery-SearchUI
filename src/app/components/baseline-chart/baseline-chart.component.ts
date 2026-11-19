@@ -172,9 +172,11 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         }),
     );
   }
+
   public onResized() {
     this.createSVG();
   }
+
   private createSVG() {
     if (this.svg) {
       d3.selectAll('#baseline-chart > svg').remove();
@@ -197,6 +199,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
     this.drawChart();
   }
+
   private drawChart() {
     this.currentTransform = undefined;
     this.clipContainer = this.svg.append('g').attr('clip-path', 'url(#clip)');
@@ -269,6 +272,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       this.updateChart();
     }
   }
+
   private updateChart() {
     const newX = this.currentTransform?.rescaleX(this.x) ?? this.x;
     const newY = this.currentTransform?.rescaleY(this.y) ?? this.y;
@@ -309,6 +313,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       this.updateTooltip();
     }
   }
+
   private updateCircles() {
     const self = this;
 
@@ -367,6 +372,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         self.store$.dispatch(action);
       });
   }
+
   private updateTooltip() {
     const bounding = this.hoveredElement.getBoundingClientRect();
     const a = bounding.x > document.body.clientWidth - 90;
@@ -374,6 +380,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .style('left', `${bounding.x + (a ? -120 : 20)}px`)
       .style('top', `${bounding.y - 10}px`);
   }
+
   private setDataset(dataset: ChartDatasets, data) {
     this.data[dataset] = data;
     if (

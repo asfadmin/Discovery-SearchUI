@@ -216,6 +216,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
     const feature = this.wktService.wktToFeature(wkt, this.mapService.epsg());
     this.mapService.zoomToFeature(feature);
   }
+
   private addFile(file): void {
     const fileName = file.name;
     const size_limit = 10e6;

@@ -18,6 +18,7 @@ export class ContextMenuTriggerDirective
   public get contextMenuTriggerFor() {
     return this.menu;
   }
+
   public set contextMenuTriggerFor(menu: MatMenuPanel | null) {
     this.menu = menu;
   }
@@ -26,6 +27,7 @@ export class ContextMenuTriggerDirective
   public get contextMenuData() {
     return this.menuData;
   }
+
   public set contextMenuData(menuData: any) {
     this.menuData = menuData;
   }

@@ -8,6 +8,7 @@ import { MapDrawModeType } from '@models';
 })
 export class AoiIconPipe implements PipeTransform {
   public icon: string;
+
   transform(drawMode: MapDrawModeType) {
     const types = MapDrawModeType;
     switch (drawMode) {

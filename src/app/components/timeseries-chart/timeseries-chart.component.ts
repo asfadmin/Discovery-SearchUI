@@ -858,6 +858,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     });
     // this.dots.select("text").text(details?.wkt);
   }
+
   private resetHighlight() {
     let dClassName: string;
     this.lines.style('stroke', (d: DataReady) => {

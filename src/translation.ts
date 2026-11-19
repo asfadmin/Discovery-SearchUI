@@ -12,6 +12,7 @@ export class StaticTranslateLoader implements TranslateLoader {
     en: translationsEN,
     es: translationsES,
   };
+
   getTranslation(lang: string): Observable<Translations> {
     return of(this.translations[lang] ?? translationsEN);
   }

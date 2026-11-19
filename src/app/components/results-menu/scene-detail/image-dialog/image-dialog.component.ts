@@ -194,6 +194,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         };
       });
   }
+
   public closeDialog() {
     this.dialogRef.close();
   }

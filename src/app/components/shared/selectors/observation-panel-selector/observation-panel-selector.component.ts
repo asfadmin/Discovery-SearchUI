@@ -192,6 +192,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
   public onNewFrameCoverageSelected(coverage): void {
     this.store$.dispatch(new filtersStore.setFrameCoverage(coverage));
   }
+
   public onNewRangeBandwidthSelected(bandwidth) {
     this.store$.dispatch(new filtersStore.setRangeBandwidth(bandwidth));
   }
@@ -199,6 +200,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
   public onNewJointObservation(observations: models.JointObservation[]): void {
     this.store$.dispatch(new filtersStore.setJointObservation(observations));
   }
+
   public onNewInstrument(instruments) {
     this.store$.dispatch(new filtersStore.setIntstrument(instruments));
   }

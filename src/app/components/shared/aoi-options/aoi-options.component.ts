@@ -134,6 +134,7 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   public onInputGeocodePolygon(event: { wkt: string; geocode: string }): void {
     const didLoad = this.mapService.loadPolygonFrom(event.wkt);
     this.store$.dispatch(new SetGeocode(event.geocode));
@@ -153,6 +154,7 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   public onFileUpload(): void {
     const action = new mapStore.SetMapInteractionMode(
       MapInteractionModeType.UPLOAD,

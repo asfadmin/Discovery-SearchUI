@@ -436,6 +436,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     this.hoveredCircle = newHovered;
   }
+
   private updateTooltip() {
     const bounding = this.hoveredElement.getBoundingClientRect();
     const a = bounding.x > document.body.clientWidth - 200;
@@ -443,6 +444,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .style('left', `${bounding.x + (a ? -150 : 20)}px`)
       .style('top', `${bounding.y - 10}px`);
   }
+
   private clearHoveredProduct(): void {
     this.hoveredCircle.attr('fill', 'black');
   }

@@ -466,6 +466,7 @@ export class UserEffects {
 
     return actions;
   }
+
   private setTimeseriesFilters(timeseriesFilter: TimeseriesFiltersType) {
     const actions = [
       new filterStore.setFullBursts(timeseriesFilter.fullBurstIDs),

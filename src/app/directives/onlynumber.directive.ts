@@ -19,6 +19,7 @@ export class OnlynumberDirective {
     'Paste',
   ];
   inputElement: HTMLElement;
+
   constructor() {
     const el = this.el;
 

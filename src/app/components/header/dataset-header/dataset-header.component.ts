@@ -75,6 +75,7 @@ export class DatasetHeaderComponent {
   public onDatasetChange(dataset: string): void {
     this.store$.dispatch(new filterStore.SetSelectedDataset(dataset));
   }
+
   public test(value: boolean): void {
     this.store$.dispatch(new uiStore.SetFrameSelection(value));
   }

@@ -32,11 +32,13 @@ export class NetcdfService {
   private get apiUrl() {
     return this.env.currentEnv.displacement_api;
   }
+
   private getTargetCache(flightDir: FlightDirection) {
     return flightDir === FlightDirection.ASCENDING
       ? this.ascendingCache
       : this.descendingCache;
   }
+
   public getCache(flightDir: FlightDirection = FlightDirection.ASCENDING) {
     return this.getTargetCache(flightDir);
   }

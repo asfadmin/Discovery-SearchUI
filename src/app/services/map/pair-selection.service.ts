@@ -15,6 +15,7 @@ import { framePreview } from './polygon.style';
 export class PairSelectionService {
   private source: VectorSource;
   public layer: VectorLayer<VectorSource>;
+
   constructor() {
     this.source = new VectorSource();
 

@@ -221,6 +221,7 @@ export class ScenesService {
       }),
     );
   }
+
   private hideExpired$(scenes$: Observable<CMRProduct[]>) {
     return combineLatest([
       scenes$,

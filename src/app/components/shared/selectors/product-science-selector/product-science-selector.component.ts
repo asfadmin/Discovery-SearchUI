@@ -97,9 +97,11 @@ export class ProductScienceSelectorComponent implements OnInit, OnDestroy {
       }),
     );
   }
+
   public onSciProductSelect(value) {
     this.store$.dispatch(new filtersStore.setScienceProduct(value));
   }
+
   public ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

@@ -381,6 +381,7 @@ export class MapService {
     }
     return true;
   }
+
   public filterFrameOverlay(
     frameRange: models.Range<number | null>,
     pathRange: models.Range<number | null>,
@@ -580,6 +581,7 @@ export class MapService {
       this.onMapReady(this.map);
     });
   }
+
   private handleSelect(e: SelectEvent) {
     const features: Feature<Geometry>[] = [];
     this.map.forEachFeatureAtPixel(
@@ -621,6 +623,7 @@ export class MapService {
       }),
     );
   }
+
   private createNewMap(overlay): Map {
     this.overviewMap = new OverviewMap({
       layers: [this.mapView.layer],
@@ -1000,10 +1003,12 @@ export class MapService {
         this.displacementOverview.setSource(overview_source);
       });
   }
+
   public clearDisplacementOverview() {
     this.displacementOverview.setSource(null);
     this.displacementOverview$.next(null);
   }
+
   public setDisplacementType(type) {
     this.displacementOverview$.next(type);
   }
@@ -1155,6 +1160,7 @@ export class MapService {
       this.map.removeLayer(this.browseImageLayer);
     }
   }
+
   public clearTimeseriesOverlay() {
     this.map.removeLayer(this.displacmentLayer);
     this.displacmentLayer = null;
@@ -1164,12 +1170,15 @@ export class MapService {
     this.browseImageLayer?.setOpacity(opacity);
     this.pinnedProducts?.setOpacity(opacity);
   }
+
   public updateCoherenceOpacity(opacity: number) {
     this.layerService.coherenceLayer?.setOpacity(opacity);
   }
+
   public updateVelocityOpacity(opacity: number) {
     this.displacementOverview?.setOpacity(opacity);
   }
+
   public getAoiIntersectionMethod(geometryType: GeometryType) {
     if (geometryType === 'Point') {
       return this.getPointIntersection;

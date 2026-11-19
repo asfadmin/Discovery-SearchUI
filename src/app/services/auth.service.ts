@@ -32,6 +32,7 @@ export class AuthService {
   private existingUserInfo: models.UserAuth = null;
 
   private bc: BroadcastChannel;
+
   constructor() {
     if (typeof BroadcastChannel !== 'undefined') {
       this.bc = new BroadcastChannel('asf-vertex');
@@ -51,6 +52,7 @@ export class AuthService {
       };
     }
   }
+
   public get authUrl() {
     return this.env.currentEnv.auth;
   }
