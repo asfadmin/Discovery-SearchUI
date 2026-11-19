@@ -191,13 +191,13 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
   private keepGoing(product) {
     const removedButton = this.downloadButtons.find(
-      (button) => button.product === product,
+      (button) => button.product() === product,
     );
     if (removedButton?.dFile?.state !== 'DONE' && removedButton.dFile) {
       removedButton.cancelDownload();
       this.dlQueueNumProcessed--;
       this.productList = this.productList?.filter(
-        (button) => button.product !== product,
+        (button) => button.product() !== product,
       );
       this.dlQueueCount--;
       this.downloadContinue(product);
