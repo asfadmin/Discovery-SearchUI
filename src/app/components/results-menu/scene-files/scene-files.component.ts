@@ -4,11 +4,11 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  Input,
   ViewChild,
   inject,
   signal,
   computed,
+  input,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
@@ -72,7 +72,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
 
   @ViewChild(CdkVirtualScrollViewport, { static: false })
   scrollPort: CdkVirtualScrollViewport;
-  @Input() isScrollable = true;
+  readonly isScrollable = input(true);
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;

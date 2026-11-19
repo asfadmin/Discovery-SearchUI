@@ -3,9 +3,9 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  Input,
   EventEmitter,
   inject,
+  input,
 } from '@angular/core';
 import {
   UntypedFormControl,
@@ -70,7 +70,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   private scenesService = inject(ScenesService);
   private screenSize = inject(ScreenSizeService);
 
-  @Input() headerView: boolean;
+  readonly headerView = input<boolean>();
 
   public productNameFilter = this.store$.selectSignal(
     filtersStore.getProductNameFilter,

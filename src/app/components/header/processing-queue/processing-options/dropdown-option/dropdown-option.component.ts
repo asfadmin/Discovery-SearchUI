@@ -1,5 +1,5 @@
 import { NgPlural, NgPluralCase, UpperCasePipe } from '@angular/common';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, model, output } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -24,17 +24,22 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
 })
 export class DropdownOptionComponent {
-  @Input() value: string;
-  @Input() optionName: string;
-  @Input() optionInfo: string;
-  @Input() options: { apiValue: string | number; name: string }[];
+  value = model<string>();
+  readonly optionName = input<string>();
+  readonly optionInfo = input<string>();
+  readonly options = input<
+    {
+      apiValue: string | number;
+      name: string;
+    }[]
+  >();
 
-  @Input() costsTable: any = null;
+  costsTable = input(null);
 
-  @Output() valueChange = new EventEmitter<string>();
+  readonly valueChange = output<string>();
 
   public onValueChange(toggleValue: string): void {
-    this.value = toggleValue;
-    this.valueChange.emit(this.value);
+    this.value.set(toggleValue);
+    this.valueChange.emit(this.value());
   }
 }

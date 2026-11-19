@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 
@@ -9,10 +9,10 @@ import { MatTooltip } from '@angular/material/tooltip';
   imports: [MatButton, MatTooltip],
 })
 export class SubsetOptionComponent {
-  @Input() optionName: string;
-  @Input() optionInfo: string;
+  readonly optionName = input<string>();
+  readonly optionInfo = input<string>();
 
-  @Output() setSubset = new EventEmitter<void>();
+  readonly setSubset = output<void>();
 
   public onSubsetChange(): void {
     this.setSubset.emit();

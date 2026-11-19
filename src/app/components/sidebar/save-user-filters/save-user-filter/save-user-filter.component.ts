@@ -1,12 +1,11 @@
 import {
   Component,
-  EventEmitter,
   ElementRef,
-  Input,
   OnInit,
-  Output,
   ViewChild,
   inject,
+  input,
+  output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -57,10 +56,10 @@ export class SaveUserFilterComponent implements OnInit {
 
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
-  @Input() filterPreset: models.SavedFilterPreset;
-  @Input() isNew: boolean;
+  public filterPreset = input<models.SavedFilterPreset>();
+  readonly isNew = input<boolean>();
 
-  @Output() updateName = new EventEmitter<string>();
+  readonly updateName = output<string>();
 
   public SearchType = models.SearchType;
   public searchTranslation = models.SearchTypeTranslation;
@@ -70,7 +69,7 @@ export class SaveUserFilterComponent implements OnInit {
   public lockedFocus = false;
 
   ngOnInit() {
-    if (this.isNew) {
+    if (this.isNew()) {
       this.onEditName();
     }
   }
@@ -80,17 +79,19 @@ export class SaveUserFilterComponent implements OnInit {
   }
 
   public loadPreset() {
-    this.store$.dispatch(new userStore.LoadFiltersPreset(this.filterPreset.id));
+    this.store$.dispatch(
+      new userStore.LoadFiltersPreset(this.filterPreset().id),
+    );
 
-    const fromName = this.filterPreset.name
-      ? `from '${this.filterPreset.name}'`
+    const fromName = this.filterPreset().name
+      ? `from '${this.filterPreset().name}'`
       : ``;
     this.notificationService.info(`Applied filters ${fromName}`);
   }
 
   public onDeletePreset() {
     this.store$.dispatch(
-      new userStore.DeleteFiltersPreset(this.filterPreset.id),
+      new userStore.DeleteFiltersPreset(this.filterPreset().id),
     );
     this.store$.dispatch(new userStore.SaveFilters());
   }
@@ -103,18 +104,18 @@ export class SaveUserFilterComponent implements OnInit {
     this.store$.dispatch(
       new userStore.UpdateFilterPresetName({
         newName,
-        presetID: this.filterPreset.id,
+        presetID: this.filterPreset().id,
       }),
     );
     this.store$.dispatch(new userStore.SaveFilters());
 
-    this.updateName.emit(this.filterPreset.id);
+    this.updateName.emit(this.filterPreset().id);
   }
 
   public onEditName() {
     this.isEditingName = true;
     this.editName =
-      this.filterPreset.name === '(No title)' ? '' : this.filterPreset.name;
+      this.filterPreset().name === '(No title)' ? '' : this.filterPreset().name;
 
     timer(20).subscribe((_) => this.nameEditInput.nativeElement.focus());
   }

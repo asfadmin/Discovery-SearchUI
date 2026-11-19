@@ -30,7 +30,6 @@ export default defineConfig({
     },
     timeout: 30_000,
   },
-  // globalSetup: './e2e/auth.setup',
   /* Configure projects for major browsers */
   projects: [
     {

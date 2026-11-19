@@ -2,11 +2,12 @@ import { NgPlural, NgPluralCase, UpperCasePipe } from '@angular/common';
 import {
   Component,
   OnInit,
-  Input,
-  Output,
-  EventEmitter,
   inject,
   Signal,
+  input,
+  output,
+  effect,
+  Injector,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconButton, MatButton } from '@angular/material/button';
@@ -73,17 +74,17 @@ import * as userStore from '@store/user';
 })
 export class ProcessingQueueJobsComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);
+  private injector = inject(Injector);
   private savedSearchService = inject(services.SavedSearchService);
   private dialogRef =
     inject<MatDialogRef<ProcessingQueueComponent>>(MatDialogRef);
 
-  @Input() areJobsLoading: boolean;
-  @Input() costPerJob: number;
-  @Input() isHyp3PlusMode: boolean;
+  readonly areJobsLoading = input<boolean>();
+  readonly costPerJob = input<number>();
+  readonly isHyp3PlusMode = input<boolean>();
 
-  @Input() set jobs(val: models.QueuedHyp3Job[]) {
-    this.jobs$.next(val);
-  }
+  readonly jobs = input<models.QueuedHyp3Job[]>();
+
   private jobs$ = new BehaviorSubject<models.QueuedHyp3Job[]>([]);
   private sortChange$ = new BehaviorSubject<void>(null);
 
@@ -99,7 +100,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
     map((jobs) => this.sortJobQueue(jobs)),
   );
 
-  @Output() removeJob = new EventEmitter<models.QueuedHyp3Job>();
+  readonly removeJob = output<models.QueuedHyp3Job>();
 
   public projectName = '';
   public isLoggedIn: Signal<boolean> = this.store$.selectSignal(
@@ -124,6 +125,12 @@ export class ProcessingQueueJobsComponent implements OnInit {
   ngOnInit(): void {
     this.subs.add(
       this.jobsfiltered$.subscribe((jobs) => (this.jobsDisplay = jobs)),
+    );
+    effect(
+      () => {
+        this.jobs$.next(this.jobs());
+      },
+      { injector: this.injector },
     );
   }
 

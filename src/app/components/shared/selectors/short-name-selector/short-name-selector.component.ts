@@ -1,11 +1,10 @@
 import {
   Component,
   OnInit,
-  Output,
-  EventEmitter,
   OnDestroy,
   inject,
   computed,
+  output,
 } from '@angular/core';
 import { MatLabel } from '@angular/material/form-field';
 import { MatFormField, MatHint } from '@angular/material/input';
@@ -42,7 +41,7 @@ import * as filtersStore from '@store/filters';
 export class ShortNameSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
 
-  @Output() shortNamesChange = new EventEmitter<models.DatasetShortName>();
+  readonly shortNamesChange = output<models.DatasetShortName>();
   public dataset = this.store$.selectSignal(filtersStore.getSelectedDataset);
   public shortNamesList: string[] = [];
   public selectableShortNames = computed(() => {

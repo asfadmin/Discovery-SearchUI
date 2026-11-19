@@ -5,7 +5,7 @@ import {
   TitleCasePipe,
   KeyValuePipe,
 } from '@angular/common';
-import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
   MatButtonToggleGroup,
@@ -75,7 +75,7 @@ declare global {
   ],
 })
 export class SearchButtonComponent implements OnInit, OnDestroy {
-  @Input() ariaLabel?: string;
+  readonly ariaLabel = input<string>();
 
   private store$ = inject<Store<AppState>>(Store);
   private actions$ = inject(ActionsSubject);

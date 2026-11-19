@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -11,10 +11,10 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [MatIconButton, MatTooltip, MatIcon, TranslateModule],
 })
 export class CartToggleComponent {
-  @Output() toggle = new EventEmitter<boolean>();
-  @Input() isQueued: boolean;
+  readonly toggle = output<boolean>();
+  readonly isQueued = input<boolean>();
 
   public onToggle(): void {
-    this.toggle.emit(this.isQueued);
+    this.toggle.emit(this.isQueued());
   }
 }

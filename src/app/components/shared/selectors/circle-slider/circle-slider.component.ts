@@ -1,13 +1,12 @@
 import {
   Component,
-  EventEmitter,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
   inject,
+  input,
+  output,
 } from '@angular/core';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -27,17 +26,17 @@ import { ScreenSizeService } from '@services';
 export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
   private screenSize = inject(ScreenSizeService);
 
-  @Input() maxValue = 365;
+  readonly maxValue = input(365);
 
-  @Input() startValue = 0;
-  @Input() endValue = 180;
+  readonly startValue = input(0);
+  readonly endValue = input(180);
 
-  @Output() newStart = new EventEmitter<number>();
-  @Output() newEnd = new EventEmitter<number>();
+  readonly newStart = output<number>();
+  readonly newEnd = output<number>();
 
-  @Output() doneSelecting = new EventEmitter<boolean>();
+  readonly doneSelecting = output<boolean>();
 
-  @Output() swapEvent = new EventEmitter();
+  readonly swapEvent = output();
   private svg?: any;
   private width = 300;
   private height = 250;
@@ -55,8 +54,8 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
   public breakpoints = models.Breakpoints;
 
   ngOnInit(): void {
-    this.startAngle = this.getAngle(this.startValue);
-    this.endAngle = this.getAngle(this.endValue);
+    this.startAngle = this.getAngle(this.startValue());
+    this.endAngle = this.getAngle(this.endValue());
     this.createSvg();
     this.drawSlider();
     this.subs.add(
@@ -122,7 +121,7 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   private getAngle(point) {
-    const angle = ((point - 1) / this.maxValue) * 2 * Math.PI;
+    const angle = ((point - 1) / this.maxValue()) * 2 * Math.PI;
     return angle > Math.PI * 1.5 ? angle - Math.PI * 2 : angle;
   }
   private createSvg(): void {
@@ -190,7 +189,7 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
     return (
       Math.floor(
         ((angle < 0 ? angle + 2 * Math.PI : angle) / 2 / Math.PI) *
-          this.maxValue,
+          this.maxValue(),
       ) + 1
     );
   }

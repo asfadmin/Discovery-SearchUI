@@ -45,8 +45,7 @@
         @if (frameSelectionEnabled$ | async) {
           <app-frame-order-filters></app-frame-order-filters>
         } @else {
-          <app-dataset-filters [dataset]="dataset$ | async">
-          </app-dataset-filters>
+          <app-dataset-filters> </app-dataset-filters>
         }
       }
       @if (searchType() === searchTypes.LIST) {

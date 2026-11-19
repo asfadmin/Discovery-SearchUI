@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -40,7 +40,7 @@ export class HeaderComponent {
   private screenSize = inject(services.ScreenSizeService);
   translate = inject(TranslateService);
 
-  @Input() isLoading: boolean;
+  isLoading = input<boolean>();
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;

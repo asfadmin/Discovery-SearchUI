@@ -1,14 +1,14 @@
 <form #jobNameForm="ngForm">
   <mat-form-field
-    [class.filter-view]="!headerView"
+    [class.filter-view]="!headerView()"
     [class.filter-view-mobile]="
-      !headerView && (screenWidth <= 450 || breakpoint <= breakpoints.MOBILE)
+      !headerView() && (screenWidth <= 450 || breakpoint <= breakpoints.MOBILE)
     "
   >
     <mat-label>{{ 'PRODUCT_SOURCE_SCENE' | translate }}</mat-label>
-    @if (!headerView) {
+    @if (!headerView()) {
       <div>
-        @if (!headerView) {
+        @if (!headerView()) {
           <textarea
             matInput
             placeholder="S1A..."
@@ -32,7 +32,7 @@
         }
       </div>
     }
-    @if (headerView) {
+    @if (headerView()) {
       <input
         matInput
         placeholder="S1A..."
@@ -42,7 +42,7 @@
         [matAutocomplete]="jobNameSelector"
       />
     }
-    @if (headerView) {
+    @if (headerView()) {
       <mat-icon
         (click)="toggleJobFilterOptions()"
         [matTooltip]="'MORE_OPTIONS' | translate"

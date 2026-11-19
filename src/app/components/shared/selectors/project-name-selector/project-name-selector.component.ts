@@ -1,10 +1,10 @@
 import {
   Component,
   OnInit,
-  Input,
   ViewChild,
   OnDestroy,
   inject,
+  input,
 } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import {
@@ -25,8 +25,6 @@ import { NotificationService } from '@services/notification.service';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import * as hyp3Store from '@store/hyp3';
-
-import {} from '@angular/common';
 
 @Component({
   selector: 'app-project-name-selector',
@@ -50,7 +48,7 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);
 
   @ViewChild('projectNameForm') public projectNameForm: NgForm;
-  @Input() processName = false;
+  readonly processName = input(false);
 
   public nameErrors$ = new Subject<void>();
   public isNameError = false;
@@ -65,7 +63,7 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.handleNameErrors();
 
-    if (this.processName) {
+    if (this.processName()) {
       this.subs.add(
         this.store$
           .select(hyp3Store.getProcessingProjectName)
@@ -128,7 +126,7 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
 
     this.projectName = projectName;
 
-    const action = !this.processName
+    const action = !this.processName()
       ? new filtersStore.SetProjectName(projectName === '' ? null : projectName)
       : new hyp3Store.SetProcessingProjectName(projectName);
 

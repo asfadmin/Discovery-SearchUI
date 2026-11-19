@@ -42,8 +42,8 @@
           mat-menu-item
         >
           {{ 'ADD' | translate }}
-          {{ isExpired ? '' : prodType.products.length }}
-          {{ isExpired ? '' : prodType.productType }}
+          {{ isExpired() ? '' : prodType.products.length }}
+          {{ isExpired() ? '' : prodType.productType }}
           {{
             byJobType.jobType.numProducts === 2
               ? ('PAIR' | translate)

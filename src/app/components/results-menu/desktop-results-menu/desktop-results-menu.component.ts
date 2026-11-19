@@ -1,5 +1,5 @@
 import { NgClass, AsyncPipe, TitleCasePipe } from '@angular/common';
-import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, input } from '@angular/core';
 import { MatCard, MatCardSubtitle } from '@angular/material/card';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -44,7 +44,7 @@ export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
   private screenSize = inject(ScreenSizeService);
   private scenesService = inject(ScenesService);
 
-  @Input() resize$: Observable<void>;
+  readonly resize$ = input<Observable<void>>();
 
   public selectedProducts$ = this.store$.select(
     scenesStore.getSelectedSceneProducts,

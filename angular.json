@@ -21,15 +21,9 @@
               "base": "dist/search-ui"
             },
             "index": "src/index.html",
-            "polyfills": [
-              "src/polyfills.ts",
-            ],
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "src/tsconfig.app.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/googlec521d4cf42937ace.html"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "./node_modules/ol/ol.css",
               "./node_modules/nouislider/dist/nouislider.css",
@@ -41,9 +35,7 @@
               "node_modules/material-icons/iconfont/material-icons.css"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/styles"
-              ]
+              "includePaths": ["src/styles"]
             },
             "scripts": [
               "./node_modules/cookieconsent/build/cookieconsent.min.js"
@@ -129,9 +121,7 @@
           "options": {
             "buildTarget": "search-ui:build:local",
             "tsConfig": "tsconfig.spec.json",
-            "coverageExclude": [
-              "src/app/models"
-            ],
+            "coverageExclude": ["src/app/models"],
             "runnerConfig": true
           }
         },
@@ -161,10 +151,7 @@
   },
   "cli": {
     "analytics": false,
-    "schematicCollections": [
-      "angular-eslint",
-      "@ngrx/schematics"
-    ]
+    "schematicCollections": ["angular-eslint", "@ngrx/schematics"]
   },
   "schematics": {
     "@schematics/angular:component": {

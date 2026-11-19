@@ -1,10 +1,10 @@
 <div>
   <mat-slide-toggle
-    [matTooltip]="optionInfo"
+    [matTooltip]="optionInfo()"
     matTooltipClass="on-demand-tooltip"
     (change)="onValueChange($event.checked)"
     [(ngModel)]="value"
   >
-    {{ optionName }}
+    {{ optionName() }}
   </mat-slide-toggle>
 </div>

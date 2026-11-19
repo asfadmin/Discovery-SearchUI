@@ -1,5 +1,5 @@
 import { UpperCasePipe } from '@angular/common';
-import { Component, Input, inject, Signal } from '@angular/core';
+import { Component, inject, Signal, input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -29,7 +29,7 @@ import { SubsetOptionComponent } from './subset-option/subset-option.component';
 export class ProcessingOptionsComponent {
   private store$ = inject<Store<AppState>>(Store);
 
-  @Input() selectedJobType: models.Hyp3JobType;
+  readonly selectedJobType = input<models.Hyp3JobType>();
 
   public JobTypesList = models.hyp3JobTypesList;
 
@@ -49,13 +49,13 @@ export class ProcessingOptionsComponent {
 
   public onSetOptionValue(apiName: string, value: any) {
     const newOptions = {
-      ...this.optionValues()[this.selectedJobType.id],
+      ...this.optionValues()[this.selectedJobType().id],
       [apiName]: value,
     };
 
     this.store$.dispatch(
       new hyp3Store.SetProcessingOptions({
-        jobTypeId: this.selectedJobType.id,
+        jobTypeId: this.selectedJobType().id,
         options: newOptions,
       }),
     );
@@ -69,13 +69,13 @@ export class ProcessingOptionsComponent {
     }, {});
 
     const newOptions = {
-      ...this.optionValues()[this.selectedJobType.id],
+      ...this.optionValues()[this.selectedJobType().id],
       ...optionSubset,
     };
 
     this.store$.dispatch(
       new hyp3Store.SetProcessingOptions({
-        jobTypeId: this.selectedJobType.id,
+        jobTypeId: this.selectedJobType().id,
         options: newOptions,
       }),
     );

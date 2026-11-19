@@ -2,10 +2,10 @@ import { AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
-  Input,
   OnDestroy,
   inject,
   computed,
+  input,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
@@ -80,7 +80,7 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   datasetForProduct = inject(DatasetForProductService);
 
-  @Input() resize$: Observable<void>;
+  readonly resize$ = input<Observable<void>>();
 
   public isDisconnected = false;
   public pairBase = this.store$.selectSignal(scenesStore.getSelectedPair);

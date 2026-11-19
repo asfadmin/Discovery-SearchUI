@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -26,17 +26,17 @@ export class SceneControlsComponent {
   private hyp3 = inject(services.Hyp3ApiService);
   private hyp3JobStatus = inject(services.Hyp3JobStatusService);
 
-  @Input() hyp3ableByJobType: {
+  readonly hyp3ableByJobType = input<{
     total: number;
     byJobType: models.Hyp3ableProductByJobType[];
-  };
-  @Input() scene: models.CMRProduct;
-  @Input() isQueued: boolean;
-  @Input() numQueued: number;
-  @Input() searchType: models.SearchType;
+  }>();
+  readonly scene = input<models.CMRProduct>();
+  readonly isQueued = input<boolean>();
+  readonly numQueued = input<number>();
+  readonly searchType = input<models.SearchType>();
 
-  @Output() onZoomToScene = new EventEmitter();
-  @Output() onToggleScene = new EventEmitter();
+  readonly onZoomToScene = output();
+  readonly onToggleScene = output();
 
   public SearchTypes = models.SearchType;
 
@@ -60,6 +60,6 @@ export class SceneControlsComponent {
     byJobType: models.Hyp3ableProductByJobType[];
     total: number;
   } {
-    return this.hyp3.getExpiredHyp3ableObject(this.scene);
+    return this.hyp3.getExpiredHyp3ableObject(this.scene());
   }
 }

@@ -1,12 +1,11 @@
 import {
   Component,
   OnInit,
-  Input,
-  Output,
-  EventEmitter,
   OnDestroy,
   inject,
   ViewChild,
+  input,
+  output,
 } from '@angular/core';
 import { MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -47,8 +46,8 @@ export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('productTypeSelector') productTypeSelector: MatSelect;
   private store$ = inject<Store<AppState>>(Store);
 
-  @Input() burstSelected = false;
-  @Output() typesChange = new EventEmitter<models.DatasetProductTypes>();
+  readonly burstSelected = input(false);
+  readonly typesChange = output<models.DatasetProductTypes>();
   public dataset: models.Dataset;
   public productTypesList: string[] = [];
   public selectableProductTypes: models.ProductType[] = [];

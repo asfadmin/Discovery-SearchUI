@@ -1,12 +1,11 @@
 import { AsyncPipe } from '@angular/common';
 import {
   Component,
-  Input,
-  Output,
-  EventEmitter,
   OnInit,
   OnDestroy,
   inject,
+  input,
+  output,
 } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -86,19 +85,19 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   private onDemand = inject(OnDemandService);
   private dialog = inject(MatDialog);
 
-  @Input() product: models.CMRProduct;
-  @Input() isQueued: boolean;
-  @Input() isOpen: boolean;
-  @Input() isUserLoggedIn: boolean;
-  @Input() validHyp3JobTypes: models.Hyp3JobType[];
-  @Input() hasAccessToRestrictedData: boolean;
-  @Input() loadingHyp3JobName: string | null;
-  @Input() isSearchableProduct = false;
+  readonly product = input<models.CMRProduct>();
+  readonly isQueued = input<boolean>();
+  readonly isOpen = input<boolean>();
+  readonly isUserLoggedIn = input<boolean>();
+  readonly validHyp3JobTypes = input<models.Hyp3JobType[]>();
+  readonly hasAccessToRestrictedData = input<boolean>();
+  readonly loadingHyp3JobName = input<string | null>();
+  readonly isSearchableProduct = input(false);
 
-  @Output() toggle = new EventEmitter<void>();
-  @Output() closeProduct = new EventEmitter<models.CMRProduct>();
-  @Output() queueHyp3Job = new EventEmitter<models.QueuedHyp3Job>();
-  @Output() renameJobProjectName = new EventEmitter<string>();
+  readonly toggle = output<void>();
+  readonly closeProduct = output<models.CMRProduct>();
+  readonly queueHyp3Job = output<models.QueuedHyp3Job>();
+  readonly renameJobProjectName = output<string>();
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = SearchType;
@@ -109,7 +108,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      of(this.product)
+      of(this.product())
         .pipe(filter((prod) => !!prod.metadata))
         .subscribe((prod) => {
           if (!prod.metadata.job) {
@@ -126,7 +125,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   }
 
   public onCloseProduct(): void {
-    this.closeProduct.emit(this.product);
+    this.closeProduct.emit(this.product());
   }
 
   public expirationBadge(expiration_time: moment.Moment): string {
@@ -143,7 +142,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   public addJobToProcessingQueue(jobType: models.Hyp3JobType): void {
     this.queueHyp3Job.emit({
-      granules: [this.product],
+      granules: [this.product()],
       job_type: jobType,
     });
   }
@@ -151,12 +150,12 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public queueExpiredHyp3Job() {
     const job_types = models.hyp3JobTypes;
     const job_type = Object.keys(job_types).find((id) => {
-      return this.product.metadata.job.job_type === (id as any);
+      return this.product().metadata.job.job_type === (id as any);
     });
 
     this.store$.dispatch(
       new queueStore.AddJob({
-        granules: this.product.metadata.job.scenes,
+        granules: this.product().metadata.job.scenes,
         job_type: job_types[job_type],
       }),
     );
@@ -208,13 +207,15 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   public onSearchProduct() {
     if (
-      ['RTC-STATIC', 'CSLC-STATIC'].includes(this.product.metadata.productType)
+      ['RTC-STATIC', 'CSLC-STATIC'].includes(
+        this.product().metadata.productType,
+      )
     ) {
-      const processinglevel = this.product.metadata.productType;
+      const processinglevel = this.product().metadata.productType;
       const productType = models.opera_s1.productTypes.find(
         (product) => product.apiValue == processinglevel,
       );
-      const operaburstid = this.product.metadata?.opera?.operaBurstID;
+      const operaburstid = this.product().metadata?.opera?.operaBurstID;
 
       [
         new searchStore.SetSearchType(models.SearchType.DATASET),

@@ -7,12 +7,12 @@ import { NgClass, AsyncPipe, SlicePipe } from '@angular/common';
 import {
   Component,
   OnInit,
-  Input,
   ViewChild,
   ViewEncapsulation,
   OnDestroy,
   AfterContentInit,
   inject,
+  input,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatActionList, MatListItem } from '@angular/material/list';
@@ -82,7 +82,7 @@ export class ScenesListComponent
 
   @ViewChild(CdkVirtualScrollViewport, { static: true })
   scroll: CdkVirtualScrollViewport;
-  @Input() resize$: Observable<void>;
+  readonly resize$ = input<Observable<void>>();
   private pairs$ = this.pairService.pairs$;
 
   public scenes: CMRProduct[] = [];
@@ -333,7 +333,7 @@ export class ScenesListComponent
         .subscribe((allQueued) => (this.allQueued = allQueued)),
     );
 
-    this.resize$.subscribe((_) => this.scroll.checkViewportSize());
+    this.resize$().subscribe((_) => this.scroll.checkViewportSize());
 
     this.subs.add(
       this.store$

@@ -1,5 +1,5 @@
 import { NgPlural, NgPluralCase, DecimalPipe } from '@angular/common';
-import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import {
   MatMenu,
@@ -50,9 +50,9 @@ export class OnDemandAddMenuComponent implements OnInit {
   env = inject(EnvironmentService);
   hyp3 = inject(Hyp3ApiService);
 
-  @Input() hyp3ableProducts: models.Hyp3ableProductByJobType;
-  @Input() isExpired = false;
-  @Input() expiredJobs: models.Hyp3Job;
+  readonly hyp3ableProducts = input<models.Hyp3ableProductByJobType>();
+  readonly isExpired = input(false);
+  readonly expiredJobs = input<models.Hyp3Job>();
 
   @ViewChild('addMenu', { static: true }) addMenu: MatMenu;
 

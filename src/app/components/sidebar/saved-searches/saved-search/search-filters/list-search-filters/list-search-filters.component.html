@@ -1,13 +1,13 @@
 <div>
-  @if (filters.listType) {
+  @if (filters().listType) {
     <div>
-      <b>{{ 'LIST_TYPE' | translate }}</b> {{ filters.listType }}
+      <b>{{ 'LIST_TYPE' | translate }}</b> {{ filters().listType }}
     </div>
   }
 
-  @if (filters.listType) {
+  @if (filters().listType) {
     <div class="list">
-      @for (item of filters.list; track item) {
+      @for (item of filters().list; track item) {
         <div>
           {{ item }}
         </div>

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, model, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -10,14 +10,14 @@ import { MatTooltip } from '@angular/material/tooltip';
   imports: [MatSlideToggle, MatTooltip, FormsModule],
 })
 export class ToggleOptionComponent {
-  @Input() value: boolean;
-  @Input() optionName: string;
-  @Input() optionInfo: string;
+  value = model<boolean>();
+  optionName = input<string>();
+  optionInfo = input<string>();
 
-  @Output() valueChange = new EventEmitter<boolean>();
+  valueChange = output<boolean>();
 
   public onValueChange(toggleValue: boolean): void {
-    this.value = toggleValue;
-    this.valueChange.emit(this.value);
+    this.value.set(toggleValue);
+    this.valueChange.emit(this.value());
   }
 }

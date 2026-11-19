@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ListFiltersType } from '@models';
@@ -11,7 +11,7 @@ import { ListFiltersType } from '@models';
   imports: [TranslateModule],
 })
 export class ListSearchFiltersComponent {
-  @Input() filters: ListFiltersType;
+  readonly filters = input<ListFiltersType>();
 
   public formatList(list: string[]): string {
     return list.join(', ');

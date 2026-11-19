@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -29,7 +29,7 @@ export class FlightDirectionSelectorComponent {
   prop = inject(PropertyService);
   private store$ = inject<Store<AppState>>(Store);
 
-  @Input() multiple = true;
+  readonly multiple = input(true);
   public flightDirections$ = this.store$.select(
     filtersStore.getFlightDirections,
   );

@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { BaselineFiltersType } from '@models';
@@ -12,5 +12,5 @@ import { ShortDatePipe } from '@pipes/short-date.pipe';
   imports: [ShortDatePipe, TranslateModule],
 })
 export class BaselineSearchFiltersComponent {
-  @Input() filters: BaselineFiltersType;
+  readonly filters = input<BaselineFiltersType>();
 }
