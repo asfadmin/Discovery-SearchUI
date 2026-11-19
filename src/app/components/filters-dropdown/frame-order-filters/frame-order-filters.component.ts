@@ -42,7 +42,7 @@ export class FrameOrderFiltersComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
 
-  public selectedPanel = signal<FilterPanel>(null);
+  public selectedPanel = signal<FilterPanel | null>(null);
 
   panels = FilterPanel;
   defaultPanelOpenState = true;
