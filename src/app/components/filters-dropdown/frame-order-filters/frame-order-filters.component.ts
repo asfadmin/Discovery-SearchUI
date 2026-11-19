@@ -1,4 +1,4 @@
-import { Component, Input, inject, Signal } from '@angular/core';
+import { Component, inject, Signal, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
@@ -42,7 +42,7 @@ export class FrameOrderFiltersComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
 
-  @Input() selectedPanel: FilterPanel | null = null;
+  public selectedPanel = signal<FilterPanel>(null);
 
   panels = FilterPanel;
   defaultPanelOpenState = true;
@@ -62,11 +62,11 @@ export class FrameOrderFiltersComponent {
   public flightDirectionTypes = models.flightDirections;
 
   public isSelected(panel: FilterPanel): boolean {
-    return this.selectedPanel === panel;
+    return this.selectedPanel() === panel;
   }
 
   public selectPanel(panel: FilterPanel): void {
-    this.selectedPanel = panel;
+    this.selectedPanel.set(panel);
   }
 
   public onOpenHelp(url: string): void {

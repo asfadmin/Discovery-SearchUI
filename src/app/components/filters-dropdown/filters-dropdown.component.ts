@@ -6,11 +6,10 @@ import {
   transition,
 } from '@angular/animations';
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit, inject, Signal } from '@angular/core';
+import { Component, OnInit, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
 
 import { CancelFilterChangesComponent } from '@components/shared/cancel-filter-changes/cancel-filter-changes.component';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
@@ -71,7 +70,6 @@ export class FiltersDropdownComponent implements OnInit {
   private notificationService = inject(NotificationService);
   private environmentService = inject(EnvironmentService);
 
-  @Input() dataset$: Observable<models.CMRProduct>;
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
   public searchType: Signal<models.SearchType> = this.store$.selectSignal(

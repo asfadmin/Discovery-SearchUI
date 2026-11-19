@@ -3,7 +3,7 @@
   <input
     matInput
     (change)="onNewHyp3Url($event)"
-    [(ngModel)]="hyp3BackendUrl"
+    [ngModel]="hyp3BackendUrl()"
     name="backendUrl"
     [matAutocomplete]="auto"
   />
@@ -12,7 +12,7 @@
     (optionSelected)="onAutoCompleteChangeHyp3Url($event.option.value)"
     #auto="matAutocomplete"
   >
-    @for (url of hyp3SavedUrls; track url) {
+    @for (url of hyp3SavedUrls(); track url) {
       <mat-option [value]="url">{{ url }} </mat-option>
     }
   </mat-autocomplete>
@@ -27,13 +27,14 @@
   </button>
 
   @if (
-    hyp3BackendUrl !== baseHyp3Url && hyp3SavedUrls.includes(hyp3BackendUrl)
+    hyp3BackendUrl() !== baseHyp3Url &&
+    hyp3SavedUrls().includes(hyp3BackendUrl())
   ) {
     <button
       matSuffix
       mat-icon-button
       [attr.aria-label]="'REMOVE' | translate"
-      (click)="onRemoveHyp3Url(hyp3BackendUrl)"
+      (click)="onRemoveHyp3Url(hyp3BackendUrl())"
     >
       <mat-icon>close</mat-icon>
     </button>
@@ -43,7 +44,7 @@
 <a
   class="default-filters-presets"
   mat-flat-button
-  [href]="hyp3BackendUrl"
+  [href]="hyp3BackendUrl()"
   target="_blank"
   >{{ 'HYP3_API_UI' | translate }}</a
 >
