@@ -5,10 +5,14 @@ const angular = require('angular-eslint');
 const prettierRecommended = require('eslint-plugin-prettier/recommended');
 const importPlugin = require('eslint-plugin-import');
 const json = require('@eslint/json');
+const stylistic = require('@stylistic/eslint-plugin');
 
 module.exports = tseslint.config([
   {
     files: ['**/*.ts'],
+    plugins: {
+      '@stylistic': stylistic,
+    },
     extends: [
       eslint.configs.recommended,
       importPlugin.flatConfigs.recommended,
@@ -61,6 +65,12 @@ module.exports = tseslint.config([
       ],
       'import/no-duplicates': 'error',
       '@typescript-eslint/no-for-in-array': 'error',
+      '@stylistic/lines-between-class-members': [
+        'error',
+        {
+          enforce: [{ blankLine: 'always', prev: '*', next: 'method' }],
+        },
+      ],
       // ---------
       // re-enable these at some point
       // ---------
