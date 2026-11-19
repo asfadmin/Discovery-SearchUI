@@ -1,7 +1,7 @@
 <div class="processing-options" xmlns="http://www.w3.org/1999/html">
-  @if (selectedJobType) {
+  @if (selectedJobType()) {
     @for (jobType of JobTypesList; track jobType) {
-      @if (selectedJobType.id === jobType.id) {
+      @if (selectedJobType().id === jobType.id) {
         @if (jobType.options.length === 0) {
           <div class="no-processing-options">
             <h3>
@@ -24,7 +24,7 @@
                     <app-dropdown-option
                       (valueChange)="onSetOptionValue(option.apiName, $event)"
                       [value]="
-                        optionValues()[selectedJobType.id][option.apiName]
+                        optionValues()[selectedJobType().id][option.apiName]
                       "
                       [options]="option.options"
                       [optionName]="option.name | uppercase | translate"
@@ -38,7 +38,7 @@
                     <app-range-option
                       (valueChange)="onSetOptionValue(option.apiName, $event)"
                       [value]="
-                        optionValues()[selectedJobType.id][option.apiName]
+                        optionValues()[selectedJobType().id][option.apiName]
                       "
                       [optionName]="option.name | uppercase | translate"
                       [optionInfo]="option.info | translate"
@@ -65,7 +65,7 @@
                     <app-checkbox-option
                       (valueChange)="onSetOptionValue(option.apiName, $event)"
                       [value]="
-                        optionValues()[selectedJobType.id][option.apiName]
+                        optionValues()[selectedJobType().id][option.apiName]
                       "
                       [optionName]="option.name | translate"
                       [optionInfo]="option.info | translate"
@@ -88,7 +88,7 @@
                     <app-checkbox-option
                       (valueChange)="onSetOptionValue(option.apiName, $event)"
                       [value]="
-                        optionValues()[selectedJobType.id][option.apiName]
+                        optionValues()[selectedJobType().id][option.apiName]
                       "
                       [optionName]="option.name | translate"
                       [optionInfo]="option.info | translate"

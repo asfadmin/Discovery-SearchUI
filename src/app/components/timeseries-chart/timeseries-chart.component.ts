@@ -109,9 +109,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   readonly zoomOut$ = input<Observable<void>>(undefined);
   readonly zoomToFit$ = input<Observable<void>>(undefined);
 
-  // @Input() chartData: models.timeseriesChartItemState[];
-
-  // public scrollIndex = 1;
   // public viewPorts: QueryList<CdkVirtualScrollViewport>;
 
   public json_data = '';
