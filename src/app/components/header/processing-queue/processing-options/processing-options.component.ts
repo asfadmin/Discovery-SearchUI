@@ -48,6 +48,7 @@ export class ProcessingOptionsComponent {
   }
 
   public onSetOptionValue(apiName: string, value: any) {
+    console.log(value);
     const newOptions = {
       ...this.optionValues()[this.selectedJobType.id],
       [apiName]: value,

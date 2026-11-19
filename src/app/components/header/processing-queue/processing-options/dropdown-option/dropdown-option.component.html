@@ -4,9 +4,9 @@
     @for (option of options(); track option) {
       <mat-option [value]="option.apiValue">
         {{ option.name | uppercase | translate }}
-        @if (!!costsTable) {
-          ({{ costsTable[option.apiValue] }}
-          <span [ngPlural]="costsTable[option.apiValue]">
+        @if (!!costsTable()) {
+          ({{ costsTable()[option.apiValue] }}
+          <span [ngPlural]="costsTable()[option.apiValue]">
             <ng-template ngPluralCase="=1">{{
               'CREDIT' | translate
             }}</ng-template>

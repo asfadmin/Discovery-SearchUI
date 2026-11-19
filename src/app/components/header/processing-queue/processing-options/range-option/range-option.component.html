@@ -5,19 +5,19 @@
     matInput
     (change)="onValueChange()"
     type="number"
-    [max]="range.end"
-    [min]="range.start"
+    [max]="range().end"
+    [min]="range().start"
     [(ngModel)]="value"
     pattern="\-?[0-9]*\.?[0-9]*"
     step="0.01"
   />
-  @if (value < range.start || value > range.start) {
+  @if (value() < range().start || value() > range().start) {
     <mat-error>{{
       (optionName() | lowercase) +
         ' must be between ' +
-        range.start +
+        range().start +
         ' and ' +
-        range.end
+        range().end
     }}</mat-error>
   }
 </mat-form-field>
