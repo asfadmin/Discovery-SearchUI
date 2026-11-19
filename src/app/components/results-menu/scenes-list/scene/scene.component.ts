@@ -1,5 +1,5 @@
 import { NgStyle, NgClass } from '@angular/common';
-import { Component, OnInit, Input, inject, input, output } from '@angular/core';
+import { Component, OnInit, inject, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatListItem } from '@angular/material/list';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -38,8 +38,8 @@ export class SceneComponent implements OnInit {
   private screenSize = inject(services.ScreenSizeService);
   private mapService = inject(services.MapService);
 
-  @Input() scene: models.CMRProduct;
-  @Input() searchType: models.SearchType;
+  readonly scene = input<models.CMRProduct>();
+  readonly searchType = input<models.SearchType>();
 
   readonly isSelected = input<boolean>(undefined);
   readonly offsets = input<{
@@ -82,7 +82,7 @@ export class SceneComponent implements OnInit {
   }
 
   public onZoomTo(): void {
-    this.mapService.zoomToScene(this.scene);
+    this.mapService.zoomToScene(this.scene());
   }
 
   public onToggleScene(): void {

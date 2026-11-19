@@ -1,7 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import {
   Component,
-  Input,
   OnInit,
   OnDestroy,
   inject,
@@ -86,11 +85,11 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   private onDemand = inject(OnDemandService);
   private dialog = inject(MatDialog);
 
-  @Input() product: models.CMRProduct;
+  readonly product = input<models.CMRProduct>();
   readonly isQueued = input<boolean>(undefined);
   readonly isOpen = input<boolean>(undefined);
   readonly isUserLoggedIn = input<boolean>(undefined);
-  @Input() validHyp3JobTypes: models.Hyp3JobType[];
+  readonly validHyp3JobTypes = input<models.Hyp3JobType[]>(undefined);
   readonly hasAccessToRestrictedData = input<boolean>(undefined);
   readonly loadingHyp3JobName = input<string | null>(undefined);
   readonly isSearchableProduct = input(false);
@@ -109,7 +108,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      of(this.product)
+      of(this.product())
         .pipe(filter((prod) => !!prod.metadata))
         .subscribe((prod) => {
           if (!prod.metadata.job) {
@@ -126,7 +125,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   }
 
   public onCloseProduct(): void {
-    this.closeProduct.emit(this.product);
+    this.closeProduct.emit(this.product());
   }
 
   public expirationBadge(expiration_time: moment.Moment): string {
@@ -143,7 +142,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   public addJobToProcessingQueue(jobType: models.Hyp3JobType): void {
     this.queueHyp3Job.emit({
-      granules: [this.product],
+      granules: [this.product()],
       job_type: jobType,
     });
   }
@@ -151,12 +150,12 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public queueExpiredHyp3Job() {
     const job_types = models.hyp3JobTypes;
     const job_type = Object.keys(job_types).find((id) => {
-      return this.product.metadata.job.job_type === (id as any);
+      return this.product().metadata.job.job_type === (id as any);
     });
 
     this.store$.dispatch(
       new queueStore.AddJob({
-        granules: this.product.metadata.job.scenes,
+        granules: this.product().metadata.job.scenes,
         job_type: job_types[job_type],
       }),
     );
@@ -208,13 +207,15 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   public onSearchProduct() {
     if (
-      ['RTC-STATIC', 'CSLC-STATIC'].includes(this.product.metadata.productType)
+      ['RTC-STATIC', 'CSLC-STATIC'].includes(
+        this.product().metadata.productType,
+      )
     ) {
-      const processinglevel = this.product.metadata.productType;
+      const processinglevel = this.product().metadata.productType;
       const productType = models.opera_s1.productTypes.find(
         (product) => product.apiValue == processinglevel,
       );
-      const operaburstid = this.product.metadata?.opera?.operaBurstID;
+      const operaburstid = this.product().metadata?.opera?.operaBurstID;
 
       [
         new searchStore.SetSearchType(models.SearchType.DATASET),

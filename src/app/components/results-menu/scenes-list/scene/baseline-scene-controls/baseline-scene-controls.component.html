@@ -22,16 +22,16 @@
     </div>
 
     <div class="cart-flex-field">
-      @if ((hyp3ableByJobType?.total ?? 0) > 0) {
+      @if ((hyp3ableByJobType()?.total ?? 0) > 0) {
         <mat-icon
           [matMenuTriggerFor]="sceneAdd.addMenu"
-          [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
+          [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType().byJobType }"
           class="icon-margin mobile-svg"
           svgIcon="hyp3"
         >
         </mat-icon>
       }
-      @if (hyp3ableByJobType.total < 1) {
+      @if (hyp3ableByJobType()?.total < 1) {
         <mat-icon
           class="noselect list-icon icon-margin icon-disabled"
           [matTooltip]="'ONLY_CO_POLARIZED_BURSTS' | translate"

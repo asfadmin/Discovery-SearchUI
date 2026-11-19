@@ -1,12 +1,12 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import {
   Component,
-  Input,
   OnInit,
   AfterViewInit,
   inject,
   input,
   output,
+  model,
 } from '@angular/core';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -54,9 +54,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   private http = inject(HttpClient);
   private notificationService = inject(NotificationService);
 
-  @Input() product: CMRProduct;
+  readonly product = model<CMRProduct>();
   readonly href = input<string>(undefined);
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>();
   readonly useNewDownload = input<boolean>(undefined);
   readonly productDownloaded = output<CMRProduct>();
   readonly downloadCancelled = output<CMRProduct>();
@@ -74,14 +74,14 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     const href = this.href();
     if (typeof href !== 'undefined') {
       this.url = href;
-      this.product = null;
+      this.product.set(null);
       const downloadURL = new URL(this.url).pathname;
       this.fileName = downloadURL.substring(downloadURL.lastIndexOf('/') + 1);
     } else {
-      this.url = this.product.downloadUrl;
-      this.fileName = this.product.metadata.fileName ?? this.product.file;
+      this.url = this.product().downloadUrl;
+      this.fileName = this.product().metadata.fileName ?? this.product().file;
       if (
-        this.product.productTypeDisplay.endsWith('GeoTIFF') &&
+        this.product().productTypeDisplay.endsWith('GeoTIFF') &&
         !this.fileName.endsWith('tif')
       ) {
         this.fileName += '.tif';
@@ -92,9 +92,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
         .select(queueStore.getDownloads)
         .subscribe((queueDownloads) => {
           if (
-            queueDownloads.hasOwnProperty(this.product?.id ?? this.fileName)
+            queueDownloads.hasOwnProperty(this.product()?.id ?? this.fileName)
           ) {
-            this.dFile = queueDownloads[this.product?.id ?? this.fileName];
+            this.dFile = queueDownloads[this.product()?.id ?? this.fileName];
           } else {
             this.dFile = null;
             if (this.downloadSubscription) {
@@ -153,7 +153,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
   public downloadFile(dir = false) {
     const isBurstProduct = !!['BURST', 'BURST_XML'].find(
-      (t) => t === this.product.metadata.productType,
+      (t) => t === this.product().metadata.productType,
     );
     if (!this.isUserLoggedIn && isBurstProduct) {
       this.onAccountButtonClicked();
@@ -164,12 +164,12 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       this.dFile?.state === 'IN_PROGRESS'
     ) {
       this.cancelDownload();
-      this.downloadCancelled.emit(this.product);
+      this.downloadCancelled.emit(this.product());
       return;
     }
     if (!this.useNewDownload()) {
       if (isBurstProduct) {
-        this.burstFunctionality(this.product);
+        this.burstFunctionality(this.product());
       } else {
         this.classicDownload(this.url);
       }
@@ -178,7 +178,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
     // if (userAgent.browser.name !== 'Chrome') {
     if (isBurstProduct) {
-      this.burstFunctionality(this.product);
+      this.burstFunctionality(this.product());
     } else {
       this.classicDownload(this.url);
     }
@@ -191,13 +191,13 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
         this.subs.add(
           this.authService.login$().subscribe((user) => {
             this.store$.dispatch(new userStore.Login(user));
-            this.downloadFunctionality(this.product, handle);
+            this.downloadFunctionality(this.product(), handle);
           }),
         );
       });
     } else {
       this.getHandle(dir).then((handle) => {
-        this.downloadFunctionality(this.product, handle);
+        this.downloadFunctionality(this.product(), handle);
       });
     }
   }
@@ -205,15 +205,15 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     const initStatus: DownloadStatus = {
       progress: 0,
       state: 'PENDING',
-      id: this.product?.id ?? this.fileName,
+      id: this.product()?.id ?? this.fileName,
       filename: '',
-      product: this?.product,
+      product: this?.product(),
     };
     this.store$.dispatch(new queueStore.DownloadProduct(initStatus));
 
     if (
       ['BURST', 'BURST_XML'].find(
-        (t) => t === this.product.metadata.productType,
+        (t) => t === this.product().metadata.productType,
       )
     ) {
       this.burstFunctionality(product, handle);
@@ -225,9 +225,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     const initStatus: DownloadStatus = {
       progress: 0,
       state: 'PENDING',
-      id: this.product?.id ?? this.fileName,
+      id: this.product()?.id ?? this.fileName,
       filename: '',
-      product: this?.product,
+      product: this?.product(),
     };
     this.store$.dispatch(new queueStore.DownloadProduct(initStatus));
 
@@ -241,7 +241,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
           }),
         ),
         takeWhile((res: any) => {
-          if (this.isBurstDone(res, this.product)) {
+          if (this.isBurstDone(res, this.product())) {
             if (handle) {
               this.startDownload(product, handle);
             } else {
@@ -277,7 +277,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.observable$ = this.downloadService.download(
       this.url,
       this.fileName,
-      this?.product,
+      this?.product(),
       product?.id ?? this.fileName,
       handle,
     );
@@ -328,8 +328,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     // It needs to be added to the DOM so it can be clicked
     document.body.appendChild(link);
     if (
-      this.product.metadata.productType === 'BURST' ||
-      this.product.metadata.productType === 'BURST_XML'
+      this.product().metadata.productType === 'BURST' ||
+      this.product().metadata.productType === 'BURST_XML'
     ) {
       window.location.href = url;
     } else {
@@ -345,9 +345,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.dFile = {
       progress: 100,
       state: 'DONE',
-      id: this.product.id,
+      id: this.product().id,
       filename: this.fileName,
-      product: this.product,
+      product: this.product(),
     };
     this.store$.dispatch(new queueStore.DownloadProduct(this.dFile));
   }

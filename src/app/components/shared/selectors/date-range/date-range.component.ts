@@ -106,8 +106,8 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
     this.dateAdapter.setLocale(moment.locale());
 
-    // eslint-disable-next-line no-constant-binary-expression
     const startDate = this.startDate();
+    // eslint-disable-next-line no-constant-binary-expression
     if (!!startDate && startDate !== new Date(undefined)) {
       this.dateRangeForm.patchValue({
         StartDateControl: startDate,

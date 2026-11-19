@@ -1,12 +1,12 @@
-@if (!disabled) {
+@if (!disabled()) {
   <a
-    [href]="href() ?? product.downloadUrl"
+    [href]="href() ?? product().downloadUrl"
     (click)="hijackDownloadClick($event)"
     class="link"
   >
     @if (!dFile || (dFile && dFile.state === 'DONE')) {
       <button
-        [disabled]="(!product?.downloadUrl && !href()) || disabled"
+        [disabled]="(!product()?.downloadUrl && !href()) || disabled()"
         mat-icon-button
         [matTooltip]="'DOWNLOAD_FILE' | translate"
         class="download-file-button"
@@ -21,7 +21,7 @@
     }
     @if (dFile && dFile.state !== 'DONE') {
       <button
-        [disabled]="disabled"
+        [disabled]="disabled()"
         mat-button
         [matTooltip]="'STOP_DOWNLOAD' | translate"
         class="download-file-button"
