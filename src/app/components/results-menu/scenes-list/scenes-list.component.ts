@@ -82,7 +82,7 @@ export class ScenesListComponent
 
   @ViewChild(CdkVirtualScrollViewport, { static: true })
   scroll: CdkVirtualScrollViewport;
-  readonly resize$ = input<Observable<void>>(undefined);
+  readonly resize$ = input<Observable<void>>();
   private pairs$ = this.pairService.pairs$;
 
   public scenes: CMRProduct[] = [];

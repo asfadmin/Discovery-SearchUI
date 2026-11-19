@@ -38,7 +38,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   private dateExtremaService = inject(DateExtremaService);
 
   @ViewChild('dateRange', { static: true }) public dateRange;
-  public readonly extendEndDateBy = input<number>(undefined);
+  public readonly extendEndDateBy = input<number>();
 
   public extrema: DateRangeExtrema;
 

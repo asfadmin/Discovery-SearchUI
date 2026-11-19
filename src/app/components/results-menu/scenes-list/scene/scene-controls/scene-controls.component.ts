@@ -31,9 +31,9 @@ export class SceneControlsComponent {
     byJobType: models.Hyp3ableProductByJobType[];
   }>();
   readonly scene = input<models.CMRProduct>();
-  readonly isQueued = input<boolean>(undefined);
-  readonly numQueued = input<number>(undefined);
-  readonly searchType = input<models.SearchType>(undefined);
+  readonly isQueued = input<boolean>();
+  readonly numQueued = input<number>();
+  readonly searchType = input<models.SearchType>();
 
   readonly onZoomToScene = output();
   readonly onToggleScene = output();

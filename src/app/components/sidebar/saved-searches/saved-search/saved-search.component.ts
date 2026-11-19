@@ -49,11 +49,11 @@ export class SavedSearchComponent implements OnInit {
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
   readonly search = input<models.Search>();
-  readonly searchType = input<models.SearchType>(undefined);
-  readonly isExpanded = input<boolean>(undefined);
-  readonly isNew = input<boolean>(undefined);
-  readonly isSavedSearch = input<boolean>(undefined);
-  readonly lockedFocus = input<boolean>(undefined);
+  readonly searchType = input<models.SearchType>();
+  readonly isExpanded = input<boolean>();
+  readonly isNew = input<boolean>();
+  readonly isSavedSearch = input<boolean>();
+  readonly lockedFocus = input<boolean>();
 
   readonly updateFilters = output<string>();
   readonly updateName = output<{

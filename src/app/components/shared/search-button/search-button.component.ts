@@ -75,7 +75,7 @@ declare global {
   ],
 })
 export class SearchButtonComponent implements OnInit, OnDestroy {
-  readonly ariaLabel = input<string>(undefined);
+  readonly ariaLabel = input<string>();
 
   private store$ = inject<Store<AppState>>(Store);
   private actions$ = inject(ActionsSubject);

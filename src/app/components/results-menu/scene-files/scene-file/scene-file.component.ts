@@ -86,12 +86,12 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   private dialog = inject(MatDialog);
 
   readonly product = input<models.CMRProduct>();
-  readonly isQueued = input<boolean>(undefined);
-  readonly isOpen = input<boolean>(undefined);
-  readonly isUserLoggedIn = input<boolean>(undefined);
-  readonly validHyp3JobTypes = input<models.Hyp3JobType[]>(undefined);
-  readonly hasAccessToRestrictedData = input<boolean>(undefined);
-  readonly loadingHyp3JobName = input<string | null>(undefined);
+  readonly isQueued = input<boolean>();
+  readonly isOpen = input<boolean>();
+  readonly isUserLoggedIn = input<boolean>();
+  readonly validHyp3JobTypes = input<models.Hyp3JobType[]>();
+  readonly hasAccessToRestrictedData = input<boolean>();
+  readonly loadingHyp3JobName = input<string | null>();
   readonly isSearchableProduct = input(false);
 
   readonly toggle = output<void>();

@@ -80,7 +80,7 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   datasetForProduct = inject(DatasetForProductService);
 
-  readonly resize$ = input<Observable<void>>(undefined);
+  readonly resize$ = input<Observable<void>>();
 
   public isDisconnected = false;
   public pairBase = this.store$.selectSignal(scenesStore.getSelectedPair);

@@ -57,7 +57,7 @@ export class SaveUserFilterComponent implements OnInit {
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
   public filterPreset = input<models.SavedFilterPreset>();
-  readonly isNew = input<boolean>(undefined);
+  readonly isNew = input<boolean>();
 
   readonly updateName = output<string>();
 

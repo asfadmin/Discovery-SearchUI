@@ -21,7 +21,7 @@ import * as uiStore from '@store/ui';
 export class AttributionsComponent {
   private store$ = inject<Store<AppState>>(Store);
 
-  readonly breakpoint = input<Breakpoints>(undefined);
+  readonly breakpoint = input<Breakpoints>();
 
   anio: number = new Date().getFullYear();
 

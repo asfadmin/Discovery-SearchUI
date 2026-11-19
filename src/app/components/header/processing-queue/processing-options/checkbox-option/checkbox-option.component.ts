@@ -11,8 +11,8 @@ import { MatTooltip } from '@angular/material/tooltip';
 })
 export class CheckboxOptionComponent {
   value = model<boolean>();
-  readonly optionName = input<string>(undefined);
-  readonly optionInfo = input<string>(undefined);
+  readonly optionName = input<string>();
+  readonly optionInfo = input<string>();
 
   readonly valueChange = output<boolean>();
 

@@ -79,9 +79,9 @@ export class ProcessingQueueJobsComponent implements OnInit {
   private dialogRef =
     inject<MatDialogRef<ProcessingQueueComponent>>(MatDialogRef);
 
-  readonly areJobsLoading = input<boolean>(undefined);
-  readonly costPerJob = input<number>(undefined);
-  readonly isHyp3PlusMode = input<boolean>(undefined);
+  readonly areJobsLoading = input<boolean>();
+  readonly costPerJob = input<number>();
+  readonly isHyp3PlusMode = input<boolean>();
 
   readonly jobs = input<models.QueuedHyp3Job[]>();
 

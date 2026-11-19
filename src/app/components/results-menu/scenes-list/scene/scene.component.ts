@@ -41,7 +41,7 @@ export class SceneComponent implements OnInit {
   readonly scene = input<models.CMRProduct>();
   readonly searchType = input<models.SearchType>();
 
-  readonly isSelected = input<boolean>(undefined);
+  readonly isSelected = input<boolean>();
   readonly offsets = input<{
     temporal: number;
     perpendicular: number;
@@ -50,14 +50,14 @@ export class SceneComponent implements OnInit {
     perpendicular: null,
   });
 
-  readonly isQueued = input<boolean>(undefined);
-  readonly jobQueued = input<boolean>(undefined);
-  readonly numQueued = input<number>(undefined);
+  readonly isQueued = input<boolean>();
+  readonly jobQueued = input<boolean>();
+  readonly numQueued = input<number>();
 
   readonly hyp3ableByJobType = input<{
     total: number;
     byJobType: models.Hyp3ableProductByJobType[];
-  }>(undefined);
+  }>();
 
   readonly toggleScene = output();
 

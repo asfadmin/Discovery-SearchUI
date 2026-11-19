@@ -21,7 +21,7 @@ import { MapInteractionModeType } from '@models';
 export class FileUploadComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
 
-  readonly interaction$ = input<Observable<MapInteractionModeType>>(undefined);
+  readonly interaction$ = input<Observable<MapInteractionModeType>>();
 
   readonly dialogClose = output<boolean>();
   readonly newSearchPolygon = output<string>();

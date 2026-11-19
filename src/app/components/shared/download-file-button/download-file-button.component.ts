@@ -55,9 +55,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   private notificationService = inject(NotificationService);
 
   readonly product = model<CMRProduct>();
-  readonly href = input<string>(undefined);
+  readonly href = input<string>();
   readonly disabled = input<boolean>();
-  readonly useNewDownload = input<boolean>(undefined);
+  readonly useNewDownload = input<boolean>();
   readonly productDownloaded = output<CMRProduct>();
   readonly downloadCancelled = output<CMRProduct>();
   public dFile: DownloadStatus;

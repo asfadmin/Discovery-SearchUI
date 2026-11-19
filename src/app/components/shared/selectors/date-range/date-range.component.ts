@@ -75,10 +75,10 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     EndDateControl: new UntypedFormControl(),
   });
 
-  readonly minDate = input<Date>(undefined);
-  readonly maxDate = input<Date>(undefined);
-  readonly startDate = input<Date>(undefined);
-  readonly endDate = input<Date>(undefined);
+  readonly minDate = input<Date>();
+  readonly maxDate = input<Date>();
+  readonly startDate = input<Date>();
+  readonly endDate = input<Date>();
   readonly newStart = output<Date>();
   readonly newEnd = output<Date>();
   readonly startDateError = output<void>();
@@ -108,7 +108,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
     const startDate = this.startDate();
     // eslint-disable-next-line no-constant-binary-expression
-    if (!!startDate && startDate !== new Date(undefined)) {
+    if (!!startDate && startDate !== new Date()) {
       this.dateRangeForm.patchValue({
         StartDateControl: startDate,
       });

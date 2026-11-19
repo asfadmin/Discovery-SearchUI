@@ -128,7 +128,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   @ViewChild('chartCard', { read: ElementRef }) chartCardView: ElementRef;
   @ViewChild('radio-group', { read: ElementRef }) radioGroup: ElementRef;
 
-  readonly resize$ = input<Observable<void>>(undefined);
+  readonly resize$ = input<Observable<void>>();
   public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public isAddingPoints = false;
   public mouseOver = false;

@@ -53,7 +53,7 @@ export class SearchTypeSelectorComponent {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   @ViewChild(MatMenu) searchMenu: MatMenu;
   @ViewChild('firstItem') firstItem: ElementRef;
-  readonly selected = input<string>(undefined);
+  readonly selected = input<string>();
 
   public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;

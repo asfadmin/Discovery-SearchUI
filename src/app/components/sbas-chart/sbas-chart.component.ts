@@ -41,9 +41,9 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private scenesService = inject(ScenesService);
   private pairService = inject(PairService);
 
-  readonly zoomIn$ = input<Observable<void>>(undefined);
-  readonly zoomOut$ = input<Observable<void>>(undefined);
-  readonly zoomToFit$ = input<Observable<void>>(undefined);
+  readonly zoomIn$ = input<Observable<void>>();
+  readonly zoomOut$ = input<Observable<void>>();
+  readonly zoomToFit$ = input<Observable<void>>();
   private pairs$: Observable<any> = this.pairService.pairs$;
   readonly isGraphDisconnected = output<boolean>();
 

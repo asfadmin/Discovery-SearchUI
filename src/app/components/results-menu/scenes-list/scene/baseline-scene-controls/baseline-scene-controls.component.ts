@@ -29,7 +29,7 @@ export class BaselineSceneControlsComponent implements OnInit {
   private screenSize = inject(services.ScreenSizeService);
   private hyp3JobStatus = inject(services.Hyp3JobStatusService);
 
-  readonly scene = input<models.CMRProduct>(undefined);
+  readonly scene = input<models.CMRProduct>();
   readonly offsets = input<{
     temporal: number;
     perpendicular: number;
@@ -41,7 +41,7 @@ export class BaselineSceneControlsComponent implements OnInit {
     total: number;
     byJobType: models.Hyp3ableProductByJobType[];
   }>();
-  readonly isQueued = input<boolean>(undefined);
+  readonly isQueued = input<boolean>();
 
   readonly onToggleScene = output();
 

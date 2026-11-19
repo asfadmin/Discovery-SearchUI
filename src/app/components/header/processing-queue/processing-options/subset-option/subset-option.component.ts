@@ -9,8 +9,8 @@ import { MatTooltip } from '@angular/material/tooltip';
   imports: [MatButton, MatTooltip],
 })
 export class SubsetOptionComponent {
-  readonly optionName = input<string>(undefined);
-  readonly optionInfo = input<string>(undefined);
+  readonly optionName = input<string>();
+  readonly optionInfo = input<string>();
 
   readonly setSubset = output<void>();
 

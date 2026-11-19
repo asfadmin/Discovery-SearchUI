@@ -25,14 +25,14 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class DropdownOptionComponent {
   value = model<string>();
-  readonly optionName = input<string>(undefined);
-  readonly optionInfo = input<string>(undefined);
+  readonly optionName = input<string>();
+  readonly optionInfo = input<string>();
   readonly options = input<
     {
       apiValue: string | number;
       name: string;
     }[]
-  >(undefined);
+  >();
 
   costsTable = input(null);
 

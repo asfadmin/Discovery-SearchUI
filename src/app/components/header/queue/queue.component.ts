@@ -106,7 +106,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);
   private downloadService = inject(DownloadService);
 
-  readonly appQueueComponentModel = input<string>(undefined);
+  readonly appQueueComponentModel = input<string>();
 
   @ViewChildren(DownloadFileButtonComponent)
   downloadButtons!: QueryList<DownloadFileButtonComponent>;

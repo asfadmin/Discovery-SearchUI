@@ -81,7 +81,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   private hyp3JobStatus = inject(Hyp3JobStatusService);
   private possibleHyp3JobsService = inject(PossibleHyp3JobsService);
 
-  readonly resize$ = input<Observable<void>>(undefined);
+  readonly resize$ = input<Observable<void>>();
 
   public numBaselineScenes$ = this.scenesService.scenes$.pipe(
     map((scenes) => scenes.length),

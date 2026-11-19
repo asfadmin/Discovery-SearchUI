@@ -12,7 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class CartToggleComponent {
   readonly toggle = output<boolean>();
-  readonly isQueued = input<boolean>(undefined);
+  readonly isQueued = input<boolean>();
 
   public onToggle(): void {
     this.toggle.emit(this.isQueued());

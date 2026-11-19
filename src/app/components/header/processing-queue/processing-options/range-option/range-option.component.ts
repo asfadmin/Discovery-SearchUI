@@ -28,10 +28,10 @@ import { Range } from '@models';
 })
 export class RangeOptionComponent implements OnInit {
   value = model<number>();
-  readonly optionName = input<string>(undefined);
-  readonly optionInfo = input<string>(undefined);
+  readonly optionName = input<string>();
+  readonly optionInfo = input<string>();
   range = model<Range<number>>();
-  readonly default = input<number>(undefined);
+  readonly default = input<number>();
 
   readonly valueChange = output<number>();
 

@@ -105,9 +105,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @ViewChild('tsBestFitFormulas', { static: true })
   tsBestFitFormulas: ElementRef;
   // @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
-  readonly zoomIn$ = input<Observable<void>>(undefined);
-  readonly zoomOut$ = input<Observable<void>>(undefined);
-  readonly zoomToFit$ = input<Observable<void>>(undefined);
+  readonly zoomIn$ = input<Observable<void>>();
+  readonly zoomOut$ = input<Observable<void>>();
+  readonly zoomToFit$ = input<Observable<void>>();
 
   // public viewPorts: QueryList<CdkVirtualScrollViewport>;
 

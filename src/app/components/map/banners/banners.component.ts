@@ -16,7 +16,7 @@ export class BannerCreateDirective implements OnInit {
   private translateService = inject(TranslateService);
   dialog = inject(MatDialog);
 
-  readonly bannerCreate = input<Banner>(undefined);
+  readonly bannerCreate = input<Banner>();
   private closedBannersKey = 'closed-banners-key';
 
   public toastRef;
@@ -131,5 +131,5 @@ export class BannerCreateDirective implements OnInit {
   imports: [BannerCreateDirective],
 })
 export class BannersComponent {
-  readonly banners = input<Banner[]>(undefined);
+  readonly banners = input<Banner[]>();
 }

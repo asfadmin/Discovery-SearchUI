@@ -44,7 +44,7 @@ export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
   private screenSize = inject(ScreenSizeService);
   private scenesService = inject(ScenesService);
 
-  readonly resize$ = input<Observable<void>>(undefined);
+  readonly resize$ = input<Observable<void>>();
 
   public selectedProducts$ = this.store$.select(
     scenesStore.getSelectedSceneProducts,

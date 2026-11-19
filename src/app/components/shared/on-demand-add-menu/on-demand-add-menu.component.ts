@@ -50,9 +50,9 @@ export class OnDemandAddMenuComponent implements OnInit {
   env = inject(EnvironmentService);
   hyp3 = inject(Hyp3ApiService);
 
-  readonly hyp3ableProducts = input<models.Hyp3ableProductByJobType>(undefined);
+  readonly hyp3ableProducts = input<models.Hyp3ableProductByJobType>();
   readonly isExpired = input(false);
-  readonly expiredJobs = input<models.Hyp3Job>(undefined);
+  readonly expiredJobs = input<models.Hyp3Job>();
 
   @ViewChild('addMenu', { static: true }) addMenu: MatMenu;
 
