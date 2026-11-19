@@ -1,5 +1,5 @@
 <div (dragover)="onFileHovered($event)" class="layout">
-  @if (showHeader) {
+  @if (showHeader()) {
     <div class="header-layout mb">
       <div class="header-layout">
         <b>{{ 'AOI_OPTIONS' | translate }}</b>

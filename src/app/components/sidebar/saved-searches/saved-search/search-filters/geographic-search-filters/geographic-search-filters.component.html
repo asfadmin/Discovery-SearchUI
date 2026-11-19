@@ -1,172 +1,174 @@
-@if (!noFilters(filters)) {
+@if (!noFilters(filters())) {
   <div>
-    @if (!!filters.selectedDataset) {
+    @if (!!filters().selectedDataset) {
       <div>
-        <b>{{ 'DATASET' | translate }}:</b> {{ filters.selectedDataset }}
+        <b>{{ 'DATASET' | translate }}:</b> {{ filters().selectedDataset }}
       </div>
     }
-    @if (!!filters.polygon) {
+    @if (!!filters().polygon) {
       <div>
         <b>{{ 'SEARCH_AREA' | translate }}:</b>
-        {{ showSearchAreaType(filters.polygon) }}
+        {{ showSearchAreaType(filters().polygon) }}
       </div>
     }
-    @if (!!filters.dateRange.start) {
+    @if (!!filters().dateRange.start) {
       <div>
         <b>{{ 'START' | translate }}:</b>
-        {{ filters.dateRange.start | shortDate }}
+        {{ filters().dateRange.start | shortDate }}
       </div>
     }
-    @if (!!filters.dateRange.end) {
+    @if (!!filters().dateRange.end) {
       <div>
-        <b>{{ 'END' | translate }}:</b> {{ filters.dateRange.end | shortDate }}
+        <b>{{ 'END' | translate }}:</b>
+        {{ filters().dateRange.end | shortDate }}
       </div>
     }
-    @if (filters.pathRange.start || filters.pathRange.end) {
+    @if (filters().pathRange.start || filters().pathRange.end) {
       <div>
-        <b>{{ 'PATH' | translate }}:</b> {{ filters.pathRange.start }} -
-        {{ filters.pathRange.end }}
+        <b>{{ 'PATH' | translate }}:</b> {{ filters().pathRange.start }} -
+        {{ filters().pathRange.end }}
       </div>
     }
-    @if (filters.frameRange.start || filters.frameRange.end) {
+    @if (filters().frameRange.start || filters().frameRange.end) {
       <div>
-        <b>{{ 'FRAME' | translate }}:</b> {{ filters.frameRange.start }} -
-        {{ filters.frameRange.end }}
+        <b>{{ 'FRAME' | translate }}:</b> {{ filters().frameRange.start }} -
+        {{ filters().frameRange.end }}
       </div>
     }
-    @if (filters.season.start || filters.season.end) {
+    @if (filters().season.start || filters().season.end) {
       <div>
-        <b>{{ 'SEASON' | translate }}:</b> {{ filters.season.start }} -
-        {{ filters.season.end }}
+        <b>{{ 'SEASON' | translate }}:</b> {{ filters().season.start }} -
+        {{ filters().season.end }}
       </div>
     }
-    @if (filters.productTypes.length) {
+    @if (filters().productTypes.length) {
       <div>
         <b>{{ 'FILE_TYPES' | translate }}:</b>
-        {{ formatTypesList(filters.productTypes) }}
+        {{ formatTypesList(filters().productTypes) }}
       </div>
     }
-    @if (filters.beamModes.length) {
+    @if (filters().beamModes.length) {
       <div>
-        <b>{{ 'BEAM_MODES' | translate }}:</b> {{ filters.beamModes }}
+        <b>{{ 'BEAM_MODES' | translate }}:</b> {{ filters().beamModes }}
       </div>
     }
-    @if (filters.polarizations.length) {
+    @if (filters().polarizations.length) {
       <div>
-        <b>{{ 'POLARIZATIONS' | translate }}:</b> {{ filters.polarizations }}
+        <b>{{ 'POLARIZATIONS' | translate }}:</b> {{ filters().polarizations }}
       </div>
     }
-    @if (filters.flightDirections.length) {
+    @if (filters().flightDirections.length) {
       <div>
-        <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ filters.flightDirections }}
+        <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ filters().flightDirections }}
       </div>
     }
-    @if (filters.platforms.length) {
+    @if (filters().platforms.length) {
       <div>
         <b>{{ 'SATELLITES' | translate }}:</b>
-        {{ formatTypesList(filters.platforms) }}
+        {{ formatTypesList(filters().platforms) }}
       </div>
     }
-    @if (filters.selectedMission) {
+    @if (filters().selectedMission) {
       <div>
         @if (
-          datasets[filters.selectedDataset] | isRelevant: p.SITE_DESCRIPTION
+          datasets[filters().selectedDataset] | isRelevant: p.SITE_DESCRIPTION
         ) {
           <b>{{ 'SITE_DESCRIPTION' | translate }}:</b>
         } @else {
           <b>{{ 'CAMPAIGN' | translate }}:</b>
         }
-        {{ filters.selectedMission }}
+        {{ filters().selectedMission }}
       </div>
     }
-    @if (filters.fullBurstIDs.length) {
+    @if (filters().fullBurstIDs.length) {
       <div>
-        <b>{{ 'FULL_BURST_ID' | translate }}:</b> {{ filters.fullBurstIDs }}
+        <b>{{ 'FULL_BURST_ID' | translate }}:</b> {{ filters().fullBurstIDs }}
       </div>
     }
-    @if (filters.operaBurstIDs.length) {
+    @if (filters().operaBurstIDs.length) {
       <div>
-        <b>{{ 'OPERA_BURST_ID' | translate }}:</b> {{ filters.operaBurstIDs }}
+        <b>{{ 'OPERA_BURST_ID' | translate }}:</b> {{ filters().operaBurstIDs }}
       </div>
     }
-    @if (filters.useCalibrationData) {
+    @if (filters().useCalibrationData) {
       <div>
         <b>{{ 'DATA_TYPE' | translate }}:</b> {{ 'CALIBRATION' | translate }}
       </div>
     }
-    @if (!!filters.shortNames.length) {
+    @if (!!filters().shortNames.length) {
       <div>
-        <b> {{ 'SHORT_NAMES' | translate }}:</b> {{ filters.shortNames }}
+        <b> {{ 'SHORT_NAMES' | translate }}:</b> {{ filters().shortNames }}
       </div>
     }
-    @if (filters.scienceProduct.length) {
+    @if (filters().scienceProduct.length) {
       <div>
         <b>{{ 'SCIENCE_PRODUCT' | translate }}:</b>
-        {{ filters.scienceProduct | join: ', ' }}
+        {{ filters().scienceProduct | join: ', ' }}
       </div>
     }
-    @if (filters.productionConfig.length) {
+    @if (filters().productionConfig.length) {
       <div>
         <b>{{ 'PRODUCTION_CONFIGURATION' | translate }}:</b>
-        {{ filters.productionConfig }}
+        {{ filters().productionConfig }}
       </div>
     }
-    @if (filters.sidePolarizations.length) {
+    @if (filters().sidePolarizations.length) {
       <div>
         <b>{{ 'SIDE_POLARIZATIONS' | translate }}:</b>
-        {{ filters.sidePolarizations }}
+        {{ filters().sidePolarizations }}
       </div>
     }
-    @if (filters.frameCoverage.length) {
+    @if (filters().frameCoverage.length) {
       <div>
-        <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ filters.frameCoverage }}
+        <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ filters().frameCoverage }}
       </div>
     }
-    @if (filters.rangeBandwidth.length) {
+    @if (filters().rangeBandwidth.length) {
       <div>
-        <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ filters.rangeBandwidth }}
+        <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b>
+        {{ filters().rangeBandwidth }}
       </div>
     }
-    @if (!!filters.groupID) {
+    @if (!!filters().groupID) {
       <div>
-        <b> {{ 'GROUP_ID_INFO_BAR' | translate }}:</b> {{ filters.groupID }}
+        <b> {{ 'GROUP_ID_INFO_BAR' | translate }}:</b> {{ filters().groupID }}
       </div>
     }
-    @if (filters.instrument.length) {
+    @if (filters().instrument.length) {
       <div>
-        <b>{{ 'INSTRUMENTS' | translate }}:</b> {{ filters.instrument }}
+        <b>{{ 'INSTRUMENTS' | translate }}:</b> {{ filters().instrument }}
       </div>
     }
-    @if (filters.frameCoverage.length) {
+    @if (filters().frameCoverage.length) {
       <div>
-        <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ filters.frameCoverage }}
+        <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ filters().frameCoverage }}
       </div>
     }
-    @if (filters.rangeBandwidth.length) {
+    @if (filters().rangeBandwidth.length) {
       <div>
-        <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ filters.rangeBandwidth }}
+        <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b>
+        {{ filters().rangeBandwidth }}
       </div>
     }
-    @if (filters.jointObservation.length) {
+    @if (filters().jointObservation.length) {
       <div>
         <b>{{ 'ACQUISITION_COVERAGE' | translate }}:</b>
-        {{ filters.jointObservation }}
+        {{ filters().jointObservation }}
       </div>
     }
-    @if (filters.ariaVersion) {
+    @if (filters().ariaVersion) {
       <div>
-        <b>{{ 'ARIA_VERSION' | translate }}:</b> {{ filters.ariaVersion }}
+        <b>{{ 'ARIA_VERSION' | translate }}:</b> {{ filters().ariaVersion }}
       </div>
     }
-    @if (filters.granuleList) {
+    @if (filters().granuleList) {
       <div>
-        <b>{{ 'SCENE_PATTERN_LIST' | translate }}:</b> {{ filters.granuleList }}
+        <b>{{ 'SCENE_PATTERN_LIST' | translate }}:</b>
+        {{ filters().granuleList }}
       </div>
     }
   </div>
-}
-
-@if (noFilters(filters)) {
+} @else {
   <div>
     <span class="faint-text">
       {{ 'NO_FILTERS' | translate }}

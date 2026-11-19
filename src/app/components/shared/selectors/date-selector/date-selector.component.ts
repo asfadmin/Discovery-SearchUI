@@ -4,8 +4,8 @@ import {
   OnInit,
   ViewChild,
   OnDestroy,
-  Input,
   inject,
+  input,
 } from '@angular/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -38,7 +38,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   private dateExtremaService = inject(DateExtremaService);
 
   @ViewChild('dateRange', { static: true }) public dateRange;
-  @Input() public extendEndDateBy: number;
+  public readonly extendEndDateBy = input<number>();
 
   public extrema: DateRangeExtrema;
 
@@ -51,9 +51,10 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
     map((endDate) => {
       const date = endDate <= this.currentDate ? endDate : this.currentDate;
 
-      if (this.extendEndDateBy && !!date) {
+      const extendEndDateBy = this.extendEndDateBy();
+      if (extendEndDateBy && !!date) {
         const d = new Date(date.valueOf());
-        return new Date(d.setMonth(d.getMonth() + this.extendEndDateBy));
+        return new Date(d.setMonth(d.getMonth() + extendEndDateBy));
       }
 
       return date;
@@ -119,10 +120,11 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
           this.extrema = baselineExtrema;
         }
 
-        if (this.extendEndDateBy && extrema.end.max !== null) {
+        const extendEndDateBy = this.extendEndDateBy();
+        if (extendEndDateBy && extrema.end.max !== null) {
           const endMax = extrema.end.max;
           const d = new Date(endMax.valueOf());
-          d.setDate(d.getDate() + this.extendEndDateBy);
+          d.setDate(d.getDate() + extendEndDateBy);
 
           extrema.end.max = d;
         }

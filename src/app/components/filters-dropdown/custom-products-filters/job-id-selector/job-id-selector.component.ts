@@ -1,5 +1,5 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatLabel } from '@angular/material/form-field';
 import { MatFormField, MatInput } from '@angular/material/input';
@@ -23,8 +23,8 @@ import { NotificationService } from '@services';
 export class JobIdSelectorComponent {
   private notification = inject(NotificationService);
 
-  @Input() jobIds: string[];
-  @Output() newJobIds = new EventEmitter<string[]>();
+  public jobIds = input.required<string[]>();
+  public newJobIds = output<string[]>();
 
   onJobIdsChange(event: Event) {
     const jobIdsInput = (event.target as HTMLInputElement).value;

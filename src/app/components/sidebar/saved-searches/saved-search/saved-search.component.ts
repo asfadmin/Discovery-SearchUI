@@ -1,13 +1,12 @@
 import {
   Component,
   OnInit,
-  Input,
-  Output,
-  EventEmitter,
   ViewChild,
   ElementRef,
   ChangeDetectionStrategy,
   inject,
+  input,
+  output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -49,32 +48,35 @@ export class SavedSearchComponent implements OnInit {
 
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
-  @Input() search: models.Search;
-  @Input() searchType: models.SearchType;
-  @Input() isExpanded: boolean;
-  @Input() isNew: boolean;
-  @Input() isSavedSearch: boolean;
-  @Input() lockedFocus: boolean;
+  readonly search = input<models.Search>();
+  readonly searchType = input<models.SearchType>();
+  readonly isExpanded = input<boolean>();
+  readonly isNew = input<boolean>();
+  readonly isSavedSearch = input<boolean>();
+  readonly lockedFocus = input<boolean>();
 
-  @Output() updateFilters = new EventEmitter<string>();
-  @Output() updateName = new EventEmitter<{ id: string; name: string }>();
-  @Output() deleteSearch = new EventEmitter<string>();
-  @Output() setSearch = new EventEmitter<models.Search>();
-  @Output() expand = new EventEmitter<string>();
-  @Output() unlockFocus = new EventEmitter<void>();
+  readonly updateFilters = output<string>();
+  readonly updateName = output<{
+    id: string;
+    name: string;
+  }>();
+  readonly deleteSearch = output<string>();
+  readonly setSearch = output<models.Search>();
+  readonly expand = output<string>();
+  readonly unlockFocus = output<void>();
 
   public SearchType = models.SearchType;
   public searchTranslation = models.SearchTypeTranslation;
   public isEditingName = false;
   public editName = '';
   ngOnInit() {
-    if (this.isNew) {
+    if (this.isNew()) {
       this.onEditName();
     }
   }
 
   public onSetSearch(): void {
-    this.setSearch.emit(this.search);
+    this.setSearch.emit(this.search());
   }
 
   public onUpdateFilters(id: string): void {
@@ -86,12 +88,13 @@ export class SavedSearchComponent implements OnInit {
   }
 
   public onEditName(): void {
-    if (!this.isSavedSearch) {
+    if (!this.isSavedSearch()) {
       return;
     }
 
     this.isEditingName = true;
-    this.editName = this.search.name === '(No title)' ? '' : this.search.name;
+    this.editName =
+      this.search().name === '(No title)' ? '' : this.search().name;
 
     timer(40).subscribe((_) => this.nameEditInput.nativeElement.focus());
   }
@@ -101,15 +104,15 @@ export class SavedSearchComponent implements OnInit {
     this.isEditingName = false;
     this.editName = '';
 
-    this.updateName.emit({ name: newName, id: this.search.id });
+    this.updateName.emit({ name: newName, id: this.search().id });
   }
 
   public onDeleteSearch(): void {
-    this.deleteSearch.emit(this.search.id);
+    this.deleteSearch.emit(this.search().id);
   }
 
   public onEditFocusLeave(): void {
-    if (this.lockedFocus) {
+    if (this.lockedFocus()) {
       this.nameEditInput.nativeElement.focus();
       this.unlockFocus.emit();
       return;
@@ -117,7 +120,7 @@ export class SavedSearchComponent implements OnInit {
 
     this.isEditingName = false;
 
-    this.updateName.emit({ name: this.editName, id: this.search.id });
+    this.updateName.emit({ name: this.editName, id: this.search().id });
     this.editName = '';
   }
 
@@ -146,7 +149,7 @@ export class SavedSearchComponent implements OnInit {
   }
 
   public formatName(searchName: string): string {
-    if (this.isSavedSearch) {
+    if (this.isSavedSearch()) {
       const noName = this.language.translate.instant('NO_NAME');
       return searchName ? searchName : noName;
     } else {
@@ -166,6 +169,6 @@ export class SavedSearchComponent implements OnInit {
   }
 
   public expandSearch(): void {
-    this.expand.emit(this.search.id);
+    this.expand.emit(this.search().id);
   }
 }

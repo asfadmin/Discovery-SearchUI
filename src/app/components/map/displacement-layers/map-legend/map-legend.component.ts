@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-map-legend',
@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: './map-legend.component.scss',
 })
 export class MapLegendComponent {
-  @Input() min: number;
-  @Input() max: number;
-  @Input() units: string;
+  readonly min = input<number>();
+  readonly max = input<number>();
+  readonly units = input<string>();
 }

@@ -1,12 +1,5 @@
 import { NgStyle, NgClass } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, inject, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatListItem } from '@angular/material/list';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -45,25 +38,28 @@ export class SceneComponent implements OnInit {
   private screenSize = inject(services.ScreenSizeService);
   private mapService = inject(services.MapService);
 
-  @Input() scene: models.CMRProduct;
-  @Input() searchType: models.SearchType;
+  readonly scene = input<models.CMRProduct>();
+  readonly searchType = input<models.SearchType>();
 
-  @Input() isSelected: boolean;
-  @Input() offsets: { temporal: number; perpendicular: number } = {
+  readonly isSelected = input<boolean>();
+  readonly offsets = input<{
+    temporal: number;
+    perpendicular: number;
+  }>({
     temporal: 0,
     perpendicular: null,
-  };
+  });
 
-  @Input() isQueued: boolean;
-  @Input() jobQueued: boolean;
-  @Input() numQueued: number;
+  readonly isQueued = input<boolean>();
+  readonly jobQueued = input<boolean>();
+  readonly numQueued = input<number>();
 
-  @Input() hyp3ableByJobType: {
+  readonly hyp3ableByJobType = input<{
     total: number;
     byJobType: models.Hyp3ableProductByJobType[];
-  };
+  }>();
 
-  @Output() toggleScene = new EventEmitter();
+  readonly toggleScene = output();
 
   public hovered: boolean;
   public breakpoint: models.Breakpoints;
@@ -86,7 +82,7 @@ export class SceneComponent implements OnInit {
   }
 
   public onZoomTo(): void {
-    this.mapService.zoomToScene(this.scene);
+    this.mapService.zoomToScene(this.scene());
   }
 
   public onToggleScene(): void {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { SbasFiltersType } from '@models';
@@ -9,5 +9,5 @@ import { SbasFiltersType } from '@models';
   imports: [TranslateModule],
 })
 export class SbasSearchFiltersComponent {
-  @Input() filters: SbasFiltersType;
+  public filters = input<SbasFiltersType>();
 }

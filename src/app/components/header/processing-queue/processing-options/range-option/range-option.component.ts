@@ -1,5 +1,5 @@
 import { LowerCasePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit, input, model, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   MatFormField,
@@ -27,32 +27,32 @@ import { Range } from '@models';
   ],
 })
 export class RangeOptionComponent implements OnInit {
-  @Input() value: number;
-  @Input() optionName: string;
-  @Input() optionInfo: string;
-  @Input() range: Range<number>;
-  @Input() default: number;
+  value = model<number>();
+  readonly optionName = input<string>();
+  readonly optionInfo = input<string>();
+  range = model<Range<number>>();
+  readonly default = input<number>();
 
-  @Output() valueChange = new EventEmitter<number>();
+  readonly valueChange = output<number>();
 
   ngOnInit(): void {
-    this.value = this.default;
+    this.value.set(this.default());
   }
 
   public onValueChange(): void {
-    if (this.value < this.range.start) {
-      this.value = Math.max(this.range.start, this.value);
+    if (this.value() < this.range().start) {
+      this.value.set(Math.max(this.range().start, this.value()));
     }
-    if (this.value > this.range.end) {
-      this.value = Math.min(this.range.end, this.value);
+    if (this.value() > this.range().end) {
+      this.value.set(Math.min(this.range().end, this.value()));
     }
-    if (this.value === 0.0) {
-      this.value = 0.0;
+    if (this.value() === 0.0) {
+      this.value.set(0.0);
     }
-    if (this.value === null) {
-      this.value = this.default;
+    if (this.value() === null) {
+      this.value.set(this.default());
     }
 
-    this.valueChange.emit(this.value);
+    this.valueChange.emit(this.value());
   }
 }

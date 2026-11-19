@@ -1,5 +1,5 @@
 import { KeyValuePipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { DisplacementFiltersType } from '@models';
@@ -12,5 +12,5 @@ import { ShortDatePipe } from '@pipes/short-date.pipe';
   imports: [KeyValuePipe, ShortDatePipe, TranslateModule],
 })
 export class DisplacementFiltersComponent {
-  @Input() filters: DisplacementFiltersType;
+  readonly filters = input<DisplacementFiltersType>();
 }

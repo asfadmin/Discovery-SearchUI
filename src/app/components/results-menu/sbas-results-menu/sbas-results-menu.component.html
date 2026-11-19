@@ -10,7 +10,7 @@
     </mat-card-subtitle>
     @if (view === Views.LIST) {
       <div class="app-scene-list">
-        <app-scenes-list [resize$]="resize$"></app-scenes-list>
+        <app-scenes-list [resize$]="resize$()"></app-scenes-list>
       </div>
     }
     @if (view === Views.DETAIL) {

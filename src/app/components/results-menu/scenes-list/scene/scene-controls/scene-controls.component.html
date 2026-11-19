@@ -1,6 +1,6 @@
 <div class="scene-controls-row">
   <div class="scene-control">
-    @if (!!scene.metadata.polygon) {
+    @if (!!scene().metadata.polygon) {
       <mat-icon
         (click)="onZoomTo()"
         class="ml-2"
@@ -10,43 +10,43 @@
       </mat-icon>
     }
 
-    @if (!scene.isDummyProduct) {
-      @if (!!hyp3ableByJobType && hyp3ableByJobType?.total > 0) {
+    @if (!scene().isDummyProduct) {
+      @if (!!hyp3ableByJobType() && hyp3ableByJobType()?.total > 0) {
         <mat-icon
           class="icon-margin mobile-svg"
           [matMenuTriggerFor]="sceneAdd.addMenu"
-          [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
+          [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType().byJobType }"
           svgIcon="hyp3"
         >
         </mat-icon>
       }
     }
 
-    @if (isDownloadable(scene)) {
+    @if (isDownloadable(scene())) {
       <mat-icon
         (click)="onToggle()"
         class="icon-margin"
         [matTooltip]="
-          isQueued
+          isQueued()
             ? ('REMOVE_SCENE_FILES_FROM_DOWNLOADS' | translate)
             : ('ADD_SCENE_FILES_TO_DOWNLOADS' | translate)
         "
       >
-        {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
+        {{ isQueued() ? 'shopping_cart' : 'add_shopping_cart' }}
       </mat-icon>
     }
   </div>
 
-  @if (isDownloadable(scene)) {
+  @if (isDownloadable(scene())) {
     <div class="scene-control">
-      <span class="number-queued"> {{ numQueued }} </span>
+      <span class="number-queued"> {{ numQueued() }} </span>
     </div>
   }
 
-  @if (searchType === SearchTypes.CUSTOM_PRODUCTS) {
+  @if (searchType() === SearchTypes.CUSTOM_PRODUCTS) {
     <div class="scene-control scene-control-spacing">
-      @if (!scene.isDummyProduct) {
-        @if (isExpired(scene.metadata.job)) {
+      @if (!scene().isDummyProduct) {
+        @if (isExpired(scene().metadata.job)) {
           <mat-icon
             [matMenuTriggerFor]="sceneAdd.addMenu"
             [matMenuTriggerData]="{
@@ -61,9 +61,9 @@
     </div>
   }
 
-  @if (!isDownloadable(scene)) {
+  @if (!isDownloadable(scene())) {
     <div class="scene-control ml-2">
-      <app-hyp3-job-status-badge [job]="scene.metadata.job">
+      <app-hyp3-job-status-badge [job]="scene().metadata.job">
       </app-hyp3-job-status-badge>
     </div>
   }
@@ -71,7 +71,7 @@
 
 <app-on-demand-add-menu
   #sceneAdd
-  [isExpired]="isExpired(scene.metadata.job)"
-  [expiredJobs]="scene.metadata.job"
+  [isExpired]="isExpired(scene().metadata.job)"
+  [expiredJobs]="scene().metadata.job"
 >
 </app-on-demand-add-menu>

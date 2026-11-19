@@ -1,8 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import {
   Component,
-  Output,
-  EventEmitter,
   inject,
   input,
   computed,
@@ -10,6 +8,7 @@ import {
   signal,
   viewChild,
   ElementRef,
+  output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -54,7 +53,7 @@ declare global {
 export class DatasetSelectorComponent {
   private screenSize = inject(ScreenSizeService);
   private translate = inject(TranslateService);
-  @Output() selectedChange = new EventEmitter<string>();
+  readonly selectedChange = output<string>();
 
   public datasets = input<models.Dataset[]>();
   public selected = input<string>();

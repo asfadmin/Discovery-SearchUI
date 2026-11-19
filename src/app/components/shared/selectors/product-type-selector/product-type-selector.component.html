@@ -4,7 +4,7 @@
     <mat-select
       [(value)]="productTypesList"
       (selectionChange)="onNewProductTypes($event)"
-      [disabled]="selectableProductTypes.length < 1 || burstSelected"
+      [disabled]="selectableProductTypes.length < 1 || burstSelected()"
       panelClass="product-type-selector"
       multiple
       #productTypeSelector

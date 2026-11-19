@@ -1,27 +1,27 @@
 <div>
-  @if (search.searchType === SearchType.LIST) {
-    <app-list-search-filters [filters]="search.filters | listFilter">
+  @if (search().searchType === SearchType.LIST) {
+    <app-list-search-filters [filters]="search().filters | listFilter">
     </app-list-search-filters>
   }
 
-  @if (search.searchType === SearchType.DATASET) {
+  @if (search().searchType === SearchType.DATASET) {
     <app-geographic-search-filters
-      [filters]="search.filters | geographicFilter"
+      [filters]="search().filters | geographicFilter"
     >
     </app-geographic-search-filters>
   }
 
-  @if (search.searchType === SearchType.BASELINE) {
-    <app-baseline-search-filters [filters]="search.filters | baselineFilter">
+  @if (search().searchType === SearchType.BASELINE) {
+    <app-baseline-search-filters [filters]="search().filters | baselineFilter">
     </app-baseline-search-filters>
   }
 
-  @if (search.searchType === SearchType.SBAS) {
-    <app-sbas-search-filters [filters]="search.filters | SBASFilter">
+  @if (search().searchType === SearchType.SBAS) {
+    <app-sbas-search-filters [filters]="search().filters | SBASFilter">
     </app-sbas-search-filters>
   }
-  @if (search.searchType === SearchType.DISPLACEMENT) {
-    <app-displacement-filters [filters]="search.filters | displacementFilter">
+  @if (search().searchType === SearchType.DISPLACEMENT) {
+    <app-displacement-filters [filters]="search().filters | displacementFilter">
     </app-displacement-filters>
   }
 </div>

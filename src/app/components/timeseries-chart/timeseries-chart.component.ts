@@ -7,7 +7,6 @@ import { NgStyle } from '@angular/common';
 import {
   Component,
   ElementRef,
-  Input,
   OnDestroy,
   OnInit,
   QueryList,
@@ -16,6 +15,8 @@ import {
   ViewEncapsulation,
   inject,
   signal,
+  input,
+  model,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -104,13 +105,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @ViewChild('tsBestFitFormulas', { static: true })
   tsBestFitFormulas: ElementRef;
   // @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
-  @Input() zoomIn$: Observable<void>;
-  @Input() zoomOut$: Observable<void>;
-  @Input() zoomToFit$: Observable<void>;
+  readonly zoomIn$ = input<Observable<void>>();
+  readonly zoomOut$ = input<Observable<void>>();
+  readonly zoomToFit$ = input<Observable<void>>();
 
-  // @Input() chartData: models.timeseriesChartItemState[];
-
-  // public scrollIndex = 1;
   // public viewPorts: QueryList<CdkVirtualScrollViewport>;
 
   public json_data = '';
@@ -169,7 +167,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public exportableData: Record<string, object[]> = {};
 
   // private selectedScene: string;
-  @Input() isLoading = true;
+  isLoading = model<boolean>(true);
   public allSeriesFailed = signal(false);
   private showLines = true;
   private xAxisTitle = '';
@@ -194,7 +192,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           ),
         )
         .subscribe(([_updated_id, chartStates]) => {
-          this.isLoading = false;
+          this.isLoading.set(false);
           this.refreshChart(chartStates);
         }),
     );

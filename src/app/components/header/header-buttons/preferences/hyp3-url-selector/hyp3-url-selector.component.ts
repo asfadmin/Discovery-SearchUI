@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input, inject } from '@angular/core';
+import { Component, inject, input, output, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   MatAutocompleteTrigger,
@@ -42,10 +42,10 @@ import { Hyp3ApiService } from '@services';
 export class Hyp3UrlSelectorComponent {
   private hyp3 = inject(Hyp3ApiService);
 
-  @Input() hyp3BackendUrl: string;
-  @Input() hyp3SavedUrls: string[];
+  hyp3BackendUrl = input<string>();
+  hyp3SavedUrls = model<string[]>();
 
-  @Output() newHyp3Url = new EventEmitter<{
+  newHyp3Url = output<{
     backendUrl: string;
     savedUrls: string[];
   }>();
@@ -68,28 +68,29 @@ export class Hyp3UrlSelectorComponent {
   }
 
   onRemoveHyp3Url(url: string) {
-    this.hyp3SavedUrls = this.hyp3SavedUrls.filter(
-      (hyp3Url) => hyp3Url !== url,
+    this.hyp3SavedUrls.set(
+      this.hyp3SavedUrls().filter((hyp3Url) => hyp3Url !== url),
     );
 
     this.onResetHyp3Url();
   }
 
   private updateHyp3Url(url: string) {
-    this.hyp3BackendUrl = this.stripTrailingSlash(url);
+    const temp = this.stripTrailingSlash(url);
 
-    this.addHyp3Url(this.hyp3BackendUrl);
+    this.addHyp3Url(temp);
 
     this.newHyp3Url.emit({
-      backendUrl: this.hyp3BackendUrl,
-      savedUrls: this.hyp3SavedUrls,
+      backendUrl: temp,
+      savedUrls: this.hyp3SavedUrls(),
     });
   }
 
   private addHyp3Url(url: string): void {
-    const uniqueUrls = new Set(this.hyp3SavedUrls);
+    const uniqueUrls = new Set(this.hyp3SavedUrls());
     uniqueUrls.add(url);
-    this.hyp3SavedUrls = [...uniqueUrls];
+
+    this.hyp3SavedUrls.set([...uniqueUrls]);
   }
 
   private stripTrailingSlash = (url: string) => {

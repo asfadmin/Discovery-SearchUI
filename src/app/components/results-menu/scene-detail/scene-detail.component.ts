@@ -3,9 +3,9 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  Input,
   inject,
   computed,
+  input,
 } from '@angular/core';
 import {
   MatCardHeader,
@@ -73,7 +73,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   private mapService = inject(MapService);
   private browseOverlayService = inject(BrowseOverlayService);
 
-  @Input() isScrollable = true;
+  readonly isScrollable = input(true);
 
   public scene: models.CMRProduct;
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);

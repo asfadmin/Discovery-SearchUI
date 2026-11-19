@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Output, EventEmitter, inject, Signal } from '@angular/core';
+import { Component, inject, Signal, output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
@@ -43,7 +43,7 @@ export class BaselineHeaderComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
 
-  @Output() public openQueue = new EventEmitter<void>();
+  public readonly openQueue = output<void>();
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;

@@ -1,11 +1,11 @@
 import {
   Component,
   OnInit,
-  Input,
   OnDestroy,
   ViewChild,
   ElementRef,
   inject,
+  input,
 } from '@angular/core';
 import {
   MatButtonToggleGroup,
@@ -75,7 +75,7 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   @ViewChild('listCard', { read: ElementRef }) listCardView: ElementRef;
   @ViewChild('chartCard', { read: ElementRef }) chartCardView: ElementRef;
 
-  @Input() resize$: Observable<void>;
+  readonly resize$ = input<Observable<void>>();
   public searchType = this.store$.selectSignal(searchStore.getSearchType);
 
   public pair: CMRProductPair;

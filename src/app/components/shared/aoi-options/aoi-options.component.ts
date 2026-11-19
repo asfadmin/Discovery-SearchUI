@@ -2,12 +2,11 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
   Component,
   OnInit,
-  Output,
-  Input,
-  EventEmitter,
   ViewChild,
   OnDestroy,
   inject,
+  input,
+  output,
 } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { MatIconButton, MatButton } from '@angular/material/button';
@@ -70,8 +69,8 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
 
   @ViewChild('polygonInputForm') public polygonForm: NgForm;
 
-  @Input() showHeader = true;
-  @Output() close = new EventEmitter<void>();
+  readonly showHeader = input(true);
+  readonly close = output<void>();
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);

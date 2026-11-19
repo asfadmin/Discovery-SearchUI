@@ -9,7 +9,7 @@
         'metric-flex-field': true,
       }"
     >
-      {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
+      {{ withOffset(scene().metadata.perpendicular, offsets().perpendicular) }}m
     </div>
 
     <div
@@ -18,20 +18,20 @@
         'metric-flex-field': true,
       }"
     >
-      {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
+      {{ withOffset(scene().metadata.temporal, offsets().temporal) }}d
     </div>
 
     <div class="cart-flex-field">
-      @if ((hyp3ableByJobType?.total ?? 0) > 0) {
+      @if ((hyp3ableByJobType()?.total ?? 0) > 0) {
         <mat-icon
           [matMenuTriggerFor]="sceneAdd.addMenu"
-          [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
+          [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType().byJobType }"
           class="icon-margin mobile-svg"
           svgIcon="hyp3"
         >
         </mat-icon>
       }
-      @if (hyp3ableByJobType.total < 1) {
+      @if (hyp3ableByJobType()?.total < 1) {
         <mat-icon
           class="noselect list-icon icon-margin icon-disabled"
           [matTooltip]="'ONLY_CO_POLARIZED_BURSTS' | translate"
@@ -40,17 +40,17 @@
         >
         </mat-icon>
       }
-      @if (isDownloadable(scene)) {
+      @if (isDownloadable(scene())) {
         <mat-icon
           (click)="onToggle()"
           class="icon-margin"
           [matTooltip]="
-            isQueued
+            isQueued()
               ? ('REMOVE_SCENE_FILES_FROM_DOWNLOADS' | translate)
               : ('ADD_SCENE_FILES_TO_DOWNLOADS' | translate)
           "
         >
-          {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
+          {{ isQueued() ? 'shopping_cart' : 'add_shopping_cart' }}
         </mat-icon>
       }
     </div>
@@ -58,8 +58,8 @@
 
   <app-on-demand-add-menu
     #sceneAdd
-    [isExpired]="isExpired(scene.metadata.job)"
-    [expiredJobs]="scene.metadata.job"
+    [isExpired]="isExpired(scene().metadata.job)"
+    [expiredJobs]="scene().metadata.job"
   >
   </app-on-demand-add-menu>
 </div>

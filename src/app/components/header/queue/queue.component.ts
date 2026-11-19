@@ -5,10 +5,10 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  Input,
   QueryList,
   ViewChildren,
   inject,
+  input,
 } from '@angular/core';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import {
@@ -106,7 +106,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);
   private downloadService = inject(DownloadService);
 
-  @Input() appQueueComponentModel: string;
+  readonly appQueueComponentModel = input<string>();
 
   @ViewChildren(DownloadFileButtonComponent)
   downloadButtons!: QueryList<DownloadFileButtonComponent>;
@@ -191,13 +191,13 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
   private keepGoing(product) {
     const removedButton = this.downloadButtons.find(
-      (button) => button.product === product,
+      (button) => button.product() === product,
     );
     if (removedButton?.dFile?.state !== 'DONE' && removedButton.dFile) {
       removedButton.cancelDownload();
       this.dlQueueNumProcessed--;
       this.productList = this.productList?.filter(
-        (button) => button.product !== product,
+        (button) => button.product() !== product,
       );
       this.dlQueueCount--;
       this.downloadContinue(product);

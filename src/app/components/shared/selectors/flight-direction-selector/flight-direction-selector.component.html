@@ -2,12 +2,12 @@
   <mat-label>{{ 'DIRECTION' | translate }}</mat-label>
   <mat-select
     (selectionChange)="
-      onNewFlightDirectionsSelected(multiple ? $event.value : [$event.value])
+      onNewFlightDirectionsSelected(multiple() ? $event.value : [$event.value])
     "
     [value]="
-      multiple ? (flightDirections$ | async) : (flightDirections$ | async)[0]
+      multiple() ? (flightDirections$ | async) : (flightDirections$ | async)[0]
     "
-    [multiple]="multiple"
+    [multiple]="multiple()"
   >
     @for (direction of flightDirectionTypes; track direction) {
       <mat-option [value]="direction">

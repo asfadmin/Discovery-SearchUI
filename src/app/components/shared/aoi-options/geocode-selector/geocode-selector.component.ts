@@ -1,12 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-  inject,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   MatAutocompleteTrigger,
@@ -27,8 +20,6 @@ import * as models from '@models';
 import { MapService, WktService } from '@services';
 import { AppState } from '@store';
 import { getGeocodeArea } from '@store/filters';
-
-import {} from '@angular/common';
 
 @Component({
   selector: 'app-geocode-selector',
@@ -52,7 +43,7 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   private mapService = inject(MapService);
 
-  @Output() geocodeWkt = new EventEmitter();
+  readonly geocodeWkt = output<{ wkt: string; geocode: string }>();
   public options = [];
   public search_key = '';
   public subject = new Subject();

@@ -1,12 +1,5 @@
 import { NgClass } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, inject, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatListItemMeta } from '@angular/material/list';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -36,18 +29,21 @@ export class BaselineSceneControlsComponent implements OnInit {
   private screenSize = inject(services.ScreenSizeService);
   private hyp3JobStatus = inject(services.Hyp3JobStatusService);
 
-  @Input() scene: models.CMRProduct;
-  @Input() offsets: { temporal: number; perpendicular: number } = {
+  readonly scene = input<models.CMRProduct>();
+  readonly offsets = input<{
+    temporal: number;
+    perpendicular: number;
+  }>({
     temporal: 0,
     perpendicular: null,
-  };
-  @Input() hyp3ableByJobType: {
+  });
+  readonly hyp3ableByJobType = input<{
     total: number;
     byJobType: models.Hyp3ableProductByJobType[];
-  };
-  @Input() isQueued: boolean;
+  }>();
+  readonly isQueued = input<boolean>();
 
-  @Output() onToggleScene = new EventEmitter();
+  readonly onToggleScene = output();
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;

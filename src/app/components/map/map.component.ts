@@ -3,15 +3,14 @@ import { AsyncPipe } from '@angular/common';
 import {
   Component,
   ElementRef,
-  EventEmitter,
   Injector,
   OnDestroy,
   OnInit,
-  Output,
   ViewChild,
   computed,
   effect,
   inject,
+  output,
 } from '@angular/core';
 import { MatButton, MatFabButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -99,7 +98,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private pointHistoryService = inject(PointHistoryService);
   private disclaimerService = inject(DisplacementDisclaimerService);
 
-  @Output() loadUrlState = new EventEmitter<void>();
+  readonly loadUrlState = output<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
   @ViewChild('map', { static: true }) mapRef: ElementRef;
   @ViewChild('browsetooltip', { static: false }) browseDisclaimer: ElementRef;

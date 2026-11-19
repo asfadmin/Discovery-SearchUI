@@ -1,11 +1,10 @@
 import {
   Component,
   OnInit,
-  Input,
-  Output,
-  EventEmitter,
   OnDestroy,
   inject,
+  input,
+  output,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
@@ -22,16 +21,16 @@ import { MapInteractionModeType } from '@models';
 export class FileUploadComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
 
-  @Input() interaction$: Observable<MapInteractionModeType>;
+  readonly interaction$ = input<Observable<MapInteractionModeType>>();
 
-  @Output() dialogClose = new EventEmitter<boolean>();
-  @Output() newSearchPolygon = new EventEmitter<string>();
+  readonly dialogClose = output<boolean>();
+  readonly newSearchPolygon = output<string>();
 
   private subs = new SubSink();
 
   public ngOnInit(): void {
     this.subs.add(
-      this.interaction$
+      this.interaction$()
         .pipe(
           filter(
             (interaction) => interaction === MapInteractionModeType.UPLOAD,

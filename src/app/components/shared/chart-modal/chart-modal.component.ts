@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -24,7 +24,7 @@ import { TimeseriesChartConfigComponent } from '@components/timeseries-chart/tim
 export class ChartModalComponent {
   dialog = inject(MatDialog);
 
-  @Output() public resetReferenceEvent = new EventEmitter();
+  public readonly resetReferenceEvent = output();
 
   public onResetReference() {
     this.resetReferenceEvent.emit();

@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { datasets, GeographicFiltersType, ProductType, Props } from '@models';
@@ -14,7 +14,7 @@ import { ShortDatePipe } from '@pipes/short-date.pipe';
   imports: [ShortDatePipe, JoinPipe, IsRelevantPipe, TranslateModule],
 })
 export class GeographicSearchFiltersComponent {
-  @Input() filters: GeographicFiltersType;
+  readonly filters = input<GeographicFiltersType>();
   public datasets = datasets;
   public p = Props;
 

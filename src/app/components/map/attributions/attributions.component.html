@@ -1,5 +1,5 @@
 <ng-container>
-  @if (breakpoint > breakpoints.MOBILE) {
+  @if (breakpoint() > breakpoints.MOBILE) {
     <a href="http://mapbox.com/about/maps" class="mapbox-logo" target="_blank"
       >Mapbox</a
     >
@@ -27,7 +27,7 @@
     <div class="position-right--filler attribute-box">&nbsp;</div>
   }
 
-  @if (breakpoint === breakpoints.MOBILE) {
+  @if (breakpoint() === breakpoints.MOBILE) {
     <div class="bottom-search-bar">
       <div class="bar-layout">
         <app-max-results-selector
@@ -37,7 +37,7 @@
       </div>
     </div>
   }
-  @if (breakpoint === breakpoints.SMALL) {
+  @if (breakpoint() === breakpoints.SMALL) {
     <div class="bar"></div>
   }
 </ng-container>
