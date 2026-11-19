@@ -1,12 +1,11 @@
 import {
   Directive,
   ElementRef,
-  EventEmitter,
   NgZone,
   OnDestroy,
   OnInit,
-  Output,
   inject,
+  output,
 } from '@angular/core';
 
 export class ResizedEvent {
@@ -32,11 +31,9 @@ export class ResizedDirective implements OnInit, OnDestroy {
   private observer: ResizeObserver;
   private oldRect?: DOMRectReadOnly;
 
-  @Output()
-  public readonly resized;
+  readonly resized = output<ResizedEvent>();
 
   public constructor() {
-    this.resized = new EventEmitter<ResizedEvent>();
     this.observer = new ResizeObserver((entries) =>
       this.zone.run(() => this.observe(entries)),
     );

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, output, input } from '@angular/core';
 import { MatMenuItem } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,8 +11,8 @@ import { UAParser } from 'ua-parser-js';
   imports: [MatTooltip, MatMenuItem, TranslateModule],
 })
 export class DownloadAllComponent implements OnInit {
-  @Output() dlAllEvent = new EventEmitter();
-  @Input() disabled = false;
+  dlAllEvent = output();
+  disabled = input<boolean>(false);
   public isDownloadSupported = false;
 
   ngOnInit(): void {

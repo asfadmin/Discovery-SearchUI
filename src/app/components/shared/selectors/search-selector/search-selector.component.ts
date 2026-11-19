@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, output } from '@angular/core';
 import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider, MatList, MatListItem } from '@angular/material/list';
@@ -22,7 +22,7 @@ import * as models from '@models';
 export class SearchSelectorComponent {
   @Input() selectedSearchType: models.SearchType;
 
-  @Output() newSearchType = new EventEmitter<models.SearchType>();
+  newSearchType = output<models.SearchType>();
 
   public searchTypes = models.SearchType;
 
