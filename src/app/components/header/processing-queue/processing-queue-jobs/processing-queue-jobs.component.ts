@@ -2,11 +2,12 @@ import { NgPlural, NgPluralCase, UpperCasePipe } from '@angular/common';
 import {
   Component,
   OnInit,
-  Input,
   inject,
   Signal,
   input,
   output,
+  effect,
+  Injector,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconButton, MatButton } from '@angular/material/button';
@@ -73,6 +74,7 @@ import * as userStore from '@store/user';
 })
 export class ProcessingQueueJobsComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);
+  private injector = inject(Injector);
   private savedSearchService = inject(services.SavedSearchService);
   private dialogRef =
     inject<MatDialogRef<ProcessingQueueComponent>>(MatDialogRef);
@@ -81,9 +83,8 @@ export class ProcessingQueueJobsComponent implements OnInit {
   readonly costPerJob = input<number>(undefined);
   readonly isHyp3PlusMode = input<boolean>(undefined);
 
-  @Input() set jobs(val: models.QueuedHyp3Job[]) {
-    this.jobs$.next(val);
-  }
+  readonly jobs = input<models.QueuedHyp3Job[]>();
+
   private jobs$ = new BehaviorSubject<models.QueuedHyp3Job[]>([]);
   private sortChange$ = new BehaviorSubject<void>(null);
 
@@ -124,6 +125,12 @@ export class ProcessingQueueJobsComponent implements OnInit {
   ngOnInit(): void {
     this.subs.add(
       this.jobsfiltered$.subscribe((jobs) => (this.jobsDisplay = jobs)),
+    );
+    effect(
+      () => {
+        this.jobs$.next(this.jobs());
+      },
+      { injector: this.injector },
     );
   }
 

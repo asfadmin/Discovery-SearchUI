@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 import * as models from '@models';
 import {
@@ -33,7 +33,7 @@ import { SbasSearchFiltersComponent } from './sbas-search-filters/sbas-search-fi
   ],
 })
 export class SearchFiltersComponent {
-  @Input() search: models.Search;
+  readonly search = input<models.Search>();
 
   public SearchType = models.SearchType;
 }

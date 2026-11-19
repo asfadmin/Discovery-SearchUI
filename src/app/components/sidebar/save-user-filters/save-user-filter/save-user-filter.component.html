@@ -13,7 +13,7 @@
         <div>
           @if (!isEditingName) {
             <span (click)="onEditName()" class="filter-name clickable">
-              {{ filterPreset.name }}
+              {{ filterPreset().name }}
               <mat-icon class="edit-icon">edit</mat-icon>
             </span>
           }
@@ -35,13 +35,13 @@
             </span>
           }
 
-          {{ searchTranslation[filterPreset.searchType] | translate }}
+          {{ searchTranslation[filterPreset().searchType] | translate }}
         </div>
 
         <div class="filter-detail-spacing">
-          @if (filterPreset.searchType === SearchType.DATASET) {
+          @if (filterPreset().searchType === SearchType.DATASET) {
             <span>
-              {{ (filterPreset.filters | geographicFilter).selectedDataset }}
+              {{ (filterPreset().filters | geographicFilter).selectedDataset }}
             </span>
           }
         </div>
@@ -61,20 +61,22 @@
 @if (expanded) {
   <div class="detailed-view">
     <div>
-      @if (filterPreset.searchType === SearchType.DATASET) {
+      @if (filterPreset().searchType === SearchType.DATASET) {
         <app-geographic-search-filters
-          [filters]="filterPreset.filters | geographicFilter"
+          [filters]="filterPreset().filters | geographicFilter"
         >
         </app-geographic-search-filters>
       }
-      @if (filterPreset.searchType === SearchType.BASELINE) {
+      @if (filterPreset().searchType === SearchType.BASELINE) {
         <app-baseline-search-filters
-          [filters]="filterPreset.filters | baselineFilter"
+          [filters]="filterPreset().filters | baselineFilter"
         >
         </app-baseline-search-filters>
       }
-      @if (filterPreset.searchType === SearchType.SBAS) {
-        <app-sbas-search-filters [filters]="filterPreset.filters | SBASFilter">
+      @if (filterPreset().searchType === SearchType.SBAS) {
+        <app-sbas-search-filters
+          [filters]="filterPreset().filters | SBASFilter"
+        >
         </app-sbas-search-filters>
       }
     </div>

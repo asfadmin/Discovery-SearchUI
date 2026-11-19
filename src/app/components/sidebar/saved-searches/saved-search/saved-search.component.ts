@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  Input,
   ViewChild,
   ElementRef,
   ChangeDetectionStrategy,
@@ -49,7 +48,7 @@ export class SavedSearchComponent implements OnInit {
 
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
-  @Input() search: models.Search;
+  readonly search = input<models.Search>();
   readonly searchType = input<models.SearchType>(undefined);
   readonly isExpanded = input<boolean>(undefined);
   readonly isNew = input<boolean>(undefined);
@@ -77,7 +76,7 @@ export class SavedSearchComponent implements OnInit {
   }
 
   public onSetSearch(): void {
-    this.setSearch.emit(this.search);
+    this.setSearch.emit(this.search());
   }
 
   public onUpdateFilters(id: string): void {
@@ -94,7 +93,8 @@ export class SavedSearchComponent implements OnInit {
     }
 
     this.isEditingName = true;
-    this.editName = this.search.name === '(No title)' ? '' : this.search.name;
+    this.editName =
+      this.search().name === '(No title)' ? '' : this.search().name;
 
     timer(40).subscribe((_) => this.nameEditInput.nativeElement.focus());
   }
@@ -104,11 +104,11 @@ export class SavedSearchComponent implements OnInit {
     this.isEditingName = false;
     this.editName = '';
 
-    this.updateName.emit({ name: newName, id: this.search.id });
+    this.updateName.emit({ name: newName, id: this.search().id });
   }
 
   public onDeleteSearch(): void {
-    this.deleteSearch.emit(this.search.id);
+    this.deleteSearch.emit(this.search().id);
   }
 
   public onEditFocusLeave(): void {
@@ -120,7 +120,7 @@ export class SavedSearchComponent implements OnInit {
 
     this.isEditingName = false;
 
-    this.updateName.emit({ name: this.editName, id: this.search.id });
+    this.updateName.emit({ name: this.editName, id: this.search().id });
     this.editName = '';
   }
 
@@ -169,6 +169,6 @@ export class SavedSearchComponent implements OnInit {
   }
 
   public expandSearch(): void {
-    this.expand.emit(this.search.id);
+    this.expand.emit(this.search().id);
   }
 }

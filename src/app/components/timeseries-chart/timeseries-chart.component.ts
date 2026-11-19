@@ -7,7 +7,6 @@ import { NgStyle } from '@angular/common';
 import {
   Component,
   ElementRef,
-  Input,
   OnDestroy,
   OnInit,
   QueryList,
@@ -17,6 +16,7 @@ import {
   inject,
   signal,
   input,
+  model,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -167,7 +167,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public exportableData: Record<string, object[]> = {};
 
   // private selectedScene: string;
-  @Input() isLoading = true;
+  isLoading = model<boolean>(true);
   public allSeriesFailed = signal(false);
   private showLines = true;
   private xAxisTitle = '';
@@ -192,7 +192,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           ),
         )
         .subscribe(([_updated_id, chartStates]) => {
-          this.isLoading = false;
+          this.isLoading.set(false);
           this.refreshChart(chartStates);
         }),
     );

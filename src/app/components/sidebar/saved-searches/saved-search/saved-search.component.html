@@ -48,21 +48,21 @@
         }
 
         <span>
-          {{ searchTranslation[search.searchType] | translate }}
+          {{ searchTranslation[search().searchType] | translate }}
         </span>
       </div>
 
       @if (!isEditingName) {
         <div class="search-preview">
-          @if (search.searchType === SearchType.DATASET) {
+          @if (search().searchType === SearchType.DATASET) {
             <span>
-              {{ (search.filters | geographicFilter).selectedDataset }}
-              {{ formatDatesFor(search.filters | geographicFilter) }}
+              {{ (search().filters | geographicFilter).selectedDataset }}
+              {{ formatDatesFor(search().filters | geographicFilter) }}
             </span>
           }
-          @if (search.searchType === SearchType.LIST) {
+          @if (search().searchType === SearchType.LIST) {
             <span>
-              {{ listPreview(search.filters | listFilter) }}
+              {{ listPreview(search().filters | listFilter) }}
             </span>
           }
         </div>
@@ -85,21 +85,21 @@
 
 @if (isExpanded()) {
   <div class="detailed-view">
-    <app-search-filters [search]="search"> </app-search-filters>
+    <app-search-filters [search]="search()"> </app-search-filters>
     @if (isSavedSearch()) {
       <div
         [matTooltip]="
-          search.searchType === searchType()
+          search().searchType === searchType()
             ? ('UPDATE_SAVED_SEARCH' | translate)
             : ('SEARCH_TYPE_MISMATCH' | translate)
         "
       >
         <button
-          (click)="onUpdateFilters(search.id)"
+          (click)="onUpdateFilters(search().id)"
           class="search-action"
           color="secondary"
           mat-flat-button
-          [disabled]="search.searchType !== searchType()"
+          [disabled]="search().searchType !== searchType()"
         >
           {{ 'UPDATE' | translate }}
         </button>
