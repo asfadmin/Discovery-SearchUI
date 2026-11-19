@@ -17,7 +17,7 @@
             [class.clickable]="isSavedSearch()"
             class="search-name clickable"
           >
-            {{ formatName(search.name) }}
+            {{ formatName(search().name) }}
             @if (isSavedSearch()) {
               <mat-icon class="edit-icon">edit</mat-icon>
             }
