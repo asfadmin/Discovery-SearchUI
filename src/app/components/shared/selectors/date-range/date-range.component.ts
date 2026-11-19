@@ -2,12 +2,12 @@ import { NgClass } from '@angular/common';
 import {
   Component,
   OnInit,
-  Input,
   Output,
   EventEmitter,
   OnDestroy,
   inject,
   effect,
+  input,
 } from '@angular/core';
 import {
   UntypedFormGroup,
@@ -76,10 +76,10 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     EndDateControl: new UntypedFormControl(),
   });
 
-  @Input() minDate: Date;
-  @Input() maxDate: Date;
-  @Input() startDate: Date;
-  @Input() endDate: Date;
+  readonly minDate = input<Date>(undefined);
+  readonly maxDate = input<Date>(undefined);
+  readonly startDate = input<Date>(undefined);
+  readonly endDate = input<Date>(undefined);
   @Output() newStart = new EventEmitter<Date>();
   @Output() newEnd = new EventEmitter<Date>();
   @Output() startDateError = new EventEmitter<void>();
@@ -108,14 +108,16 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     this.dateAdapter.setLocale(moment.locale());
 
     // eslint-disable-next-line no-constant-binary-expression
-    if (!!this.startDate && this.startDate !== new Date(undefined)) {
+    const startDate = this.startDate();
+    if (!!startDate && startDate !== new Date(undefined)) {
       this.dateRangeForm.patchValue({
-        StartDateControl: this.startDate,
+        StartDateControl: startDate,
       });
     }
-    if (this.endDate) {
+    const endDate = this.endDate();
+    if (endDate) {
       this.dateRangeForm.patchValue({
-        EndDateControl: this.endDate,
+        EndDateControl: endDate,
       });
     }
 

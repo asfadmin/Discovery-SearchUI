@@ -6,6 +6,7 @@ import {
   Output,
   EventEmitter,
   inject,
+  input,
 } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatListItemMeta } from '@angular/material/list';
@@ -36,16 +37,19 @@ export class BaselineSceneControlsComponent implements OnInit {
   private screenSize = inject(services.ScreenSizeService);
   private hyp3JobStatus = inject(services.Hyp3JobStatusService);
 
-  @Input() scene: models.CMRProduct;
-  @Input() offsets: { temporal: number; perpendicular: number } = {
+  readonly scene = input<models.CMRProduct>(undefined);
+  readonly offsets = input<{
+    temporal: number;
+    perpendicular: number;
+  }>({
     temporal: 0,
     perpendicular: null,
-  };
+  });
   @Input() hyp3ableByJobType: {
     total: number;
     byJobType: models.Hyp3ableProductByJobType[];
   };
-  @Input() isQueued: boolean;
+  readonly isQueued = input<boolean>(undefined);
 
   @Output() onToggleScene = new EventEmitter();
 

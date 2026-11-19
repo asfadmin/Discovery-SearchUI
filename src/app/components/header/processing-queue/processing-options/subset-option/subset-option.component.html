@@ -2,8 +2,8 @@
   <button
     mat-stroked-button
     (click)="onSubsetChange()"
-    [matTooltip]="optionInfo"
+    [matTooltip]="optionInfo()"
   >
-    {{ optionName }}
+    {{ optionName() }}
   </button>
 </div>

@@ -15,10 +15,10 @@
       matInput
       name="startInput"
       formControlName="StartDateControl"
-      [value]="startDate"
+      [value]="startDate()"
       (dateChange)="onStartDateChange($event)"
-      [min]="minDate"
-      [max]="maxDate"
+      [min]="minDate()"
+      [max]="maxDate()"
       [matDatepicker]="startDatePicker"
       class="clickable"
     />
@@ -30,7 +30,7 @@
     ></mat-datepicker-toggle>
     <mat-datepicker
       touchUi="true"
-      [startView]="!!startDate ? 'month' : 'multi-year'"
+      [startView]="!!startDate() ? 'month' : 'multi-year'"
       #startDatePicker
     ></mat-datepicker>
   </mat-form-field>
@@ -45,10 +45,10 @@
       matInput
       name="endInput"
       formControlName="EndDateControl"
-      [value]="endDate"
+      [value]="endDate()"
       (dateChange)="onEndDateChange($event)"
-      [min]="minDate"
-      [max]="maxDate"
+      [min]="minDate()"
+      [max]="maxDate()"
       [matDatepicker]="endDatePicker"
     />
     <mat-hint>{{ getDateFormatString() }}</mat-hint>
@@ -59,7 +59,7 @@
     ></mat-datepicker-toggle>
     <mat-datepicker
       touchUi="true"
-      [startView]="!!endDate ? 'month' : 'multi-year'"
+      [startView]="!!endDate() ? 'month' : 'multi-year'"
       #endDatePicker
     ></mat-datepicker>
   </mat-form-field>

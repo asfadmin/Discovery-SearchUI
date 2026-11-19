@@ -42,8 +42,8 @@
             <ng-template ngPluralCase="other">{{
               'JOBS' | translate
             }}</ng-template> </span
-          >, {{ costPerJob * jobsDisplay.length }}
-          <span [ngPlural]="costPerJob * jobsDisplay.length">
+          >, {{ costPerJob() * jobsDisplay.length }}
+          <span [ngPlural]="costPerJob() * jobsDisplay.length">
             <ng-template ngPluralCase="=1">{{
               'CREDIT' | translate
             }}</ng-template>
@@ -56,7 +56,7 @@
     </div>
   }
 
-  @if (!areJobsLoading) {
+  @if (!areJobsLoading()) {
     <mat-list role="list" class="flex-list">
       @for (job of jobsDisplay; track job) {
         <mat-list-item>
@@ -82,8 +82,8 @@
             <div matListItemLine>
               <b> Frame {{ job.reference_id }} </b>
               <span>
-                ({{ costPerJob }}
-                <span [ngPlural]="costPerJob * jobsDisplay.length">
+                ({{ costPerJob() }}
+                <span [ngPlural]="costPerJob() * jobsDisplay.length">
                   <ng-template ngPluralCase="=1">{{
                     'CREDIT' | uppercase | translate
                   }}</ng-template>
@@ -110,8 +110,8 @@
                 }
               </b>
               <span>
-                ({{ costPerJob }}
-                <span [ngPlural]="costPerJob * jobsDisplay.length">
+                ({{ costPerJob() }}
+                <span [ngPlural]="costPerJob() * jobsDisplay.length">
                   <ng-template ngPluralCase="=1">{{
                     'CREDIT' | uppercase | translate
                   }}</ng-template>
@@ -153,7 +153,7 @@
         </a>
       </div>
 
-      @if (isHyp3PlusMode) {
+      @if (isHyp3PlusMode()) {
         <div class="jobs-empty-message-docs-link">
           <a
             href="https://hyp3-docs.asf.alaska.edu/about/hyp3_plus/"

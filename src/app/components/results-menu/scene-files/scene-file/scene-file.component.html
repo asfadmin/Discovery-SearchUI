@@ -91,7 +91,7 @@
       matListItemMeta
       class="hype-icon-button"
     >
-      @if (loadingHyp3JobName !== product.name) {
+      @if (loadingHyp3JobName() !== product.name) {
         <mat-icon
           svgIcon="hyp3"
           class="hype-icon-button"
@@ -188,7 +188,7 @@
     <app-cart-toggle
       matListItemMeta
       (toggle)="onToggleQueueProduct()"
-      [isQueued]="isQueued"
+      [isQueued]="isQueued()"
     >
     </app-cart-toggle>
   }

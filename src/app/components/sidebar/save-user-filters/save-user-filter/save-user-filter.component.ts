@@ -7,6 +7,7 @@ import {
   Output,
   ViewChild,
   inject,
+  input,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -58,7 +59,7 @@ export class SaveUserFilterComponent implements OnInit {
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
   @Input() filterPreset: models.SavedFilterPreset;
-  @Input() isNew: boolean;
+  readonly isNew = input<boolean>(undefined);
 
   @Output() updateName = new EventEmitter<string>();
 
@@ -70,7 +71,7 @@ export class SaveUserFilterComponent implements OnInit {
   public lockedFocus = false;
 
   ngOnInit() {
-    if (this.isNew) {
+    if (this.isNew()) {
       this.onEditName();
     }
   }

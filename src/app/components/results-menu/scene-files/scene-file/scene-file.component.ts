@@ -7,6 +7,7 @@ import {
   OnInit,
   OnDestroy,
   inject,
+  input,
 } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -87,13 +88,13 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   private dialog = inject(MatDialog);
 
   @Input() product: models.CMRProduct;
-  @Input() isQueued: boolean;
-  @Input() isOpen: boolean;
-  @Input() isUserLoggedIn: boolean;
+  readonly isQueued = input<boolean>(undefined);
+  readonly isOpen = input<boolean>(undefined);
+  readonly isUserLoggedIn = input<boolean>(undefined);
   @Input() validHyp3JobTypes: models.Hyp3JobType[];
-  @Input() hasAccessToRestrictedData: boolean;
-  @Input() loadingHyp3JobName: string | null;
-  @Input() isSearchableProduct = false;
+  readonly hasAccessToRestrictedData = input<boolean>(undefined);
+  readonly loadingHyp3JobName = input<string | null>(undefined);
+  readonly isSearchableProduct = input(false);
 
   @Output() toggle = new EventEmitter<void>();
   @Output() closeProduct = new EventEmitter<models.CMRProduct>();

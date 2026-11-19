@@ -6,6 +6,7 @@ import {
   Output,
   EventEmitter,
   inject,
+  input,
 } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatListItem } from '@angular/material/list';
@@ -48,20 +49,23 @@ export class SceneComponent implements OnInit {
   @Input() scene: models.CMRProduct;
   @Input() searchType: models.SearchType;
 
-  @Input() isSelected: boolean;
-  @Input() offsets: { temporal: number; perpendicular: number } = {
+  readonly isSelected = input<boolean>(undefined);
+  readonly offsets = input<{
+    temporal: number;
+    perpendicular: number;
+  }>({
     temporal: 0,
     perpendicular: null,
-  };
+  });
 
-  @Input() isQueued: boolean;
-  @Input() jobQueued: boolean;
-  @Input() numQueued: number;
+  readonly isQueued = input<boolean>(undefined);
+  readonly jobQueued = input<boolean>(undefined);
+  readonly numQueued = input<number>(undefined);
 
-  @Input() hyp3ableByJobType: {
+  readonly hyp3ableByJobType = input<{
     total: number;
     byJobType: models.Hyp3ableProductByJobType[];
-  };
+  }>(undefined);
 
   @Output() toggleScene = new EventEmitter();
 

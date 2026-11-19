@@ -5,7 +5,7 @@
       <app-scenes-list-header></app-scenes-list-header>
     </mat-card-subtitle>
     <div class="app-scene-list">
-      <app-scenes-list [resize$]="resize$"></app-scenes-list>
+      <app-scenes-list [resize$]="resize$()"></app-scenes-list>
     </div>
   </mat-card>
   <mat-card class="mp0 no-box-shadow baseline-scene-detail--layout">
@@ -205,7 +205,7 @@
         </div>
       </mat-card-subtitle>
       <div class="app-scene-list">
-        <app-scenes-list [resize$]="resize$"></app-scenes-list>
+        <app-scenes-list [resize$]="resize$()"></app-scenes-list>
       </div>
     </mat-card>
   }

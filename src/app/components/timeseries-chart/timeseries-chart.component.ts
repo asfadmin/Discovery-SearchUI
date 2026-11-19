@@ -16,6 +16,7 @@ import {
   ViewEncapsulation,
   inject,
   signal,
+  input,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -104,9 +105,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @ViewChild('tsBestFitFormulas', { static: true })
   tsBestFitFormulas: ElementRef;
   // @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
-  @Input() zoomIn$: Observable<void>;
-  @Input() zoomOut$: Observable<void>;
-  @Input() zoomToFit$: Observable<void>;
+  readonly zoomIn$ = input<Observable<void>>(undefined);
+  readonly zoomOut$ = input<Observable<void>>(undefined);
+  readonly zoomToFit$ = input<Observable<void>>(undefined);
 
   // @Input() chartData: models.timeseriesChartItemState[];
 

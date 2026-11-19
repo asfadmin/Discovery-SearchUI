@@ -4,7 +4,7 @@
   (mouseenter)="onSetFocused()"
   (mouseleave)="onClearFocused()"
   [class.hovered]="hovered"
-  [class.selected]="isSelected"
+  [class.selected]="isSelected()"
   [ngStyle]="{
     'padding-right':
       breakpoint > breakpoints.MEDIUM && searchType === SearchTypes.BASELINE
@@ -131,9 +131,9 @@
         (onZoomToScene)="onZoomTo()"
         (onToggleScene)="onToggleScene()"
         [scene]="scene"
-        [hyp3ableByJobType]="hyp3ableByJobType"
-        [isQueued]="isQueued"
-        [numQueued]="numQueued"
+        [hyp3ableByJobType]="hyp3ableByJobType()"
+        [isQueued]="isQueued()"
+        [numQueued]="numQueued()"
         [searchType]="searchType"
       >
       </app-scene-controls>
@@ -143,9 +143,9 @@
       <app-baseline-scene-controls
         (onToggleScene)="onToggleScene()"
         [scene]="scene"
-        [offsets]="offsets"
-        [hyp3ableByJobType]="hyp3ableByJobType"
-        [isQueued]="isQueued"
+        [offsets]="offsets()"
+        [hyp3ableByJobType]="hyp3ableByJobType()"
+        [isQueued]="isQueued()"
         class="baseline-controls-width"
       >
       </app-baseline-scene-controls>

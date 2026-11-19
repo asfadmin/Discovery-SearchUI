@@ -2,7 +2,7 @@
 
 <div
   class="detail-card scrollable"
-  [class.scrollable]="isScrollable"
+  [class.scrollable]="isScrollable()"
   [class.detail-card-info-mobile]="breakpoint < breakpoints.MEDIUM"
 >
   @if (scene) {

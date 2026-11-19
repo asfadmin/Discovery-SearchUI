@@ -1,5 +1,5 @@
 import { NgClass, AsyncPipe } from '@angular/common';
-import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
   MatButtonToggleGroup,
@@ -81,7 +81,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   private hyp3JobStatus = inject(Hyp3JobStatusService);
   private possibleHyp3JobsService = inject(PossibleHyp3JobsService);
 
-  @Input() resize$: Observable<void>;
+  readonly resize$ = input<Observable<void>>(undefined);
 
   public numBaselineScenes$ = this.scenesService.scenes$.pipe(
     map((scenes) => scenes.length),

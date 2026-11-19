@@ -7,6 +7,7 @@ import {
   EventEmitter,
   inject,
   Signal,
+  input,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconButton, MatButton } from '@angular/material/button';
@@ -77,9 +78,9 @@ export class ProcessingQueueJobsComponent implements OnInit {
   private dialogRef =
     inject<MatDialogRef<ProcessingQueueComponent>>(MatDialogRef);
 
-  @Input() areJobsLoading: boolean;
-  @Input() costPerJob: number;
-  @Input() isHyp3PlusMode: boolean;
+  readonly areJobsLoading = input<boolean>(undefined);
+  readonly costPerJob = input<number>(undefined);
+  readonly isHyp3PlusMode = input<boolean>(undefined);
 
   @Input() set jobs(val: models.QueuedHyp3Job[]) {
     this.jobs$.next(val);

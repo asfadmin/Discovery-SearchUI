@@ -2,10 +2,10 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  Input,
   Output,
   EventEmitter,
   inject,
+  input,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as d3 from 'd3';
@@ -42,9 +42,9 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private scenesService = inject(ScenesService);
   private pairService = inject(PairService);
 
-  @Input() zoomIn$: Observable<void>;
-  @Input() zoomOut$: Observable<void>;
-  @Input() zoomToFit$: Observable<void>;
+  readonly zoomIn$ = input<Observable<void>>(undefined);
+  readonly zoomOut$ = input<Observable<void>>(undefined);
+  readonly zoomToFit$ = input<Observable<void>>(undefined);
   private pairs$: Observable<any> = this.pairService.pairs$;
   @Output() isGraphDisconnected = new EventEmitter<boolean>();
 
@@ -150,13 +150,13 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       }),
     );
 
-    this.zoomOut$.subscribe((_) => {
+    this.zoomOut$().subscribe((_) => {
       this.scatter.transition().call(this.zoom.scaleBy, 0.5);
     });
-    this.zoomIn$.subscribe((_) => {
+    this.zoomIn$().subscribe((_) => {
       this.scatter.transition().call(this.zoom.scaleBy, 2);
     });
-    this.zoomToFit$.subscribe((_) => {
+    this.zoomToFit$().subscribe((_) => {
       this.zoomToFit(0);
     });
   }

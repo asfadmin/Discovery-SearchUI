@@ -1,5 +1,12 @@
 import { LowerCasePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  input,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   MatFormField,
@@ -28,15 +35,15 @@ import { Range } from '@models';
 })
 export class RangeOptionComponent implements OnInit {
   @Input() value: number;
-  @Input() optionName: string;
-  @Input() optionInfo: string;
+  readonly optionName = input<string>(undefined);
+  readonly optionInfo = input<string>(undefined);
   @Input() range: Range<number>;
-  @Input() default: number;
+  readonly default = input<number>(undefined);
 
   @Output() valueChange = new EventEmitter<number>();
 
   ngOnInit(): void {
-    this.value = this.default;
+    this.value = this.default();
   }
 
   public onValueChange(): void {
@@ -50,7 +57,7 @@ export class RangeOptionComponent implements OnInit {
       this.value = 0.0;
     }
     if (this.value === null) {
-      this.value = this.default;
+      this.value = this.default();
     }
 
     this.valueChange.emit(this.value);

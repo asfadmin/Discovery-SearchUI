@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -11,8 +11,8 @@ import { MatTooltip } from '@angular/material/tooltip';
 })
 export class CheckboxOptionComponent {
   @Input() value: boolean;
-  @Input() optionName: string;
-  @Input() optionInfo: string;
+  readonly optionName = input<string>(undefined);
+  readonly optionInfo = input<string>(undefined);
 
   @Output() valueChange = new EventEmitter<boolean>();
 

@@ -1,4 +1,11 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+  input,
+} from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -31,9 +38,9 @@ export class SceneControlsComponent {
     byJobType: models.Hyp3ableProductByJobType[];
   };
   @Input() scene: models.CMRProduct;
-  @Input() isQueued: boolean;
-  @Input() numQueued: number;
-  @Input() searchType: models.SearchType;
+  readonly isQueued = input<boolean>(undefined);
+  readonly numQueued = input<number>(undefined);
+  readonly searchType = input<models.SearchType>(undefined);
 
   @Output() onZoomToScene = new EventEmitter();
   @Output() onToggleScene = new EventEmitter();

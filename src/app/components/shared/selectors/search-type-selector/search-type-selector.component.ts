@@ -1,5 +1,5 @@
 import { NgClass, AsyncPipe } from '@angular/common';
-import { Component, ViewChild, Input, ElementRef, inject } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCardActions } from '@angular/material/card';
 import { MatLabel, MatSuffix } from '@angular/material/input';
@@ -53,7 +53,7 @@ export class SearchTypeSelectorComponent {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   @ViewChild(MatMenu) searchMenu: MatMenu;
   @ViewChild('firstItem') firstItem: ElementRef;
-  @Input() selected: string;
+  readonly selected = input<string>(undefined);
 
   public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public searchTypes = models.SearchType;

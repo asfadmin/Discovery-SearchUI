@@ -5,10 +5,10 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  Input,
   QueryList,
   ViewChildren,
   inject,
+  input,
 } from '@angular/core';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import {
@@ -106,7 +106,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);
   private downloadService = inject(DownloadService);
 
-  @Input() appQueueComponentModel: string;
+  readonly appQueueComponentModel = input<string>(undefined);
 
   @ViewChildren(DownloadFileButtonComponent)
   downloadButtons!: QueryList<DownloadFileButtonComponent>;

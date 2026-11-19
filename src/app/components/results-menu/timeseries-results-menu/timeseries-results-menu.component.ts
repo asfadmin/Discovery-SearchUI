@@ -3,13 +3,13 @@ import {
   Component,
   computed,
   ElementRef,
-  Input,
   OnDestroy,
   OnInit,
   signal,
   ViewChild,
   inject,
   DOCUMENT,
+  input,
 } from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatButtonToggle } from '@angular/material/button-toggle';
@@ -128,7 +128,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   @ViewChild('chartCard', { read: ElementRef }) chartCardView: ElementRef;
   @ViewChild('radio-group', { read: ElementRef }) radioGroup: ElementRef;
 
-  @Input() resize$: Observable<void>;
+  readonly resize$ = input<Observable<void>>(undefined);
   public searchType = this.store$.selectSignal(searchStore.getSearchType);
   public isAddingPoints = false;
   public mouseOver = false;

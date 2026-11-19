@@ -8,6 +8,7 @@ import {
   ElementRef,
   ChangeDetectionStrategy,
   inject,
+  input,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -50,11 +51,11 @@ export class SavedSearchComponent implements OnInit {
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
   @Input() search: models.Search;
-  @Input() searchType: models.SearchType;
-  @Input() isExpanded: boolean;
-  @Input() isNew: boolean;
-  @Input() isSavedSearch: boolean;
-  @Input() lockedFocus: boolean;
+  readonly searchType = input<models.SearchType>(undefined);
+  readonly isExpanded = input<boolean>(undefined);
+  readonly isNew = input<boolean>(undefined);
+  readonly isSavedSearch = input<boolean>(undefined);
+  readonly lockedFocus = input<boolean>(undefined);
 
   @Output() updateFilters = new EventEmitter<string>();
   @Output() updateName = new EventEmitter<{ id: string; name: string }>();
@@ -68,7 +69,7 @@ export class SavedSearchComponent implements OnInit {
   public isEditingName = false;
   public editName = '';
   ngOnInit() {
-    if (this.isNew) {
+    if (this.isNew()) {
       this.onEditName();
     }
   }
@@ -86,7 +87,7 @@ export class SavedSearchComponent implements OnInit {
   }
 
   public onEditName(): void {
-    if (!this.isSavedSearch) {
+    if (!this.isSavedSearch()) {
       return;
     }
 
@@ -109,7 +110,7 @@ export class SavedSearchComponent implements OnInit {
   }
 
   public onEditFocusLeave(): void {
-    if (this.lockedFocus) {
+    if (this.lockedFocus()) {
       this.nameEditInput.nativeElement.focus();
       this.unlockFocus.emit();
       return;
@@ -146,7 +147,7 @@ export class SavedSearchComponent implements OnInit {
   }
 
   public formatName(searchName: string): string {
-    if (this.isSavedSearch) {
+    if (this.isSavedSearch()) {
       const noName = this.language.translate.instant('NO_NAME');
       return searchName ? searchName : noName;
     } else {

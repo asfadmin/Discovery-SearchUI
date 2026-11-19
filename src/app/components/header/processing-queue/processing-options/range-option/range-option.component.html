@@ -1,5 +1,5 @@
-<mat-form-field [matTooltip]="optionInfo" matTooltipClass="on-demand-tooltip">
-  <mat-label>{{ optionName }}</mat-label>
+<mat-form-field [matTooltip]="optionInfo()" matTooltipClass="on-demand-tooltip">
+  <mat-label>{{ optionName() }}</mat-label>
   <input
     #rangeInput
     matInput
@@ -13,7 +13,7 @@
   />
   @if (value < range.start || value > range.start) {
     <mat-error>{{
-      (optionName | lowercase) +
+      (optionName() | lowercase) +
         ' must be between ' +
         range.start +
         ' and ' +

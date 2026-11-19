@@ -27,23 +27,23 @@
         (click)="onToggle()"
         class="icon-margin"
         [matTooltip]="
-          isQueued
+          isQueued()
             ? ('REMOVE_SCENE_FILES_FROM_DOWNLOADS' | translate)
             : ('ADD_SCENE_FILES_TO_DOWNLOADS' | translate)
         "
       >
-        {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
+        {{ isQueued() ? 'shopping_cart' : 'add_shopping_cart' }}
       </mat-icon>
     }
   </div>
 
   @if (isDownloadable(scene)) {
     <div class="scene-control">
-      <span class="number-queued"> {{ numQueued }} </span>
+      <span class="number-queued"> {{ numQueued() }} </span>
     </div>
   }
 
-  @if (searchType === SearchTypes.CUSTOM_PRODUCTS) {
+  @if (searchType() === SearchTypes.CUSTOM_PRODUCTS) {
     <div class="scene-control scene-control-spacing">
       @if (!scene.isDummyProduct) {
         @if (isExpired(scene.metadata.job)) {

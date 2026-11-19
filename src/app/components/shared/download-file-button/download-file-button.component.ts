@@ -7,6 +7,7 @@ import {
   OnInit,
   AfterViewInit,
   inject,
+  input,
 } from '@angular/core';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -55,9 +56,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   private notificationService = inject(NotificationService);
 
   @Input() product: CMRProduct;
-  @Input() href: string;
+  readonly href = input<string>(undefined);
   @Input() disabled: boolean;
-  @Input() useNewDownload: boolean;
+  readonly useNewDownload = input<boolean>(undefined);
   @Output()
   productDownloaded: EventEmitter<CMRProduct> = new EventEmitter<CMRProduct>();
   @Output() downloadCancelled: EventEmitter<CMRProduct> =
@@ -73,8 +74,9 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   private subs = new SubSink();
 
   ngOnInit(): void {
-    if (typeof this.href !== 'undefined') {
-      this.url = this.href;
+    const href = this.href();
+    if (typeof href !== 'undefined') {
+      this.url = href;
       this.product = null;
       const downloadURL = new URL(this.url).pathname;
       this.fileName = downloadURL.substring(downloadURL.lastIndexOf('/') + 1);
@@ -168,7 +170,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       this.downloadCancelled.emit(this.product);
       return;
     }
-    if (!this.useNewDownload) {
+    if (!this.useNewDownload()) {
       if (isBurstProduct) {
         this.burstFunctionality(this.product);
       } else {

@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -21,7 +21,7 @@ import * as uiStore from '@store/ui';
 export class AttributionsComponent {
   private store$ = inject<Store<AppState>>(Store);
 
-  @Input() breakpoint: Breakpoints;
+  readonly breakpoint = input<Breakpoints>(undefined);
 
   anio: number = new Date().getFullYear();
 

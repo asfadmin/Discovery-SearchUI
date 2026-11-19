@@ -1,5 +1,5 @@
 import { NgPlural, NgPluralCase, UpperCasePipe } from '@angular/common';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, input } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -25,9 +25,14 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class DropdownOptionComponent {
   @Input() value: string;
-  @Input() optionName: string;
-  @Input() optionInfo: string;
-  @Input() options: { apiValue: string | number; name: string }[];
+  readonly optionName = input<string>(undefined);
+  readonly optionInfo = input<string>(undefined);
+  readonly options = input<
+    {
+      apiValue: string | number;
+      name: string;
+    }[]
+  >(undefined);
 
   @Input() costsTable: any = null;
 

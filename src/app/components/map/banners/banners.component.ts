@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Directive, inject } from '@angular/core';
+import { Component, OnInit, Directive, inject, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { ActiveToast, ToastrService } from 'ngx-toastr';
@@ -16,7 +16,7 @@ export class BannerCreateDirective implements OnInit {
   private translateService = inject(TranslateService);
   dialog = inject(MatDialog);
 
-  @Input() bannerCreate: Banner;
+  readonly bannerCreate = input<Banner>(undefined);
   private closedBannersKey = 'closed-banners-key';
 
   public toastRef;
@@ -30,7 +30,7 @@ export class BannerCreateDirective implements OnInit {
   };
 
   ngOnInit(): void {
-    const id: string = this.bannerCreate.id;
+    const id: string = this.bannerCreate().id;
     const closedBanners = this.loadClosedBannerIds();
 
     if (!closedBanners[id]) {
@@ -39,17 +39,17 @@ export class BannerCreateDirective implements OnInit {
   }
 
   private createToast(): void {
-    const title: string = this.bannerCreate.name;
-    const type: string = this.bannerCreate.type;
+    const title: string = this.bannerCreate().name;
+    const type: string = this.bannerCreate().type;
     let toast: ActiveToast<any>;
     const moreText = this.translateService.instant('MORE');
     const moreMsg = ` <a>[${moreText}]</a>`;
 
-    let msg: string = this.bannerCreate.text.substring(0, this.maxMsgLength);
+    let msg: string = this.bannerCreate().text.substring(0, this.maxMsgLength);
 
-    const lines = this.bannerCreate.text.split('<br>');
+    const lines = this.bannerCreate().text.split('<br>');
 
-    this.msgOverflow = this.bannerCreate.text.length > this.maxMsgLength;
+    this.msgOverflow = this.bannerCreate().text.length > this.maxMsgLength;
 
     const oneLiner =
       lines.length > 2 &&
@@ -86,7 +86,7 @@ export class BannerCreateDirective implements OnInit {
     toast.onHidden.subscribe((_) => {
       const closedBanners = this.loadClosedBannerIds();
 
-      closedBanners[this.bannerCreate.id] = true;
+      closedBanners[this.bannerCreate().id] = true;
 
       this.saveClosedBannerIds(closedBanners);
     });
@@ -99,7 +99,7 @@ export class BannerCreateDirective implements OnInit {
           maxWidth: '80vw',
         });
         dialogRef.componentInstance.htmlContent = this.openLinksInNewTab(
-          this.bannerCreate.text,
+          this.bannerCreate().text,
         );
       }
     });
@@ -131,5 +131,5 @@ export class BannerCreateDirective implements OnInit {
   imports: [BannerCreateDirective],
 })
 export class BannersComponent {
-  @Input() banners: Banner[];
+  readonly banners = input<Banner[]>(undefined);
 }
