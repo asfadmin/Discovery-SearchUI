@@ -144,6 +144,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       },
     );
   }
+
   ngOnInit() {
     this.subs.add(
       this.fileError$

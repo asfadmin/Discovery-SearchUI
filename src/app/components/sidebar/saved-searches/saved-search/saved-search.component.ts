@@ -69,6 +69,7 @@ export class SavedSearchComponent implements OnInit {
   public searchTranslation = models.SearchTypeTranslation;
   public isEditingName = false;
   public editName = '';
+
   ngOnInit() {
     if (this.isNew()) {
       this.onEditName();

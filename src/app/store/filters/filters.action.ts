@@ -387,6 +387,7 @@ export class SetHyp3ProductTypes implements Action {
 
 export class SetDefaultFilters implements Action {
   public readonly type = FiltersActionType.SET_DEFAULT_FILTERS;
+
   constructor(
     public payload: {
       'Baseline Search': string;

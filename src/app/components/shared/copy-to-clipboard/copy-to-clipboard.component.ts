@@ -46,6 +46,7 @@ export class CopyToClipboardComponent implements OnDestroy {
       this.display = this.prompt();
     });
   }
+
   public onCopyIconClicked(e: Event): void {
     this.clipboardService.copyFromContent(this.value());
     if (this.toast()) {

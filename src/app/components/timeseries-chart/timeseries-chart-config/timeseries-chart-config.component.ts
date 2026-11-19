@@ -31,6 +31,7 @@ export class TimeseriesChartConfigComponent {
       this.store$.dispatch(chartsStore.hideGraphLines());
     }
   }
+
   public onToggleLinearFit(event: MatCheckboxChange) {
     if (event.checked) {
       this.store$.dispatch(chartsStore.showLinearFit());

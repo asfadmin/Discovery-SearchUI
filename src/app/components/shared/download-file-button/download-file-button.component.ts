@@ -112,12 +112,14 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
         .subscribe((isLoggedIn) => (this.isUserLoggedIn = isLoggedIn)),
     );
   }
+
   public cancelDownload() {
     this.downloadSubscription?.unsubscribe();
     this.burstSubscription?.unsubscribe();
     this.store$.dispatch(new queueStore.RemoveDownloadProduct(this.dFile));
     this.dFile = null;
   }
+
   public getHandle(dir = false) {
     return new Promise((resolve) => {
       if (dir) {
@@ -201,6 +203,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       });
     }
   }
+
   private downloadFunctionality(product: CMRProduct, handle: any) {
     const initStatus: DownloadStatus = {
       progress: 0,
@@ -221,6 +224,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       this.startDownload(product, handle);
     }
   }
+
   private burstFunctionality(product: CMRProduct, handle?: any) {
     const initStatus: DownloadStatus = {
       progress: 0,
@@ -267,12 +271,14 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       )
       .subscribe();
   }
+
   private isBurstDone(resp, _product): boolean {
     if (resp.type === HttpEventType.DownloadProgress) {
       return resp.loaded > 1000;
     }
     return false;
   }
+
   private startDownload(product: CMRProduct, handle: any) {
     this.observable$ = this.downloadService.download(
       this.url,
@@ -317,6 +323,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     event.preventDefault();
     this.downloadFile();
   }
+
   async classicDownload(url) {
     const link = document.createElement('a');
     link.style.display = 'none';

@@ -113,6 +113,7 @@ export class SceneMetadataComponent {
     ]);
     this.store$.dispatch(action);
   }
+
   public setFrameCoverage(): void {
     const action = new filtersStore.setFrameCoverage([
       this.scene().metadata.nisar?.frameCoverage,
@@ -126,12 +127,14 @@ export class SceneMetadataComponent {
     );
     this.store$.dispatch(action);
   }
+
   public addMainPolarization(): void {
     const action = new filtersStore.AddPolarization(
       this.scene().metadata.nisar?.mainBandPolarization.join(','),
     );
     this.store$.dispatch(action);
   }
+
   public addSidePolarization(): void {
     const action = new filtersStore.AddSidePolarization(
       this.scene().metadata.nisar?.sideBandPolarization.join(','),

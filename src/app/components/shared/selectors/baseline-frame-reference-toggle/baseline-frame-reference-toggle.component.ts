@@ -28,6 +28,7 @@ export class BaselineFrameReferenceToggleComponent implements OnInit {
         (usingReference) => (this.shouldUseFramesForReference = usingReference),
       );
   }
+
   public onFrameModeToggled() {
     this.store$.dispatch(
       new filtersStore.SetUseFrameForBaseline(this.shouldUseFramesForReference),

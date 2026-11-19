@@ -222,6 +222,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
     this.openNewWindow(url, analyticsEvent);
   }
+
   public onOpenHyP3Guide(): void {
     const url = 'https://hyp3-docs.asf.alaska.edu/';
     const analyticsEvent = {

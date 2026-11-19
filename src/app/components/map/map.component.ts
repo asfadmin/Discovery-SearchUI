@@ -701,6 +701,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     return features;
   }
+
   public callFeature(feature: Feature | null) {
     if (
       feature &&

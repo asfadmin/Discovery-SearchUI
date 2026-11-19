@@ -91,6 +91,7 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
   public onSeasonEndChange(dayOfYear: number): void {
     this.end = dayOfYear;
   }
+
   public onSeasonDoneSelecting() {
     this.store$.dispatch(new filtersStore.SetSeasonStart(this.start));
     this.store$.dispatch(new filtersStore.SetSeasonEnd(this.end));
@@ -103,6 +104,7 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.SetSeasonStart(temp2));
     this.store$.dispatch(new filtersStore.SetSeasonEnd(temp));
   }
+
   public change(which: string, amount: number) {
     let value = which === 'start' ? this.start : this.end;
     value += amount;

@@ -244,6 +244,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
     const entries = this.productNameFilter().replace(/\s+/g, '').split(',');
     return entries[entries.length - 1].toLowerCase();
   }
+
   public toggleJobFilterOptions() {
     this.isJobFilterOptionsOpen = !this.isJobFilterOptionsOpen;
   }

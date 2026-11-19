@@ -15,6 +15,7 @@ export class BulkDownloadService {
   private get url(): string {
     return this.env.currentEnv.bulk_download;
   }
+
   public downloadCMRProductsScript$(
     products: CMRProduct[],
   ): Observable<HttpResponse<Blob>> {
@@ -24,6 +25,7 @@ export class BulkDownloadService {
 
     return this.downloadScript$(productsStr);
   }
+
   public downloadScript$(productsListStr: string) {
     const formData = new FormData();
     formData.append('products', productsListStr);

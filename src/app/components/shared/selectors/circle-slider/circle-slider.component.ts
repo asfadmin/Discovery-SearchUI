@@ -70,9 +70,11 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
       }),
     );
   }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.startValue && changes.endValue) {
       if (
@@ -120,10 +122,12 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
   }
+
   private getAngle(point) {
     const angle = ((point - 1) / this.maxValue()) * 2 * Math.PI;
     return angle > Math.PI * 1.5 ? angle - Math.PI * 2 : angle;
   }
+
   private createSvg(): void {
     this.svg = d3
       .select('figure#slider')
@@ -136,6 +140,7 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
         'translate(' + this.width / 2 + ',' + this.height / 2 + ')',
       );
   }
+
   private setAngles() {
     if (this.endAngle < this.startAngle) {
       this.arc.endAngle(this.startAngle);
@@ -170,6 +175,7 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
   }
+
   private movePoint(target, event: { x: number; y: number }, _d?: any) {
     const d_from_origin = Math.sqrt(
       Math.pow(event.x, 2) + Math.pow(event.y, 2),
@@ -193,6 +199,7 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
       ) + 1
     );
   }
+
   private drawSlider() {
     const self = this;
     const container = this.svg.append('g');
@@ -313,6 +320,7 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
       })
       .call(drag2, true);
   }
+
   public swap() {
     this.swapEvent.emit();
   }

@@ -189,6 +189,7 @@ export class OnDemandAddMenuComponent implements OnInit {
   public onOpenHelp(infoUrl: string) {
     window.open(infoUrl);
   }
+
   public onOpenSignup(): void {
     this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(true));
   }

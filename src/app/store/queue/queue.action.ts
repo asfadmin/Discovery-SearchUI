@@ -113,6 +113,7 @@ export class MakeDownloadScript implements Action {
 
 export class MakeDownloadScriptFromList implements Action {
   public readonly type = QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_LIST;
+
   constructor(public payload: CMRProduct[]) {}
 }
 

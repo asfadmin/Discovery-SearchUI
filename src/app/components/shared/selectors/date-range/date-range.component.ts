@@ -94,11 +94,13 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
   public currentLanguage = this.store$.selectSignal(uiStore.getCurrentLanguage);
+
   constructor() {
     effect(() => {
       this.setCalLang(this.currentLanguage());
     });
   }
+
   ngOnInit(): void {
     this.screenSize.breakpoint$.subscribe(
       (breakpoint) => (this.breakpoint = breakpoint),

@@ -81,6 +81,7 @@ export class DownloadService {
       }
     });
   }
+
   async getFileHandle(filename: string): Promise<any> {
     return new Promise((resolve) => {
       window
@@ -93,6 +94,7 @@ export class DownloadService {
         });
     });
   }
+
   private download$(
     filename: string,
     id: string,

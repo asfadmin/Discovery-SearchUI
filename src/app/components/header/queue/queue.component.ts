@@ -189,6 +189,7 @@ export class QueueComponent implements OnInit, OnDestroy {
       }),
     );
   }
+
   private keepGoing(product) {
     const removedButton = this.downloadButtons.find(
       (button) => button.product() === product,
@@ -203,6 +204,7 @@ export class QueueComponent implements OnInit, OnDestroy {
       this.downloadContinue(product);
     }
   }
+
   public onRemoveProduct(product: CMRProduct): void {
     this.keepGoing(product);
     this.store$.dispatch(new queueStore.RemoveItem(product));
@@ -314,6 +316,7 @@ export class QueueComponent implements OnInit, OnDestroy {
           product.metadata.productType.includes('RTC_'),
       );
   }
+
   public restrictedDatasetWarning(products: CMRProduct[]) {
     if (!products) {
       return false;
@@ -322,6 +325,7 @@ export class QueueComponent implements OnInit, OnDestroy {
       .filter((product) => product.metadata.productType !== null)
       .some((product) => product.dataset === 'JERS-1');
   }
+
   public onResized(event: ResizedEvent) {
     this.dlWidth = event.newRect.width;
     this.dlHeight = event.newRect.height;

@@ -65,14 +65,17 @@ export class CodeExportComponent implements OnInit, AfterViewInit {
     this.codeStuff = this.data.codeStuff;
     this.codeExportType = this.data.codeExportType;
   }
+
   ngAfterViewInit(): void {
     const grammar = Prism.languages['python'];
     const html = Prism.highlight(this.codeStuff, grammar, 'python');
     this.divHello.nativeElement.innerHTML = html;
   }
+
   public onCloseCodeExport(): void {
     this.dialogRef.close();
   }
+
   public copyToClipboard(): void {
     this.clipboard.copy(this.codeStuff);
     this.notificationService.info(

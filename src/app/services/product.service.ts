@@ -183,6 +183,7 @@ export class ProductService {
     }
     return [];
   }
+
   public productTypeToGroup(product: models.CMRProduct, type: string): string {
     const dataset = models.datasets[product.dataset];
     if (!dataset?.productTypeDisplays?.groups) {
@@ -195,6 +196,7 @@ export class ProductService {
     }
     return null;
   }
+
   public urlToProductType(
     url: string,
     productTypeDisplay: Record<string, string>,
@@ -227,6 +229,7 @@ export class ProductService {
       return 'null';
     }
   }
+
   private burstXMLFromScene(product: models.CMRProduct) {
     const p = {
       ...product,
@@ -399,6 +402,7 @@ export class ProductService {
   };
 
   private operaDistDisplayValues = Object.values(this.operaDistDisplayMap);
+
   private tropoSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
     let file_extension = this.urlToProductType(
@@ -475,6 +479,7 @@ export class ProductService {
 
     return products;
   }
+
   private seasatSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
     let file_extension = this.urlToProductType(
@@ -581,6 +586,7 @@ export class ProductService {
     const reg = url.match(regex) ?? [''];
     return reg[0];
   }
+
   private uavsarSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
     let file_extension = product.downloadUrl.endsWith('-END')
@@ -731,6 +737,7 @@ export class ProductService {
     }
     return products;
   }
+
   private createSubproductForScene(
     scene: models.CMRProduct,
     url: string,
@@ -764,6 +771,7 @@ export class ProductService {
   public getAlosFileExtension(url: string) {
     return url.split('.').pop() ?? '';
   }
+
   private getAlosProductLevel(url: string) {
     const productLevelRegex = /.*-((?:H|L)1\.\d.*)(\.zip)/;
 
@@ -861,6 +869,7 @@ export class ProductService {
       return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
     });
   }
+
   private nisarSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
     let temp = product.downloadUrl.split('.');
