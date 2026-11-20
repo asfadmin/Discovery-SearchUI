@@ -65,3 +65,4 @@ playwright/
 e2e/**/*.png
 # CI
 !e2e/**/*-linux.png
+*.pem
