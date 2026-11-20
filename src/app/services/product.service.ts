@@ -790,6 +790,7 @@ export class ProductService {
 
   private alosSubproductsFromScene(product: models.CMRProduct) {
     if (!product.metadata.collectionName) {
+      product.bytes /= 1000000;
       return [];
     }
     const products = [];
