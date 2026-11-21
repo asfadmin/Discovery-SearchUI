@@ -89,6 +89,12 @@
                               track $index
                             ) {
                               <div class="polarization-row">
+                                <p class="polarization-legend y">
+                                  {{
+                                    row.at(-1).slice(0, row.at(-1).length / 2)
+                                  }}
+                                </p>
+
                                 @for (polarization of row; track $index) {
                                   @if (polarization === '') {
                                     <span class="polarization-element spacer">
@@ -98,6 +104,20 @@
                                       class="polarization-element"
                                       [class.enabled]="
                                         polarization in node.polarizations
+                                      "
+                                      (mouseenter)="
+                                        node.categoryType ===
+                                          categoryTypes.CovarianceGrid &&
+                                          registerHoverPolarization(
+                                            polarization
+                                          )
+                                      "
+                                      (mouseleave)="
+                                        node.categoryType ===
+                                          categoryTypes.CovarianceGrid &&
+                                          deregisterHoverPolarization(
+                                            polarization
+                                          )
                                       "
                                     >
                                       <mat-button-toggle
@@ -109,7 +129,14 @@
                                           node.polarizations[polarization]?.path
                                         "
                                       >
-                                        <span class="polarization-button hover">
+                                        <span
+                                          class="polarization-button hover"
+                                          [class.highlight]="
+                                            hoverPolarizations().includes(
+                                              polarization
+                                            )
+                                          "
+                                        >
                                           <mat-pseudo-checkbox
                                             class="gdal-dataset-check"
                                             [state]="
@@ -125,7 +152,20 @@
                                                 : 'unchecked'
                                             "
                                           />
-                                          {{ polarization }}
+                                          <span
+                                            class="polarization-button-text"
+                                          >
+                                            @for (
+                                              letter of polarization;
+                                              track `${letter}${$index}`
+                                            ) {
+                                              <span
+                                                [class.v]="letter === 'V'"
+                                                [class.h]="letter === 'H'"
+                                                >{{ letter }}</span
+                                              >
+                                            }
+                                          </span>
                                         </span>
                                       </mat-button-toggle>
                                     </span>
@@ -133,6 +173,21 @@
                                 }
                               </div>
                             }
+                            <div class="polarization-row">
+                              <p class="polarization-legend y"></p>
+                              @for (
+                                polarization of categoryTypeToGrid(
+                                  node.categoryType
+                                )[0];
+                                track polarization
+                              ) {
+                                <p class="polarization-legend x">
+                                  {{
+                                    polarization.slice(polarization.length / 2)
+                                  }}
+                                </p>
+                              }
+                            </div>
                           </div>
                         </div>
                         <div class="polarization-grid-label x">
@@ -157,8 +212,22 @@
                       <app-polarization-graphic
                         [polarization]="polarization"
                         class="polarization-graphic"
+                        (mouseenter)="registerHoverPolarization(polarization)"
+                        (mouseleave)="deregisterHoverPolarization(polarization)"
                       >
                       </app-polarization-graphic>
+                    }
+                  }
+                  @if (node.categoryType === categoryTypes.CovarianceGrid) {
+                    @for (
+                      polarization of hoverPolarizations();
+                      track polarization
+                    ) {
+                      <app-covariance-graphic
+                        [covariance]="polarization"
+                        class="polarization-graphic"
+                      >
+                      </app-covariance-graphic>
                     }
                   }
                 </div>
@@ -167,12 +236,8 @@
                   #toggle
                   class="dataset-button"
                   [value]="node.dataset.path"
-                  [aria-label]="
-                    `${('SELECT' | translate)} ${node.dataset.name}`
-                  "
-                  [matTooltip]="
-                    `${('SELECT' | translate)} ${node.dataset.name}`
-                  "
+                  [aria-label]="`${('SELECT' | translate)} ${node.dataset.name}`"
+                  [matTooltip]="`${('SELECT' | translate)} ${node.dataset.name}`"
                 >
                   <div class="gdal-dataset hover">
                     <mat-pseudo-checkbox
@@ -216,16 +281,18 @@
             matTreeNodeToggle
             [cdkTreeNodeTypeaheadLabel]="node.name"
           >
-            <button
-              matIconButton
-              matTreeNodeToggle
-              [attr.aria-label]="'Toggle ' + node.name"
-            >
-              <mat-icon class="mat-icon-rtl-mirror">
-                {{ tree.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
-              </mat-icon>
-            </button>
-            {{ node.name | translate }}
+            <div class="hover dataset-category-node">
+              <button
+                matIconButton
+                matTreeNodeToggle
+                [attr.aria-label]="'Toggle ' + node.name"
+              >
+                <mat-icon class="mat-icon-rtl-mirror">
+                  {{ tree.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+                </mat-icon>
+              </button>
+              {{ node.name | translate }}
+            </div>
           </mat-tree-node>
         </mat-tree>
       </mat-button-toggle-group>

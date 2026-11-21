@@ -56,6 +56,7 @@ import {
   GdalCustomizeMenuComponent,
   GdalCustomizeDialogData,
 } from '../gdal-customize-menu.component';
+import { CovarianceGraphicComponent } from '@components/shared/covariance-graphic/covariance-graphic.component';
 
 interface GdalConfigModel {
   selectedDatasets: string[];
@@ -113,6 +114,7 @@ interface DatasetNode {
     CodeBlockComponent,
     CopyToClipboardComponent,
     PolarizationGraphicComponent,
+    CovarianceGraphicComponent,
   ],
   templateUrl: './gdal-customize-dialog.component.html',
   styleUrl: './gdal-customize-dialog.component.scss',
@@ -425,6 +427,23 @@ machine urs.earthdata.nasa.gov
         this.gdalConfigForm.selectedDatasets().value().includes(dataset.path),
       )
       .map(([polarization, _]) => polarization);
+  }
+
+  hoverPolarizations = signal<string[]>([]);
+
+  registerHoverPolarization(polarization: string) {
+    this.hoverPolarizations.update((currentHoverPolarizations) => [
+      ...currentHoverPolarizations,
+      polarization,
+    ]);
+  }
+
+  deregisterHoverPolarization(polarization: string) {
+    this.hoverPolarizations.update((currentHoverPolarizations) =>
+      currentHoverPolarizations.filter(
+        (hoverPolarization) => hoverPolarization != polarization,
+      ),
+    );
   }
 
   constructor() {

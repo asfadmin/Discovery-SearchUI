@@ -54,6 +54,12 @@
   }
 }
 
+.polarization-graphic-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .dataset-tree-node {
   @include mat.expansion-overrides(
     (
@@ -80,22 +86,44 @@
   flex-direction: column;
   width: fit-content;
   border-radius: 5px;
+}
 
+.polarization-legend {
   @include themify($themes) {
-    border-bottom: 1px solid themed('dark-secondary-text');
-    border-left: 1px solid themed('dark-secondary-text');
+    color: themed('dark-secondary-text');
   }
+  margin: 0;
+}
+
+.polarization-legend.y {
+  padding: 0em 0.75em 0em 0.5em;
+}
+
+.polarization-legend.x {
+  padding: 0.5em 0em 0.4em 0em;
+  flex: 1;
+  width: 100px;
+  text-align: center;
 }
 
 .polarization-row {
   display: flex;
   flex-direction: row;
+  align-items: center;
+}
+
+.dataset-category-node {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 15px;
 }
 
 .polarization-element {
   flex: 1;
   width: 100px;
-  text-align: right;
+  display: flex;
+  justify-content: start;
 
   @include themify($themes) {
     @include mat.button-toggle-overrides(
@@ -119,6 +147,23 @@
   @include themify($themes) {
     color: themed('err');
   }
+}
+
+.polarization-button-text {
+  display: flex;
+  gap: 0;
+}
+
+.highlight {
+  font-weight: bold;
+}
+
+.highlight .h {
+  color: #236192;
+}
+
+.highlight .v {
+  color: #e27300;
 }
 
 .gdal-export-wrapper {
@@ -164,10 +209,12 @@ h3 {
   border-radius: 15px;
 }
 
-.hover:hover {
+.hover:hover,
+.hovered {
   @include themify($themes) {
     background-color: themed('dark-focused');
   }
+  font-weight: bold;
 }
 
 .polarization-button {
@@ -192,6 +239,7 @@ h3 {
   writing-mode: vertical-rl; /* Reads top-to-bottom */
   text-orientation: sideways;
   transform: rotate(180deg);
+  white-space: pre-line;
 }
 
 .polarization-grid-label.x {
