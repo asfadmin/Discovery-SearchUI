@@ -154,7 +154,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
   public downloadFile(dir = false) {
     const isBurstProduct = !!['BURST', 'BURST_XML'].find(
-      (t) => t === this.product.metadata.productType,
+      (t) => t === this.product?.metadata.productType,
     );
     if (!this.isUserLoggedIn && isBurstProduct) {
       this.onAccountButtonClicked();
@@ -329,8 +329,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     // It needs to be added to the DOM so it can be clicked
     document.body.appendChild(link);
     if (
-      this.product.metadata.productType === 'BURST' ||
-      this.product.metadata.productType === 'BURST_XML'
+      this.product?.metadata.productType === 'BURST' ||
+      this.product?.metadata.productType === 'BURST_XML'
     ) {
       window.location.href = url;
     } else {
@@ -346,7 +346,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.dFile = {
       progress: 100,
       state: 'DONE',
-      id: this.product.id,
+      id: this.product?.id ?? this.fileName,
       filename: this.fileName,
       product: this.product,
     };

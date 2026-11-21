@@ -57,6 +57,22 @@
   font-size: 1.2rem;
 }
 
+.job-file {
+  display: flex !important;
+  gap: 8px;
+  align-items: center;
+  white-space: normal !important;
+}
+
+.job-file-name {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.job-file-size {
+  white-space: nowrap;
+}
+
 .file-type-label {
   font-size: 14px;
 }
