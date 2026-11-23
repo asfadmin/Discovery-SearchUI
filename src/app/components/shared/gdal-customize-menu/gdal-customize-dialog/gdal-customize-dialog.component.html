@@ -42,32 +42,33 @@
           [dataSource]="datasets"
           [childrenAccessor]="childrenAccessor"
         >
-          <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+          <mat-tree-node *matTreeNodeDef="let node_any" matTreeNodePadding>
+            @let node = enforceDatasetNode(node_any);
             <div class="dataset-toggle-container">
               @if (
-                node.categoryType === categoryTypes.CovarianceGrid ||
-                node.categoryType === categoryTypes.PolarizationGrid
+                node.kind === 'covariance_grid' ||
+                node.kind === 'polarization_grid'
               ) {
                 <div class="polarization-container">
                   <div class="polarization-card">
                     <div class="gdal-dataset">
                       <div class="gdal-dataset-info">
                         <span class="gdal-dataset-name">{{
-                          node.dataset.name
+                          node.value.dataset.name
                         }}</span>
-                        @if (node.dataset.type) {
+                        @if (node.value.dataset.type) {
                           <span class="gdal-dataset-chip">{{
-                            node.dataset.type
+                            node.value.dataset.type
                           }}</span>
                         }
-                        @if (node.dataset.unit) {
+                        @if (node.value.dataset.unit) {
                           <span class="gdal-dataset-chip">{{
-                            node.dataset.unit
+                            node.value.dataset.unit
                           }}</span>
                         }
                         <span class="flex-break"></span>
                         <span class="gdal-dataset-path">{{
-                          node.dataset.path
+                          node.value.dataset.path
                         }}</span>
                       </div>
                     </div>
@@ -76,8 +77,7 @@
                         <div class="polarization-grid-horizontal-container">
                           <div class="polarization-grid-label y">
                             {{
-                              (node.categoryType !==
-                              categoryTypes.CovarianceGrid
+                              (node.kind !== 'covariance_grid'
                                 ? 'TRANSMIT_POLARIZATION'
                                 : 'SLC_X'
                               ) | translate
@@ -85,7 +85,7 @@
                           </div>
                           <div class="polarization-grid">
                             @for (
-                              row of categoryTypeToGrid(node.categoryType);
+                              row of categoryTypeToGrid(node.kind);
                               track $index
                             ) {
                               <div class="polarization-row">
@@ -103,18 +103,16 @@
                                     <span
                                       class="polarization-element"
                                       [class.enabled]="
-                                        polarization in node.polarizations
+                                        polarization in node.value.polarizations
                                       "
                                       (mouseenter)="
-                                        node.categoryType ===
-                                          categoryTypes.CovarianceGrid &&
+                                        node.kind === 'covariance_grid' &&
                                           registerHoverPolarization(
                                             polarization
                                           )
                                       "
                                       (mouseleave)="
-                                        node.categoryType ===
-                                          categoryTypes.CovarianceGrid &&
+                                        node.kind === 'covariance_grid' &&
                                           deregisterHoverPolarization(
                                             polarization
                                           )
@@ -123,10 +121,14 @@
                                       <mat-button-toggle
                                         class="dataset-button"
                                         [disabled]="
-                                          !(polarization in node.polarizations)
+                                          !(
+                                            polarization in
+                                            node.value.polarizations
+                                          )
                                         "
                                         [value]="
-                                          node.polarizations[polarization]?.path
+                                          node.value.polarizations[polarization]
+                                            ?.path
                                         "
                                       >
                                         <span
@@ -144,7 +146,7 @@
                                                 .selectedDatasets()
                                                 .value()
                                                 .includes(
-                                                  node.polarizations[
+                                                  node.value.polarizations[
                                                     polarization
                                                   ]?.path
                                                 )
@@ -177,7 +179,7 @@
                               <p class="polarization-legend y"></p>
                               @for (
                                 polarization of categoryTypeToGrid(
-                                  node.categoryType
+                                  node.kind
                                 )[0];
                                 track polarization
                               ) {
@@ -192,7 +194,7 @@
                         </div>
                         <div class="polarization-grid-label x">
                           {{
-                            (node.categoryType !== categoryTypes.CovarianceGrid
+                            (node.kind !== 'covariance_grid'
                               ? 'RECEIVE_POLARIZATION'
                               : 'SLC_Y'
                             ) | translate
@@ -202,10 +204,10 @@
                     </div>
                   </div>
                   <div class="flex-grow"></div>
-                  @if (node.categoryType === categoryTypes.PolarizationGrid) {
+                  @if (node.kind === 'polarization_grid') {
                     @for (
                       polarization of getActivePolarizations(
-                        node.polarizations
+                        node.value.polarizations
                       );
                       track polarization
                     ) {
@@ -218,7 +220,7 @@
                       </app-polarization-graphic>
                     }
                   }
-                  @if (node.categoryType === categoryTypes.CovarianceGrid) {
+                  @if (node.kind === 'covariance_grid') {
                     @for (
                       polarization of hoverPolarizations();
                       track polarization
@@ -231,13 +233,13 @@
                     }
                   }
                 </div>
-              } @else {
+              } @else if (node.kind === 'dataset') {
                 <mat-button-toggle
                   #toggle
                   class="dataset-button"
-                  [value]="node.dataset.path"
-                  [aria-label]="`${('SELECT' | translate)} ${node.dataset.name}`"
-                  [matTooltip]="`${('SELECT' | translate)} ${node.dataset.name}`"
+                  [value]="node.value.path"
+                  [aria-label]="`${('SELECT' | translate)} ${node.value.name}`"
+                  [matTooltip]="`${('SELECT' | translate)} ${node.value.name}`"
                 >
                   <div class="gdal-dataset hover">
                     <mat-pseudo-checkbox
@@ -246,28 +248,28 @@
                         gdalConfigForm
                           .selectedDatasets()
                           .value()
-                          .includes(node.dataset.path)
+                          .includes(node.value.path)
                           ? 'checked'
                           : 'unchecked'
                       "
                     />
                     <div class="gdal-dataset-info">
                       <span class="gdal-dataset-name">{{
-                        node.dataset.name
+                        node.value.name
                       }}</span>
-                      @if (node.dataset.type) {
+                      @if (node.value.type) {
                         <span class="gdal-dataset-chip">{{
-                          node.dataset.type
+                          node.value.type
                         }}</span>
                       }
-                      @if (node.dataset.unit) {
+                      @if (node.value.unit) {
                         <span class="gdal-dataset-chip">{{
-                          node.dataset.unit
+                          node.value.unit
                         }}</span>
                       }
                       <span class="flex-break"></span>
                       <span class="gdal-dataset-path">{{
-                        node.dataset.path
+                        node.value.path
                       }}</span>
                     </div>
                   </div>
@@ -276,23 +278,28 @@
             </div>
           </mat-tree-node>
           <mat-tree-node
-            *matTreeNodeDef="let node; when: hasChild"
+            *matTreeNodeDef="let node_any; when: hasChild"
             matTreeNodePadding
             matTreeNodeToggle
-            [cdkTreeNodeTypeaheadLabel]="node.name"
+            [cdkTreeNodeTypeaheadLabel]="node_any.value"
           >
-            <div class="hover dataset-category-node">
-              <button
-                matIconButton
-                matTreeNodeToggle
-                [attr.aria-label]="'Toggle ' + node.name"
-              >
-                <mat-icon class="mat-icon-rtl-mirror">
-                  {{ tree.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
-                </mat-icon>
-              </button>
-              {{ node.name | translate }}
-            </div>
+            @let node = enforceDatasetNode(node_any);
+            @if (node.kind == 'category') {
+              <div class="hover dataset-category-node">
+                <button
+                  matIconButton
+                  matTreeNodeToggle
+                  [attr.aria-label]="'Toggle ' + node.value"
+                >
+                  <mat-icon class="mat-icon-rtl-mirror">
+                    {{
+                      tree.isExpanded(node) ? 'expand_more' : 'chevron_right'
+                    }}
+                  </mat-icon>
+                </button>
+                {{ node.value | translate }}
+              </div>
+            }
           </mat-tree-node>
         </mat-tree>
       </mat-button-toggle-group>

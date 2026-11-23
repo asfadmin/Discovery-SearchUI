@@ -40,7 +40,7 @@ import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
 import { CovarianceGraphicComponent } from '@components/shared/covariance-graphic/covariance-graphic.component';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { PolarizationGraphicComponent } from '@components/shared/polarization-graphic/polarization-graphic.component';
-import { CategoryType, GDALCategory, GDALDataset } from '@models';
+import { CategoryType, DatasetNode, GDALCategory, GDALDataset } from '@models';
 import {
   GdalFormats,
   GdalOptions,
@@ -79,14 +79,6 @@ interface GdalConfigModel {
   };
 }
 
-interface DatasetNode {
-  name: string;
-  children?: DatasetNode[];
-  dataset?: GDALDataset;
-  polarizations?: Record<string, GDALDataset>;
-  categoryType?: CategoryType;
-}
-
 @Component({
   selector: 'app-gdal-customize-dialog',
   imports: [
@@ -122,7 +114,6 @@ interface DatasetNode {
 export class GdalCustomizeDialogComponent {
   readonly dialogRef = inject(MatDialogRef<GdalCustomizeMenuComponent>);
   readonly data = inject<GdalCustomizeDialogData>(MAT_DIALOG_DATA);
-  readonly categoryTypes = CategoryType;
   datasets = this.toAngularMaterialTree(this.data.datasets);
   gdalService = inject(GdalService);
   outputFormats = GDAL_FORMATS;
@@ -344,69 +335,26 @@ machine urs.earthdata.nasa.gov
     return 'Unix';
   }
 
-  childrenAccessor = (node: DatasetNode) => node.children ?? [];
+  childrenAccessor = (node: DatasetNode) =>
+    node.kind === 'category' ? node.children : [];
 
   hasChild = (_: number, node: DatasetNode) =>
-    !!node.children && node.children.length > 0;
+    node.kind === 'category' && node.children.length > 0;
+
+  enforceDatasetNode(node: any): DatasetNode {
+    return node as DatasetNode;
+  }
 
   toAngularMaterialTree(datasets: GDALCategory): DatasetNode[] {
-    if (Object.entries(datasets.categories).length == 1) {
-      return this.toAngularMaterialTree(
-        Object.entries(datasets.categories)[0][1],
-      );
-    }
-
-    const children: DatasetNode[] = [];
-
-    if (
-      (datasets.categoryType === CategoryType.CovarianceGrid ||
-        datasets.categoryType === CategoryType.PolarizationGrid) &&
-      !Array.isArray(datasets.datasets)
-    ) {
-      if (Object.entries(datasets.datasets).length === 1) {
-        children.push({
-          name: datasets.name,
-          dataset: Object.entries(datasets.datasets)[0][1],
-        });
-      } else {
-        children.push({
-          name: datasets.name,
-          polarizations: datasets.datasets,
-          categoryType: datasets.categoryType,
-          dataset: datasets.categoryInfo,
-        });
-      }
-    } else if (!Array.isArray(datasets.datasets)) {
-      return [];
-    } else {
-      if (Object.entries(datasets.categories).length !== 0) {
-        children.push(
-          ...Object.entries(datasets.categories).map(([key, value]) => {
-            return { name: key, children: this.toAngularMaterialTree(value) };
-          }),
-        );
-      }
-
-      children.push(
-        ...datasets.datasets.map((dataset) => {
-          return {
-            name: dataset.name,
-            dataset: dataset,
-          };
-        }),
-      );
-    }
-
-    return children.map((node) => {
-      if (node.children && Object.entries(node.children).length === 1) {
-        return Object.entries(node.children)[0][1];
-      }
-      return node;
-    });
+    return datasets
+      .pruneEmptyCategories()
+      .toDisplayTree()
+      .removeFrivolousNodes()
+      .getNodes();
   }
 
   categoryTypeToGrid(type: CategoryType): string[][] {
-    if (type == CategoryType.CovarianceGrid) {
+    if (type === 'covariance_grid') {
       return [
         ['HHHH', 'HHHV', 'HHVH', 'HHVV'],
         ['', 'HVHV', 'HVVH', 'HVVV'],
@@ -415,10 +363,12 @@ machine urs.earthdata.nasa.gov
       ];
     }
 
-    return [
-      ['HH', 'HV'],
-      ['VH', 'VV'],
-    ];
+    if (type === 'polarization_grid') {
+      return [
+        ['HH', 'HV'],
+        ['VH', 'VV'],
+      ];
+    }
   }
 
   getActivePolarizations(polarizations: Record<string, GDALDataset>): string[] {

@@ -72,7 +72,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                   polarization: 'VHVV',
                 },
               ],
-              CategoryType.CovarianceGrid,
+              'covariance_grid',
               {
                 path: `//science/LSAR/GCOV/grids/frequency${frequency.string}/<POLARIZATION>`,
                 name: `Frequency ${frequency.string} Covariance`,
@@ -94,7 +94,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                 polarization: `${polarization}${polarization}`,
               };
             }),
-            CategoryType.CovarianceGrid,
+            'covariance_grid',
             {
               path: `//science/LSAR/GCOV/grids/frequency${frequency.string}/<POLARIZATION>`,
               name: `Frequency ${frequency.string} Covariance`,
@@ -163,7 +163,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                   polarization: polarization,
                 },
               ],
-              CategoryType.PolarizationGrid,
+              'polarization_grid',
               {
                 path: `//science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/<POLARIZATION>/unwrappedPhase`,
                 name: `Frequency A Unwrapped Phase`,
@@ -185,7 +185,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                   polarization: polarization,
                 },
               ],
-              CategoryType.PolarizationGrid,
+              'polarization_grid',
               {
                 path: `//science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/<POLARIZATION>/coherenceMagnitude`,
                 name: `Frequency A Unwrapped Coherence Magnitude`,
@@ -207,7 +207,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                   polarization: polarization,
                 },
               ],
-              CategoryType.PolarizationGrid,
+              'polarization_grid',
               {
                 path: `//science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/<POLARIZATION>/connectedComponents`,
                 name: `Frequency A Unwrapped Connected Components`,
@@ -230,7 +230,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                   polarization: polarization,
                 },
               ],
-              CategoryType.PolarizationGrid,
+              'polarization_grid',
               {
                 path: `//science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/<POLARIZATION>/ionospherePhaseScreen`,
                 name: `Frequency A Unwrapped Ionosphere Phase Screen`,
@@ -253,7 +253,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                   polarization: polarization,
                 },
               ],
-              CategoryType.PolarizationGrid,
+              'polarization_grid',
               {
                 path: `//science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/<POLARIZATION>/ionospherePhaseScreen`,
                 name: `Frequency A Unwrapped Ionosphere Phase Screen`,
@@ -278,7 +278,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                   polarization: polarization,
                 },
               ],
-              CategoryType.PolarizationGrid,
+              'polarization_grid',
               {
                 path: `//science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/<POLARIZATION>/wrappedInterferogram`,
                 name: `Frequency A Wrapped Interferogram`,
@@ -299,7 +299,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                   polarization: polarization,
                 },
               ],
-              CategoryType.PolarizationGrid,
+              'polarization_grid',
               {
                 path: `//science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/<POLARIZATION>/coherenceMagnitude`,
                 name: `Frequency A Wrapped Coherence`,
@@ -325,7 +325,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                   polarization: polarization,
                 },
               ],
-              CategoryType.PolarizationGrid,
+              'polarization_grid',
               {
                 path: `//science/LSAR/GUNW/grids/frequencyA/pixelOffsets/<POLARIZATION>/alongTrackOffset`,
                 name: `Frequency A Along Track Pixel Offset`,
@@ -350,7 +350,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                   polarization: polarization,
                 },
               ],
-              CategoryType.PolarizationGrid,
+              'polarization_grid',
               {
                 path: `//science/LSAR/GUNW/grids/frequencyA/pixelOffsets/<POLARIZATION>/slantRangeOffset`,
                 name: `Frequency A Slant Range Pixel Offset`,
@@ -374,7 +374,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                   polarization: polarization,
                 },
               ],
-              CategoryType.PolarizationGrid,
+              'polarization_grid',
               {
                 path: `//science/LSAR/GUNW/grids/frequencyA/pixelOffsets/<POLARIZATION>/correlationSurfacePeak`,
                 name: `Frequency A Correlation Surface Peak`,
@@ -474,7 +474,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                 polarization: polarization,
               };
             }),
-            CategoryType.PolarizationGrid,
+            'polarization_grid',
             {
               path: `//science/LSAR/SME2/grids/radarData/frequency${frequency.string}/sigma0<POLARIZATION>`,
               name: `Frequency ${frequency.string} Sigma0`,
@@ -525,7 +525,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                     polarization: polarization,
                   },
                 ],
-                CategoryType.PolarizationGrid,
+                'polarization_grid',
                 {
                   path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/<POLARIZATION>/${layer.path}/alongTrackOffset`,
                   name: `Frequency A ${layer.display} Along Track Offset`,
@@ -549,7 +549,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                     polarization: polarization,
                   },
                 ],
-                CategoryType.PolarizationGrid,
+                'polarization_grid',
                 {
                   path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/<POLARIZATION>/${layer.path}/slantRangeOffset`,
                   name: `Frequency A ${layer.display} Slant Range Offset`,
@@ -573,7 +573,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                     polarization: polarization,
                   },
                 ],
-                CategoryType.PolarizationGrid,
+                'polarization_grid',
                 {
                   path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/<POLARIZATION>/${layer.path}/alongTrackOffsetVariance`,
                   name: `Frequency A ${layer.display} Along Track Offset Variance`,
@@ -597,7 +597,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                     polarization: polarization,
                   },
                 ],
-                CategoryType.PolarizationGrid,
+                'polarization_grid',
                 {
                   path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/<POLARIZATION>/${layer.path}/slantRangeOffsetVariance`,
                   name: `Frequency A ${layer.display} Slant Range Offset Variance`,
@@ -622,7 +622,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                     polarization: polarization,
                   },
                 ],
-                CategoryType.PolarizationGrid,
+                'polarization_grid',
                 {
                   path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/<POLARIZATION>/${layer.path}/crossOffsetVariance`,
                   name: `Frequency A ${layer.display} Cross Offset Variance`,
@@ -647,7 +647,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                     polarization: polarization,
                   },
                 ],
-                CategoryType.PolarizationGrid,
+                'polarization_grid',
                 {
                   path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/<POLARIZATION>/${layer.path}/correlationSurfacePeak`,
                   name: `Frequency A ${layer.display} Correlation Surface Peak`,
@@ -671,7 +671,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                     polarization: polarization,
                   },
                 ],
-                CategoryType.PolarizationGrid,
+                'polarization_grid',
                 {
                   path: `//science/LSAR/GOFF/grids/frequencyA/pixelOffsets/<POLARIZATION>/${layer.path}/snr`,
                   name: `Frequency A ${layer.display} Signal To Noise Ratio`,
@@ -705,7 +705,7 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
                 };
               }),
             ],
-            CategoryType.PolarizationGrid,
+            'polarization_grid',
             {
               path: `//science/LSAR/GSLC/grids/frequency${frequency.string}/<POLARIZATION>`,
               name: `Frequency ${frequency.string} Focused SLC Image`,
@@ -730,16 +730,15 @@ export function datasetsForGDALProduct(product: GdalProductInfo): GDALCategory {
   return datasets;
 }
 
-export enum CategoryType {
-  DatasetList,
-  PolarizationGrid,
-  CovarianceGrid,
-}
+export type CategoryType =
+  | 'dataset_list'
+  | 'polarization_grid'
+  | 'covariance_grid';
 
 export class GDALCategory {
   public categories: Record<string, GDALCategory>;
   public datasets: GDALDataset[] | Record<string, GDALDataset>;
-  public categoryType: CategoryType = CategoryType.DatasetList;
+  public categoryType: CategoryType = 'dataset_list';
   public categoryInfo: GDALDataset;
   public name: string;
 
@@ -756,7 +755,7 @@ export class GDALCategory {
   public pushCategory(
     key: string,
     items: GDALDataset[],
-    type: CategoryType = CategoryType.DatasetList,
+    type: CategoryType = 'dataset_list',
     categoryInfo?: GDALDataset,
   ) {
     if (!(key in this.categories)) {
@@ -766,7 +765,7 @@ export class GDALCategory {
     this.categories[key].categoryType = type;
     this.categories[key].categoryInfo = categoryInfo;
 
-    if (type == CategoryType.DatasetList) {
+    if (type === 'dataset_list') {
       if (Array.isArray(this.categories[key].datasets)) {
         this.categories[key].datasets.push(...items);
       } else {
@@ -775,7 +774,7 @@ export class GDALCategory {
       return;
     }
 
-    if (type == CategoryType.PolarizationGrid || CategoryType.CovarianceGrid) {
+    if (type === 'polarization_grid' || 'covariance_grid') {
       if (Array.isArray(this.categories[key].datasets)) {
         this.categories[key].datasets = {};
       }
@@ -816,6 +815,108 @@ export class GDALCategory {
     for (const [key, category] of Object.entries(this.categories)) {
       this.categories[key] = category.pruneEmptyCategories();
     }
+  }
+
+  public toDisplayTree(): DatasetDisplayTree {
+    if (
+      (this.categoryType === 'covariance_grid' ||
+        this.categoryType === 'polarization_grid') &&
+      !Array.isArray(this.datasets)
+    ) {
+      return new DatasetDisplayTree([
+        {
+          value: {
+            polarizations: this.datasets,
+            dataset: this.categoryInfo,
+          },
+          kind: this.categoryType,
+        },
+      ]);
+    }
+
+    if (!Array.isArray(this.datasets)) {
+      return new DatasetDisplayTree([]);
+    }
+
+    const tree = new DatasetDisplayTree([]);
+
+    if (Object.entries(this.categories).length !== 0) {
+      tree.nodes.push(
+        ...Object.entries(this.categories).map(([key, value]) => {
+          return {
+            value: key,
+            children: value.toDisplayTree().getNodes(),
+            kind: 'category',
+          } as DatasetNode;
+        }),
+      );
+    }
+
+    tree.nodes.push(
+      ...this.datasets.map((dataset) => {
+        return {
+          value: dataset,
+          kind: 'dataset',
+        } as DatasetNode;
+      }),
+    );
+
+    return tree;
+  }
+}
+
+export type NodeType =
+  | 'category'
+  | 'dataset'
+  | 'polarization_grid'
+  | 'covariance_grid';
+
+export interface DatasetPolarizationGroup {
+  dataset?: GDALDataset;
+  polarizations?: Record<string, GDALDataset>;
+}
+
+export type CategoryName = string;
+
+export type DatasetNode =
+  | {
+      children: DatasetNode[];
+      value: CategoryName;
+      kind: 'category';
+    }
+  | {
+      value: DatasetPolarizationGroup;
+      kind: 'polarization_grid' | 'covariance_grid';
+    }
+  | {
+      kind: 'dataset';
+      value: GDALDataset;
+    };
+
+export class DatasetDisplayTree {
+  nodes: DatasetNode[];
+
+  constructor(nodes: DatasetNode[]) {
+    this.nodes = nodes;
+  }
+
+  public removeFrivolousNodes(): DatasetDisplayTree {
+    this.nodes = this.nodes.map((node) => {
+      if (
+        node.kind === 'category' &&
+        Object.entries(node.children).length === 1
+      ) {
+        return Object.entries(node.children)[0][1];
+      }
+
+      return node;
+    });
+
+    return this;
+  }
+
+  public getNodes(): DatasetNode[] {
+    return this.nodes;
   }
 }
 
