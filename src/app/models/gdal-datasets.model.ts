@@ -803,6 +803,20 @@ export class GDALCategory {
       Object.keys(this.categories).length !== 0 || this.datasets.length !== 0
     );
   }
+
+  public pruneEmptyCategories(): GDALCategory {
+    if (Object.keys(this.categories).length == 0) {
+      return this;
+    }
+
+    if (Object.keys(this.categories).length == 1) {
+      return this.categories[Object.keys(this.categories)[0]];
+    }
+
+    for (const [key, category] of Object.entries(this.categories)) {
+      this.categories[key] = category.pruneEmptyCategories();
+    }
+  }
 }
 
 export interface GDALDataset {
