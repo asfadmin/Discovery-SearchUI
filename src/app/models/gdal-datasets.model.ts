@@ -774,7 +774,7 @@ export class GDALCategory {
       return;
     }
 
-    if (type === 'polarization_grid' || 'covariance_grid') {
+    if (type === 'polarization_grid' || type === 'covariance_grid') {
       if (Array.isArray(this.categories[key].datasets)) {
         this.categories[key].datasets = {};
       }

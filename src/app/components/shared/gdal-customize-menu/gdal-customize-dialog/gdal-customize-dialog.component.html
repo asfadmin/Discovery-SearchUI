@@ -284,7 +284,7 @@
             [cdkTreeNodeTypeaheadLabel]="node_any.value"
           >
             @let node = enforceDatasetNode(node_any);
-            @if (node.kind == 'category') {
+            @if (node.kind === 'category') {
               <div class="hover dataset-category-node">
                 <button
                   matIconButton
