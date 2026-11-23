@@ -236,12 +236,8 @@
                   #toggle
                   class="dataset-button"
                   [value]="node.dataset.path"
-                  [aria-label]="
-                    `${('SELECT' | translate)} ${node.dataset.name}`
-                  "
-                  [matTooltip]="
-                    `${('SELECT' | translate)} ${node.dataset.name}`
-                  "
+                  [aria-label]="`${('SELECT' | translate)} ${node.dataset.name}`"
+                  [matTooltip]="`${('SELECT' | translate)} ${node.dataset.name}`"
                 >
                   <div class="gdal-dataset hover">
                     <mat-pseudo-checkbox
@@ -486,7 +482,7 @@
 
   <div
     class="gdal-configure-card step-card"
-    [class.expanded]="this.datasetSelected() && !this.configureError()"
+    [class.expanded]="datasetSelected() && !configureError()"
     [matTooltip]="cardErrorTooltip() | translate"
   >
     <div class="header-container">

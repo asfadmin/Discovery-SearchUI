@@ -8,7 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './covariance-graphic.component.scss',
 })
 export class CovarianceGraphicComponent {
-  covariance = input<string>();
+  covariance = input.required<string>();
   xPolarization = computed(() =>
     this.covariance().slice(0, this.covariance().length / 2),
   );

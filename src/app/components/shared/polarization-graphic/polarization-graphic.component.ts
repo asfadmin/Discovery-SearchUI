@@ -8,5 +8,5 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './polarization-graphic.component.scss',
 })
 export class PolarizationGraphicComponent {
-  polarization = input<string>();
+  polarization = input.required<string>();
 }
