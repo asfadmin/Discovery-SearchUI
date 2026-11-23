@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @use 'asf-theme-variables' as *;
 
 .icon-margin {
@@ -58,15 +59,18 @@
 }
 
 .job-file {
-  display: flex !important;
-  gap: 8px;
-  align-items: center;
-  white-space: normal !important;
-}
+  // Same text offset as the leading icon column of the product item above.
+  padding-left: 24px;
 
-.job-file-name {
-  flex: 1;
-  overflow-wrap: anywhere;
+  // Same look as the metadata lines of the product item above.
+  @include mat.list-overrides(
+    (
+      list-item-one-line-container-height: 26px,
+      list-item-label-text-size: 14px,
+      list-item-label-text-color: var(--mat-list-list-item-supporting-text-color),
+      list-item-trailing-supporting-text-size: 14px,
+    )
+  );
 }
 
 .job-file-size {

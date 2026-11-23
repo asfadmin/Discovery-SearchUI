@@ -175,23 +175,6 @@
     </div>
   }
 
-  @if (product.metadata.job?.job_type === 'NISAR_CV') {
-    @for (file of product.metadata.job.files; track file.url) {
-      <div class="job-file" matListItemLine>
-        <app-download-file-button
-          class="compact"
-          [href]="file.url"
-          [disabled]="isExpired(product.metadata.job)"
-        >
-        </app-download-file-button>
-        <span class="job-file-name">{{ file.filename }}</span>
-        <span class="job-file-size">
-          {{ file.size.toString() | readableSizeFromBytes }}
-        </span>
-      </div>
-    }
-  }
-
   <app-download-file-button
     [attr.id]="'scene_' + product.id"
     [product]="product"
@@ -240,3 +223,20 @@
     </ng-container>
   }
 </mat-list-item>
+
+@if (product.metadata.job?.job_type === 'NISAR_CV') {
+  @for (file of product.metadata.job.files; track file.url) {
+    <mat-list-item class="job-file">
+      <span matListItemTitle>{{ file.filename }}</span>
+      <span class="job-file-size" matListItemMeta>
+        {{ file.size.toString() | readableSizeFromBytes }}
+      </span>
+      <app-download-file-button
+        [href]="file.url"
+        [disabled]="isExpired(product.metadata.job)"
+        matListItemMeta
+      >
+      </app-download-file-button>
+    </mat-list-item>
+  }
+}
