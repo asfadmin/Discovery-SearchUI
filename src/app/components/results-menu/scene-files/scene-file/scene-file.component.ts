@@ -21,7 +21,7 @@ import {
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import * as moment from 'moment';
 import { of } from 'rxjs';
@@ -84,6 +84,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   env = inject(EnvironmentService);
   private onDemand = inject(OnDemandService);
+  private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
 
   @Input() product: models.CMRProduct;
@@ -132,9 +133,15 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public expirationBadge(expiration_time: moment.Moment): string {
     const days = this.expirationDays(expiration_time);
 
-    const plural = days === 0 ? '' : 's';
+    if (days <= 0) {
+      return '';
+    }
 
-    return days > 0 ? `(Expires: ${days} Day${plural})` : '';
+    if (days === 1) {
+      return this.translate.instant('EXPIRES_IN_DAY');
+    }
+
+    return this.translate.instant('EXPIRES_IN_DAYS', { count: days });
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {

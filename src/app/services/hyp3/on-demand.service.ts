@@ -26,7 +26,8 @@ export class OnDemandService {
     const unknownOptions = Object.entries(metadata.job.job_parameters)
       .filter(([param, _]) => !addedOptions.has(param))
       .map(([param, val]) => {
-        const name = this.formatJobParamName(param);
+        const name =
+          models.hyp3JobParamNames[param] ?? this.formatJobParamName(param);
         return { name, val };
       });
 

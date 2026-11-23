@@ -103,21 +103,21 @@
           } @else {
             @if (scene.metadata.job?.job_type === 'NISAR_CV') {
               <div>
-                Change the currently selected NISAR_CV product scene:
+                {{ 'CHANGE_NISAR_CV_SCENE' | translate }}
                 <div>
                   <button
                     matButton="outlined"
                     (click)="onUpdateBrowseIndex(0)"
                     [disabled]="browseIndex === 0"
                   >
-                    CROP AREA
+                    {{ 'CROP_AREA' | translate }}
                   </button>
                   <button
                     matButton="outlined"
                     (click)="onUpdateBrowseIndex(1)"
                     [disabled]="browseIndex === 1"
                   >
-                    Coefficent of Variation
+                    {{ 'COEFFICIENT_OF_VARIATION' | translate }}
                   </button>
                 </div>
               </div>

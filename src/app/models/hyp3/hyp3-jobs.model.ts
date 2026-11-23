@@ -338,3 +338,17 @@ export const hyp3JobOptionsOrdered = hyp3JobTypesList.reduce(
   (options, jobType) => [...options, ...jobType.options],
   [],
 );
+
+export const hyp3JobParamNames = {
+  crop_area: 'CROP_AREA',
+  cv_threshold: 'CV_THRESHOLD',
+  end_date: 'END_DATE',
+  frame_number: 'FRAME_NUMBER',
+  orbit_direction: 'ORBIT_DIRECTION',
+  pol: 'POLARIZATION',
+  relative_orbit: 'RELATIVE_ORBIT',
+  start_date: 'START_DATE',
+  subset: 'SUBSET',
+  water_fraction: 'WATER_FRACTION',
+  water_threshold_db: 'WATER_THRESHOLD_DB',
+};
