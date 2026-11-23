@@ -59,10 +59,8 @@
 }
 
 .job-file {
-  // Same text offset as the leading icon column of the product item above.
   padding-left: 24px;
 
-  // Same look as the metadata lines of the product item above.
   @include mat.list-overrides(
     (
       list-item-one-line-container-height: 26px,
