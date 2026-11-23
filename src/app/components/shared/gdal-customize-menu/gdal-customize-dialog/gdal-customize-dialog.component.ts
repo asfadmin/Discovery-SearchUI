@@ -37,6 +37,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { CodeBlockComponent } from '@components/shared/code-block/code-block.component';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard';
+import { CovarianceGraphicComponent } from '@components/shared/covariance-graphic/covariance-graphic.component';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { PolarizationGraphicComponent } from '@components/shared/polarization-graphic/polarization-graphic.component';
 import { CategoryType, GDALCategory, GDALDataset } from '@models';
@@ -56,7 +57,6 @@ import {
   GdalCustomizeMenuComponent,
   GdalCustomizeDialogData,
 } from '../gdal-customize-menu.component';
-import { CovarianceGraphicComponent } from '@components/shared/covariance-graphic/covariance-graphic.component';
 
 interface GdalConfigModel {
   selectedDatasets: string[];

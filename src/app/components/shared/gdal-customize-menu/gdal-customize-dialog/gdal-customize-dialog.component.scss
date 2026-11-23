@@ -56,8 +56,7 @@
 
 .polarization-graphic-container {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
 }
 
 .dataset-tree-node {
@@ -92,17 +91,18 @@
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+
   margin: 0;
 }
 
 .polarization-legend.y {
-  padding: 0em 0.75em 0em 0.5em;
+  padding: 0 0.75em 0 0.5em;
 }
 
 .polarization-legend.x {
-  padding: 0.5em 0em 0.4em 0em;
   flex: 1;
   width: 100px;
+  padding: 0.5em 0 0.4em;
   text-align: center;
 }
 
@@ -113,17 +113,17 @@
 }
 
 .dataset-category-node {
-  width: 100%;
   display: flex;
   align-items: center;
+  width: 100%;
   border-radius: 15px;
 }
 
 .polarization-element {
-  flex: 1;
-  width: 100px;
   display: flex;
+  flex: 1;
   justify-content: start;
+  width: 100px;
 
   @include themify($themes) {
     @include mat.button-toggle-overrides(
@@ -214,6 +214,7 @@ h3 {
   @include themify($themes) {
     background-color: themed('dark-focused');
   }
+
   font-weight: bold;
 }
 
@@ -236,10 +237,10 @@ h3 {
 }
 
 .polarization-grid-label.y {
+  white-space: pre-line;
   writing-mode: vertical-rl; /* Reads top-to-bottom */
   text-orientation: sideways;
   transform: rotate(180deg);
-  white-space: pre-line;
 }
 
 .polarization-grid-label.x {

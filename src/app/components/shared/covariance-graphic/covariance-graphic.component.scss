@@ -13,8 +13,9 @@
 }
 
 .label {
-  text-align: center;
   margin: 0;
+  text-align: center;
+
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }

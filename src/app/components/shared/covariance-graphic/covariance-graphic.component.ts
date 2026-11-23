@@ -1,10 +1,9 @@
 import { Component, computed, input } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-covariance-graphic',
-  imports: [MatTooltipModule, TranslatePipe],
+  imports: [MatTooltipModule],
   templateUrl: './covariance-graphic.component.html',
   styleUrl: './covariance-graphic.component.scss',
 })

@@ -236,8 +236,12 @@
                   #toggle
                   class="dataset-button"
                   [value]="node.dataset.path"
-                  [aria-label]="`${('SELECT' | translate)} ${node.dataset.name}`"
-                  [matTooltip]="`${('SELECT' | translate)} ${node.dataset.name}`"
+                  [aria-label]="
+                    `${('SELECT' | translate)} ${node.dataset.name}`
+                  "
+                  [matTooltip]="
+                    `${('SELECT' | translate)} ${node.dataset.name}`
+                  "
                 >
                   <div class="gdal-dataset hover">
                     <mat-pseudo-checkbox
@@ -508,22 +512,26 @@
           <app-code-block
             [isCommand]="true"
             [codeContentByTab]="[
-              [
-                'INSTALL_VIA_CONDA',
-                'conda install -c nisar-forge -c conda-forge gdal-driver-nisar',
-              ],
-              [
-                'INSTALL_VIA_MAMBA',
-                'mamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
-              ],
-              [
-                'INSTALL_VIA_MICROMAMBA',
-                'micromamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
-              ],
-              [
-                'INSTALL_VIA_PIXI',
-                'pixi global install -c nisar-forge -c conda-forge gdal-driver-nisar',
-              ],
+              {
+                key: 'INSTALL_VIA_CONDA',
+                value:
+                  'conda install -c nisar-forge -c conda-forge gdal-driver-nisar',
+              },
+              {
+                key: 'INSTALL_VIA_MAMBA',
+                value:
+                  'mamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
+              },
+              {
+                key: 'INSTALL_VIA_MICROMAMBA',
+                value:
+                  'micromamba install -c nisar-forge -c conda-forge gdal-driver-nisar',
+              },
+              {
+                key: 'INSTALL_VIA_PIXI',
+                value:
+                  'pixi global install -c nisar-forge -c conda-forge gdal-driver-nisar',
+              },
             ]"
             copyPrompt="COPY_TO_CLIPBOARD"
             copyMessage="COPIED_TO_CLIPBOARD"
@@ -535,16 +543,25 @@
           <app-code-block
             [isCommand]="true"
             [codeContentByTab]="[
-              ['INSTALL_VIA_CONDA', 'conda install -c conda-forge gdal'],
-              ['INSTALL_VIA_MAMBA', 'mamba install -c conda-forge gdal'],
-              [
-                'INSTALL_VIA_MICROMAMBA',
-                'micromamba install -c conda-forge gdal',
-              ],
-              ['INSTALL_VIA_PIXI', 'pixi global install -c conda-forge gdal'],
-              ['INSTALL_VIA_APT', 'sudo apt install gdal-bin'],
-              ['INSTALL_VIA_PACMAN', 'sudo pacman -S gdal'],
-              ['RUN_VIA_NIX', 'nix-shell -p gdal'],
+              {
+                key: 'INSTALL_VIA_CONDA',
+                value: 'conda install -c conda-forge gdal',
+              },
+              {
+                key: 'INSTALL_VIA_MAMBA',
+                value: 'mamba install -c conda-forge gdal',
+              },
+              {
+                key: 'INSTALL_VIA_MICROMAMBA',
+                value: 'micromamba install -c conda-forge gdal',
+              },
+              {
+                key: 'INSTALL_VIA_PIXI',
+                value: 'pixi global install -c conda-forge gdal',
+              },
+              { key: 'INSTALL_VIA_APT', value: 'sudo apt install gdal-bin' },
+              { key: 'INSTALL_VIA_PACMAN', value: 'sudo pacman -S gdal' },
+              { key: 'RUN_VIA_NIX', value: 'nix-shell -p gdal' },
             ]"
             copyPrompt="COPY_TO_CLIPBOARD"
             copyMessage="COPIED_TO_CLIPBOARD"

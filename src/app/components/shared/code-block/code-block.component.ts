@@ -36,7 +36,7 @@ import 'prismjs/components/prism-python';
 export class CodeBlockComponent {
   codeDescription = input<string>();
   codeContent = input<string | string[]>();
-  codeContentByTab = input<[string, string | undefined][]>();
+  codeContentByTab = input<{ key: string; value: string | undefined }[]>();
   defaultTab = input<number>(0);
   copyPrompt = input<string>('COPY_TO_CLIPBOARD');
   copyMessage = input<string>('COPIED_TO_CLIPBOARD');
