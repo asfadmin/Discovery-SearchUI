@@ -934,6 +934,14 @@ export class DatasetDisplayTree {
     return result;
   }
 
+  public removeTopLevelCategories(): DatasetDisplayTree {
+    if (this.nodes.length === 1 && this.nodes[0].kind === 'category') {
+      return new DatasetDisplayTree(this.nodes[0].children);
+    }
+
+    return this;
+  }
+
   public getNodes(): DatasetNode[] {
     return this.nodes;
   }

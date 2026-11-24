@@ -350,6 +350,7 @@ machine urs.earthdata.nasa.gov
       .pruneEmptyCategories()
       .toDisplayTree()
       .removeFrivolousNodes()
+      .removeTopLevelCategories()
       .getNodes();
   }
 
