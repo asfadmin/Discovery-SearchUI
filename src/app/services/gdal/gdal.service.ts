@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 
-import { CMRProduct, datasetsForGDALProduct, GDALDataset } from '@models';
+import { CMRProduct, datasetsForGDALProduct, GDALCategory } from '@models';
 import { MapService } from '@services';
 
 export interface GdalOutputType {
@@ -229,17 +229,8 @@ print("Done!")
     `;
   }
 
-  public getProductDatasets(product: GdalProductInfo): GDALDataset[] {
-    return datasetsForGDALProduct(product).sort((a, b) => {
-      if (a.ancillary == b.ancillary) {
-        return 0;
-      }
-      if (a.ancillary !== undefined && a.ancillary) {
-        return 1;
-      }
-
-      return -1;
-    });
+  public getProductDatasets(product: GdalProductInfo): GDALCategory {
+    return datasetsForGDALProduct(product);
   }
 
   public isCropToAOIAvailable(): boolean {

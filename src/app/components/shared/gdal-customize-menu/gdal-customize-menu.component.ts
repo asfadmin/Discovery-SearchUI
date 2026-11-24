@@ -12,7 +12,7 @@ import { GdalCustomizeDialogComponent } from './gdal-customize-dialog/gdal-custo
 
 export interface GdalCustomizeDialogData {
   product: GdalProductInfo;
-  datasets: models.GDALDataset[];
+  datasets: models.GDALCategory;
 }
 
 @Component({

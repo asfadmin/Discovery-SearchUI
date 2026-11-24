@@ -13,11 +13,8 @@
           class="code-header-description"
           [(ngModel)]="currentTab"
         >
-          @for (tab of codeContentByTab() | keyvalue; track tab) {
-            <mat-button-toggle
-              class="code-header-description"
-              [value]="tab.key"
-            >
+          @for (tab of codeContentByTab(); track tab.key) {
+            <mat-button-toggle class="code-header-description" [value]="$index">
               {{ tab.key | translate }}
             </mat-button-toggle>
           }
@@ -28,6 +25,7 @@
     <app-copy-to-clipboard
       #clipboard
       class="compact"
+      [copyIcon]="clipboard.copied() ? 'check' : 'file_copy'"
       [aria-label]="copyPrompt() | translate"
       [prompt]="copyPrompt() | translate"
       [value]="codeValue()"
