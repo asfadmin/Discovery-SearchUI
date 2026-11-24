@@ -900,19 +900,38 @@ export class DatasetDisplayTree {
     this.nodes = nodes;
   }
 
+  pushTree(other: DatasetDisplayTree) {
+    this.nodes.push(...other.getNodes());
+  }
+
   public removeFrivolousNodes(): DatasetDisplayTree {
-    this.nodes = this.nodes.map((node) => {
-      if (
-        node.kind === 'category' &&
-        Object.entries(node.children).length === 1
-      ) {
-        return Object.entries(node.children)[0][1];
+    if (this.nodes.every((node) => node.kind !== 'category')) {
+      return this;
+    }
+
+    if (this.nodes.length === 1 && this.nodes[0].kind === 'category') {
+      this.nodes[0].children = new DatasetDisplayTree(this.nodes[0].children)
+        .removeFrivolousNodes()
+        .getNodes();
+
+      return this;
+    }
+
+    const trees = this.nodes.map((node) => {
+      if (node.kind === 'category' && node.children.length === 1) {
+        return new DatasetDisplayTree(node.children);
       }
 
-      return node;
+      return new DatasetDisplayTree([node]);
     });
 
-    return this;
+    const result = new DatasetDisplayTree([]);
+
+    for (const tree of trees) {
+      result.pushTree(tree.removeFrivolousNodes());
+    }
+
+    return result;
   }
 
   public getNodes(): DatasetNode[] {
