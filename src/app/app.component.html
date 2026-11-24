@@ -19,7 +19,10 @@
       <app-header [isLoading]="isLoading$ | async"> </app-header>
 
       @if (true) {
-      <app-harmony-jobs> </app-harmony-jobs>
+        <div>
+          <app-token-input (valueChange)="token.set($event)" />
+          <app-harmony-jobs [token]="token()"> </app-harmony-jobs>
+        </div>
       } @else {
         <app-map (loadUrlState)="onLoadUrlState()"> </app-map>
       }

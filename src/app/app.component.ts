@@ -10,6 +10,7 @@ import {
   effect,
   Injector,
   Signal,
+  signal,
 } from '@angular/core';
 import {
   DateAdapter,
@@ -68,6 +69,7 @@ import { HarmonyJobsComponent } from './components/shared/harmony-jobs/harmony-j
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import * as models from './models';
 import { SearchType } from './models';
+import { TokenInputComponent } from './token-input.component';
 
 @Component({
   selector: 'app-root',
@@ -82,6 +84,7 @@ import { SearchType } from './models';
     { provide: MAT_DATE_LOCALE, useValue: 'en' },
   ],
   imports: [
+    TokenInputComponent,
     HarmonyJobsComponent,
     MatSidenavContainer,
     MatSidenav,
@@ -123,6 +126,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
 
+  public token = signal<string>(null);
   private queueStateKey = 'asf-queue-state-v1';
   private customProductsQueueStateKey = 'asf-custom-products-queue-state-v2';
 

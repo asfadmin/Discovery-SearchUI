@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 
 import { HarmonyJob } from './harmony.model';
 import { HarmonyService } from './harmony.service';
@@ -12,20 +12,31 @@ import { HarmonyService } from './harmony.service';
 export class HarmonyJobsComponent {
   harmony = inject(HarmonyService);
 
+  token = input.required<string>();
   jobs = signal<HarmonyJob[]>(null);
 
-  token = '';
-
   constructor() {
-    this.harmony.getJobs$(this.token).subscribe((resp) => {
-      console.log(resp);
-      this.jobs.set(resp.jobs);
+    effect(() => {
+      const token = this.token();
+      if (!token) {
+        return;
+      }
+
+      this.harmony.getJobs$(token).subscribe((resp) => {
+        console.log(resp);
+        this.jobs.set(resp.jobs);
+      });
     });
   }
 
   getJob(job: HarmonyJob) {
     console.log(job);
-    this.harmony.getJob$(job.jobID, this.token).subscribe((resp) => {
+    const token = this.token();
+    if (!token) {
+      return;
+    }
+
+    this.harmony.getJob$(job.jobID, this.token()).subscribe((resp) => {
       console.log(resp);
     });
   }

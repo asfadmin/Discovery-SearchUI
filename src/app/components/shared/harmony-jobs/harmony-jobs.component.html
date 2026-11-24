@@ -3,10 +3,10 @@
     Loading Jobs...
   } @else {
     @for (job of jobs(); track job.jobID) {
-    <div>
-      {{ job.serviceName }} - {{ job.status }} ({{ job.labels }})
-      <button (click)="getJob(job)">Load</button>
-    </div>
+      <div>
+        {{ job.serviceName }} - {{ job.status }} ({{ job.labels }})
+        <button (click)="getJob(job)">Load</button>
+      </div>
     }
   }
 </div>
