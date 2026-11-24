@@ -49,7 +49,7 @@ export class CodeBlockComponent {
   codeBlock = viewChild<ElementRef | null>('codeBlock');
   currentTab = signal<number>(0);
   codeValue = computed<string>(() =>
-    [this.codeContent() ?? this.codeContentByTab()[this.currentTab()][1]]
+    [this.codeContent() ?? this.codeContentByTab()[this.currentTab()].value]
       .flat()
       .join('\n'),
   );

@@ -13,9 +13,9 @@
           class="code-header-description"
           [(ngModel)]="currentTab"
         >
-          @for (tab of codeContentByTab(); track tab[0]) {
+          @for (tab of codeContentByTab(); track tab.key) {
             <mat-button-toggle class="code-header-description" [value]="$index">
-              {{ tab[0] | translate }}
+              {{ tab.key | translate }}
             </mat-button-toggle>
           }
         </mat-button-toggle-group>
