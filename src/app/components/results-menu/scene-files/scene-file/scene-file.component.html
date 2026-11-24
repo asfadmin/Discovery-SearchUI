@@ -2,7 +2,11 @@
   <ng-container matListItemIcon>
     <mat-icon mat-icon-button disabled></mat-icon>
   </ng-container>
-  <div [class.clickable]="!product.metadata.job" matListItemTitle>
+  <div
+    [class.clickable]="!product.metadata.job"
+    matListItemTitle
+    class="scene-file"
+  >
     @if ((searchType$ | async) !== searchTypes.CUSTOM_PRODUCTS) {
       <b>
         @if (product.productTypeDisplay.length > 40) {
@@ -82,6 +86,23 @@
         }
       </a>
     }
+
+    @if (product.metadata.job?.job_type === 'NISAR_CV') {
+      @for (file of product.metadata.job.files; track file.url) {
+        <mat-list-item class="job-file">
+          <span matListItemTitle>{{ file.filename }}</span>
+          <span class="job-file-size" matListItemMeta>
+            {{ file.size.toString() | readableSizeFromBytes }}
+          </span>
+          <app-download-file-button
+            [href]="file.url"
+            [disabled]="isExpired(product.metadata.job)"
+            matListItemMeta
+          >
+          </app-download-file-button>
+        </mat-list-item>
+      }
+    }
   </div>
 
   @if (validHyp3JobTypes.length > 0) {
@@ -113,17 +134,6 @@
       </mat-menu>
     </button>
   }
-
-  <div class="file-sub-line" matListItemLine>
-    @if (product.bytes === 0 && !product?.id?.startsWith('OPERA')) {
-      <span>{{ 'VIRTUAL' | translate }}</span>
-    }
-    @if (isDownloadable(product) && product.bytes !== 0) {
-      <span>
-        {{ product.bytes.toString() | readableSizeFromBytes }}
-      </span>
-    }
-  </div>
 
   @if (product.metadata.job) {
     <ng-container>
@@ -173,24 +183,6 @@
     <div [class.params-first]="first" matListItemLine>
       <b>{{ param.name | translate }}:</b> {{ param.val }}
     </div>
-  }
-
-  <app-download-file-button
-    [attr.id]="'scene_' + product.id"
-    [product]="product"
-    (productDownloaded)="prodDownloaded($event)"
-    [disabled]="isExpired(product.metadata.job)"
-    matListItemMeta
-  >
-  </app-download-file-button>
-
-  @if (isDownloadable(product)) {
-    <app-cart-toggle
-      matListItemMeta
-      (toggle)="onToggleQueueProduct()"
-      [isQueued]="isQueued"
-    >
-    </app-cart-toggle>
   }
 
   @if (!isDownloadable(product)) {

@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @use 'asf-theme-variables' as *;
 
 .icon-margin {
@@ -57,6 +58,23 @@
   font-size: 1.2rem;
 }
 
+.job-file {
+  padding-left: 24px;
+
+  @include mat.list-overrides(
+    (
+      list-item-one-line-container-height: 26px,
+      list-item-label-text-size: 14px,
+      list-item-label-text-color: var(--mat-list-list-item-supporting-text-color),
+      list-item-trailing-supporting-text-size: 14px,
+    )
+  );
+}
+
+.job-file-size {
+  white-space: nowrap;
+}
+
 .file-type-label {
   font-size: 14px;
 }
@@ -67,4 +85,8 @@
 
 .expired-job-button {
   margin-right: 10px;
+}
+
+.scene-file {
+  padding: 0.5em 0.5em 0.5em 0;
 }
