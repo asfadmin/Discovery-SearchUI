@@ -64,6 +64,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { MapComponent } from './components/map/map.component';
 import { ResultsMenuComponent } from './components/results-menu/results-menu.component';
 import { EventSearchDeprecationComponent } from './components/shared/event-search-deprecation/event-search-deprecation.component';
+import { HarmonyJobsComponent } from './components/shared/harmony-jobs/harmony-jobs.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import * as models from './models';
 import { SearchType } from './models';
@@ -81,6 +82,7 @@ import { SearchType } from './models';
     { provide: MAT_DATE_LOCALE, useValue: 'en' },
   ],
   imports: [
+    HarmonyJobsComponent,
     MatSidenavContainer,
     MatSidenav,
     NgClass,

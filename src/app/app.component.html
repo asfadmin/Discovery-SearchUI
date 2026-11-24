@@ -18,7 +18,11 @@
     <div class="sidenav-content">
       <app-header [isLoading]="isLoading$ | async"> </app-header>
 
-      <app-map (loadUrlState)="onLoadUrlState()"> </app-map>
+      @if (true) {
+      <app-harmony-jobs> </app-harmony-jobs>
+      } @else {
+        <app-map (loadUrlState)="onLoadUrlState()"> </app-map>
+      }
 
       <app-results-menu id="TSRESULTS"> </app-results-menu>
     </div>
