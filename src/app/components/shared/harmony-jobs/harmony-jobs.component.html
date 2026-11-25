@@ -1,0 +1,23 @@
+<div>
+  @if (loadingJobs()) {
+    Loading Jobs...
+  } @else {
+    @for (job of jobs(); track job.jobID) {
+      <div>
+        <div>
+          <button (click)="getJob(job)">Load Links</button>
+          {{ job.serviceName }} - {{ job.status }} ({{ job.labels }})
+        </div>
+        @if (job.links.length > 1) {
+          @for (link of job.links; track link.href) {
+            <ul>
+              <li>
+                <a href="link.href">{{ link.title }} ({{ link.type }})</a>
+              </li>
+            </ul>
+          }
+        }
+      </div>
+    }
+  }
+</div>

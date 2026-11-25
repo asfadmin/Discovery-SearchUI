@@ -64,9 +64,12 @@ import { HeaderComponent } from './components/header/header.component';
 import { MapComponent } from './components/map/map.component';
 import { ResultsMenuComponent } from './components/results-menu/results-menu.component';
 import { EventSearchDeprecationComponent } from './components/shared/event-search-deprecation/event-search-deprecation.component';
+import { HarmonyJobsComponent } from './components/shared/harmony-jobs/harmony-jobs.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import * as models from './models';
 import { SearchType } from './models';
+import { TokenInputComponent } from './token-input.component';
+import { HarmonyStore } from '@components/shared/harmony-jobs/harmony.store';
 
 @Component({
   selector: 'app-root',
@@ -81,6 +84,8 @@ import { SearchType } from './models';
     { provide: MAT_DATE_LOCALE, useValue: 'en' },
   ],
   imports: [
+    TokenInputComponent,
+    HarmonyJobsComponent,
     MatSidenavContainer,
     MatSidenav,
     NgClass,
@@ -121,6 +126,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
 
+  public harmonyStore = inject(HarmonyStore);
   private queueStateKey = 'asf-queue-state-v1';
   private customProductsQueueStateKey = 'asf-custom-products-queue-state-v2';
 

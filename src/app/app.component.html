@@ -18,7 +18,14 @@
     <div class="sidenav-content">
       <app-header [isLoading]="isLoading$ | async"> </app-header>
 
-      <app-map (loadUrlState)="onLoadUrlState()"> </app-map>
+      @if (true) {
+        <div>
+          <app-token-input (valueChange)="harmonyStore.setToken($event)" />
+          <app-harmony-jobs> </app-harmony-jobs>
+        </div>
+      } @else {
+        <app-map (loadUrlState)="onLoadUrlState()"> </app-map>
+      }
 
       <app-results-menu id="TSRESULTS"> </app-results-menu>
     </div>
