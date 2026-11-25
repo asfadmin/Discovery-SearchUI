@@ -11,6 +11,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import {
   debounceTime,
   distinctUntilChanged,
+  EMPTY,
   filter,
   pipe,
   switchMap,
@@ -55,6 +56,28 @@ export const HarmonyStore = signalStore(
             }),
           ),
         ),
+      ),
+    ),
+    loadJob: rxMethod<string>(
+      pipe(
+        switchMap((jobID) => {
+          const token = store.token();
+          if (!token) {
+            return EMPTY;
+          }
+
+          return harmony.getJob$(jobID, token).pipe(
+            tapResponse({
+              next: (updated) =>
+                patchState(store, ({ jobs }) => ({
+                  jobs: jobs.map((j) =>
+                    j.jobID === updated.jobID ? { ...j, ...updated } : j,
+                  ),
+                })),
+              error: (err) => console.error(err),
+            }),
+          );
+        }),
       ),
     ),
   })),

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { HarmonyJobsResp } from './harmony.model';
+import { HarmonyJob, HarmonyJobsResp } from './harmony.model';
 
 @Injectable({ providedIn: 'root' })
 export class HarmonyService {
@@ -23,13 +23,13 @@ export class HarmonyService {
     );
   }
 
-  getJob$(jobId: string, token: string): Observable<unknown> {
+  getJob$(jobId: string, token: string): Observable<HarmonyJob> {
     const headers = new HttpHeaders({
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.get<unknown>(
+    return this.http.get<HarmonyJob>(
       `https://harmony.earthdata.nasa.gov/jobs/${jobId}`,
       {
         headers,

@@ -18,14 +18,6 @@ export class HarmonyJobsComponent {
   loadingJobs = computed(() => this.store.isLoading());
 
   getJob(job: HarmonyJob) {
-    console.log(job);
-    const token = this.store.token();
-    if (!token) {
-      return;
-    }
-
-    this.harmony.getJob$(job.jobID, this.store.token()).subscribe((resp) => {
-      console.log(resp);
-    });
+    this.store.loadJob(job.jobID);
   }
 }
