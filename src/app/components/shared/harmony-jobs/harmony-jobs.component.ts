@@ -15,7 +15,7 @@ export class HarmonyJobsComponent {
   store = inject(HarmonyStore);
 
   jobs = computed(() => this.store.jobs());
-  loadingJobs = computed(() => this.store.isLoading());
+  loadingJobs = computed(() => this.store.areJobsLoading());
 
   getJob(job: HarmonyJob) {
     this.store.loadJob(job.jobID);

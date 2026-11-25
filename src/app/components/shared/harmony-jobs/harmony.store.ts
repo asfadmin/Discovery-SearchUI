@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
   signalStore,
@@ -6,6 +6,7 @@ import {
   withMethods,
   patchState,
   withHooks,
+  withComputed,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import {
@@ -36,8 +37,12 @@ const initialState: HarmonyState = {
 export const HarmonyStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
+  withComputed((store) => ({
+    areJobsLoading: computed(() => store.token() && store.isLoading()),
+  })),
   withMethods((store, harmony = inject(HarmonyService)) => ({
-    setToken: (token: string | null) => patchState(store, { token }),
+    setToken: (token: string | null) =>
+      patchState(store, token ? { token } : { token, jobs: [] }),
     getJobs: rxMethod<string | null>(
       pipe(
         debounceTime(300),
