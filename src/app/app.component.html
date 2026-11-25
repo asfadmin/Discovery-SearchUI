@@ -20,8 +20,8 @@
 
       @if (true) {
         <div>
-          <app-token-input (valueChange)="token.set($event)" />
-          <app-harmony-jobs [token]="token()"> </app-harmony-jobs>
+          <app-token-input (valueChange)="harmonyStore.setToken($event)" />
+          <app-harmony-jobs> </app-harmony-jobs>
         </div>
       } @else {
         <app-map (loadUrlState)="onLoadUrlState()"> </app-map>

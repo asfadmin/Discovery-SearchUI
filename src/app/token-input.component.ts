@@ -17,6 +17,9 @@ import { MatInputModule } from '@angular/material/input';
         spellcheck="false"
       />
     </mat-form-field>
+    <a href="https://urs.earthdata.nasa.gov/profile" target="_blank"
+      >EDL Profile</a
+    >
   `,
 })
 export class TokenInputComponent {

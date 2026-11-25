@@ -1,5 +1,5 @@
 <div>
-  @if (!jobs()) {
+  @if (loadingJobs()) {
     Loading Jobs...
   } @else {
     @for (job of jobs(); track job.jobID) {
